@@ -1,0 +1,6 @@
+#logo_container {
+	width: 60%;
+}
+#logo_container > img {
+	width: 50%;
+}
