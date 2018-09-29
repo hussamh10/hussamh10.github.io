@@ -14,4 +14,4 @@ Cyber Security and Machine Learning at TPI Lab in LUMS.
 I also like tinker with python and solve problems using automation. I like
 reading books and watching football.
 
-In my next life I would be an author or journalist.
+In my next life I am an author and journalist.
