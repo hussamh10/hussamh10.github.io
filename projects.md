@@ -6,6 +6,7 @@ permalink: /projects/
 ---
 
 # Research
+<hr>
 
 #### Android Repackaging Analysis
 Measurement study on the prevalence of repackaged and malicious apps on major Chinese apps stores and communities for cracked apps. 
@@ -24,6 +25,7 @@ This research project aims to design a model that reconstructs the missing video
 <br/>
 
 # Professional
+<hr>
 
 #### Derma-AEYE
 An ML model which aids dermatologists to diagnose skin disease from low resolution images.
@@ -34,6 +36,7 @@ A system that enables the ad publishers who use physical billboards and screens 
 <br/>
 
 # Scripts and Personal Projects
+<hr>
 
 #### [Fetch](https://github.com/hussamh10/fetch)
 A search engine for Windows. The application indexes the PC then uses approximate search algorithms to quickly find folders. Such as finding the folder "Bojack Horseman" using the query "bjh". 
