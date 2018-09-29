@@ -1,0 +1,26 @@
+name: Hussam Habib
+description: Portfolio of Hussam Habib
+url: "http://www.hussamh10.com"
+
+# Author info
+author_name: Hussam Habib
+author_image_path: /images/author-image.jpeg
+
+# External services
+github_url: "https://github.com/hussamh10"
+twitter_url: "https://twitter.com/hussamh_10"
+linkedin_url: "https://linkedin.com/in/hussamh10"
+facebook_url: "https://facebook.com/hussamh10"
+email: "hussamh10@gmail.com"
+
+# Markdown rendering
+kramdown:
+  #  smart_quotes: apos,apos,quot,quot
+  parse_block_html: true
+
+# Site settings
+permalink: /blog/:year/:month/:day/:title/
+
+# important since the site is compiled
+# on Github's servers
+timezone: Pakistan/Karachi
