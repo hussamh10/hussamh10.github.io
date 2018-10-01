@@ -10,7 +10,7 @@ I am a Computer Science graduate from FAST NUCES Lahore and now a
 prospective graduate student. I am currently working on 
 Cyber Security and Machine Learning at TPI Lab in LUMS.
 
-I like tinker with python and solve problems using automation. I enjoy
+I like tinkering with python and solving problems using automation. I enjoy
 reading books and watching football.
 
 My interests include Machine Learning, Computer Vision, Security and Privacy.
