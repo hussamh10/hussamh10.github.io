@@ -7,17 +7,16 @@ permalink: /projects/
 
 # Research
 <hr>
+#### Act or React — Investigating Proactive Strategies For Online Community Moderation
+We study Reddit for online community evolution, impact of community participation on user behavior and effectiveness of community moderation
+<br/>
 
 #### Android Repackaging Analysis
 Measurement study on the prevalence of repackaged and malicious apps on major Chinese apps stores and communities for cracked apps. 
 <br/>
 
-#### Provenance Graphs Analysis
-(Ongoing)
-<br/>
-
-#### Medicare Fraud Analysis 
-(Ongoing)
+#### Provenance Malware Detection — Detecting malicious activity using provenance graphs
+We summarize provenance graphs created using SPADE and use template matching for malware detection
 <br/>
 
 #### [YENET](https://github.com/hussamh10/yenet)
@@ -27,15 +26,14 @@ This research project aims to design a model that reconstructs the missing video
 # Professional
 <hr>
 
-#### Derma-AEYE
-An ML model which aids dermatologists to diagnose skin disease from low resolution images.
-<br/>
+#### Adlytic
+We use computer vision and machine learning to detect traffic demographic and individual attributes to provide better impressions to advertisement agencies and customized experienced to viewers
+#### Trafflytic
+We track traffic using low quality cameras and generate real time analytics such as counts, congestion scores and traffic speeds
+#### Digital Salon
+We integrate salons with smart tools aiding them to increase sales and significantly improve a user experience. We use computer vision and generative models to provide clients with style and treatment recommendation such as hair color, hair style, hair length, facial, makeup, acne treatment etc
 
-#### Screens
-A system that enables the ad publishers who use physical billboards and screens to target specific demographic and provide ad impression statistics.
-<br/>
-
-# Scripts and Personal Projects
+# Pet Projects
 <hr>
 
 #### [Fetch](https://github.com/hussamh10/fetch)
@@ -45,13 +43,3 @@ A search engine for Windows. The application indexes the PC then uses approximat
 #### [AlfredPi](https://github.com/hussamh10/alfredpi):
 A bot made on Raspberry Pi that automates day to day routine. The bot communicates using Telegram API and can perform tasks such as downloading media, reminders, calendar management, basic google searches, report number of people at home and other trivial tasks.
 <br/>
-
-#### Football Fantasy Android Application
-A competitive premier league predictor app.
-<br/>
-
-# Course Projects
-- AI Chess
-- GPS Based Image Sharing Android App
-- Spam detector
-- Library Management System
