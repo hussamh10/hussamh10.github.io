@@ -37,9 +37,9 @@ We integrate salons with smart tools aiding them to increase sales and significa
 <hr>
 
 #### [Fetch](https://github.com/hussamh10/fetch)
-A search engine for Windows. The application indexes the PC then uses approximate search algorithms to quickly find folders. Such as finding the folder "Bojack Horseman" using the query "bjh". 
+A search engine for Windows with an intuitive GUI that uses approximate search algorithms to instantly find files folders.
 <br/>
 
 #### [AlfredPi](https://github.com/hussamh10/alfredpi):
-A bot made on Raspberry Pi that automates day to day routine. The bot communicates using Telegram API and can perform tasks such as downloading media, reminders, calendar management, basic google searches, report number of people at home and other trivial tasks.
+A Raspberry Pi bot that automates day to day routine such as downloading media, reminders, calendar management, internet searches, home surveillance.
 <br/>
