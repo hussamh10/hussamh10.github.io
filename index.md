@@ -6,11 +6,10 @@ title: Home
 ---
 
 {: style="margin-top:0; margin-bottom: 0;"}
-I am a PhD student at The University of Iowa in Computer Science advised by [Dr. Rishab Nithyanand](https://sparta.cs.uiowa.edu/people/rishab/) and working in the [SPARTA lab](https://sparta.cs.uiowa.edu). My research topics are security, privacy and anonymity. Previously, I worked in the [TPI lab](http://www.tpilums.org/) at LUMS on network security and internet measurement under the supervision of [Dr. Fareed Zaffar](https://lums.edu.pk/lums_employee/422).
+I am a PhD student at The University of Iowa in Computer Science advised by [Dr. Rishab Nithyanand](https://sparta.cs.uiowa.edu/people/rishab/) and working in the [SPARTA lab](https://sparta.cs.uiowa.edu). Previously, I worked in the [TPI lab](http://www.tpilums.org/) at LUMS on network security and internet measurement under the supervision of [Dr. Fareed Zaffar](https://lums.edu.pk/lums_employee/422). My research interests are online moderation, online bias, privacy and anonymity.
 
-I am also the Co-founder and CTO of [OMNO AI](https://www.omno.ai/) where we work on Computer Vision and Machine Learning.
+I am also the Co-founder and CTO of [OMNO AI](https://www.omno.ai/) working on Computer Vision and Machine Learning.
 
-<br/>
 <br/>
 <br/>
 
@@ -42,7 +41,7 @@ We track traffic using low quality cameras and generate real time analytics such
 #### Digital Salon
 We integrate salons with smart tools aiding them to increase sales and significantly improve a user experience. We use computer vision and generative models to provide clients with style and treatment recommendation such as hair color, hair style, hair length, facial, makeup, acne treatment etc
 
-# Pet Projects
+# Other Projects
 <hr>
 
 #### [Fetch](https://github.com/hussamh10/fetch)
