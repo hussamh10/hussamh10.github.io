@@ -8,7 +8,7 @@ title: Home
 {: style="margin-top:0; margin-bottom: 0;"}
 I am a PhD student at The University of Iowa in Computer Science advised by [Dr. Rishab Nithyanand](https://sparta.cs.uiowa.edu/people/rishab/) and working in the [SPARTA lab](https://sparta.cs.uiowa.edu). Previously, I worked in the [TPI lab](http://www.tpilums.org/) at LUMS on network security and internet measurement under the supervision of [Dr. Fareed Zaffar](https://lums.edu.pk/lums_employee/422). My research interests are online moderation, online bias, privacy and anonymity.
 
-I am also the Co-founder and CTO of [OMNO AI](https://www.omno.ai/) working on Computer Vision and Machine Learning.
+I am also the Co-founder and CTO of [OMNO AI](http://www.omno.ai/) working on Computer Vision and Machine Learning.
 
 <br/>
 <br/>
@@ -17,6 +17,19 @@ I am also the Co-founder and CTO of [OMNO AI](https://www.omno.ai/) working on C
 <hr>
 #### Act or React — Investigating Proactive Strategies For Online Community Moderation
 We study Reddit for online community evolution, impact of community participation on user behavior and effectiveness of community moderation
+<br/>
+
+
+<hr>
+#### Radicalization and Interventions
+Tracking online vulnerable users for radicalization and monitoring the 
+triggering events. Exploring the events to suggest mitigation and intervention techniques.
+<br/>
+
+<hr>
+#### Narrative Flow — Narrative Provenance Tool
+Isolating narratives and frames in news media and online forums and tracking the flow of information from
+underground forums to mainstream media.
 <br/>
 
 #### Android Repackaging Analysis
