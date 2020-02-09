@@ -20,13 +20,11 @@ We study Reddit for online community evolution, impact of community participatio
 <br/>
 
 
-<hr>
 #### Radicalization and Interventions
 Tracking online vulnerable users for radicalization and monitoring the 
 triggering events. Exploring the events to suggest mitigation and intervention techniques.
 <br/>
 
-<hr>
 #### Narrative Flow — Narrative Provenance Tool
 Isolating narratives and frames in news media and online forums and tracking the flow of information from
 underground forums to mainstream media.
