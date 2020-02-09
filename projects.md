@@ -31,6 +31,8 @@ We use computer vision and machine learning to detect traffic demographic and in
 We track traffic using low quality cameras and generate real time analytics such as counts, congestion scores and traffic speeds
 #### Digital Salon
 We integrate salons with smart tools aiding them to increase sales and significantly improve a user experience. We use computer vision and generative models to provide clients with style and treatment recommendation such as hair color, hair style, hair length, facial, makeup, acne treatment etc
+#### Football Analytica
+Real time soccer analytics and stats generation from live camera stream using computer vision techniques.
 
 # Pet Projects
 <hr>
