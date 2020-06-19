@@ -6,9 +6,9 @@ title: Home
 ---
 
 {: style="margin-top:0; margin-bottom: 0;"}
-I am a PhD student at The University of Iowa in Computer Science advised by [Dr. Rishab Nithyanand](https://sparta.cs.uiowa.edu/people/rishab/) and working in the [SPARTA lab](https://sparta.cs.uiowa.edu). Previously, I worked in the [TPI lab](http://www.tpilums.org/) at LUMS on network security and internet measurement under the supervision of [Dr. Fareed Zaffar](https://lums.edu.pk/lums_employee/422). My research interests are online moderation, online bias, privacy and anonymity.
+I am a second year PhD student at The University of Iowa in Computer Science advised by [Dr. Rishab Nithyanand](https://sparta.cs.uiowa.edu/people/rishab/) and working in the [SPARTA lab](https://sparta.cs.uiowa.edu). My research interests are disinformation and user radicalization on online platforms.
 
-I am also the Co-founder and CTO of [OMNO AI](http://www.omno.ai/) working on Computer Vision and Machine Learning.
+I am also the Co-founder of [OMNO AI](http://www.omno.ai/) working on Computer Vision and Machine Learning.
 
 <br/>
 <br/>
