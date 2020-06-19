@@ -6,7 +6,7 @@ title: Home
 ---
 
 {: style="margin-top:0; margin-bottom: 0;"}
-I am a second year PhD student at The University of Iowa in Computer Science advised by [Dr. Rishab Nithyanand](https://sparta.cs.uiowa.edu/people/rishab/) and working in the [SPARTA lab](https://sparta.cs.uiowa.edu). My research interests are disinformation and user radicalization on online platforms.
+Hi I am Hussam Habib (حسام حبیب). I am a second year PhD student at The University of Iowa in Computer Science advised by [Dr. Rishab Nithyanand](https://sparta.cs.uiowa.edu/people/rishab/) and working in the [SPARTA lab](https://sparta.cs.uiowa.edu). My research interests are disinformation and user radicalization on online platforms.
 
 I am also the Co-founder of [OMNO AI](http://www.omno.ai/) working on Computer Vision and Machine Learning.
 
