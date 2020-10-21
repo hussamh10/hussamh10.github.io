@@ -25,6 +25,13 @@ Tracking online vulnerable users for radicalization and monitoring the
 triggering events. Exploring the events to suggest mitigation and intervention techniques.
 <br/>
 
+
+#### Information Flow - A Survey
+A survey on understanding Information flow using different perspectives.
+We organize recent research done to understand dynamics information flow on social
+media by the factors they use. [pdf](./cv.pdf)
+<br/>
+
 #### Narrative Flow — Narrative Provenance Tool
 Isolating narratives and frames in news media and online forums and tracking the flow of information from
 underground forums to mainstream media.
