@@ -29,7 +29,7 @@ triggering events. Exploring the events to suggest mitigation and intervention t
 #### Information Flow - A Survey
 A survey on understanding Information flow using different perspectives.
 We organize recent research done to understand dynamics information flow on social
-media by the factors they use. [pdf](./cv.pdf)
+media by the factors they use. [pdf](./paper.pdf)
 <br/>
 
 #### Narrative Flow — Narrative Provenance Tool
