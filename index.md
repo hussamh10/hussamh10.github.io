@@ -15,7 +15,8 @@ I am also the Co-founder of [OMNO AI](http://www.omno.ai/) working on Computer V
 
 # Research
 <hr>
-#### Act or React — Investigating Proactive Strategies For Online Community Moderation
+#### Act or React
+<it>Investigating Proactive Strategies For Online Community Moderation</it>
 We study Reddit for online community evolution, impact of community participation on user behavior and effectiveness of community moderation
 <br/>
 
