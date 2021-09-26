@@ -21,7 +21,7 @@ Tracking online vulnerable users for radicalization and monitoring the
 triggering events. Exploring the events to suggest mitigation and intervention techniques.
 <br/>
 
-#### Act or React # — Submitted ICWSM’22
+<b>Act or React</b> — Submitted ICWSM’22
 <i>Investigating Proactive Strategies For Online Community Moderation</i>
 We study Reddit for online community evolution, impact of community participation on user behavior and effectiveness of community moderation
 <br/>
