@@ -1,0 +1,69 @@
+@import url('https://fonts.googleapis.com/css2?family=Crimson+Pro&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Asar&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Raleway&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Source+Code+Pro&display=swap');
+
+
+.round {
+  border-radius: 4%;
+}
+
+img {
+  border-radius: 2%;
+  border: black;
+}
+h1.heading{
+    font-family: 'Raleway', sans-serif;
+    font-size: 83px;
+    text-transform:lowercase
+}
+nav{
+  font-family: 'Asar', serif;
+}
+
+h3{
+  font-family: 'Raleway', serif;
+}
+li{
+  font-family: 'Raleway', serif;
+}
+
+p{
+  font-family: 'Asar', serif;
+}
+
+a.navbar-item {
+    margin-left: 10px;
+    padding: 0px;
+    padding-right: 4rem;
+    font-size: 26px;
+    text-transform:lowercase;
+    background: transparent;
+    color: black;
+}
+
+a.navbar-item:hover {
+    color: black;
+    background: transparent;
+    color: black;
+    font-weight: bold;
+}
+
+
+hr {
+    margin: 0;
+    padding: 0;
+}
+
+.box {
+  background-color: #fffdfc	;
+}
+
+html{
+  background-image: radial-gradient(rgb(212, 212, 212) 0%, transparent 8%),
+    radial-gradient(rgb(212, 212, 212) 0%, transparent 1%);
+  background-size: 60px 60px;
+  background-position: 1 1, 4px 4px;
+  background-repeat: repeat;
+  background-color: rgb(248, 248, 248)	;
+}
