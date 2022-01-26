@@ -14,6 +14,7 @@ img {
   border-radius: 2%;
   border: black;
 }
+
 h1.heading{
     font-family: 'Raleway', sans-serif;
     font-size: 83px;
@@ -58,7 +59,17 @@ hr {
 }
 
 .box {
-  background-color: #fffdfc	;
+  background-color: #ffffff;
+}
+
+
+.center {
+  text-align: center;
+}
+.ImageBorder
+{
+    border-width: 1px;
+    border-color: Black;
 }
 
 html{
