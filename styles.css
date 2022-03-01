@@ -1,48 +1,116 @@
-@import url('https://fonts.googleapis.com/css2?family=Crimson+Pro&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Nova+Mono&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Major+Mono+Display&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Kumbh+Sans&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Asar&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Raleway&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Source+Code+Pro&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inconsolata&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Gentium+Basic&display=swap');
 
-
-.round {
-  border-radius: 4%;
-}
-
-img {
-  border-radius: 2%;
-  border: black;
-}
 
 h1.heading{
-    font-family: 'Raleway', sans-serif;
-    font-size: 83px;
-    text-transform:lowercase
+    font-family: 'Gentium Basic';
+    font-size: 40px;
+    text-transform:none;
 }
 nav{
-  font-family: 'Asar', serif;
+  font-size: 20px;
 }
 
 h3{
-  font-family: 'Raleway', serif;
+  font-family: 'Kumbh Sans';
 }
-li{
-  font-family: 'Raleway', serif;
+
+h4{
+  font-family: 'Kumbh Sans';
+  font-size: 34px;
+  color:black;
+}
+
+.link{
+  color:blue;
+  font-size:1rem;
+  font-family:'Asar';
+  text-transform:underline;
+}
+
+.introduction{
+  font-family: 'Kumbh Sans';
+  font-size: 1.4rem;
+  margin:auto;
+}
+
+
+.p{
+  font-family: 'Kumbh Sans';
+  font-size: 1rem;
+  margin-left:3rem;
+  margin-right:3rem;
+
 }
 
 p{
-  font-family: 'Asar', serif;
+  font-family: 'Kumbh Sans';
+  font-size: 1rem;
+  margin-left:3rem;
+  margin-right:3rem;
+
 }
 
+.underline{
+  height:3px;
+  border-width:0;
+  color:lightgray;
+  background-color:lightgray;
+  margin-top:1rem;
+  margin-bottom:1rem;
+  margin-left:7rem;
+  margin-right:7rem;
+}
+
+.next{
+  font-family: 'Kumbh Sans';
+  font-size: 1.6rem;
+  text-align:center; 
+  color:#666666;
+  padding:1rem;
+}
+
+.question{
+  font-family: 'Asar';
+  font-size: 1.4rem;
+  text-align:center; 
+  color:black;
+  margin-top:1rem;
+  margin-bottom:1rem;
+  margin-left:7rem;
+  margin-right:7rem;
+}
+
+
+li{
+  font-family: 'Kumbh Sans';
+}
+
+.update{
+  margin-left: 2rem;
+  margin-right: 2rem;
+  font-size: 1.3rem;
+  font-family: 'Asar';
+}
+
+.date{
+  padding:1.1rem;
+  font-family: 'Inconsolata';
+  text-transform:overline;
+  font-size: 1rem;
+}
+
+
 a.navbar-item {
-    margin-left: 10px;
-    padding: 0px;
-    padding-right: 4rem;
-    font-size: 26px;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    font-family: "Kumbh Sans";
+    font-size: 1.3rem;
     text-transform:lowercase;
-    background: transparent;
-    color: black;
+    text-decoration: underline;
+    color: darkgray;
 }
 
 a.navbar-item:hover {
@@ -52,14 +120,28 @@ a.navbar-item:hover {
     font-weight: bold;
 }
 
+.navbar {
+  background-color: #f2f2f2;
+  color: white;
+  display:flex;
+  justify-content:center;
+  text-align:center;
+}
 
 hr {
     margin: 0;
     padding: 0;
 }
 
+
 .box {
   background-color: #ffffff;
+  border-radius: 10px
+}
+
+.updates {
+  font-family: 'Kumbh Sans';
+  margin:auto;
 }
 
 
@@ -77,6 +159,6 @@ html{
     radial-gradient(rgb(212, 212, 212) 0%, transparent 1%);
   background-size: 60px 60px;
   background-position: 1 1, 4px 4px;
-  background-repeat: repeat;
-  background-color: rgb(248, 248, 248)	; */
+  background-repeat: repeat;   */
+  background-color: #f2f2f2;
 }
