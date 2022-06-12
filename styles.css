@@ -8,15 +8,9 @@
     display: flex;
     width: 60%;
     margin: 0 auto;
-    min-width: 720px;
+    /* min-width: 720px; */
 }
 
-@media screen and (max-width: 720px) {
-    .main {
-        flex-direction: column;
-        align-items: center;
-    }
-}
 
 .left {
     width: 29%;
@@ -28,6 +22,39 @@
     margin-left: 2%;
     margin-bottom: 2%;
 }
+
+.avatar{
+    padding-right: 10px;
+    width: 65%;
+    border-radius: 60px; 
+    float: right;
+}
+
+@media screen and (max-width: 720px) {
+    .main {
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+    }
+
+    .left{
+        width: 100%;
+        align-items: center;
+        text-align: center;
+    }
+
+    .avatar{
+        float: none;
+        width: 30%;
+        padding: 4%;
+    }
+
+    .right{
+        width: 75%;
+    }
+
+}
+
 
 .name{
     font-family: 'Patua One';
@@ -70,12 +97,6 @@
     line-height: 30px;
 }
 
- .avatar{
-     padding-right: 10px;
-     width: 65%;
-     border-radius: 60px; 
-     float: right;
- }
  .date{
     font-size: 14px;
     padding-right: 14px;
