@@ -84,7 +84,7 @@
 .text-small{
     padding-top: 1px;
     font-family: 'Darker Grotesque';
-    font-size: 16px;
+    font-size: 20px;
     margin: 0;
     /* margin-right: 50px; */
     line-height: 110%;
@@ -95,7 +95,7 @@
 .text{
     padding-top: 1px;
     font-family: 'Darker Grotesque';
-    font-size: 18px;
+    font-size: 22px;
     margin: 0;
     /* margin-right: 50px; */
     line-height: 120%;
