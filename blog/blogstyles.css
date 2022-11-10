@@ -14,13 +14,14 @@
     width: 100%;
     /* float: center; */
     border-radius: 20px;
-    padding-bottom: 20px;
+    padding-bottom: 0px;
     border: 2px solid #555;
 }
 
 
 .left {
     width: 35%;
+    padding: 20px;
 }
 
 .right {
@@ -85,7 +86,7 @@
 .text{
     font-family: 'Darker Grotesque';
     text-decoration: none;
-    font-size: 18px;
+    font-size: 24px;
     margin: 0;
     text-align: center;
     line-height: 110%;
