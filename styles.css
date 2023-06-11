@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css?family=Noto+Sans|Anonymous+Pro|Nuoso+SIL|Patua+One|Inconsolata|Lora|Darker+Grotesque&display=swap");
+@import url("https://fonts.googleapis.com/css?family=Noto+Sans|Anonymous+Pro|Nuoso+SIL|Patua+One|Inconsolata|Lora|Darker+Grotesque|Bagel+Fat+One&display=swap");
 
 .header{
     padding-top: 40px;
@@ -45,7 +45,7 @@
 .avatar{
     /* padding-right: 30px; */
     width: 100%;
-    border-radius: 30px; 
+    border-radius: 10px; 
 }
 
 @media screen and (max-width: 720px) {
@@ -95,8 +95,9 @@
 
 
 .name{
-    font-family: 'Patua One';
-    font-size: 50px;
+   /* font-family: 'Patua One'; */
+    font-family: 'Bagel Fat One';
+    font-size: 60px;
     text-align: center;
     line-height: 0%;
 }
