@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Darker+Grotesque:wght@400;700&family=Patua+One&family=IBM+Plex+Mono&family=Nuosu+SIL&family=Space+Grotesk&family=Press+Start+2P&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Darker+Grotesque:wght@400;700&family=Bagel+Fat+One|Patua+One&family=IBM+Plex+Mono&family=Nuosu+SIL&family=Space+Grotesk&family=Press+Start+2P&display=swap');
 .header{
     padding-top: 40px;
 }
@@ -48,7 +48,7 @@
 
 
 .name{
-    font-family: 'Patua One';
+    font-family: 'Bagel Fat One';
     font-size: 50px;
     text-align: center;
     line-height: 0%;
