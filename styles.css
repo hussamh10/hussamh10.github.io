@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css?family=Noto+Sans|Anonymous+Pro|Nuoso+SIL|Patua+One|Inconsolata|Lora|Darker+Grotesque|Bagel+Fat+One&display=swap");
+@import url("https://fonts.googleapis.com/css?family=Noto+Sans|Anonymous+Pro|Nuoso+SIL|Patua+One|Inconsolata|Lora|Darker+Grotesque|Bagel+Fat+One|Poppins:wght@700&display=swap");
 
 .header{
     padding-top: 40px;
@@ -96,7 +96,7 @@
 
 .name{
    /* font-family: 'Patua One'; */
-    font-family: 'Bagel Fat One';
+    font-family: 'Poppins';
     font-size: 50px;
     text-align: center;
     line-height: 0%;
