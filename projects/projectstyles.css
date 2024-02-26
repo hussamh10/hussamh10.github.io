@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Darker+Grotesque:wght@400;700&family=Patua+One&family=Bagel+Fat+One&family=IBM+Plex+Mono&family=Nuosu+SIL&family=Space+Grotesk&family=Press+Start+2P&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Darker+Grotesque:wght@400;700&family=Patua+One&family=Bagel+Fat+One&family=IBM+Plex+Mono&family=Nuosu+SIL&family=Space+Grotesk&family=Press+Start+2P|Poppins:wght@700&display=swap');
 .header{
     padding-top: 40px;
 }
@@ -57,7 +57,7 @@
 }
 
 .name{
-    font-family: 'Bagel Fat One';
+    font-family: 'Poppins';
     font-size: 50px;
     text-align: center;
     line-height: 0%;
