@@ -2,13 +2,6 @@
 body {
     font-family: Arial, sans-serif;
     background-color: aliceblue;
-    /* background-image: repeating-linear-gradient(
-        40deg,
-        #eaeae1,
-        #eaeae1 10px,
-        #f0f0f0 10px,
-        #f0f0f0 20px
-    ); */
     margin: 0;
     padding: 0;
     display: flex;
@@ -18,7 +11,7 @@ body {
 
 .title {
     padding: 20px;
-    font-size: 56px;
+    font-size: 2.5rem;
     font-family: 'Times New Roman', Times, serif;
     font-weight: bold;
     color: #6112a2;
@@ -26,11 +19,12 @@ body {
 }
 
 .title .large {
-    font-size: 72px;
+    font-size: 3rem;
 }
 
 .navbar {
     display: flex;
+    flex-wrap: wrap;
     justify-content: center;
     padding: 10px;
     margin-top: 20px;
@@ -44,8 +38,8 @@ body {
     border-bottom-color: #000000;
     border-right-color: #000000;
     padding: 5px 20px;
-    margin: 0 10px;
-    font-size: 18px;
+    margin: 10px;
+    font-size: 1rem;
     font-family: 'Times New Roman', Times, serif;
     color: #0000ff;
     cursor: pointer;
@@ -70,7 +64,7 @@ body {
     align-items: center;
     padding: 20px;
     text-align: left;
-    width: 80%;
+    width: 90%;
     max-width: 1200px;
     margin-top: 20px;
 }
@@ -78,33 +72,34 @@ body {
 /* Styles for index.html */
 .intro {
     display: flex;
-    align-items: flex-start;
+    align-items: center;
     justify-content: center;
+    flex-direction: column;
     width: 100%;
 }
 
 .intro img {
-    width: 200px;
+    width: 100%;
+    max-width: 200px;
     height: auto;
     border: 3px solid #000000;
-    margin-right: 20px;
+    margin-bottom: 20px;
 }
 
 .intro p {
-    font-size: 20px;
+    font-size: 1rem;
     font-family: 'Times New Roman', Times, serif;
     color: #000000;
     margin-top: 0;
     padding: 10px;
     border: 3px solid #000000;
     background-color: #f0f0f0;
-    max-width: 50ch;
 }
 
 .achievements {
     margin-top: 30px;
     padding: 10px;
-    width: 65ch;
+    width: 100%;
     background-color: #C0C0C0;
     border: 5px solid #000000;
     border-top-color: #f0f0f0;
@@ -172,71 +167,17 @@ body {
                 inset -1px -1px 0px #FFFFFF;
 }
 
-/* Styles for projects.html */
-.project {
-    display: flex;
-    align-items: flex-start;
-    justify-content: center;
-    width: 100%;
-    margin-bottom: 30px;
-    background-color: #f0f0f0;
-    border: 5px solid #000000;
-    border-top-color: #ffffff;
-    border-left-color: #ffffff;
-    border-bottom-color: #404040;
-    border-right-color: #404040;
-    padding: 30px;
-    max-width: 80ch;
-}
-
-.project img {
-    width: 300px;
-    height: auto;
-    border: 3px solid #000000;
-    margin-right: 20px;
-}
-
-.project-info {
-    flex: 1;
-}
-
-.project-title {
-    font-size: 16px;
-    font-family: 'Inter', Times, serif;
-    font-weight: bold;
-    margin-bottom: 10px;
-}
-
-.project-details {
-    font-size: 12px;
-    font-family: 'Arial', Times, serif;
-    margin-bottom: 10px;
-}
-
-.project-description {
-    font-size: 16px;
-    font-family: 'Times New Roman', Times, serif;
-    border: 1px solid #000000;
-    padding: 5px;
-}
-
-.project-link {
-    font-size: 16px;
-    font-family: 'Times New Roman', Times, serif;
-    color: #0000ff;
-    text-decoration: underline;
-}
-
 .social-icons {
     display: flex;
     justify-content: center;
     margin-top: 20px;
+    flex-wrap: wrap;
 }
 
 .social-icon {
     width: 40px;
     height: 40px;
-    margin: 0 10px;
+    margin: 10px;
     background-color: #C0C0C0;
     border: 2px solid #FFFFFF;
     border-top-color: #F0F0F0;
@@ -265,11 +206,114 @@ body {
     height: 24px;
 }
 
+/* Media Queries */
+@media (min-width: 600px) {
+    .intro {
+        flex-direction: row;
+    }
+
+    .intro img {
+        margin-right: 20px;
+        margin-bottom: 0;
+    }
+
+    .intro p {
+        max-width: 50ch;
+    }
+
+    .achievements {
+        width: 65ch;
+    }
+}
+
+
+.project {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    margin-bottom: 30px;
+    background-color: #f0f0f0;
+    border: 5px solid #000000;
+    border-top-color: #ffffff;
+    border-left-color: #ffffff;
+    border-bottom-color: #404040;
+    border-right-color: #404040;
+    padding: 30px;
+    max-width: 40ch;
+}
+
+.project img {
+    width: 100%;
+    max-width: 400px;
+    height: auto;
+    border: 3px solid #000000;
+    margin-bottom: 20px;
+}
+
+.project-info {
+    flex: 1;
+    text-align: center;
+    margin-left: 10px;
+}
+
+.project-title {
+    font-size: 1rem;
+    font-family: 'Inter', Times, serif;
+    font-weight: bold;
+    margin-bottom: 10px;
+    text-align: left;
+}
+
+.project-details {
+    font-size: 0.875rem;
+    font-family: 'Arial', Times, serif;
+    margin-bottom: 10px;
+    text-align: left;
+}
+
+.project-description {
+    font-size: 1rem;
+    font-family: 'Times New Roman', Times, serif;
+    border: 1px solid #000000;
+    padding: 5px;
+    text-align: left;
+}
+
+.project-link {
+    font-size: 1rem;
+    font-family: 'Times New Roman', Times, serif;
+    color: #0000ff;
+    text-decoration: underline;
+}
+
+
+/* Media Queries */
+@media (min-width: 600px) {
+    .project {
+        flex-direction: row;
+        text-align: left;
+        max-width: 80ch;
+    }
+
+    .project img {
+        margin-right: 20px;
+        margin-bottom: 0;
+        width: 300px;
+    }
+
+    .project-info {
+        text-align: left;
+    }
+}
+
 
 
 .blog-post {
     display: flex;
-    align-items: flex-start;
+    flex-direction: column;
+    align-items: center;
     justify-content: center;
     width: 100%;
     margin-bottom: 30px;
@@ -280,35 +324,56 @@ body {
     border-bottom-color: #404040;
     border-right-color: #404040;
     padding: 10px;
-    max-width: 80ch;
+    max-width: 40ch;
 }
 
 .blog-post img {
-    width: 300px;
+    width: 100%;
+    max-width: 300px;
     height: auto;
     border: 3px solid #000000;
-    margin-right: 20px;
+    margin-bottom: 20px;
 }
 
 .blog-info {
     flex: 1;
+    text-align: left;
 }
 
 .blog-title {
-    font-size: 24px;
+    font-size: 1.5rem;
     font-family: 'Arial';
     font-weight: bold;
     margin-bottom: 10px;
 }
 
 .blog-description {
-    font-size: 16px;
+    font-size: 1rem;
     font-family: 'Arial', Times, serif;
 }
 
 .blog-link {
-    font-size: 16px;
+    font-size: 1rem;
     font-family: 'Inter', Times, serif;
     color: #0000ff;
     text-decoration: underline;
+}
+
+
+@media (min-width: 600px) {
+    .blog-post {
+        flex-direction: row;
+        text-align: left;
+        max-width: 80ch;
+
+    }
+
+    .blog-post img {
+        margin-right: 20px;
+        margin-bottom: 0;
+    }
+
+    .blog-info {
+        text-align: left;
+    }
 }
