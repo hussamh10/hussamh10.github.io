@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Alpenglow</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --pad: clamp(16px, 3vw, 48px);
+      --radius: 10px; /* slight corner radius */
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: "Crimson Text";
+      color:#111;
+      background:#fff;
+      line-height:1.5;
+    }
+
+    /* --- Layout --- */
+    .layout{
+      display:grid;
+      grid-template-columns: minmax(55vw,1fr) minmax(320px,40vw);
+      gap:0;
+      height:100vh;           /* make the left image hit top & bottom edges */
+      position:relative;      /* so we can overlay on mobile */
+    }
+
+    /* Left side image (no padding, full bleed left/top/bottom) */
+    .hero{position:relative; height:100vh; overflow:hidden}
+    .hero img{
+      display:block;
+      width:100%;
+      height:100%;
+      object-fit:cover;
+    }
+    .title{
+      position:absolute;
+      top:32px; left:32px;
+      margin:0;
+      font-weight:800;
+      font-size: clamp(28px, 4vw, 56px);
+      letter-spacing: .5px;
+    }
+
+    /* Right side boxes */
+    .side{
+      padding: var(--pad);
+      background:#fff;
+      overflow:auto;
+      display:flex;
+      flex-direction:column;
+      gap:18px;
+    }
+    .card{
+      max-width: 52ch;
+      padding: 10px 10px;
+      margin-bottom: 20px;
+    }
+    .card.sun{
+      background: #fde7b8;            /* warm, light “alpenglow” card */
+    }
+    .card.dark{
+      background:#111;
+      color:#f2f2f2;
+    }
+    .card.white{
+      margin-top: 230px;
+      background:#fff;
+      border: 1px solid #000;
+    }
+
+    /* --- Mobile: overlay boxes on the image --- */
+    @media (max-width: 820px){
+      .layout{
+        grid-template-columns: 1fr; /* single column */
+      }
+      .side{
+        position:absolute;
+        inset:0;                /* stretch over the image */
+        background: none;       /* no panel background; cards handle readability */
+        padding: 16px;
+        pointer-events: none;   /* allow scroll gesture primarily on body; cards re-enable */
+        justify-content: center;
+        align-items: center;    /* keeps cards left-aligned horizontally */
+      }
+      .stack{
+        max-width: min(92vw, 520px);
+        display:flex;
+        flex-direction:column;
+        gap:12px;
+        pointer-events: auto;   /* make content interactive */
+      }
+      .card{ margin-bottom: 0; }
+      .card.white{ margin-top: 50px; }
+      .card.sun{ background: rgba(253, 231, 184, .95); }
+      .card.white{ background: rgba(255,255,255, .95); border: 1px solid #000; }
+      .card.dark{ background: rgba(17,17,17,.92); color:#fafafa; }
+      .title{ left:16px; top:16px; }
+    }
+
+    /* Small polish */
+    a{color:inherit}
+    p{margin:0}
+  </style>
+</head>
+<body>
+  <main class="layout">
+    <!-- LEFT: full-bleed image -->
+    <section class="hero" aria-label="Alpenglow hero image">
+      <img src="res/alpenglow.jpg" alt="Sunrise alpenglow over granite mountains and forested valley" />
+      <h1 class="title">Alpenglow</h1>
+    </section>
+
+    <!-- RIGHT: text boxes (become overlay on phones) -->
+    <aside class="side" aria-label="Story panels">
+      <div class="stack">
+        <div class="card white">
+            The mountains glow in the distance, lit by the sun and desires. They glow from light that almost slipped past our Earth. The light paints the ridges red, a color of where you are not.  
+        </div>
+
+        <div class="card sun">
+            For years I’ve been moved by the color of the early morning peaks: alpenglow. I've desired to get up close and see the fiery glow from within. So, one night we pitch a tent, wake in the dark, and drive through morning dew toward the foothills. The glow is still there. Yet as I get closer to the summit, closer to my desires, the red is fading. 
+        </div>
+
+        <div class="card dark">
+            The glow was a trick of my eyes, only seen when what you want is afar. Up close, the glow gives way to granite and wind, the desire gives way to a longing for another. You look back to your room, coddling in the rising sun. Glowing fiery red with the same light.
+        </div>
+      </div>
+    </aside>
+  </main>
+</body>
+</html>
