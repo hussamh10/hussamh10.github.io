@@ -14,30 +14,34 @@
         <button class="win98-button" onclick="window.location.href='index.html'">Home</button>
         <button class="win98-button" onclick="window.location.href='projects/index.html'">Projects</button>
         <button class="win98-button" onclick="window.location.href='blog/index.html'">Blog</button>
-        <button class="win98-button" onclick="window.location.href='res/cv.pdf'">CV</button>
-        <button class="win98-button" onclick="window.location.href='res/statement.pdf'">Research Statement</button>
     </div>
     <div class="content">
         <div class="intro">
             <img src="res/avatar3.png" alt="Profile Picture">
             <p>
                 Hi! I research the online platforms and personalization. I am
-                interested in understanding how social media platforms shape our
-                beliefs—specifically the content curation algorithms, online
-                communities and moderation strategies within. 
+                interested in <i> how </i> social media platforms<span id="expandable-dots-1" class="expandable-trigger">+</span><span id="expandable-content-1" class="expandable-hidden">, specifically the producers, consumers, curation systems,
+                design, and moderation,</span> shape our beliefs and behaviors.  
                 <br><br>
-                I recently defended my PhD! During my PhD I worked with 
-                <a href="https://engineering.nyu.edu/faculty/rachel-greenstadt" target="_blank">Dr. Rachel Greenstadt</a> 
-                as a research associate at the PSAL lab @ NYU, with 
-                <a href="https://sparta.cs.uiowa.edu/people/rishab/" target="_blank">Dr. Rishab Nithyanand</a> 
-                as his PhD student @ University of Iowa, and I am also a member of 
-                <a href="https://cp3.org.uiowa.edu" target="_blank">Center for Publics, Platforms & Personalization</a>.
+                I am currently a postdoctoral researcher in the <a href="https://idea-lab.uni-graz.at" target="_blank" style="color:inherit; text-decoration:underline;">IDea_Lab</a> @ University of Graz, Austria. 
                 <br><br>
-                Currently, I am relaxing.
+
+                Previously I was a researcher at NYU<span id="expandable-dots-2" class="expandable-trigger">+</span><span id="expandable-content-2" class="expandable-hidden">, with <a href="https://engineering.nyu.edu/faculty/rachel-greenstadt" target="_blank" style="color:inherit; text-decoration:underline;">Dr. Rachel Greenstadt</a> at the PSAL lab</span>, 
+                a PhD student at University of Iowa<span id="expandable-dots-3" class="expandable-trigger">+</span><span id="expandable-content-3" class="expandable-hidden">, with <a href="https://sparta.cs.uiowa.edu/people/rishab/" target="_blank" style="color:inherit; text-decoration:underline;">Dr. Rishab Nithyanand</a> at the SPARTA lab</span>,
+                 and a member of the <a href="https://cp3.org.uiowa.edu" target="_blank" style="color:inherit; text-decoration:underline;"> CP3</a><span id="expandable-dots-4" class="expandable-trigger">+</span><span id="expandable-content-4" class="expandable-hidden"> Center for Publics, Platforms &amp; Personalization at the University of Iowa</span>.
+                Learn more about what I am working/thinking about<a href="blog/index.html" target="_blank" style="color:inherit; text-decoration:underline;"> here</a>.
                 <br><br>
+
+                <a href="res/cv.pdf" class="doc-link" target="_blank">
+                    <span class="file-icon">📄</span> CV
+                </a>
+                <a href="res/statement.pdf" class="doc-link" target="_blank">
+                    <span class="file-icon">📄</span> Research Statement
+                </a>
+
             </p>
-            
         </div>
+
         <div class="social-icons">
             <a href="https://twitter.com/hussamhabib10" class="social-icon" title="Twitter">
                 <img src="res/twitter.png" alt="Twitter">
@@ -59,6 +63,18 @@
                     <tr>
                         <th>Date</th>
                         <th>Update</th>
+                    </tr>
+                    <tr>
+                        <td>Oct 2025</td>
+                        <td>
+                            Started Postdoc at University of Graz.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Oct 2025</td>
+                        <td>
+                            Presented our work at CSCW.
+                        </td>
                     </tr>
                     <tr>
                         <td>Jul 2025</td>
@@ -214,5 +230,99 @@
             </div>
         </div>
     </div>
+    <script>
+        // Handle all expandable sections
+        document.querySelectorAll('.expandable-trigger').forEach(function(dotsElement) {
+            dotsElement.addEventListener('click', function() {
+                // Get the ID number from the dots element
+                var dotsId = this.id;
+                var idNumber = dotsId.split('-').pop();
+                
+                // Find the corresponding content element
+                var contentElement = document.getElementById('expandable-content-' + idNumber);
+                
+                if (contentElement && contentElement.classList.contains('expandable-hidden')) {
+                    // Hide the trigger
+                    this.style.display = 'none';
+                    
+                    // Store the full HTML content
+                    var fullContent = contentElement.innerHTML;
+                    var plainText = contentElement.textContent || contentElement.innerText;
+                    
+                    // Show the element but empty it first
+                    contentElement.classList.remove('expandable-hidden');
+                    contentElement.classList.add('expandable-visible');
+                    contentElement.innerHTML = '';
+                    
+                    // Type out character by character
+                    var charIndex = 0;
+                    var typingSpeed = 15; // milliseconds per character
+                    
+                    function typeCharacter() {
+                        if (charIndex < plainText.length) {
+                            // Get the portion of HTML that corresponds to characters revealed so far
+                            var tempDiv = document.createElement('div');
+                            tempDiv.innerHTML = fullContent;
+                            var revealedText = plainText.substring(0, charIndex + 1);
+                            
+                            // Simple approach: reveal HTML progressively
+                            var htmlSoFar = '';
+                            var textSoFar = '';
+                            var parser = new DOMParser();
+                            var doc = parser.parseFromString(fullContent, 'text/html');
+                            
+                            function extractUpToLength(node, targetLength) {
+                                var result = '';
+                                var currentLength = textSoFar.length;
+                                
+                                for (var i = 0; i < node.childNodes.length; i++) {
+                                    var child = node.childNodes[i];
+                                    
+                                    if (currentLength >= targetLength) break;
+                                    
+                                    if (child.nodeType === Node.TEXT_NODE) {
+                                        var text = child.textContent;
+                                        var remainingChars = targetLength - currentLength;
+                                        if (text.length <= remainingChars) {
+                                            result += text;
+                                            textSoFar += text;
+                                            currentLength += text.length;
+                                        } else {
+                                            var partial = text.substring(0, remainingChars);
+                                            result += partial;
+                                            textSoFar += partial;
+                                            currentLength += partial.length;
+                                        }
+                                    } else if (child.nodeType === Node.ELEMENT_NODE) {
+                                        var tagName = child.tagName.toLowerCase();
+                                        var attrs = '';
+                                        for (var j = 0; j < child.attributes.length; j++) {
+                                            var attr = child.attributes[j];
+                                            attrs += ' ' + attr.name + '="' + attr.value + '"';
+                                        }
+                                        result += '<' + tagName + attrs + '>';
+                                        result += extractUpToLength(child, targetLength);
+                                        result += '</' + tagName + '>';
+                                        
+                                        if (textSoFar.length >= targetLength) break;
+                                    }
+                                }
+                                return result;
+                            }
+                            
+                            contentElement.innerHTML = extractUpToLength(doc.body, charIndex + 1);
+                            charIndex++;
+                            setTimeout(typeCharacter, typingSpeed);
+                        } else {
+                            // Ensure final content is complete
+                            contentElement.innerHTML = fullContent;
+                        }
+                    }
+                    
+                    typeCharacter();
+                }
+            });
+        });
+    </script>
 </body>
 </html>
