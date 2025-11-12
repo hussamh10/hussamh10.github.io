@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>New York</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=Crimson+Text:wght@400;600&display=swap" rel="stylesheet">
+
+  <style>
+    @font-face{
+      font-family: "Canela Deck";
+      src: url("res/westwinds/Canela.otf") format("opentype");
+      font-display: swap;
+    }
+
+    :root{
+      --bg: #ffffff;
+      --fg: #0d0d0f;
+    }
+    *{ box-sizing: border-box; }
+    html, body{
+      height:100%;
+      margin:0;
+    }
+    body{
+      min-height: 100vh;
+      background:var(--bg);
+      color:var(--fg);
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+    }
+
+    .hero{
+      position: relative;
+      min-height: 100vh;
+      width: 100%;
+      overflow: hidden;
+    }
+    .hero img{
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display:block;
+      filter: brightness(0.85) saturate(1.05);
+    }
+
+    .hero-overlay{
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: flex-start;
+      gap: clamp(14px, 2.2vw, 36px);
+      padding: clamp(18px, 4vw, 88px);
+      text-align: left;
+      pointer-events: none;
+    }
+
+    .hero-back{
+      pointer-events: auto;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: clamp(8px, 1vw, 16px) clamp(12px, 1.2vw, 22px);
+      border-radius: 1px;
+      background: rgba(245, 242, 236, 0.96);
+      color: #161616;
+      font-family: "Crimson Text", Georgia, serif;
+      font-size: 18px;
+      text-decoration: none;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .hero-back:hover{
+      transform: translateY(-2px);
+    }
+    .hero-back:focus-visible{
+      outline: 2px solid #111;
+      outline-offset: 4px;
+    }
+
+    .title{
+      pointer-events: auto;
+      margin:0;
+      display: inline-block;
+      background: rgba(245, 242, 236, 0.94);
+      color: #111;
+      padding: clamp(10px, 1.6vw, 26px);
+      border-radius: 1px;
+      font-family: "Canela Deck", "Playfair Display", Garamond, Georgia, serif;
+      font-weight: 600;
+      letter-spacing: .003em;
+      font-size: clamp(46px, 8vw, 110px);
+      line-height: 1;
+    }
+
+    .hero-card{
+      pointer-events: auto;
+      display: inline-block;
+      max-width: min(52ch, 82vw);
+      padding: clamp(14px, 2vw, 30px);
+      border-radius: 1px;
+      background: rgba(245, 242, 236, 0.92);
+      color: #141414;
+      font-family: "Crimson Text", Georgia, serif;
+      font-size: 18px;
+      line-height: 1.6;
+    }
+  </style>
+</head>
+<body>
+  <main class="hero">
+    <!-- <img src="res/tiles/nyc_hover.webp" alt="Midtown Manhattan skyline at dusk" loading="lazy" decoding="async" /> -->
+    <header class="hero-overlay">
+      <a class="hero-back" href="/blog/index.html">← Back</a>
+      <!-- <h1 class="title">New York</h1> -->
+      <div class="hero-card">
+        Coming Soon.
+      </div>
+    </header>
+  </main>
+</body>
+</html>
+
+
