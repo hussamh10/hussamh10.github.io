@@ -1,0 +1,235 @@
+.about-panel .panel-surface {
+  background: transparent !important;
+  box-shadow: none !important;
+  margin-top: 120px;
+  padding: 0 0 220px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  height: auto;
+  max-width: 30vw;
+  max-height: none;
+  min-height: 60vh;
+  overflow: visible;
+}
+
+/* Text Card */
+.about-panel .about-card {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(2px);
+  border-radius: 1px;
+  padding: 18px;
+  box-shadow: 0 2px 24px rgba(34, 35, 58, 0.15);
+  width: 100%;
+  max-width: 280px;
+  transform: rotate(1.5deg);
+  margin-left: 8vw;
+  position: relative;
+  z-index: 2;
+}
+
+.about-panel .about-card h3 {
+  margin: 0 0 8px;
+  font-size: 17px;
+  letter-spacing: 0.01em;
+  color: #3b3126;
+}
+
+.about-panel .about-card p {
+  margin: 0 0 12px;
+  font-size: 14px;
+  line-height: 1.2;
+  color: #4c4032;
+}
+
+.about-panel .about-card ul {
+  margin: 0;
+  padding-right: 18px;
+  font-size: 12px;
+  color: #5b4a38;
+  line-height: 1.4;
+}
+
+.about-panel .about-card li {
+  margin-bottom: 3px;
+}
+
+.about-panel .about-polaroid {
+  position: absolute;
+  top: 40px;
+  left: 20px;
+  width: 160px;
+  transform: rotate(-6deg);
+  z-index: 1;
+}
+
+.about-panel .polaroid-frame {
+  background: #ffffff;
+  border-radius: 5px;
+  padding: 0px 0px 0px 0px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0px;
+}
+
+.about-panel .polaroid-image {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1 / 1;
+  /* max-height: 120px; */
+  border-radius: 2px;
+  border: 1px solid #000;
+  display: block;
+  object-fit: cover;
+}
+
+.about-panel .polaroid-caption {
+  margin: 0;
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #7b6652;
+}
+
+.expandable-trigger {
+  color: inherit;
+  text-decoration: none;
+  cursor: pointer;
+  font-family: 'Times New Roman', Times, serif;
+  font-weight: bold;
+  vertical-align: baseline;
+  font-size: 0.75em;
+  position: relative;
+  top: -0.5em;
+  line-height: 0;
+}
+
+.expandable-trigger:hover {
+  opacity: 0.7;
+}
+
+.expandable-hidden {
+  display: none;
+}
+
+.expandable-visible {
+  display: inline;
+}
+
+/* PDF Cards Container */
+.about-panel .pdf-cards-container {
+  position: relative;
+  margin-top: 48px;
+  margin-left: 5vw;
+  display: flex;
+  gap: 24px;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+}
+
+/* Individual PDF Card */
+.about-panel .pdf-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-decoration: none;
+  cursor: pointer;
+  transition: transform 0.2s ease, filter 0.2s ease;
+}
+
+.about-panel .pdf-card-a {
+  margin-top: -70px;
+  margin-left: -30px;
+  transform: rotate(-2deg);
+}
+
+.about-panel .pdf-card-b {
+  margin-left: -60px;
+  transform: rotate(2.5deg);
+}
+
+.about-panel .pdf-card:hover {
+  transform: translateY(-4px);
+}
+
+.about-panel .pdf-card-image-wrapper {
+  background: #ffffff;
+  border-radius: 4px;
+  /* padding: 8px; */
+  /* box-shadow: 0px 0px 16px rgba(34, 35, 58, 0.18), -1px 2px 4px rgba(34,35,58,0.10); */
+  border: 1px solid #ddd;
+  transition: box-shadow 0.1s ease;
+}
+
+.about-panel .pdf-card:hover .pdf-card-image-wrapper {
+  box-shadow: 0px 0px 16px rgba(34, 35, 58, 0.18), -1px 2px 4px rgba(34,35,58,0.10);
+}
+
+.about-panel .pdf-card-image {
+  width: 80px;
+  height: auto;
+  aspect-ratio: 210 / 297;
+  object-fit: cover;
+  display: block;
+  border-radius: 0px;
+}
+
+.about-panel .pdf-card-label {
+  margin: 3px 0 0 0;
+  font-size: 12px;
+  font-weight: 500;
+  color: #3b3126;
+  text-align: center;
+  letter-spacing: 0.02em;
+}
+
+@media (max-width: 900px) {
+  .about-panel .panel-surface {
+    margin-top: 40px;
+    padding: 0 12px 32px;
+    max-width: 100%;
+    width: 100%;
+    gap: 20px;
+  }
+
+  .about-panel .about-card {
+    max-width: none;
+    width: 100%;
+    margin-left: 0;
+    transform: none;
+    align-self: center;
+  }
+
+  .about-panel .about-card p {
+    font-size: 15px;
+    line-height: 1.45;
+  }
+
+  .about-panel .about-polaroid {
+    position: relative;
+    top: 0;
+    left: 0;
+    width: min(260px, 85%);
+    transform: none;
+    margin: 8px auto 0;
+  }
+
+  .about-panel .pdf-cards-container {
+    margin: 16px 0 0;
+    width: 100%;
+    justify-content: center;
+    gap: 24px;
+  }
+
+  .about-panel .pdf-card-a,
+  .about-panel .pdf-card-b {
+    margin: 0;
+    transform: none;
+  }
+
+  .about-panel .pdf-card-image {
+    width: 110px;
+  }
+}

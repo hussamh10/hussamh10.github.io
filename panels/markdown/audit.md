@@ -1,0 +1,2 @@
+# Understanding Algorithm Behavior
+A significant portion of content consumed on platforms is curated by content curation algorithms, whose configurations play a central role in shaping what users see. Specifically , these algorithms must decide the “source” of curated content—e.g. whether it originates from a user’s network or is selected based on user preferences—and determine how to populate this content. I am particularly interested in how preference-aligned content is chosen and how subtle, non-topical signals are incorporated into user preference models.

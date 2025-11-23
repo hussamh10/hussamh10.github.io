@@ -1,0 +1,2 @@
+# Understanding User Behavior
+The spread of harmful narratives and ideologies online presents a significant challenge, as evidenced by waves of extremist and conspiratorial narratives spreading from fringe groups to mainstream discourse. In my work I tracked users and communities to diagnose how such content is adopted and to identify opportunities for effective interventions.

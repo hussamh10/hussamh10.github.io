@@ -1,0 +1,2 @@
+# Online Moderation
+Ideally, platform governance, encompassing user moderation and content policies, should primarily aim to reduce online harms in an effective and timely manner. However, when we place platforms within their business contexts, we observe a contrasting reality: administrators often engage in reactive reputation-driven governance. My research directly addresses this tension by investigating Reddit's governance practices and developing tools for more effective community monitoring.
