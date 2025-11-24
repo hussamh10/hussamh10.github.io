@@ -71,9 +71,9 @@ body {
 }
 
 #graph {
-  width: 130%;
-  height: 130%;
-  transform: translate(-8%, -20%);
+  width: 120%;
+  height: 120%;
+  transform: translate(-8%, -28%);
   shape-rendering: geometricPrecision;
   font-family: futura, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
   position: relative;
