@@ -91,6 +91,36 @@
     visibility: hidden;
     transition: visibility 0s linear 0.35s;
   }
+
+  .mobile-grid {
+    display: none;
+  }
+  .mobile-grid a {
+    text-decoration: none;
+    color: inherit;
+  }
+  .mobile-grid img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 3px;
+    object-fit: cover;
+  }
+
+  @media (max-width: 768px) {
+    .board {
+      display: none;
+    }
+    .mobile-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+      padding: 16px;
+    }
+    .mobile-grid img {
+      aspect-ratio: 1;
+    }
+  }
 </style>
 </head>
 <body>
@@ -126,6 +156,27 @@
   </a>
 </div>
 
+<div class="mobile-grid">
+  <a href="ragbrai.html" aria-label="Open ragbrai post">
+    <img src="res/squares/ragbrai.webp" alt="" loading="lazy" decoding="async">
+  </a>
+  <a href="alpenglow.html" aria-label="Open alpenglow post">
+    <img src="res/squares/alpenglow.webp" alt="" loading="lazy" decoding="async">
+  </a>
+  <a href="westwinds.html" aria-label="Open westwinds post">
+    <img src="res/squares/westwinds.webp" alt="" loading="lazy" decoding="async">
+  </a>
+  <a href="nyc.html" aria-label="Open nyc post">
+    <img src="res/squares/nyc.webp" alt="" loading="lazy" decoding="async">
+  </a>
+  <a href="luckenback.html" aria-label="Open luckenback post">
+    <img src="res/squares/luckenback.webp" alt="" loading="lazy" decoding="async">
+  </a>
+  <a href="hawaii.html" aria-label="Open hawaii post">
+    <img src="res/squares/hawaii.webp" alt="" loading="lazy" decoding="async">
+  </a>
+</div>
+
 <script>
   const loader = document.getElementById('loader');
   const board = document.querySelector('.board');
@@ -136,8 +187,17 @@
     }
   };
 
+  const getTrackedImages = () => {
+    const mobileGrid = document.querySelector('.mobile-grid');
+    const isMobile = window.matchMedia('(max-width: 768px)').matches;
+    if (isMobile) {
+      return Array.from(mobileGrid?.querySelectorAll('img') ?? []);
+    }
+    return Array.from(board?.querySelectorAll('img') ?? []);
+  };
+
   const waitForImages = new Promise((resolve) => {
-    const images = Array.from(board?.querySelectorAll('img') ?? []);
+    const images = getTrackedImages();
     if (!images.length) {
       resolve();
       return;
