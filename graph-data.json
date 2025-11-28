@@ -23,7 +23,7 @@
             "title": "Latest writing",
             "contentType": "panel",
             "panelId": "blog",
-            "image": "/res/blog.png",
+            "image": "/res/blog.webp",
             "imageWidth": 30,
             "imageHeight": 30,
             "imageBorderWidth": 0,
@@ -42,7 +42,7 @@
             "labelAnchor": "middle",
             "title": "Travel log",
             "contentType": "markdown",
-            "image": "/res/travel.png",
+            "image": "/res/travel.webp",
             "imageWidth": 30,
             "imageHeight": 30,
             "imageBorderWidth": 0,
@@ -57,7 +57,7 @@
             "y": 370,
             "labelOffsetY": 0,
             "labelAnchor": "middle",
-            "image": "/res/alpenglow.png",
+            "image": "/res/alpenglow.webp",
             "imageWidth": 30,
             "imageHeight": 30,
             "imageBorderWidth": 0,
@@ -73,7 +73,7 @@
             "x": 250,
             "y": 380,
             "labelOffsetY": 0,
-            "image": "/res/ragbrai.png",
+            "image": "/res/ragbrai.webp",
             "imageWidth": 30,
             "imageHeight": 30,
             "imageBorderWidth": 0,
@@ -94,7 +94,7 @@
             "title": "About Hussam",
             "contentType": "panel",
             "panelId": "about-2",
-            "image": "/res/about.png",
+            "image": "/res/about.webp",
             "imageWidth": 30,
             "imageHeight": 30,
             "imageCornerRadius": 10,
@@ -218,7 +218,7 @@
             "panelData": {
                 "link": "https://ojs.aaai.org/index.php/ICWSM/article/download/19290/19062",
                 "download": "panels/p_evo/paper.pdf",
-                "image": "panels/papers/evo.png",
+                "image": "panels/papers/evo.webp",
                 "imageAlt": "Community interventions PDF preview"
             }
         },
@@ -236,7 +236,7 @@
             "panelData": {
                 "link": "https://ojs.aaai.org/index.php/ICWSM/article/download/19291/19063",
                 "download": "panels/p_react/paper.pdf",
-                "image": "panels/papers/estate.png",
+                "image": "panels/papers/estate.webp",
                 "imageAlt": "Community interventions PDF preview"
             }
         },
@@ -254,7 +254,7 @@
             "panelData": {
                 "link": "https://dl.acm.org/doi/pdf/10.1145/3555551?utm_source=miragenews&utm_medium=miragenews&utm_campaign=news",
                 "download": "panels/p_radical/paper.pdf",
-                "image": "panels/papers/radical.png",
+                "image": "panels/papers/radical.webp",
                 "imageAlt": "Community interventions PDF preview"
             }
         },
@@ -272,7 +272,7 @@
             "panelData": {
                 "link": "https://dl.acm.org/doi/pdf/10.1145/3757656",
                 "download": "panels/p_google/paper.pdf",
-                "image": "panels/papers/google.png",
+                "image": "panels/papers/google.webp",
                 "imageAlt": "Community interventions PDF preview"
             }
         },
@@ -290,7 +290,7 @@
             "panelData": {
                 "link": "https://arxiv.org/html/2501.15048v1",
                 "download": "panels/p_yt_emo/paper.pdf",
-                "image": "panels/papers/yt_emo.png",
+                "image": "panels/papers/yt_emo.webp",
                 "imageAlt": "Community interventions PDF preview"
             }
         },
@@ -307,8 +307,8 @@
             "panelTemplate": "paper-preview",
             "panelData": {
                 "link": "https://arxiv.org/pdf/2407.07227",
-                "download": "panels/p_aceap/paper.png",
-                "image": "panels/papers/aceap.png",
+                "download": "panels/p_aceap/paper.webp",
+                "image": "panels/papers/aceap.webp",
                 "imageAlt": "Community interventions PDF preview"
             }
         }, 
@@ -326,7 +326,7 @@
             "panelData": {
                 "link": "https://ojs.aaai.org/index.php/ICWSM/article/download/22147/21926",
                 "download": "panels/p_covid/paper.pdf",
-                "image": "panels/papers/morbid.png",
+                "image": "panels/papers/morbid.webp",
                 "imageAlt": "Community interventions PDF preview"
             }
         },

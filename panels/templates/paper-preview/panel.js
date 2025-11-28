@@ -7,7 +7,7 @@ const node = (context && context.node) || {};
 const panelId = context && context.panelId ? context.panelId : "panel";
 const config = node.panelData || {};
 
-const fallbackImage = `panels/${panelId}/paper.png`;
+const fallbackImage = `panels/${panelId}/paper.webp`;
 const fallbackPdf = `panels/${panelId}/paper.pdf`;
 
 const previewSrc = config.image || config.previewImage || fallbackImage;
