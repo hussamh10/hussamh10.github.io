@@ -64,10 +64,38 @@
   @media (prefers-reduced-motion: reduce){
     .strip > img.hover{ transition: none; }
   }
+
+  #loader {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #fff;
+    color: #111;
+    font-size: 0.85rem;
+    font-family: system-ui, sans-serif;
+    letter-spacing: 0.04em;
+    z-index: 9999;
+    transition: opacity 0.35s ease;
+  }
+
+  body.loaded #loader {
+    opacity: 0;
+    pointer-events: none;
+  }
+  body.loaded .board {
+    visibility: visible;
+  }
+  .board {
+    visibility: hidden;
+    transition: visibility 0s linear 0.35s;
+  }
 </style>
 </head>
 <body>
 
+<div id="loader" aria-live="polite">Hello!</div>
 <div class="board">
   <!-- Update href targets; keep your files in /res -->
   <a class="strip" href="ragbrai.html" aria-label="Open page 1">
@@ -97,6 +125,44 @@
     <img class="hover" src="res/tiles/hawaii_hover.webp"  alt="" loading="lazy" decoding="async" aria-hidden="true">
   </a>
 </div>
+
+<script>
+  const loader = document.getElementById('loader');
+  const board = document.querySelector('.board');
+  const finish = () => {
+    document.body.classList.add('loaded');
+    if (loader) {
+      loader.addEventListener('transitionend', () => loader.remove(), { once: true });
+    }
+  };
+
+  const waitForImages = new Promise((resolve) => {
+    const images = Array.from(board?.querySelectorAll('img') ?? []);
+    if (!images.length) {
+      resolve();
+      return;
+    }
+
+    let remaining = images.length;
+    const check = () => {
+      remaining -= 1;
+      if (remaining <= 0) {
+        resolve();
+      }
+    };
+
+    images.forEach((img) => {
+      if (img.complete && img.naturalWidth !== 0) {
+        check();
+      } else {
+        img.addEventListener('load', check, { once: true });
+        img.addEventListener('error', check, { once: true });
+      }
+    });
+  });
+
+  waitForImages.then(finish);
+</script>
 
 </body>
 </html>
