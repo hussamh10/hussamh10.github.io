@@ -812,6 +812,8 @@ function initGraph(graphData) {
       const text = document.createElementNS(svgNS, "text");
       text.setAttribute("class", "node-label");
       text.setAttribute("text-anchor", "middle");
+      text.setAttribute("dominant-baseline", "hanging");
+      text.setAttribute("alignment-baseline", "hanging");
 
       const baseY = halfHeight + 24;
       const lineHeight = 18;
