@@ -1,0 +1,420 @@
+:root {
+  --paper: #fef7eb;
+  --ink: #121212;
+  --inkMuted: rgba(18, 18, 18, 0.62);
+  --border: rgba(18, 18, 18, 0.10);
+  --dot: rgba(18, 18, 18, 0.08);
+  --accent: #1d4ed8;
+  --accentSoft: rgba(29, 78, 216, 0.22);
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  height: 100%;
+  margin: 0;
+  font-family: futura, "Avenir Next", Avenir, "Segoe UI", ui-sans-serif, system-ui, -apple-system, Roboto,
+    Helvetica, Arial;
+  background: var(--paper);
+  color: var(--ink);
+}
+
+.app {
+  height: 100%;
+  display: flex;
+  align-items: stretch;
+}
+
+.pane {
+  min-width: 0;
+  min-height: 0;
+}
+
+.pane--graph {
+  /* Make the detail pane ~20% wider (33% -> 40% of the horizontal space). */
+  flex: 1.5 1 0%;
+  border-right: none;
+  position: relative;
+}
+
+:root {
+  --dot: rgba(18, 18, 18, 0.15);
+}
+
+.graphSurface {
+  height: 100%;
+  width: 100%;
+  background-color: var(--paper);
+  background-image:
+    radial-gradient(var(--dot) 1.2px, transparent 1px);
+  background-size: 24px 24px;
+  background-position: 10px 10px;
+  -webkit-mask-image:
+    radial-gradient(ellipse at center,
+      black 50%,
+      transparent 100%);
+  mask-image:
+    radial-gradient(ellipse at center,
+      black 50%,
+      transparent 100%);
+}
+
+.graphTitle {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  font-family: "Helvetica Neue", Arial;
+  z-index: 5;
+  pointer-events: none;
+  user-select: none;
+  font-size: 28px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: rgba(18, 18, 18, 0.92);
+  padding: 8px 10px;
+}
+
+.pane--detail {
+  /* With graph at 1.5, this yields ~40% width on desktop. */
+  flex: 1 1 0%;
+  /* Solid (non-fading) background that matches the graph's base color. */
+  background-color: var(--paper);
+  background-image: none;
+  overflow: auto;
+}
+
+.detail {
+  height: 100%;
+  padding: 20px 18px;
+}
+
+/* Loading state for async panel fetches (prevents weird intermediate rendering). */
+.detail.detail--loading {
+  display: block;
+}
+
+.detail__loading {
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--inkMuted);
+  border-top: 1px solid var(--border);
+  padding-top: 12px;
+}
+
+/* When an HTML panel is injected, center it vertically and horizontally (while still allowing scroll). */
+.detail.detail--panel {
+  display: block;
+}
+
+.detail.detail--website {
+  display: block;
+}
+
+.detail__webCard {
+  display: block;
+  margin-top: 12px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  overflow: hidden;
+  text-decoration: none;
+  color: inherit;
+  background: rgba(255, 255, 255, 0.35);
+  box-shadow: 0 10px 26px rgba(18, 18, 18, 0.06);
+  transition: transform 160ms ease, box-shadow 160ms ease, border-color 160ms ease;
+}
+
+.detail__webCard:hover {
+  border-color: rgba(29, 78, 216, 0.30);
+  box-shadow: 0 14px 34px rgba(18, 18, 18, 0.10);
+  transform: translateY(-1px);
+}
+
+.detail__webCardTop {
+  display: flex;
+  gap: 10px;
+  align-items: baseline;
+  justify-content: space-between;
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--border);
+  background: rgba(254, 247, 235, 0.85);
+}
+
+.detail__webUrl {
+  min-width: 0;
+  font-size: 12px;
+  line-height: 1.3;
+  color: var(--inkMuted);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.detail__webHint {
+  flex: none;
+  font-size: 12px;
+  line-height: 1.3;
+  color: rgba(29, 78, 216, 0.90);
+  letter-spacing: 0.01em;
+}
+
+.detail__webPreview {
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  background: white;
+}
+
+.detail__webFrame {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  pointer-events: none; /* click goes to the card (opens new tab) */
+}
+
+.detail__panelFit {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.detail__panelFitInner {
+  transform-origin: center center;
+  will-change: transform;
+}
+
+/* Image panel: centered, padded, and scaled to fit (contain) */
+.detail.detail--img {
+  display: block;
+}
+
+.detail__imgFit {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 22px;
+}
+
+.detail__imgLink {
+  display: block;
+  max-width: 100%;
+  max-height: 100%;
+  cursor: pointer;
+}
+
+.detail__img {
+  display: block;
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+/* Markdown panel typography */
+.detail.detail--markdown {
+  display: block;
+}
+
+.detail__markdown {
+  width: 100%;
+  /* Narrower reading column (roughly ~70–80 chars/line in this font). */
+  max-width: 58ch;
+  margin: 0 auto;
+  padding: 6px 24px 24px;
+  color: var(--ink);
+  font-family: system-ui, "Helvetica Neue", -apple-system, "Segoe UI", Roboto;
+  font-size: 16px;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.detail.detail--markdown .detail__markdown {
+  /* Start ~1/5 down from the top (markdown-only). */
+  margin-top: 10vh;
+}
+
+.detail__markdown h1,
+.detail__markdown h2,
+.detail__markdown h3 {
+  line-height: 1.2;
+  margin: 0.9em 0 0.4em;
+}
+
+.detail__markdown h1 { font-size: 24px; }
+.detail__markdown h2 { font-size: 20px; }
+.detail__markdown h3 { font-size: 18px; }
+
+.detail__markdown p {
+  margin: 0.7em 0;
+  line-height: 1.65;
+  color: rgba(18, 18, 18, 0.86);
+}
+
+.detail__markdown a {
+  color: var(--accent);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(29, 78, 216, 0.35);
+}
+
+.detail__markdown a:hover {
+  border-bottom-color: rgba(29, 78, 216, 0.8);
+}
+
+.detail__markdown ul,
+.detail__markdown ol {
+  margin: 0.7em 0 0.7em 1.2em;
+  padding: 0;
+  line-height: 1.65;
+  color: rgba(18, 18, 18, 0.86);
+}
+
+.detail__markdown code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  font-size: 0.95em;
+  background: rgba(18, 18, 18, 0.06);
+  border: 1px solid rgba(18, 18, 18, 0.10);
+  padding: 0.12em 0.32em;
+  border-radius: 6px;
+}
+
+.detail__markdown pre {
+  background: rgba(18, 18, 18, 0.06);
+  border: 1px solid rgba(18, 18, 18, 0.10);
+  padding: 12px 12px;
+  border-radius: 10px;
+  overflow: auto;
+}
+
+.detail__markdown pre code {
+  background: transparent;
+  border: none;
+  padding: 0;
+}
+
+.detail__title {
+  font-size: 12px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--inkMuted);
+  margin-bottom: 10px;
+}
+
+.detail__label {
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 1.2;
+  margin-bottom: 14px;
+}
+
+.detail__meta {
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--inkMuted);
+  border-top: 1px solid var(--border);
+  padding-top: 12px;
+  white-space: pre-wrap;
+}
+
+/* SVG / graph */
+#graph {
+  width: 100%;
+  height: 100%;
+  display: block;
+  background: transparent;
+  cursor: grab;
+}
+
+#graph:active {
+  cursor: grabbing;
+}
+
+#graph .bg {
+  fill: transparent;
+  width: 100%;
+  height: 100%;
+  pointer-events: all;
+}
+
+.link {
+  stroke: rgba(18, 18, 18, 0.42);
+  stroke-width: 1.9;
+  stroke-linecap: round;
+  stroke-linejoin: miter;
+  stroke-miterlimit: 3;
+}
+
+.node-hit {
+  fill: transparent;
+  pointer-events: all;
+}
+
+.node-circle {
+  stroke: rgba(18, 18, 18, 0.45);
+  stroke-width: 1.6;
+}
+
+.node-image {
+  image-rendering: -webkit-optimize-contrast;
+}
+
+.node-label {
+  font-size: 13px;
+  font-weight: 500;
+  fill: rgba(18, 18, 18, 0.88);
+  paint-order: stroke;
+  stroke: var(--paper);
+  stroke-width: 5px;
+  stroke-linejoin: round;
+  pointer-events: none;
+}
+
+@media (max-width: 900px) {
+  /* On mobile we want the page to scroll (not a fixed-height split view). */
+  .app {
+    flex-direction: column;
+    height: auto;
+    min-height: 100%;
+  }
+  .pane--graph {
+    flex: none;
+    /* Slightly smaller graph area on mobile; svh handles browser chrome better. */
+    height: 56vh;
+    height: 56svh;
+    border-right: none;
+    border-bottom: none;
+  }
+  .pane--detail {
+    flex: none;
+    overflow: visible;
+  }
+
+  /* Let detail content determine height so the page can scroll. */
+  .detail {
+    height: auto;
+  }
+
+  /* Center + shrink title on mobile. */
+  .graphTitle {
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+    font-size: 22px;
+    top: 14px;
+    padding: 6px 8px;
+  }
+
+  /* Mobile: treat HTML panels like normal flowing content (no fit+scale). */
+  .detail__panelFit {
+    display: block;
+    height: auto;
+    overflow: visible;
+  }
+
+  .detail__panelFitInner {
+    width: 100%;
+    transform: none !important;
+  }
+}

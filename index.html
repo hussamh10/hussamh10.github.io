@@ -1,28 +1,33 @@
 <!doctype html>
 <html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Hussam Habib</title>
-  <link rel="stylesheet" href="style.css" />
-</head>
-<body>
-  <header class="site-header">
-    <h1>Hussam Habib</h1>
-  </header>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Interactive Network Graph Viewer</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="app">
+      <main class="pane pane--graph" aria-label="Graph area">
+        <div class="graphSurface">
+          <svg id="graph" aria-label="Network graph" role="img">
+            <rect class="bg" />
+            <g class="viewport">
+              <g class="links"></g>
+              <g class="nodes"></g>
+            </g>
+          </svg>
+        </div>
+        <div class="graphTitle" aria-label="Graph title">Hussam Habib</div>
+      </main>
 
-  <main class="site-main">
-    <div id="graph-container">
-      <svg id="graph" viewBox="0 0 1600 900" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet"></svg>
+      <aside class="pane pane--detail" aria-label="Detail area">
+        <div id="detailHost" class="detail"></div>
+      </aside>
     </div>
-    <aside id="detail-panel" aria-live="polite">
-      <div id="detail-panel-inner">
-        <h2 id="detail-title">Select a node</h2>
-        <div id="detail-content"></div>
-      </div>
-    </aside>
-  </main>
 
-  <script src="graph.js"></script>
-</body>
+    <script src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script type="module" src="app.js"></script>
+  </body>
 </html>

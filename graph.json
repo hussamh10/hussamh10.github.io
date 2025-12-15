@@ -1,0 +1,351 @@
+{
+  "nodes": [
+    {
+      "id": "Root",
+      "label": " ",
+      "x": 280,
+      "y": 200,
+      "type": "shape",
+      "color": "#ff9900",
+      "panel-type": "html",
+      "source": "panels/home"
+    },
+    {
+      "id": "blog",
+      "label": "Blog",
+      "x": 190,
+      "y": 210,
+      "type": "image",
+      "icon": "/res/imgs/blog.png",
+      "color": "none",
+      "panel-type": "website",
+      "source": "https://hussamhabib.com/blog/"
+    },
+    {
+      "id": "travel",
+      "label": "Travel",
+      "x": 150,
+      "y": 280,
+      "type": "image",
+      "icon": "/res/imgs/travel.png",
+      "color": "none",
+      "panel-type": "markdown",
+      "source": "panels/markdowns/travel.md"
+
+    },
+    {
+      "id": "alpenglow",
+      "label": "Alpenglow ↗",
+      "x": 120,
+      "y": 370,
+      "type": "image",
+      "icon": "/res/imgs/alpenglow.png",
+      "color": "none"
+    },
+    {
+      "id": "ragbrai",
+      "label": "RAGBRAI ↗",
+      "x": 250,
+      "y": 380,
+      "type": "image",
+      "icon": "/res/imgs/ragbrai.png",
+      "color": "none"
+    },
+    {
+      "id": "about",
+      "label": "About",
+      "x": 320,
+      "y": 110,
+      "type": "image",
+      "icon": "/res/imgs/about.png",
+      "color": "none",
+      "panel-type": "html",
+      "source": "panels/about"
+
+    },
+    {
+      "id": "things",
+      "label": "Things",
+      "x": 273,
+      "y": 290,
+      "type": "image",
+      "icon": "/res/imgs/things.webp",
+      "color": "none"
+    },
+    {
+      "id": "research",
+      "label": "Research",
+      "x": 360,
+      "y": 220,
+      "type": "shape:triangle",
+      "color": "#fb6f92",
+      "panel-type": "markdown",
+      "source": "panels/markdowns/research.md"
+    },
+    {
+      "id": "privacy",
+      "label": "Online\nPrivacy",
+      "x": 490,
+      "y": 290,
+      "type": "shape",
+      "color": "#000",
+      "size": 20
+    },
+    {
+      "id": "smp",
+      "label": "Social Media Platforms",
+      "x": 480,
+      "y": 90,
+      "type": "shape",
+      "color": "#31572c",
+      "size": 90,
+      "panel-type": "markdown",
+      "source": "panels/markdowns/smp.md"
+    },
+    {
+      "id": "mod",
+      "label": "Online moderation",
+      "x": 580,
+      "y": -40,
+      "type": "shape",
+      "color": "#c1121f",
+      "size": 40,
+      "panel-type": "markdown",
+      "source": "panels/markdowns/mod.md"
+
+    },
+    {
+      "id": "user",
+      "label": "Understanding user behavior",
+      "x": 590,
+      "y": 80,
+      "type": "shape",
+      "color": "#0077b6",
+      "size": 50,
+      "panel-type": "markdown",
+      "source": "panels/markdowns/user.md"
+    },
+    {
+      "id": "audit",
+      "label": "Understanding algorithm behavior",
+      "x": 560,
+      "y": 190,
+      "type": "shape",
+      "color": "#fb8500",
+      "size": 70,
+      "panel-type": "markdown",
+      "source": "panels/markdowns/audit.md"
+    },
+    {
+      "id": "p_evo",
+      "label": "How do online communities evolve?",
+      "x": 700,
+      "y": -100,
+      "type": "image",
+      "icon": "/res/imgs/paper.png",
+      "size": 140,
+      "color": "#cccccc",
+      "panel-type": "img",
+      "source": "panels/papers/evo.webp",
+      "ref": "https://ojs.aaai.org/index.php/ICWSM/article/download/19290/19062"
+    },
+    {
+      "id": "p_react",
+      "label": "Does Reddit perform reactive moderation?",
+      "x": 696,
+      "y": -190,
+      "type": "image",
+      "icon": "/res/imgs/paper.png",
+      "size": 140,
+      "color": "#cccccc",
+      "panel-type": "img",
+      "source": "panels/papers/react.webp",
+      "ref": "https://ojs.aaai.org/index.php/ICWSM/article/download/19291/19063"
+    },
+    {
+      "id": "p_radical",
+      "label": "Online pathways to adopt radical ideologies",
+      "x": 741,
+      "y": 17,
+      "type": "image",
+      "icon": "/res/imgs/paper.png",
+      "size": 140,
+      "color": "#cccccc",
+      "panel-type": "img",
+      "source": "panels/papers/radical.webp",
+      "ref": "https://dl.acm.org/doi/pdf/10.1145/3555551?utm_source=miragenews&utm_medium=miragenews&utm_campaign=news"
+    },
+    {
+      "id": "p_google",
+      "label": "How does Google reinforce ideology?",
+      "x": 668,
+      "y": 119,
+      "type": "image",
+      "icon": "/res/imgs/paper.png",
+      "size": 140,
+      "color": "#cccccc",
+      "panel-type": "img",
+      "source": "panels/papers/google.webp",
+      "ref": "https://dl.acm.org/doi/pdf/10.1145/3757656"
+    },
+    {
+      "id": "p_yt_emo",
+      "label": "How does YouTube reinforce emotions?",
+      "x": 652,
+      "y": 280,
+      "type": "image",
+      "icon": "/res/imgs/paper.png",
+      "size": 140,
+      "color": "#cccccc",
+      "panel-type": "img",
+      "source": "panels/papers/yt_emo.webp",
+      "ref": "https://arxiv.org/html/2501.15048v1"
+    },
+    {
+      "id": "p_aceap",
+      "label": "Platform behaviors in curating home feeds.",
+      "x": 713,
+      "y": 200,
+      "type": "image",
+      "icon": "/res/imgs/paper.png",
+      "size": 140,
+      "color": "#cccccc",
+      "panel-type": "img",
+      "source": "panels/papers/aceap.webp",
+      "ref": "https://arxiv.org/pdf/2407.07227"
+    },
+    {
+      "id": "p_covid",
+      "label": "COVID denial narratives on Facebook by victims.",
+      "x": 799,
+      "y": 121,
+      "type": "image",
+      "icon": "/res/imgs/paper.png",
+      "size": 140,
+      "color": "#cccccc",
+      "panel-type": "img",
+      "source": "panels/papers/morbid.webp",
+      "ref": "https://ojs.aaai.org/index.php/ICWSM/article/download/22147/21926"
+    },
+    {
+      "id": "?_curation",
+      "label": "Do curation algorithms cause dysfunction?",
+      "x": 0,
+      "y": 0,
+      "type": "shape",
+      "color": "#cccccc"
+    },
+    {
+      "id": "t_health",
+      "label": "Community health monitor",
+      "x": 826,
+      "y": -140,
+      "type": "image",
+      "icon": "/res/imgs/tool.png",
+      "color": "none"
+    },
+    {
+      "id": "t_audit",
+      "label": "Platform audit tool",
+      "x": 816,
+      "y": 130,
+      "type": "image",
+      "icon": "/res/imgs/tool.png",
+      "color": "none"
+    }
+  ],
+  "links": [
+    {
+      "source": "Root",
+      "target": "blog"
+    },
+    {
+      "source": "blog",
+      "target": "travel"
+    },
+    {
+      "source": "Root",
+      "target": "about"
+    },
+    {
+      "source": "Root",
+      "target": "things"
+    },
+    {
+      "source": "Root",
+      "target": "research"
+    },
+    {
+      "source": "research",
+      "target": "privacy"
+    },
+    {
+      "source": "research",
+      "target": "smp"
+    },
+    {
+      "source": "smp",
+      "target": "mod"
+    },
+    {
+      "source": "smp",
+      "target": "audit"
+    },
+    {
+      "source": "smp",
+      "target": "user"
+    },
+    {
+      "source": "mod",
+      "target": "p_evo"
+    },
+    {
+      "source": "user",
+      "target": "p_evo"
+    },
+    {
+      "source": "mod",
+      "target": "p_react"
+    },
+    {
+      "source": "user",
+      "target": "p_radical"
+    },
+    {
+      "source": "user",
+      "target": "p_google"
+    },
+    {
+      "source": "audit",
+      "target": "p_google"
+    },
+    {
+      "source": "audit",
+      "target": "p_yt_emo"
+    },
+    {
+      "source": "audit",
+      "target": "p_aceap"
+    },
+    {
+      "source": "user",
+      "target": "p_covid"
+    },
+    {
+      "source": "p_evo",
+      "target": "t_health"
+    },
+    {
+      "source": "p_aceap",
+      "target": "t_audit"
+    },
+    {
+      "source": "travel",
+      "target": "alpenglow"
+    },
+    {
+      "source": "travel",
+      "target": "ragbrai"
+    }
+  ]
+}
