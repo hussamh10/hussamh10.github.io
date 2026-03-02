@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Social Media Platform Architecture</title>
+  <link rel="stylesheet" href="styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;600;700;900&family=Merriweather:wght@700;900&family=Source+Code+Pro:wght@400;500&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+</head>
+<body>
+
+<!-- Official-style banner -->
+<div class="usa-banner">
+  <span class="usa-banner__flag">&#9670;</span>
+  <span class="usa-banner__text">Reference Architecture Documentation &mdash; Synthesized from Bluesky, Twitter/X, and Reddit</span>
+</div>
+
+<!-- Header -->
+<header class="usa-header">
+  <a href="#" class="usa-header__logo" onclick="navigateTo('home'); return false;">
+    <div class="usa-header__logo-icon">SA</div>
+    <span>Platform Architecture</span>
+  </a>
+  <nav class="usa-header__nav">
+    <div class="usa-header__search">
+      <span class="usa-header__search-icon">&#128269;</span>
+      <input type="text" id="searchInput" placeholder="Search docs..." autocomplete="off">
+    </div>
+    <button class="usa-header__menu-btn" onclick="toggleSidebar()">&#9776; Menu</button>
+  </nav>
+</header>
+
+<!-- Search Results -->
+<div class="search-results" id="searchResults"></div>
+
+<!-- Layout -->
+<div class="usa-layout">
+  <!-- Sidebar -->
+  <aside class="usa-sidebar" id="sidebar">
+    <div class="usa-sidebar__section-label">Documentation</div>
+    <a class="usa-sidebar__link active" onclick="navigateTo('home')" data-page="home">
+      <span class="usa-sidebar__link-number">&#8962;</span>
+      <span>Overview</span>
+    </a>
+
+    <div class="usa-sidebar__section-label">Chapters</div>
+    <a class="usa-sidebar__link" onclick="navigateTo('01-architecture-overview')" data-page="01-architecture-overview">
+      <span class="usa-sidebar__link-number">01</span>
+      <span>Architecture Overview</span>
+    </a>
+    <a class="usa-sidebar__link" onclick="navigateTo('02-data-models')" data-page="02-data-models">
+      <span class="usa-sidebar__link-number">02</span>
+      <span>Data Models</span>
+    </a>
+    <a class="usa-sidebar__link" onclick="navigateTo('03-api-endpoint-catalog')" data-page="03-api-endpoint-catalog">
+      <span class="usa-sidebar__link-number">03</span>
+      <span>API Endpoint Catalog</span>
+    </a>
+    <a class="usa-sidebar__link" onclick="navigateTo('04-operation-flows')" data-page="04-operation-flows">
+      <span class="usa-sidebar__link-number">04</span>
+      <span>Operation Flows</span>
+    </a>
+    <a class="usa-sidebar__link" onclick="navigateTo('05-database-patterns')" data-page="05-database-patterns">
+      <span class="usa-sidebar__link-number">05</span>
+      <span>Database Patterns</span>
+    </a>
+    <a class="usa-sidebar__link" onclick="navigateTo('06-event-systems')" data-page="06-event-systems">
+      <span class="usa-sidebar__link-number">06</span>
+      <span>Event Systems</span>
+    </a>
+    <a class="usa-sidebar__link" onclick="navigateTo('07-identity-and-auth')" data-page="07-identity-and-auth">
+      <span class="usa-sidebar__link-number">07</span>
+      <span>Identity and Auth</span>
+    </a>
+    <a class="usa-sidebar__link" onclick="navigateTo('08-moderation-systems')" data-page="08-moderation-systems">
+      <span class="usa-sidebar__link-number">08</span>
+      <span>Moderation Systems</span>
+    </a>
+    <a class="usa-sidebar__link" onclick="navigateTo('09-appendix-platform-mapping')" data-page="09-appendix-platform-mapping">
+      <span class="usa-sidebar__link-number">09</span>
+      <span>Platform Mapping</span>
+    </a>
+
+    <!-- Table of contents for current page -->
+    <div class="usa-sidebar__toc" id="pageToc"></div>
+  </aside>
+
+  <!-- Overlay for mobile sidebar -->
+  <div class="usa-overlay" id="overlay" onclick="toggleSidebar()"></div>
+
+  <!-- Main content -->
+  <main class="usa-main" id="mainContent">
+    <!-- Content loaded dynamically -->
+  </main>
+</div>
+
+<!-- Back to top button -->
+<button class="back-to-top" id="backToTop" onclick="window.scrollTo({top:0, behavior:'smooth'})">&#8593;</button>
+
+<script>
+// ============================================
+// App State
+// ============================================
+const pages = [
+  { id: 'home', title: 'Overview', file: null },
+  { id: '01-architecture-overview', title: 'Architecture Overview', file: './docs/01-architecture-overview.md', num: '01' },
+  { id: '02-data-models', title: 'Data Models', file: './docs/02-data-models.md', num: '02' },
+  { id: '03-api-endpoint-catalog', title: 'API Endpoint Catalog', file: './docs/03-api-endpoint-catalog.md', num: '03' },
+  { id: '04-operation-flows', title: 'Operation Flows', file: './docs/04-operation-flows.md', num: '04' },
+  { id: '05-database-patterns', title: 'Database Patterns', file: './docs/05-database-patterns.md', num: '05' },
+  { id: '06-event-systems', title: 'Event Systems', file: './docs/06-event-systems.md', num: '06' },
+  { id: '07-identity-and-auth', title: 'Identity and Auth', file: './docs/07-identity-and-auth.md', num: '07' },
+  { id: '08-moderation-systems', title: 'Moderation Systems', file: './docs/08-moderation-systems.md', num: '08' },
+  { id: '09-appendix-platform-mapping', title: 'Platform Mapping', file: './docs/09-appendix-platform-mapping.md', num: '09' },
+];
+
+let currentPage = 'home';
+let docCache = {};
+let searchIndex = [];
+
+// ============================================
+// Markdown Rendering
+// ============================================
+marked.setOptions({
+  gfm: true,
+  breaks: false,
+  headerIds: true,
+  mangle: false,
+});
+
+// Custom renderer for mermaid blocks and heading IDs
+const renderer = new marked.Renderer();
+const originalCode = renderer.code;
+renderer.code = function(obj) {
+  const text = typeof obj === 'string' ? obj : (obj.text || '');
+  const lang = typeof obj === 'string' ? arguments[1] : (obj.lang || '');
+  if (lang === 'mermaid') {
+    return '<div class="mermaid">' + text + '</div>';
+  }
+  return '<pre><code class="language-' + (lang || '') + '">' + escapeHtml(text) + '</code></pre>';
+};
+
+function escapeHtml(text) {
+  const map = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' };
+  return text.replace(/[&<>"']/g, m => map[m]);
+}
+
+renderer.heading = function(obj) {
+  const text = typeof obj === 'string' ? obj : (obj.text || '');
+  const level = typeof obj === 'string' ? arguments[1] : (obj.depth || 1);
+  const slug = text.toLowerCase().replace(/<[^>]+>/g, '').replace(/[^\w\s-]/g, '').replace(/\s+/g, '-').replace(/-+/g, '-');
+  return '<h' + level + ' id="' + slug + '">' + text + '</h' + level + '>';
+};
+
+marked.use({ renderer });
+
+// ============================================
+// Navigation
+// ============================================
+async function navigateTo(pageId) {
+  currentPage = pageId;
+
+  // Update sidebar active state
+  document.querySelectorAll('.usa-sidebar__link').forEach(link => {
+    link.classList.toggle('active', link.dataset.page === pageId);
+  });
+
+  // Close mobile sidebar
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('overlay').classList.remove('active');
+
+  const main = document.getElementById('mainContent');
+
+  if (pageId === 'home') {
+    renderHome(main);
+    updateToc([]);
+    window.history.pushState({}, '', '#');
+  } else {
+    main.innerHTML = '<div class="loading"><div class="loading__spinner"></div> Loading...</div>';
+    const page = pages.find(p => p.id === pageId);
+    if (!page || !page.file) return;
+
+    try {
+      let md;
+      if (docCache[pageId]) {
+        md = docCache[pageId];
+      } else {
+        const resp = await fetch(page.file);
+        md = await resp.text();
+        docCache[pageId] = md;
+      }
+
+      const html = marked.parse(md);
+      const pageIndex = pages.findIndex(p => p.id === pageId);
+      const prev = pageIndex > 1 ? pages[pageIndex - 1] : (pageIndex === 1 ? pages[0] : null);
+      const next = pageIndex < pages.length - 1 ? pages[pageIndex + 1] : null;
+
+      let nav = '<nav class="usa-pagination">';
+      if (prev) {
+        nav += '<a class="usa-pagination__link" onclick="navigateTo(\'' + prev.id + '\')">';
+        nav += '<span class="usa-pagination__label">&larr; Previous</span>';
+        nav += '<span class="usa-pagination__title">' + prev.title + '</span></a>';
+      }
+      if (next) {
+        nav += '<a class="usa-pagination__link usa-pagination__link--next" onclick="navigateTo(\'' + next.id + '\')">';
+        nav += '<span class="usa-pagination__label">Next &rarr;</span>';
+        nav += '<span class="usa-pagination__title">' + next.title + '</span></a>';
+      }
+      nav += '</nav>';
+
+      const breadcrumb = '<nav class="usa-breadcrumb">'
+        + '<a href="#" onclick="navigateTo(\'home\'); return false;">Home</a>'
+        + '<span class="usa-breadcrumb__separator">/</span>'
+        + '<span>' + page.title + '</span></nav>';
+
+      main.innerHTML = breadcrumb + '<div class="doc-content">' + html + '</div>' + nav
+        + '<footer class="usa-footer"><div class="usa-footer__content">'
+        + '<span>Generic Social Media Platform Architecture Reference</span>'
+        + '<div class="usa-footer__links">'
+        + '<a href="#" onclick="navigateTo(\'home\'); return false;">Home</a>'
+        + '<a href="#" onclick="navigateTo(\'09-appendix-platform-mapping\'); return false;">Platform Mapping</a>'
+        + '</div></div></footer>';
+
+      // Render mermaid diagrams
+      if (window.mermaid) {
+        mermaid.initialize({ startOnLoad: false, theme: 'base', themeVariables: {
+          primaryColor: '#d9e8f6', primaryBorderColor: '#005ea2',
+          primaryTextColor: '#1b1b1b', lineColor: '#565c65',
+          secondaryColor: '#f0f0f0', tertiaryColor: '#e7f6f8'
+        }});
+        try { await mermaid.run({ querySelector: '.mermaid' }); } catch(e) {}
+      }
+
+      // Build TOC
+      const headings = main.querySelectorAll('.doc-content h2, .doc-content h3');
+      const tocItems = Array.from(headings).map(h => ({
+        text: h.textContent,
+        id: h.id,
+        level: h.tagName
+      }));
+      updateToc(tocItems);
+
+      window.history.pushState({}, '', '#' + pageId);
+    } catch (err) {
+      main.innerHTML = '<div class="usa-alert usa-alert--error">Failed to load document: ' + err.message + '</div>';
+    }
+  }
+
+  window.scrollTo({ top: 0 });
+}
+
+function renderHome(main) {
+  main.innerHTML = `
+    <div class="usa-hero">
+      <h1 class="usa-hero__heading">Social Media Platform Architecture</h1>
+      <p class="usa-hero__tagline">A synthesized reference architecture distilled from studying Bluesky, Twitter/X, and Reddit. Not a copy of any single platform &mdash; a generalized blueprint capturing common patterns, best ideas, and design trade-offs.</p>
+    </div>
+
+    <div class="usa-card-grid">
+      <a class="usa-card" onclick="navigateTo('01-architecture-overview')">
+        <div class="usa-card__number">Chapter 01</div>
+        <div class="usa-card__title">Architecture Overview</div>
+        <div class="usa-card__description">High-level system design &mdash; 11 named services, write/read path separation, federated vs centralized topology.</div>
+        <div class="usa-card__arrow">Read chapter &rarr;</div>
+      </a>
+      <a class="usa-card" onclick="navigateTo('02-data-models')">
+        <div class="usa-card__number">Chapter 02</div>
+        <div class="usa-card__title">Data Models</div>
+        <div class="usa-card__description">Core entities (User, Post, Comment, Community, Vote, Follow), record envelope, ID generation, ER diagram.</div>
+        <div class="usa-card__arrow">Read chapter &rarr;</div>
+      </a>
+      <a class="usa-card" onclick="navigateTo('03-api-endpoint-catalog')">
+        <div class="usa-card__number">Chapter 03</div>
+        <div class="usa-card__title">API Endpoint Catalog</div>
+        <div class="usa-card__description">54 REST endpoints grouped by domain, with request/response examples, pagination, rate limiting.</div>
+        <div class="usa-card__arrow">Read chapter &rarr;</div>
+      </a>
+      <a class="usa-card" onclick="navigateTo('04-operation-flows')">
+        <div class="usa-card__number">Chapter 04</div>
+        <div class="usa-card__title">Operation Flows</div>
+        <div class="usa-card__description">9 step-by-step operation flows (create post, read timeline, like, follow, etc.) with sequence diagrams.</div>
+        <div class="usa-card__arrow">Read chapter &rarr;</div>
+      </a>
+      <a class="usa-card" onclick="navigateTo('05-database-patterns')">
+        <div class="usa-card__number">Chapter 05</div>
+        <div class="usa-card__title">Database Patterns</div>
+        <div class="usa-card__description">Storage engine selection, partitioning, caching, write/read patterns, schema examples.</div>
+        <div class="usa-card__arrow">Read chapter &rarr;</div>
+      </a>
+      <a class="usa-card" onclick="navigateTo('06-event-systems')">
+        <div class="usa-card__number">Chapter 06</div>
+        <div class="usa-card__title">Event Systems</div>
+        <div class="usa-card__description">Event bus architecture, 18-event catalog with payloads, firehose, CDC pipeline.</div>
+        <div class="usa-card__arrow">Read chapter &rarr;</div>
+      </a>
+      <a class="usa-card" onclick="navigateTo('07-identity-and-auth')">
+        <div class="usa-card__number">Chapter 07</div>
+        <div class="usa-card__title">Identity and Auth</div>
+        <div class="usa-card__description">Identity model, OAuth 2.0 + PKCE, JWT lifecycle, handle resolution, authorization.</div>
+        <div class="usa-card__arrow">Read chapter &rarr;</div>
+      </a>
+      <a class="usa-card" onclick="navigateTo('08-moderation-systems')">
+        <div class="usa-card__number">Chapter 08</div>
+        <div class="usa-card__title">Moderation Systems</div>
+        <div class="usa-card__description">Label-based moderation, reporting flow, moderation actions, community moderation, appeals.</div>
+        <div class="usa-card__arrow">Read chapter &rarr;</div>
+      </a>
+      <a class="usa-card" onclick="navigateTo('09-appendix-platform-mapping')">
+        <div class="usa-card__number">Appendix</div>
+        <div class="usa-card__title">Platform Mapping</div>
+        <div class="usa-card__description">Rosetta Stone &mdash; maps every generic concept to its Bluesky, Twitter, and Reddit equivalent.</div>
+        <div class="usa-card__arrow">Read chapter &rarr;</div>
+      </a>
+    </div>
+
+    <div class="usa-reading-path">
+      <div class="usa-reading-path__title">Recommended Reading Order</div>
+      <ol>
+        <li><a href="#" onclick="navigateTo('01-architecture-overview'); return false;">Architecture Overview</a> <span class="step-desc">&mdash; the map</span></li>
+        <li><a href="#" onclick="navigateTo('02-data-models'); return false;">Data Models</a> <span class="step-desc">&mdash; the nouns</span></li>
+        <li><a href="#" onclick="navigateTo('03-api-endpoint-catalog'); return false;">API Endpoint Catalog</a> <span class="step-desc">&mdash; the verbs</span></li>
+        <li><a href="#" onclick="navigateTo('04-operation-flows'); return false;">Operation Flows</a> <span class="step-desc">&mdash; the stories (start here if short on time)</span></li>
+        <li><a href="#" onclick="navigateTo('05-database-patterns'); return false;">Database Patterns</a> <span class="step-desc">&mdash; the storage</span></li>
+        <li><a href="#" onclick="navigateTo('06-event-systems'); return false;">Event Systems</a> <span class="step-desc">&mdash; the nervous system</span></li>
+        <li><a href="#" onclick="navigateTo('07-identity-and-auth'); return false;">Identity &amp; Auth</a> <span class="step-desc">&mdash; the access control</span></li>
+        <li><a href="#" onclick="navigateTo('08-moderation-systems'); return false;">Moderation Systems</a> <span class="step-desc">&mdash; the safety layer</span></li>
+        <li><a href="#" onclick="navigateTo('09-appendix-platform-mapping'); return false;">Platform Mapping</a> <span class="step-desc">&mdash; the translation guide</span></li>
+      </ol>
+    </div>
+
+    <div class="usa-home-section">
+      <h2 class="usa-home-section__title">Design Philosophy</h2>
+      <div class="doc-content">
+        <table>
+          <thead>
+            <tr><th>Principle</th><th>Description</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><strong>Learn from all three, copy none</strong></td><td>Each platform made different trade-offs. The generic model picks the strongest pattern for each concern.</td></tr>
+            <tr><td><strong>API-first thinking</strong></td><td>The platform is defined by its endpoints and their behaviors, not its UI.</td></tr>
+            <tr><td><strong>Write/read path separation</strong></td><td>Writes are synchronous to the primary store; side effects are asynchronous via the event bus.</td></tr>
+            <tr><td><strong>Eventual consistency</strong></td><td>Timelines and counters can be slightly stale. Content creation and identity must be strongly consistent.</td></tr>
+            <tr><td><strong>Labels over enforcement</strong></td><td>Content moderation uses metadata (labels) that clients interpret, rather than hard enforcement.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="usa-home-section">
+      <h2 class="usa-home-section__title">Key Technical Choices</h2>
+      <div class="doc-content">
+        <table>
+          <thead>
+            <tr><th>Choice</th><th>Rationale</th><th>Inspired By</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>REST API</td><td>Universal compatibility</td><td>Twitter v2, Reddit</td></tr>
+            <tr><td>Snowflake IDs</td><td>Distributed, sortable, no coordination</td><td>Twitter</td></tr>
+            <tr><td>Fanout-on-write timelines</td><td>Fast reads (the common case)</td><td>Twitter</td></tr>
+            <tr><td>Cursor-based pagination</td><td>Scalable, consistent under concurrent writes</td><td>All three</td></tr>
+            <tr><td>Kafka event bus</td><td>Proven at scale, replay capability</td><td>Twitter, Reddit</td></tr>
+            <tr><td>WebSocket firehose</td><td>Real-time public stream for external consumers</td><td>Bluesky</td></tr>
+            <tr><td>Label-based moderation</td><td>Flexible, decentralizable, client-interpreted</td><td>Bluesky</td></tr>
+            <tr><td>Soft deletes</td><td>Auditability, federation consistency</td><td>All three</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <footer class="usa-footer">
+      <div class="usa-footer__content">
+        <span>Generic Social Media Platform Architecture Reference</span>
+        <div class="usa-footer__links">
+          <a href="#" onclick="navigateTo('01-architecture-overview'); return false;">Start Reading</a>
+          <a href="#" onclick="navigateTo('09-appendix-platform-mapping'); return false;">Platform Mapping</a>
+        </div>
+      </div>
+    </footer>
+  `;
+}
+
+// ============================================
+// Table of Contents
+// ============================================
+function updateToc(items) {
+  const toc = document.getElementById('pageToc');
+  if (!items.length) {
+    toc.innerHTML = '';
+    return;
+  }
+
+  let html = '<div class="usa-sidebar__toc-title">On this page</div>';
+  items.forEach(item => {
+    const cls = item.level === 'H3' ? ' class="toc-h3"' : '';
+    html += '<a' + cls + ' href="#' + item.id + '" onclick="closeMobileSidebar()">' + item.text + '</a>';
+  });
+  toc.innerHTML = html;
+}
+
+// ============================================
+// Search
+// ============================================
+async function buildSearchIndex() {
+  for (const page of pages) {
+    if (!page.file) continue;
+    try {
+      const resp = await fetch(page.file);
+      const text = await resp.text();
+      docCache[page.id] = text;
+
+      // Split into sections by headings
+      const lines = text.split('\n');
+      let currentSection = page.title;
+      let currentText = '';
+
+      for (const line of lines) {
+        const headingMatch = line.match(/^#{1,3}\s+(.+)/);
+        if (headingMatch) {
+          if (currentText.trim()) {
+            searchIndex.push({
+              pageId: page.id,
+              pageTitle: page.title,
+              section: currentSection,
+              text: currentText.replace(/[#*`|_\[\]()]/g, ' ').replace(/\s+/g, ' ').trim()
+            });
+          }
+          currentSection = headingMatch[1];
+          currentText = '';
+        } else {
+          currentText += ' ' + line;
+        }
+      }
+      if (currentText.trim()) {
+        searchIndex.push({
+          pageId: page.id,
+          pageTitle: page.title,
+          section: currentSection,
+          text: currentText.replace(/[#*`|_\[\]()]/g, ' ').replace(/\s+/g, ' ').trim()
+        });
+      }
+    } catch (e) {}
+  }
+}
+
+function performSearch(query) {
+  if (!query || query.length < 2) return [];
+  const terms = query.toLowerCase().split(/\s+/);
+  const results = [];
+
+  for (const entry of searchIndex) {
+    const haystack = (entry.section + ' ' + entry.text).toLowerCase();
+    const matches = terms.every(t => haystack.includes(t));
+    if (matches) {
+      // Find context
+      const idx = haystack.indexOf(terms[0]);
+      const start = Math.max(0, idx - 40);
+      const end = Math.min(entry.text.length, idx + 80);
+      let context = entry.text.substring(start, end);
+      if (start > 0) context = '...' + context;
+      if (end < entry.text.length) context += '...';
+
+      results.push({
+        pageId: entry.pageId,
+        pageTitle: entry.pageTitle,
+        section: entry.section,
+        context: context
+      });
+    }
+  }
+
+  return results.slice(0, 15);
+}
+
+// Search UI
+const searchInput = document.getElementById('searchInput');
+const searchResultsEl = document.getElementById('searchResults');
+
+if (searchInput) {
+  searchInput.addEventListener('input', function() {
+    const q = this.value.trim();
+    if (q.length < 2) {
+      searchResultsEl.classList.remove('active');
+      return;
+    }
+
+    const results = performSearch(q);
+    if (!results.length) {
+      searchResultsEl.innerHTML = '<div class="search-results__empty">No results found</div>';
+      searchResultsEl.classList.add('active');
+      return;
+    }
+
+    const termsForHighlight = q.toLowerCase().split(/\s+/);
+    let html = '';
+    for (const r of results) {
+      let ctx = escapeHtml(r.context);
+      for (const t of termsForHighlight) {
+        const re = new RegExp('(' + t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + ')', 'gi');
+        ctx = ctx.replace(re, '<mark>$1</mark>');
+      }
+      html += '<div class="search-results__item" onclick="navigateTo(\'' + r.pageId + '\'); searchResultsEl.classList.remove(\'active\'); searchInput.value=\'\';">';
+      html += '<div class="search-results__item-title">' + escapeHtml(r.pageTitle) + ' &rsaquo; ' + escapeHtml(r.section) + '</div>';
+      html += '<div class="search-results__item-context">' + ctx + '</div>';
+      html += '</div>';
+    }
+    searchResultsEl.innerHTML = html;
+    searchResultsEl.classList.add('active');
+  });
+
+  // Close search on click outside
+  document.addEventListener('click', function(e) {
+    if (!searchResultsEl.contains(e.target) && e.target !== searchInput) {
+      searchResultsEl.classList.remove('active');
+    }
+  });
+
+  // Close on Escape
+  searchInput.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+      searchResultsEl.classList.remove('active');
+      this.blur();
+    }
+  });
+}
+
+// ============================================
+// Sidebar toggle (mobile)
+// ============================================
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('open');
+  document.getElementById('overlay').classList.toggle('active');
+}
+
+function closeMobileSidebar() {
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('overlay').classList.remove('active');
+}
+
+// ============================================
+// Back to top button
+// ============================================
+window.addEventListener('scroll', function() {
+  const btn = document.getElementById('backToTop');
+  btn.classList.toggle('visible', window.scrollY > 400);
+});
+
+// ============================================
+// Hash-based routing
+// ============================================
+function handleHashChange() {
+  const hash = window.location.hash.replace('#', '');
+  if (hash && pages.find(p => p.id === hash)) {
+    navigateTo(hash);
+  } else {
+    navigateTo('home');
+  }
+}
+
+window.addEventListener('popstate', handleHashChange);
+
+// ============================================
+// Keyboard shortcut: / to focus search
+// ============================================
+document.addEventListener('keydown', function(e) {
+  if (e.key === '/' && document.activeElement.tagName !== 'INPUT') {
+    e.preventDefault();
+    searchInput.focus();
+  }
+});
+
+// ============================================
+// Init
+// ============================================
+handleHashChange();
+buildSearchIndex();
+</script>
+
+</body>
+</html>
