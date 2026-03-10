@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Narrative Diffusion in the Far-Right Podcast Ecosystem</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="layout">
+
+  <!-- ── Sidebar ──────────────────────────────────────── -->
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <h1>Narrative Diffusion<br>Analysis</h1>
+      <span class="badge">Internal Technical Report</span>
+    </div>
+    <nav>
+      <a href="#overview">Overview</a>
+      <div class="nav-group">Pipeline</div>
+      <a href="#methodology">Methodology</a>
+      <a href="#embeddings">Phase 1: Embeddings</a>
+      <a href="#narrative-discovery">Phase 2: Narrative Discovery</a>
+      <a href="#classification">Phase 3: Classification</a>
+      <a href="#temporal">Phase 4: Temporal Analysis</a>
+      <a href="#diffusion">Phase 5: Diffusion Modeling</a>
+      <a href="#network">Phase 6: Network Analysis</a>
+      <div class="nav-group">Findings</div>
+      <a href="#case-studies">Case Studies</a>
+      <a href="#limitations">Limitations</a>
+      <div class="nav-group">Reference</div>
+      <a href="#data-catalog">Data Catalog</a>
+    </nav>
+  </aside>
+
+  <!-- ── Main Content ─────────────────────────────────── -->
+  <main class="main">
+    <div class="content">
+
+      <!-- Hero -->
+      <header class="hero" id="overview">
+        <h1>Narrative Diffusion in the Far-Right Podcast Ecosystem</h1>
+        <p class="subtitle">A computational analysis tracing narrative diffusion through a 113-show podcast ecosystem spanning 1992&ndash;2025. Six-phase pipeline from raw transcripts to influence network characterization.</p>
+        <div class="meta">
+          <span>113 shows</span>
+          <span>~117K episodes</span>
+          <span>18 GB corpus</span>
+          <span>1992&ndash;2025</span>
+        </div>
+      </header>
+
+      <div class="stats">
+        <div class="stat"><div class="value">113</div><div class="label">Shows</div></div>
+        <div class="stat"><div class="value">117K</div><div class="label">Episodes</div></div>
+        <div class="stat"><div class="value">9M</div><div class="label">Passages</div></div>
+        <div class="stat"><div class="value">1,289</div><div class="label">Claims</div></div>
+        <div class="stat"><div class="value">5K</div><div class="label">Sig. Edges</div></div>
+        <div class="stat"><div class="value">96</div><div class="label">Network Nodes</div></div>
+      </div>
+
+      <div class="callout info">
+        <strong>Internal document.</strong> This report documents what was done, why, how, and what was found. All causal language is qualified &mdash; statistical associations are described as &ldquo;evidence consistent with,&rdquo; not &ldquo;proof of.&rdquo;
+      </div>
+
+      <!-- ═══ Methodology ═══ -->
+      <section id="methodology">
+        <h2>Methodology Overview</h2>
+        <p>The analysis pipeline comprises six phases, each building on the outputs of the previous. The pipeline transforms raw podcast transcripts into a directed influence network with community structure and podcaster classification.</p>
+
+        <figure class="figure" onclick="openLightbox(this)">
+          <img src="figures/methodology_pipeline.png" alt="Methodology Pipeline" loading="lazy">
+          <figcaption>Full analysis pipeline from raw transcripts through six phases to the final report. Each box shows how and why the phase was performed.</figcaption>
+        </figure>
+
+        <h3>Phase 1: Passage Embeddings</h3>
+        <p><strong>Goal:</strong> Transform raw podcast transcripts into dense semantic representations suitable for downstream narrative analysis.</p>
+        <p><strong>Approach:</strong> Episode transcripts were segmented into topically coherent passages using cosine-similarity boundary detection on sentence embeddings, then each passage was encoded to a 768-dimensional vector using Nomic Embed v1.5.</p>
+        <div class="table-wrap"><table>
+          <thead><tr><th>Parameter</th><th>Value</th></tr></thead>
+          <tbody>
+            <tr><td>Embedding model</td><td>nomic-ai/nomic-embed-text-v1.5</td></tr>
+            <tr><td>Encoding prefix</td><td><code>clustering: </code></td></tr>
+            <tr><td>Embedding dimension</td><td>768</td></tr>
+            <tr><td>Chunking method</td><td>Cosine-similarity boundary detection</td></tr>
+            <tr><td>Total passages</td><td>9,036,908</td></tr>
+            <tr><td>Total shows</td><td>113</td></tr>
+          </tbody>
+        </table></div>
+
+        <h3>Phase 2: Narrative Discovery</h3>
+        <p><strong>Goal:</strong> Construct a hierarchical narrative ontology (themes &gt; frames &gt; claims) capturing the discourse structure of the corpus.</p>
+        <p><strong>Approach:</strong> Three techniques were evaluated &mdash; TF-IDF + NMF baseline, BERTopic (HDBSCAN + c-TF-IDF), and LLM-based extraction (Qwen3.5-35B). The LLM approach was selected for superior interpretability.</p>
+        <div class="table-wrap"><table>
+          <thead><tr><th>Parameter</th><th>Value</th></tr></thead>
+          <tbody>
+            <tr><td>Themes</td><td>15</td></tr>
+            <tr><td>Frames</td><td>47</td></tr>
+            <tr><td>Claims</td><td>1,289</td></tr>
+            <tr><td>Raw LLM frames extracted</td><td>399 &rarr; 47 canonical</td></tr>
+          </tbody>
+        </table></div>
+
+        <h3>Phase 3: Corpus-Scale Classification</h3>
+        <p><strong>Goal:</strong> Label every passage in the 9M-passage corpus with relevant narrative frames and themes.</p>
+        <p><strong>Approach:</strong> Per-frame and per-theme Logistic Regression classifiers trained on LLM-labeled passages. Fully deterministic (NMI = 1.0), ~100x faster than LLM approach.</p>
+        <div class="table-wrap"><table>
+          <thead><tr><th>Parameter</th><th>Value</th></tr></thead>
+          <tbody>
+            <tr><td>Total passages classified</td><td>9,036,908</td></tr>
+            <tr><td>Frame macro F1</td><td>0.208</td></tr>
+            <tr><td>Theme macro F1</td><td>0.371</td></tr>
+            <tr><td>Corpus coverage</td><td>99.1%</td></tr>
+          </tbody>
+        </table></div>
+
+        <h3>Phase 4: Temporal Analysis and Exogenous Baseline</h3>
+        <p><strong>Goal:</strong> Construct narrative adoption timelines and assess whether adoption events coincide with exogenous news coverage.</p>
+        <p><strong>Approach:</strong> Claim-level adoption timelines were built from the claim-episode index. An exogenous baseline was constructed using GDELT + FM-index, then upgraded to semantic embedding matching (Phase 4.1) achieving 98.7% claim coverage.</p>
+
+        <div class="callout">
+          <strong>Key finding:</strong> Despite 98.7% claim coverage from semantic news matching, 0% of adoption events were flagged as coinciding with news spikes. The narratives in this corpus are not driven by identifiable news events at the monthly resolution measured.
+        </div>
+
+        <h3>Phase 5: Diffusion Modeling</h3>
+        <p><strong>Goal:</strong> Identify statistically significant directional influence relationships between shows.</p>
+        <p><strong>Approach:</strong> Three-method pipeline: Granger causality screening (1.9M tests), bivariate Hawkes process fitting (1.3M triples), and transfer entropy validation. Multi-method agreement ensures robust edges.</p>
+        <div class="table-wrap"><table>
+          <thead><tr><th>Agreement Level</th><th>Edges</th></tr></thead>
+          <tbody>
+            <tr><td>All 3 methods</td><td>1,364</td></tr>
+            <tr><td>Hawkes + Granger</td><td>3,635</td></tr>
+            <tr><td>Granger only</td><td>1,302,768</td></tr>
+          </tbody>
+        </table></div>
+
+        <h3>Phase 6: Network Analysis</h3>
+        <p><strong>Goal:</strong> Construct the show-level influence network, classify shows on the Rogers diffusion spectrum, detect communities, and quantify cross-cluster flow.</p>
+        <p><strong>Approach:</strong> 2-of-3 method agreement filter, Leiden community detection, Rogers adoption timing classification.</p>
+        <div class="table-wrap"><table>
+          <thead><tr><th>Metric</th><th>Value</th></tr></thead>
+          <tbody>
+            <tr><td>Network nodes</td><td>96</td></tr>
+            <tr><td>Directed edges</td><td>1,877</td></tr>
+            <tr><td>Density</td><td>0.206</td></tr>
+            <tr><td>Leiden communities</td><td>6</td></tr>
+            <tr><td>Rogers innovators</td><td>3</td></tr>
+          </tbody>
+        </table></div>
+      </section>
+
+      <!-- ═══ Embeddings ═══ -->
+      <section id="embeddings">
+        <h2>Phase 1: Passage Embeddings</h2>
+        <p>Phase 1 transforms raw podcast transcripts into dense semantic representations. Each episode transcript is segmented into topically coherent passages using cosine-similarity boundary detection, then encoded to a 768-dimensional embedding vector.</p>
+
+        <h3>Model Selection</h3>
+        <p>An evaluation compared multiple embedding models on 125,008 passages across 10 shows.</p>
+        <div class="table-wrap"><table>
+          <thead><tr><th>Model</th><th>Dim</th><th>Mean Silhouette</th><th>Truncation</th></tr></thead>
+          <tbody>
+            <tr><td>all-mpnet-base-v2</td><td>768</td><td>0.0124</td><td>0%</td></tr>
+            <tr><td>bge-large-en-v1.5</td><td>1024</td><td>-0.0061</td><td>0%</td></tr>
+            <tr><td><strong>nomic-embed-text-v1.5</strong></td><td>768</td><td><strong>0.0126</strong></td><td>0%</td></tr>
+            <tr><td>mxbai-embed-large-v1</td><td>1024</td><td>-0.0009</td><td>0%</td></tr>
+          </tbody>
+        </table></div>
+
+        <h3>Chunking Strategy</h3>
+        <p>Episodes were segmented using cosine-similarity boundary detection on sentence-level embeddings with a 25th percentile threshold. Mean passage length: 11.4 sentences (median 9), with 3.3% hitting min/max constraints.</p>
+
+        <h3>Corpus Statistics</h3>
+        <div class="stats">
+          <div class="stat"><div class="value">9.04M</div><div class="label">Passages</div></div>
+          <div class="stat"><div class="value">117K</div><div class="label">Episodes</div></div>
+          <div class="stat"><div class="value">113</div><div class="label">Shows</div></div>
+          <div class="stat"><div class="value">25.85 GB</div><div class="label">Storage</div></div>
+        </div>
+
+        <h3>Top 10 Shows by Passage Count</h3>
+        <div class="table-wrap"><table>
+          <thead><tr><th>Show</th><th>Passages</th><th>Episodes</th></tr></thead>
+          <tbody>
+            <tr><td>Alex Jones Show</td><td>1,325,602</td><td>7,766</td></tr>
+            <tr><td>Joe Rogan Experience</td><td>487,268</td><td>2,381</td></tr>
+            <tr><td>Steven Crowder</td><td>437,928</td><td>7,352</td></tr>
+            <tr><td>Nick Fuentes</td><td>327,375</td><td>1,788</td></tr>
+            <tr><td>Owen Shroyer</td><td>307,426</td><td>1,993</td></tr>
+            <tr><td>Daily Kenn</td><td>294,874</td><td>1,929</td></tr>
+            <tr><td>Jesse Lee Peterson</td><td>254,677</td><td>4,179</td></tr>
+            <tr><td>Ben Shapiro</td><td>245,722</td><td>4,935</td></tr>
+            <tr><td>Matt Walsh</td><td>237,772</td><td>5,340</td></tr>
+            <tr><td>Tim Pool</td><td>208,809</td><td>1,394</td></tr>
+          </tbody>
+        </table></div>
+      </section>
+
+      <!-- ═══ Narrative Discovery ═══ -->
+      <section id="narrative-discovery">
+        <h2>Phase 2: Narrative Discovery</h2>
+        <p>Phase 2 constructs a hierarchical narrative ontology that captures the discourse structure of the far-right podcast ecosystem: 15 themes, 47 frames, and 1,289 claims.</p>
+
+        <h3>Method Comparison</h3>
+        <div class="table-wrap"><table>
+          <thead><tr><th>Method</th><th>NPMI</th><th>C_v</th><th>Coverage</th><th>Hierarchy</th></tr></thead>
+          <tbody>
+            <tr><td>Vocabulary Baseline (TF-IDF + NMF)</td><td>0.073</td><td>0.590</td><td>86.0%</td><td>No</td></tr>
+            <tr><td>BERTopic</td><td>-0.018</td><td>0.555</td><td>37.0%</td><td>Yes</td></tr>
+            <tr><td><strong>LLM Extraction (selected)</strong></td><td>-0.074</td><td>0.398</td><td>N/A</td><td>Yes</td></tr>
+          </tbody>
+        </table></div>
+        <p>The LLM approach produced lower gensim coherence scores, which is expected: gensim metrics measure word co-occurrence, not semantic coherence. The LLM approach was selected for interpretability &mdash; it produces named narrative frames with falsifiable claims.</p>
+
+        <h3>Ontology: 15 Themes</h3>
+        <div class="table-wrap"><table>
+          <thead><tr><th>Theme</th><th>Frames</th><th>Claims</th></tr></thead>
+          <tbody>
+            <tr><td>Media and Tech Control</td><td>2</td><td>60</td></tr>
+            <tr><td>Deep State and Shadow Government</td><td>5</td><td>135</td></tr>
+            <tr><td>Election and Democratic Legitimacy Crisis</td><td>2</td><td>60</td></tr>
+            <tr><td>Pandemic and Medical Conspiracy</td><td>3</td><td>76</td></tr>
+            <tr><td>Immigration and Demographic Replacement</td><td>3</td><td>85</td></tr>
+            <tr><td>Cultural and Ideological Warfare</td><td>5</td><td>150</td></tr>
+            <tr><td>Government Tyranny and Loss of Liberty</td><td>5</td><td>135</td></tr>
+            <tr><td>Conspiracy and Historical Revisionism</td><td>6</td><td>162</td></tr>
+            <tr><td>Economic and Systemic Collapse</td><td>3</td><td>90</td></tr>
+            <tr><td>Foreign Policy and Military Distrust</td><td>4</td><td>107</td></tr>
+            <tr><td>Racial and Biological Essentialism</td><td>2</td><td>43</td></tr>
+            <tr><td>Survivalism and Apocalyptic Preparedness</td><td>2</td><td>51</td></tr>
+            <tr><td>False Flags and Extraterrestrial Threats</td><td>2</td><td>60</td></tr>
+            <tr><td>Anti-Establishment and Elite Hostility</td><td>2</td><td>55</td></tr>
+            <tr><td>Other Narratives</td><td>1</td><td>20</td></tr>
+          </tbody>
+        </table></div>
+      </section>
+
+      <!-- ═══ Classification ═══ -->
+      <section id="classification">
+        <h2>Phase 3: Corpus-Scale Classification</h2>
+        <p>Phase 3 applies the Phase 2 ontology to all 9,036,908 passages. Per-frame (47) and per-theme (15) Logistic Regression classifiers assign narrative labels to each passage.</p>
+
+        <h3>Method Comparison</h3>
+        <div class="table-wrap"><table>
+          <thead><tr><th>Method</th><th>Macro F1</th><th>9M-Passage Time</th><th>GPU Cost</th></tr></thead>
+          <tbody>
+            <tr><td>Pure LLM</td><td>0.229</td><td>~56 hours</td><td>8x H200</td></tr>
+            <tr><td>Hybrid (k=10)</td><td>0.238</td><td>~70 hours</td><td>8x H200</td></tr>
+            <tr><td><strong>Logistic Regression</strong></td><td><strong>0.208</strong></td><td><strong>~39 min</strong></td><td><strong>CPU only</strong></td></tr>
+            <tr><td>MLP</td><td>0.203</td><td>&lt; 1 sec</td><td>1x GPU</td></tr>
+          </tbody>
+        </table></div>
+
+        <div class="callout info">
+          <strong>Design choice:</strong> LogReg was selected for comparable F1 to LLM (0.208 vs 0.229), ~100x faster runtime, full determinism (NMI = 1.0), and CPU-only inference.
+        </div>
+
+        <h3>Corpus Coverage</h3>
+        <div class="stats">
+          <div class="stat"><div class="value">97.1%</div><div class="label">Frame Coverage</div></div>
+          <div class="stat"><div class="value">96.5%</div><div class="label">Theme Coverage</div></div>
+          <div class="stat"><div class="value">99.1%</div><div class="label">Any Label</div></div>
+          <div class="stat"><div class="value">3.6M</div><div class="label">CEI Rows</div></div>
+        </div>
+      </section>
+
+      <!-- ═══ Temporal ═══ -->
+      <section id="temporal">
+        <h2>Phase 4: Temporal Analysis</h2>
+        <p>Phase 4 constructs narrative adoption timelines and assesses whether adoption events coincide with exogenous news coverage. Phase 4.1 upgraded the baseline from exact substring to semantic embedding matching.</p>
+
+        <h3>Publication Schedules</h3>
+        <div class="table-wrap"><table>
+          <thead><tr><th>Schedule Class</th><th>Shows</th><th>Percentage</th></tr></thead>
+          <tbody>
+            <tr><td>Daily</td><td>62</td><td>55%</td></tr>
+            <tr><td>Weekly</td><td>24</td><td>21%</td></tr>
+            <tr><td>Biweekly</td><td>7</td><td>6%</td></tr>
+            <tr><td>Irregular</td><td>6</td><td>5%</td></tr>
+          </tbody>
+        </table></div>
+
+        <h3>Exogenous Baseline Evolution</h3>
+        <div class="table-wrap"><table>
+          <thead><tr><th>Metric</th><th>FM-Index (Phase 4)</th><th>Semantic (Phase 4.1)</th></tr></thead>
+          <tbody>
+            <tr><td>Claim coverage</td><td>0.7%</td><td>98.7%</td></tr>
+            <tr><td>Method</td><td>Exact substring</td><td>Cosine similarity (0.65)</td></tr>
+            <tr><td>Claims with signal</td><td>9</td><td>77,340 rows</td></tr>
+          </tbody>
+        </table></div>
+
+        <div class="callout">
+          <strong>Result:</strong> 0 of 102,969 timeline records flagged as exogenous (0.0%). News coverage of narrative claims is temporally stable &mdash; no z-score exceeded the 2.0 threshold. This is a genuine finding, not a data gap.
+        </div>
+      </section>
+
+      <!-- ═══ Diffusion ═══ -->
+      <section id="diffusion">
+        <h2>Phase 5: Diffusion Modeling</h2>
+        <p>Phase 5 identifies statistically significant directional influence relationships using a three-method pipeline: Granger causality, bivariate Hawkes process, and transfer entropy.</p>
+
+        <h3>Stage 1: Granger Causality Screening</h3>
+        <div class="table-wrap"><table>
+          <thead><tr><th>Metric</th><th>Value</th></tr></thead>
+          <tbody>
+            <tr><td>Directed triples tested</td><td>1,885,006</td></tr>
+            <tr><td>FDR-0.05 significant</td><td>1,307,767 (69.4%)</td></tr>
+          </tbody>
+        </table></div>
+
+        <h3>Stage 2: Hawkes Process Fitting</h3>
+        <div class="table-wrap"><table>
+          <thead><tr><th>Metric</th><th>Value</th></tr></thead>
+          <tbody>
+            <tr><td>Triples fitted</td><td>1,307,767</td></tr>
+            <tr><td>Convergence rate</td><td>82.2%</td></tr>
+            <tr><td>FDR-0.05 significant</td><td>4,999 (0.4%)</td></tr>
+          </tbody>
+        </table></div>
+
+        <h3>Stage 3: Transfer Entropy Validation</h3>
+        <div class="table-wrap"><table>
+          <thead><tr><th>Metric</th><th>Value</th></tr></thead>
+          <tbody>
+            <tr><td>Edges evaluated</td><td>4,999</td></tr>
+            <tr><td>TE significant (FDR-0.05)</td><td>1,364</td></tr>
+            <tr><td>All-3-method agreement</td><td>1,364</td></tr>
+          </tbody>
+        </table></div>
+
+        <h3>Regime Shift Detection</h3>
+        <p>Sliding-window Hawkes fitting with PELT changepoint detection identified a structural break near <strong>July 2020</strong>, with mean aggregate alpha increasing from 0.506 to 0.812 (+60%). This coincides temporally with the COVID-19 pandemic onset.</p>
+
+        <figure class="figure" onclick="openLightbox(this)">
+          <img src="figures/regime_shift_timeline.png" alt="Regime Shift Timeline" loading="lazy">
+          <figcaption>Network-level Hawkes excitation parameter over time with PELT changepoint detection. Shaded regions indicate identified regimes.</figcaption>
+        </figure>
+      </section>
+
+      <!-- ═══ Network ═══ -->
+      <section id="network">
+        <h2>Phase 6: Network Analysis</h2>
+        <p>Phase 6 constructs the show-level influence network, classifies shows on the Rogers diffusion spectrum, detects communities, and quantifies cross-cluster narrative flow.</p>
+
+        <h3>Influence Network</h3>
+        <figure class="figure" onclick="openLightbox(this)">
+          <img src="figures/influence_network.png" alt="Influence Network" loading="lazy">
+          <figcaption>96-node influence network with Kamada-Kawai layout. Top 20 nodes labeled by degree. Edges filtered to weight &ge; 5. Node colors indicate show category.</figcaption>
+        </figure>
+
+        <div class="stats">
+          <div class="stat"><div class="value">96</div><div class="label">Nodes</div></div>
+          <div class="stat"><div class="value">1,877</div><div class="label">Edges</div></div>
+          <div class="stat"><div class="value">0.206</div><div class="label">Density</div></div>
+          <div class="stat"><div class="value">590</div><div class="label">Reciprocal Pairs</div></div>
+        </div>
+
+        <h3>Rogers Diffusion Classification</h3>
+        <figure class="figure" onclick="openLightbox(this)">
+          <img src="figures/rogers_classification.png" alt="Rogers Classification" loading="lazy">
+          <figcaption>Two-panel Rogers classification: bar chart of category counts and adoption percentile scatter plot with innovators and laggards labeled.</figcaption>
+        </figure>
+
+        <div class="table-wrap"><table>
+          <thead><tr><th>Rogers Category</th><th>Count</th></tr></thead>
+          <tbody>
+            <tr><td>Innovator</td><td>3</td></tr>
+            <tr><td>Early Adopter</td><td>7</td></tr>
+            <tr><td>Early Majority</td><td>38</td></tr>
+            <tr><td>Late Majority</td><td>47</td></tr>
+            <tr><td>Laggard</td><td>18</td></tr>
+          </tbody>
+        </table></div>
+
+        <h4>Innovators</h4>
+        <div class="table-wrap"><table>
+          <thead><tr><th>Show</th><th>Category</th><th>Median Adoption Percentile</th></tr></thead>
+          <tbody>
+            <tr><td>Art Bell</td><td>Conspiracies</td><td>1.117</td></tr>
+            <tr><td>Alex Jones Show</td><td>InfoWars</td><td>2.174</td></tr>
+            <tr><td>Bill Cooper</td><td>Conspiracies</td><td>0.000</td></tr>
+          </tbody>
+        </table></div>
+
+        <h3>Community Structure</h3>
+        <figure class="figure" onclick="openLightbox(this)">
+          <img src="figures/community_structure.png" alt="Community Structure" loading="lazy">
+          <figcaption>Leiden community detection (6 communities). Node colors indicate community membership. Top 10 bridge shows labeled.</figcaption>
+        </figure>
+
+        <div class="callout info">
+          <strong>NMI vs. known categories: 0.170.</strong> Influence-based community structure differs substantially from editorial categorization. Shows cluster by narrative flow patterns, not by assigned content category.
+        </div>
+
+        <h3>Bridge Shows</h3>
+        <div class="table-wrap"><table>
+          <thead><tr><th>Show</th><th>Category</th><th>Bridge Score</th><th>Cross-Community Frac</th></tr></thead>
+          <tbody>
+            <tr><td>War Room - Owen Shroyer</td><td>InfoWars</td><td>0.056</td><td>0.641</td></tr>
+            <tr><td>American Journal - Harrison Smith</td><td>InfoWars</td><td>0.049</td><td>0.677</td></tr>
+            <tr><td>Alex Jones Show</td><td>InfoWars</td><td>0.035</td><td>0.853</td></tr>
+            <tr><td>Stay Free - Russell Brand</td><td>Conspiracies</td><td>0.033</td><td>0.794</td></tr>
+            <tr><td>X22 Report</td><td>QAnon</td><td>0.031</td><td>0.640</td></tr>
+          </tbody>
+        </table></div>
+
+        <h3>Cross-Cluster Flow</h3>
+        <p>Cross-cluster narrative flow significantly exceeds chance for both category-based and Leiden-based clusterings (p = 0.000 against 1,000-permutation configuration model null).</p>
+
+        <figure class="figure" onclick="openLightbox(this)">
+          <img src="figures/flow_heatmap_categories.png" alt="Category Flow Heatmap" loading="lazy">
+          <figcaption>11&times;11 category flow matrix showing directed narrative flow between show categories.</figcaption>
+        </figure>
+
+        <figure class="figure" onclick="openLightbox(this)">
+          <img src="figures/flow_heatmap_leiden.png" alt="Leiden Flow Heatmap" loading="lazy">
+          <figcaption>6&times;6 Leiden community flow matrix with member counts in labels.</figcaption>
+        </figure>
+      </section>
+
+      <!-- ═══ Case Studies ═══ -->
+      <section id="case-studies">
+        <h2>Case Studies</h2>
+        <p>Five mechanically selected case studies illustrate narrative diffusion patterns. Each traces a single claim from its origin show through adoption by the ecosystem.</p>
+
+        <h3>Selection Criteria</h3>
+        <div class="table-wrap"><table>
+          <thead><tr><th>Criterion</th><th>Definition</th><th>Top Claim</th></tr></thead>
+          <tbody>
+            <tr><td>Most Widely Adopted</td><td>Number of unique adopting shows</td><td>C016 (108 shows)</td></tr>
+            <tr><td>Fastest Spreading</td><td>Shortest adoption span (&ge;50 shows)</td><td>C840 (2,825 days)</td></tr>
+            <tr><td>Most Cross-Cluster</td><td>Significant edges crossing category boundaries</td><td>C979 (113 cross-category edges)</td></tr>
+          </tbody>
+        </table></div>
+
+        <!-- Case Study 1 -->
+        <div class="case-study">
+          <div class="case-study-header">
+            <div class="claim-id">Case Study 1 &mdash; C016 &bull; Most Widely Adopted</div>
+            <div class="claim-text">&ldquo;There is a history of disinformation in the field of terrorism coverage.&rdquo;</div>
+          </div>
+          <div class="case-study-meta">
+            <div class="meta-item"><div class="meta-label">Theme</div><div class="meta-value">Media and Tech Control</div></div>
+            <div class="meta-item"><div class="meta-label">Origin</div><div class="meta-value">Bill Cooper</div></div>
+            <div class="meta-item"><div class="meta-label">First Mention</div><div class="meta-value">1993-01-12</div></div>
+            <div class="meta-item"><div class="meta-label">Adopters</div><div class="meta-value">108 shows</div></div>
+            <div class="meta-item"><div class="meta-label">Sig. Edges</div><div class="meta-value">21</div></div>
+          </div>
+          <figure class="figure" onclick="openLightbox(this)">
+            <img src="figures/case_study_C016.png" alt="C016 Adoption Timeline" loading="lazy">
+            <figcaption>Adoption timeline for C016 showing adoption events colored by show category.</figcaption>
+          </figure>
+        </div>
+
+        <!-- Case Study 2 -->
+        <div class="case-study">
+          <div class="case-study-header">
+            <div class="claim-id">Case Study 2 &mdash; C363 &bull; Most Widely Adopted</div>
+            <div class="claim-text">&ldquo;The current political rhetoric is pushing for a return to a society where only white Americans hold power.&rdquo;</div>
+          </div>
+          <div class="case-study-meta">
+            <div class="meta-item"><div class="meta-label">Theme</div><div class="meta-value">Immigration &amp; Demographic Replacement</div></div>
+            <div class="meta-item"><div class="meta-label">Origin</div><div class="meta-value">Bill Cooper</div></div>
+            <div class="meta-item"><div class="meta-label">First Mention</div><div class="meta-value">1993-01-06</div></div>
+            <div class="meta-item"><div class="meta-label">Adopters</div><div class="meta-value">107 shows</div></div>
+            <div class="meta-item"><div class="meta-label">Sig. Edges</div><div class="meta-value">8</div></div>
+          </div>
+          <figure class="figure" onclick="openLightbox(this)">
+            <img src="figures/case_study_C363.png" alt="C363 Adoption Timeline" loading="lazy">
+            <figcaption>Adoption timeline for C363 showing adoption events colored by show category.</figcaption>
+          </figure>
+        </div>
+
+        <!-- Case Study 3 -->
+        <div class="case-study">
+          <div class="case-study-header">
+            <div class="claim-id">Case Study 3 &mdash; C840 &bull; Fastest Spreading</div>
+            <div class="claim-text">&ldquo;QAnon adherents (&lsquo;Q lives&rsquo;) are excited by the idea of Trump as a &lsquo;daddy dictator&rsquo; who will bring justice and truth.&rdquo;</div>
+          </div>
+          <div class="case-study-meta">
+            <div class="meta-item"><div class="meta-label">Theme</div><div class="meta-value">Conspiracy &amp; Historical Revisionism</div></div>
+            <div class="meta-item"><div class="meta-label">Origin</div><div class="meta-value">The Joe Rogan Experience</div></div>
+            <div class="meta-item"><div class="meta-label">First Mention</div><div class="meta-value">2017-11-16</div></div>
+            <div class="meta-item"><div class="meta-label">Adopters</div><div class="meta-value">69 shows</div></div>
+            <div class="meta-item"><div class="meta-label">Sig. Edges</div><div class="meta-value">0</div></div>
+          </div>
+          <figure class="figure" onclick="openLightbox(this)">
+            <img src="figures/case_study_C840.png" alt="C840 Adoption Timeline" loading="lazy">
+            <figcaption>Adoption timeline for C840. Zero significant edges despite 69 adopters suggests exogenous-driven adoption.</figcaption>
+          </figure>
+        </div>
+
+        <!-- Case Study 4 -->
+        <div class="case-study">
+          <div class="case-study-header">
+            <div class="claim-id">Case Study 4 &mdash; C470 &bull; Fastest Spreading</div>
+            <div class="claim-text">&ldquo;Kamala Harris is pandering by supporting the change of Columbus Day to Indigenous Peoples Day.&rdquo;</div>
+          </div>
+          <div class="case-study-meta">
+            <div class="meta-item"><div class="meta-label">Theme</div><div class="meta-value">Cultural &amp; Ideological Warfare</div></div>
+            <div class="meta-item"><div class="meta-label">Origin</div><div class="meta-value">InfoWars Nightly News</div></div>
+            <div class="meta-item"><div class="meta-label">First Mention</div><div class="meta-value">2015-10-12</div></div>
+            <div class="meta-item"><div class="meta-label">Adopters</div><div class="meta-value">72 shows</div></div>
+            <div class="meta-item"><div class="meta-label">Sig. Edges</div><div class="meta-value">1</div></div>
+          </div>
+          <figure class="figure" onclick="openLightbox(this)">
+            <img src="figures/case_study_C470.png" alt="C470 Adoption Timeline" loading="lazy">
+            <figcaption>Adoption timeline for C470 showing rapid adoption with minimal detectable inter-show influence.</figcaption>
+          </figure>
+        </div>
+
+        <!-- Case Study 5 -->
+        <div class="case-study">
+          <div class="case-study-header">
+            <div class="claim-id">Case Study 5 &mdash; C979 &bull; Most Cross-Cluster</div>
+            <div class="claim-text">&ldquo;US support for Israel has led to a &lsquo;genocide&rsquo; in Gaza and escalated conflicts with Hezbollah and Iran.&rdquo;</div>
+          </div>
+          <div class="case-study-meta">
+            <div class="meta-item"><div class="meta-label">Theme</div><div class="meta-value">Foreign Policy &amp; Military Distrust</div></div>
+            <div class="meta-item"><div class="meta-label">Origin</div><div class="meta-value">Bill Cooper</div></div>
+            <div class="meta-item"><div class="meta-label">First Mention</div><div class="meta-value">1994-06-30</div></div>
+            <div class="meta-item"><div class="meta-label">Adopters</div><div class="meta-value">105 shows</div></div>
+            <div class="meta-item"><div class="meta-label">Sig. Edges</div><div class="meta-value">130</div></div>
+          </div>
+          <figure class="figure" onclick="openLightbox(this)">
+            <img src="figures/case_study_C979.png" alt="C979 Adoption Timeline" loading="lazy">
+            <figcaption>Adoption timeline for C979. 130 significant edges indicate strong inter-show diffusion across category boundaries.</figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <!-- ═══ Limitations ═══ -->
+      <section id="limitations">
+        <h2>Limitations and Caveats</h2>
+        <p>These limitations constrain the strength of conclusions but do not invalidate findings.</p>
+
+        <h3>1. Survivorship Bias</h3>
+        <p>The corpus comprises 113 curated shows, not a probability sample. Shows that were deplatformed, discontinued, or never gained visibility may be absent. Prolific shows (Alex Jones: 7,700+ episodes) mechanically appear more connected. The analysis is effectively weighted toward the 2018&ndash;2025 period.</p>
+
+        <h3>2. Open-System Problems</h3>
+        <p>The podcast ecosystem is not closed. Influence from non-podcast sources (Twitter/X, YouTube, Telegram, cable news) cannot be separated from inter-show influence. When two shows adopt the same narrative in sequence, the pattern is <em>consistent with</em> direct influence but could reflect independent responses to shared external stimuli.</p>
+
+        <div class="callout">
+          <strong>0% exogenous flag rate:</strong> All adoption events are treated as potentially endogenous (organic diffusion) &mdash; the strongest assumption in favor of detecting diffusion. The true rate of exogenously driven adoption is unknown.
+        </div>
+
+        <h3>3. Temporal Scope</h3>
+        <p>Coverage is highly uneven: the majority of shows and episodes concentrate in 2018&ndash;2025. Before 2010, only Bill Cooper, Art Bell, and Alex Jones are present. Publication frequency varies from multiple daily episodes to monthly, creating unequal temporal resolution (uncertainty windows from &lt;1 day to 189 days).</p>
+
+        <h3>4. Pre-2021 Exogenous Filtering Gaps</h3>
+        <p>FM-index covers 2021&ndash;2025 only. GDELT API was inaccessible for 2017&ndash;2020. No baseline exists pre-2017. 17.3% of timeline records have quality tier &ldquo;low&rdquo; or &ldquo;none.&rdquo;</p>
+
+        <h3>5. Classification Limitations</h3>
+        <p>Frame-level macro F1 of 0.208 reflects inter-model agreement, not classifier failure. All four methods achieved F1 in the 0.20&ndash;0.24 range. LogReg favors recall (0.363) over precision (0.156), producing broad but noisy assignments. Theme-level F1 (0.371) is substantially more reliable.</p>
+
+        <h3>6. Embedding Space Compression</h3>
+        <p>The embedding space exhibits compressed cosine similarity (mean 0.58, std 0.05), limiting discriminative power for similarity-based approaches. This compression is inherent to dense embedding models.</p>
+
+        <h3>7. Hawkes Model Assumptions</h3>
+        <p>Stationarity (constant kernel parameters), pairwise independence, and exponential decay are assumed. The regime shift analysis explicitly violates stationarity, finding a break near mid-2020.</p>
+
+        <h3>8. Statistical Testing Volume</h3>
+        <p>1.9M Granger tests, 1.3M Hawkes fits, and 5K TE tests with FDR correction applied per-method. Multi-method agreement provides additional false positive control.</p>
+
+        <div class="callout">
+          <strong>Interpretive summary:</strong> Statistical significance is evidence <em>consistent with</em> influence, not proof of causal effect. Results describe the 113-show curated corpus, not the entire ecosystem. Individual passage-level assignments carry substantial uncertainty (F1 = 0.208).
+        </div>
+      </section>
+
+      <!-- ═══ Data Catalog ═══ -->
+      <section id="data-catalog">
+        <h2>Data Catalog</h2>
+        <p>Complete inventory of all intermediate and final data artifacts produced by the analysis pipeline. Each artifact includes path, format, schema, and reuse guidance.</p>
+
+        <div class="callout info">
+          <strong>57 artifacts</strong> cataloged across all 6 analysis phases. See the full catalog at <code>outputs/report/data_catalog.md</code> for detailed schemas, column descriptions, and file sizes.
+        </div>
+
+        <h3>Key Artifacts by Phase</h3>
+        <div class="table-wrap"><table>
+          <thead><tr><th>Phase</th><th>Artifact</th><th>Format</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td>1</td><td>outputs/embeddings/{show_id}/</td><td>.npy</td><td>768-dim passage embeddings per show</td></tr>
+            <tr><td>1</td><td>outputs/shards/</td><td>.parquet</td><td>Passage text with episode metadata</td></tr>
+            <tr><td>2</td><td>outputs/narrative-discovery/ontology/</td><td>.json</td><td>15 themes, 47 frames, 1,289 claims</td></tr>
+            <tr><td>3</td><td>outputs/classification/corpus_labels.parquet</td><td>.parquet</td><td>9M passage labels (frame + theme)</td></tr>
+            <tr><td>3</td><td>outputs/classification/claim_episode_index.parquet</td><td>.parquet</td><td>3.6M claim-episode rows</td></tr>
+            <tr><td>4</td><td>outputs/temporal/timelines_claims.parquet</td><td>.parquet</td><td>103K adoption timeline records</td></tr>
+            <tr><td>4</td><td>outputs/temporal/schedules.parquet</td><td>.parquet</td><td>113 show publication schedules</td></tr>
+            <tr><td>5</td><td>outputs/diffusion/agreement_matrix.parquet</td><td>.parquet</td><td>1.3M edges with method agreement</td></tr>
+            <tr><td>5</td><td>outputs/diffusion/show_pair_summary.parquet</td><td>.parquet</td><td>9,276 show-pair summaries</td></tr>
+            <tr><td>6</td><td>outputs/network/influence_network.graphml</td><td>.graphml</td><td>96-node directed network</td></tr>
+            <tr><td>6</td><td>outputs/network/rogers_classification.parquet</td><td>.parquet</td><td>113 shows with Rogers class</td></tr>
+            <tr><td>6</td><td>outputs/network/community_summary.json</td><td>.json</td><td>6 Leiden communities with members</td></tr>
+          </tbody>
+        </table></div>
+      </section>
+
+      <!-- ── Footer ──────────────────────────────────────── -->
+      <footer>
+        <p>Narrative Diffusion Analysis &mdash; Internal Technical Report</p>
+        <p>113 shows &bull; ~117K episodes &bull; 1992&ndash;2025 &bull; Generated March 2026</p>
+      </footer>
+
+    </div>
+  </main>
+
+</div>
+
+<!-- Lightbox -->
+<div class="lightbox" id="lightbox" onclick="closeLightbox()">
+  <img id="lightbox-img" src="" alt="">
+</div>
+
+<!-- Back to top -->
+<a href="#overview" class="back-to-top" id="btt" aria-label="Back to top">&uarr;</a>
+
+<script>
+// Lightbox
+function openLightbox(fig) {
+  const img = fig.querySelector('img');
+  const lb = document.getElementById('lightbox');
+  document.getElementById('lightbox-img').src = img.src;
+  lb.classList.add('active');
+}
+function closeLightbox() {
+  document.getElementById('lightbox').classList.remove('active');
+}
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
+
+// Active nav link
+const sections = document.querySelectorAll('section[id], header[id]');
+const navLinks = document.querySelectorAll('.sidebar nav a');
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      navLinks.forEach(a => a.classList.remove('active'));
+      const active = document.querySelector(`.sidebar nav a[href="#${entry.target.id}"]`);
+      if (active) active.classList.add('active');
+    }
+  });
+}, { rootMargin: '-20% 0px -70% 0px' });
+sections.forEach(s => observer.observe(s));
+
+// Back to top
+const btt = document.getElementById('btt');
+window.addEventListener('scroll', () => {
+  btt.classList.toggle('visible', window.scrollY > 600);
+});
+</script>
+
+</body>
+</html>
