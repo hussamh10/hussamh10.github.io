@@ -65,12 +65,14 @@
     },
     {
       "id": "things",
-      "label": "Things",
+      "label": "Artifacts",
       "x": 273,
       "y": 290,
       "type": "image",
       "icon": "/res/imgs/things.webp",
-      "color": "none"
+      "color": "none",
+      "panel-type": "markdown",
+      "source": "panels/markdowns/things.md"
     },
     {
       "id": "research",
@@ -236,7 +238,7 @@
       "color": "#e07a5f",
       "size": 40,
       "panel-type": "website",
-      "source": "/desire-architecture/"
+      "source": "/artifacts/desire-architecture/"
     },
     {
       "id": "podcast-analysis",
@@ -247,7 +249,7 @@
       "color": "#81b29a",
       "size": 40,
       "panel-type": "website",
-      "source": "/podcast-analysis/"
+      "source": "/artifacts/podcast-analysis/"
     },
     {
       "id": "twitter-algo",
@@ -258,7 +260,7 @@
       "color": "#5da9e9",
       "size": 40,
       "panel-type": "website",
-      "source": "/twitter-algo/"
+      "source": "/artifacts/twitter-algo/"
     },
     {
       "id": "?_curation",

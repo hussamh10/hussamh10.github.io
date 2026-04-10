@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Twitter Algorithm Research</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif; background: #f5f5f5; color: #222; }
+
+  /* Layout */
+  .app { display: flex; height: 100vh; }
+  .sidebar { width: 400px; min-width: 400px; border-right: 1px solid #ddd; display: flex; flex-direction: column; background: #fff; }
+  .main { flex: 1; overflow-y: auto; padding: 32px 40px; background: #fafafa; }
+
+  /* Tabs */
+  .tabs { display: flex; border-bottom: 1px solid #ddd; }
+  .tab { flex: 1; padding: 10px 12px; font-size: 12px; font-weight: 600; text-align: center; cursor: pointer; background: #f9f9f9; color: #777; border-bottom: 2px solid transparent; transition: all 0.15s; }
+  .tab:hover { color: #444; background: #f0f0f0; }
+  .tab.active { color: #1d4ed8; background: #fff; border-bottom-color: #1d4ed8; }
+
+  /* Sidebar header */
+  .sidebar-header { padding: 12px 16px; border-bottom: 1px solid #eee; }
+  .sidebar-header h1 { font-size: 13px; font-weight: 600; color: #111; margin-bottom: 8px; }
+  .search { width: 100%; padding: 8px 12px; background: #f5f5f5; border: 1px solid #ddd; border-radius: 6px; color: #222; font-size: 13px; outline: none; }
+  .search:focus { border-color: #1d4ed8; background: #fff; }
+
+  /* Filters */
+  .filters { padding: 10px 16px; border-bottom: 1px solid #eee; display: flex; flex-direction: column; gap: 6px; }
+  .filter-row { display: flex; gap: 5px; flex-wrap: wrap; }
+  .filter-row label { font-size: 10px; color: #999; width: 100%; margin-bottom: 1px; text-transform: uppercase; letter-spacing: 0.5px; }
+  .chip { padding: 3px 8px; border-radius: 4px; font-size: 11px; cursor: pointer; border: 1px solid #ddd; background: #fff; color: #666; transition: all 0.15s; user-select: none; }
+  .chip:hover { border-color: #aaa; color: #333; }
+  .chip.active { background: #1d4ed8; border-color: #1d4ed8; color: #fff; }
+
+  /* Sort */
+  .sort-bar { padding: 6px 16px; border-bottom: 1px solid #eee; display: flex; align-items: center; gap: 8px; }
+  .sort-bar label { font-size: 11px; color: #999; }
+  .sort-bar select { background: #fff; border: 1px solid #ddd; border-radius: 4px; color: #444; font-size: 11px; padding: 3px 6px; outline: none; }
+
+  /* Doc list */
+  .doc-list { flex: 1; overflow-y: auto; }
+  .doc-item { padding: 10px 16px; border-bottom: 1px solid #f0f0f0; cursor: pointer; transition: background 0.1s; display: flex; gap: 10px; align-items: flex-start; }
+  .doc-item:hover { background: #f5f8ff; }
+  .doc-item.selected { background: #eef2ff; border-left: 3px solid #3b82f6; }
+  .doc-item.is-read { opacity: 0.5; }
+  .doc-item-content { flex: 1; min-width: 0; }
+  .doc-item-title { font-size: 13px; font-weight: 500; color: #222; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .doc-item.is-read .doc-item-title { text-decoration: line-through; color: #999; }
+  .doc-item-meta { font-size: 11px; color: #999; margin-top: 3px; display: flex; gap: 8px; align-items: center; }
+  .doc-count { padding: 6px 16px; font-size: 11px; color: #999; border-bottom: 1px solid #eee; background: #fafafa; }
+  .read-check { width: 16px; height: 16px; margin-top: 2px; accent-color: #1d4ed8; cursor: pointer; flex-shrink: 0; }
+
+  /* Strategy section header */
+  .strategy-section { padding: 8px 16px; font-size: 11px; font-weight: 700; color: #1d4ed8; background: #eef2ff; border-bottom: 1px solid #dbeafe; text-transform: uppercase; letter-spacing: 0.5px; }
+
+  /* Badges */
+  .badge { display: inline-block; padding: 1px 6px; border-radius: 3px; font-size: 10px; font-weight: 500; }
+  .badge-must-read { background: #fef2f2; color: #dc2626; border: 1px solid #fecaca; }
+  .badge-recommended { background: #fffbeb; color: #d97706; border: 1px solid #fde68a; }
+  .badge-skim { background: #eff6ff; color: #2563eb; border: 1px solid #bfdbfe; }
+  .badge-reference-only { background: #f5f5f5; color: #888; border: 1px solid #e5e5e5; }
+  .badge-primary { background: #f0fdf4; color: #16a34a; border: 1px solid #bbf7d0; }
+  .badge-secondary { background: #faf5ff; color: #9333ea; border: 1px solid #e9d5ff; }
+  .badge-tertiary { background: #f5f5f5; color: #888; border: 1px solid #e5e5e5; }
+
+  /* Score dots */
+  .score { display: inline-flex; gap: 2px; }
+  .dot { width: 6px; height: 6px; border-radius: 50%; background: #ddd; }
+  .dot.filled { background: #1d4ed8; }
+
+  /* Main panel */
+  .empty-state { display: flex; align-items: center; justify-content: center; height: 100%; color: #bbb; font-size: 14px; }
+
+  .doc-detail h2 { font-size: 20px; font-weight: 600; color: #111; margin-bottom: 4px; line-height: 1.3; }
+  .doc-detail .url { font-size: 12px; color: #1d4ed8; text-decoration: none; word-break: break-all; }
+  .doc-detail .url:hover { text-decoration: underline; }
+
+  .read-toggle { margin: 16px 0; display: flex; align-items: center; gap: 8px; }
+  .read-toggle input { width: 18px; height: 18px; accent-color: #1d4ed8; cursor: pointer; }
+  .read-toggle label { font-size: 13px; color: #555; cursor: pointer; }
+
+  .meta-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin: 20px 0; }
+  .meta-card { background: #fff; border: 1px solid #e5e5e5; border-radius: 8px; padding: 12px; }
+  .meta-card .label { font-size: 11px; color: #999; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+
+  .section { margin: 20px 0; }
+  .section h3 { font-size: 12px; color: #999; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
+  .abstract { font-size: 14px; line-height: 1.7; color: #444; background: #fff; border: 1px solid #e5e5e5; border-radius: 8px; padding: 16px; }
+  .unique { font-size: 13px; line-height: 1.6; color: #666; font-style: italic; }
+
+  .tag-list { display: flex; flex-wrap: wrap; gap: 6px; }
+  .tag { padding: 3px 10px; border-radius: 4px; font-size: 12px; background: #eef2ff; color: #4338ca; border: 1px solid #c7d2fe; }
+  .tag.stage { background: #f0fdf4; color: #15803d; border-color: #bbf7d0; }
+  .tag.artifact { background: #fef2f2; color: #dc2626; border-color: #fecaca; }
+
+  .status-row { display: flex; gap: 10px; align-items: center; margin: 12px 0; flex-wrap: wrap; }
+  .status-pill { padding: 4px 12px; border-radius: 12px; font-size: 12px; font-weight: 500; }
+  .pill-current { background: #f0fdf4; color: #16a34a; border: 1px solid #bbf7d0; }
+  .pill-likely-outdated { background: #fffbeb; color: #d97706; border: 1px solid #fde68a; }
+  .pill-superseded { background: #fef2f2; color: #dc2626; border: 1px solid #fecaca; }
+  .pill-accessible { background: #eff6ff; color: #2563eb; border: 1px solid #bfdbfe; }
+  .pill-inaccessible { background: #f5f5f5; color: #999; border: 1px solid #e5e5e5; }
+
+  /* Score bar */
+  .score-bar { display: flex; align-items: center; gap: 8px; }
+  .score-bar .bar-track { flex: 1; height: 6px; background: #eee; border-radius: 3px; }
+  .score-bar .bar-fill { height: 100%; border-radius: 3px; transition: width 0.3s; }
+  .score-bar .bar-label { font-size: 12px; color: #999; min-width: 24px; text-align: right; }
+  .fill-1 { width: 20%; background: #ef4444; }
+  .fill-2 { width: 40%; background: #f97316; }
+  .fill-3 { width: 60%; background: #eab308; }
+  .fill-4 { width: 80%; background: #22c55e; }
+  .fill-5 { width: 100%; background: #1d4ed8; }
+
+  /* Notes */
+  .notes-section { margin: 24px 0; }
+  .notes-section h3 { font-size: 12px; color: #999; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
+  .notes-area { width: 100%; min-height: 120px; padding: 12px; font-family: inherit; font-size: 13px; line-height: 1.6; color: #333; background: #fff; border: 1px solid #ddd; border-radius: 8px; outline: none; resize: vertical; }
+  .notes-area:focus { border-color: #1d4ed8; }
+  .notes-saved { font-size: 11px; color: #16a34a; margin-top: 4px; opacity: 0; transition: opacity 0.3s; }
+  .notes-saved.show { opacity: 1; }
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="sidebar">
+    <div class="tabs">
+      <div class="tab active" data-tab="all">All Documents</div>
+      <div class="tab" data-tab="strategy">Reading Strategy</div>
+    </div>
+    <div class="sidebar-header">
+      <h1 id="sidebar-title">Twitter Algorithm Research -- 222 Documents</h1>
+      <input class="search" type="text" placeholder="Search titles, abstracts, tags..." id="search">
+    </div>
+    <div class="filters" id="filters-panel">
+      <div class="filter-row">
+        <label>Priority</label>
+        <span class="chip" data-filter="priority" data-val="must-read">Must Read</span>
+        <span class="chip" data-filter="priority" data-val="recommended">Recommended</span>
+        <span class="chip" data-filter="priority" data-val="skim">Skim</span>
+        <span class="chip" data-filter="priority" data-val="reference-only">Reference</span>
+      </div>
+      <div class="filter-row">
+        <label>Source</label>
+        <span class="chip" data-filter="authority" data-val="primary">Primary</span>
+        <span class="chip" data-filter="authority" data-val="secondary">Secondary</span>
+        <span class="chip" data-filter="authority" data-val="tertiary">Tertiary</span>
+      </div>
+      <div class="filter-row">
+        <label>Staleness</label>
+        <span class="chip" data-filter="staleness" data-val="current">Current</span>
+        <span class="chip" data-filter="staleness" data-val="likely-outdated">Likely Outdated</span>
+        <span class="chip" data-filter="staleness" data-val="superseded">Superseded</span>
+      </div>
+    </div>
+    <div class="sort-bar" id="sort-bar">
+      <label>Sort by</label>
+      <select id="sort">
+        <option value="id">ID</option>
+        <option value="density-desc">Info Density (high first)</option>
+        <option value="recreatability-desc">Recreatability (high first)</option>
+        <option value="confidence-desc">Accuracy (high first)</option>
+        <option value="priority">Reading Priority</option>
+      </select>
+    </div>
+    <div class="doc-count" id="doc-count"></div>
+    <div class="doc-list" id="doc-list"></div>
+  </div>
+  <div class="main" id="main">
+    <div class="empty-state">Select a document from the list</div>
+  </div>
+</div>
+
+<script>
+let DATA = [];
+let selected = null;
+let currentTab = 'all';
+let filters = { priority: null, authority: null, staleness: null };
+let readState = JSON.parse(localStorage.getItem('tw-read') || '{}');
+let notesState = JSON.parse(localStorage.getItem('tw-notes') || '{}');
+
+const priorityOrder = { 'must-read': 0, 'recommended': 1, 'skim': 2, 'reference-only': 3 };
+
+const STRATEGY = [
+  {
+    label: 'Phase 1: Spine (full pipeline overview)',
+    ids: [1, 115, 167]
+  },
+  {
+    label: 'Phase 2: Candidate Generation',
+    ids: [57, 58, 79, 62, 71]
+  },
+  {
+    label: 'Phase 3: Ranking',
+    ids: [74, 88]
+  },
+  {
+    label: 'Phase 4: Embeddings & Representations',
+    ids: [77, 175, 176]
+  },
+  {
+    label: 'Phase 5: Serving & Assembly',
+    ids: [55]
+  },
+  {
+    label: 'Phase 6: Insider Perspectives & Unique Insights',
+    ids: [114, 116, 139, 140]
+  }
+];
+
+const strategyIds = new Set(STRATEGY.flatMap(s => s.ids));
+
+fetch('documents_analysis.json')
+  .then(r => r.json())
+  .then(data => { DATA = data; render(); });
+
+function setTab(tab) {
+  currentTab = tab;
+  document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t.dataset.tab === tab));
+  const fp = document.getElementById('filters-panel');
+  const sb = document.getElementById('sort-bar');
+  if (tab === 'strategy') {
+    fp.style.display = 'none';
+    sb.style.display = 'none';
+  } else {
+    fp.style.display = '';
+    sb.style.display = '';
+  }
+  render();
+}
+
+document.querySelectorAll('.tab').forEach(t => t.addEventListener('click', () => setTab(t.dataset.tab)));
+
+function render() {
+  if (currentTab === 'strategy') return renderStrategy();
+  renderAll();
+}
+
+function renderAll() {
+  const q = document.getElementById('search').value.toLowerCase();
+  const sort = document.getElementById('sort').value;
+
+  let docs = DATA.filter(d => {
+    if (filters.priority && d.reading_priority !== filters.priority) return false;
+    if (filters.authority && d.source_authority !== filters.authority) return false;
+    if (filters.staleness && d.staleness_risk !== filters.staleness) return false;
+    if (q) {
+      const hay = [d.title, d.abstract, d.url, ...(d.topic_labels||[]), ...(d.pipeline_stages||[]), d.unique_contribution||''].join(' ').toLowerCase();
+      return hay.includes(q);
+    }
+    return true;
+  });
+
+  docs.sort((a, b) => {
+    if (sort === 'id') return a.id - b.id;
+    if (sort === 'density-desc') return (b.information_density||0) - (a.information_density||0);
+    if (sort === 'recreatability-desc') return (b.recreatability||0) - (a.recreatability||0);
+    if (sort === 'confidence-desc') return (b.accuracy_confidence||0) - (a.accuracy_confidence||0);
+    if (sort === 'priority') return (priorityOrder[a.reading_priority]||9) - (priorityOrder[b.reading_priority]||9);
+    return 0;
+  });
+
+  const readCount = docs.filter(d => readState[d.id]).length;
+  document.getElementById('doc-count').textContent = `${docs.length} documents (${readCount} read)`;
+
+  const list = document.getElementById('doc-list');
+  list.innerHTML = docs.map(d => docItemHTML(d)).join('');
+  bindDocItems();
+}
+
+function renderStrategy() {
+  const q = document.getElementById('search').value.toLowerCase();
+  let totalCount = 0;
+  let readCount = 0;
+
+  let html = '';
+  for (const phase of STRATEGY) {
+    let docs = phase.ids.map(id => DATA.find(d => d.id === id)).filter(Boolean);
+    if (q) docs = docs.filter(d => {
+      const hay = [d.title, d.abstract, d.url, ...(d.topic_labels||[]), ...(d.pipeline_stages||[]), d.unique_contribution||''].join(' ').toLowerCase();
+      return hay.includes(q);
+    });
+    if (docs.length === 0) continue;
+    totalCount += docs.length;
+    readCount += docs.filter(d => readState[d.id]).length;
+    html += `<div class="strategy-section">${phase.label}</div>`;
+    html += docs.map(d => docItemHTML(d)).join('');
+  }
+
+  document.getElementById('doc-count').textContent = `${totalCount} documents (${readCount} read)`;
+  document.getElementById('doc-list').innerHTML = html;
+  bindDocItems();
+}
+
+function docItemHTML(d) {
+  const isRead = readState[d.id];
+  return `
+    <div class="doc-item ${selected === d.id ? 'selected' : ''} ${isRead ? 'is-read' : ''}" data-id="${d.id}">
+      <input type="checkbox" class="read-check" data-id="${d.id}" ${isRead ? 'checked' : ''} title="Mark as read">
+      <div class="doc-item-content">
+        <div class="doc-item-title">#${d.id} ${d.title}</div>
+        <div class="doc-item-meta">
+          <span class="badge badge-${d.reading_priority}">${d.reading_priority}</span>
+          <span class="badge badge-${d.source_authority}">${d.source_authority}</span>
+          <span style="color:#aaa">${d.year||''}</span>
+          <span style="margin-left:auto">${scoreDots(d.information_density)}</span>
+        </div>
+      </div>
+    </div>`;
+}
+
+function bindDocItems() {
+  document.querySelectorAll('.doc-item').forEach(el => {
+    el.addEventListener('click', (e) => {
+      if (e.target.classList.contains('read-check')) return;
+      selected = parseInt(el.dataset.id);
+      render();
+      showDoc(DATA.find(d => d.id === selected));
+    });
+  });
+  document.querySelectorAll('.read-check').forEach(cb => {
+    cb.addEventListener('change', (e) => {
+      e.stopPropagation();
+      const id = parseInt(cb.dataset.id);
+      readState[id] = cb.checked;
+      localStorage.setItem('tw-read', JSON.stringify(readState));
+      render();
+      if (selected === id) showDoc(DATA.find(d => d.id === id));
+    });
+  });
+}
+
+function scoreDots(n) {
+  return '<span class="score">' + Array.from({length:5}, (_,i) => `<span class="dot ${i < n ? 'filled' : ''}"></span>`).join('') + '</span>';
+}
+
+function scoreBar(n) {
+  return `<div class="score-bar"><div class="bar-track"><div class="bar-fill fill-${n}"></div></div><div class="bar-label">${n}/5</div></div>`;
+}
+
+function showDoc(d) {
+  const main = document.getElementById('main');
+  const isRead = readState[d.id];
+  const notes = notesState[d.id] || '';
+  const hasNotes = notes.trim().length > 0;
+
+  main.innerHTML = `
+    <div class="doc-detail">
+      <h2>${d.title}</h2>
+      <a class="url" href="${d.url}" target="_blank" rel="noopener">${d.url}</a>
+
+      <div class="read-toggle">
+        <input type="checkbox" id="read-main" ${isRead ? 'checked' : ''}>
+        <label for="read-main">${isRead ? 'Read' : 'Mark as read'}</label>
+      </div>
+
+      <div class="status-row">
+        <span class="status-pill pill-${d.staleness_risk}">${d.staleness_risk}</span>
+        <span class="status-pill ${d.accessible ? 'pill-accessible' : 'pill-inaccessible'}">${d.accessible ? 'Accessible' : 'Not Accessible'}</span>
+        <span class="badge badge-${d.reading_priority}" style="font-size:12px;padding:4px 12px">${d.reading_priority}</span>
+        <span class="badge badge-${d.source_authority}" style="font-size:12px;padding:4px 12px">${d.source_authority}</span>
+        <span style="color:#999;font-size:12px">${d.year||''}</span>
+      </div>
+
+      <div class="meta-grid">
+        <div class="meta-card">
+          <div class="label">Information Density</div>
+          ${scoreBar(d.information_density)}
+        </div>
+        <div class="meta-card">
+          <div class="label">Accuracy Confidence</div>
+          ${scoreBar(d.accuracy_confidence)}
+        </div>
+        <div class="meta-card">
+          <div class="label">Recreatability</div>
+          ${scoreBar(d.recreatability)}
+        </div>
+      </div>
+
+      <div class="section">
+        <h3>Abstract</h3>
+        <div class="abstract">${d.abstract || 'No abstract available.'}</div>
+      </div>
+
+      <div class="section">
+        <h3>Unique Contribution</h3>
+        <div class="unique">${d.unique_contribution || 'None identified.'}</div>
+      </div>
+
+      <div class="section">
+        <h3>Topic Labels</h3>
+        <div class="tag-list">${(d.topic_labels||[]).map(t => `<span class="tag">${t}</span>`).join('')}</div>
+      </div>
+
+      <div class="section">
+        <h3>Pipeline Stages</h3>
+        <div class="tag-list">${(d.pipeline_stages||[]).map(t => `<span class="tag stage">${t}</span>`).join('')}</div>
+      </div>
+
+      <div class="section">
+        <h3>Implementation Artifacts</h3>
+        <div class="tag-list">${(d.implementation_artifacts||[]).map(t => `<span class="tag artifact">${t}</span>`).join('')}</div>
+      </div>
+
+      <div class="notes-section">
+        <h3>Your Notes</h3>
+        <textarea class="notes-area" id="notes-area" placeholder="Write your notes here...">${notes}</textarea>
+        <div class="notes-saved" id="notes-saved">Saved</div>
+      </div>
+    </div>
+  `;
+  main.scrollTop = 0;
+
+  document.getElementById('read-main').addEventListener('change', (e) => {
+    readState[d.id] = e.target.checked;
+    localStorage.setItem('tw-read', JSON.stringify(readState));
+    document.querySelector(`label[for="read-main"]`).textContent = e.target.checked ? 'Read' : 'Mark as read';
+    render();
+  });
+
+  let saveTimer;
+  document.getElementById('notes-area').addEventListener('input', (e) => {
+    notesState[d.id] = e.target.value;
+    clearTimeout(saveTimer);
+    saveTimer = setTimeout(() => {
+      localStorage.setItem('tw-notes', JSON.stringify(notesState));
+      const saved = document.getElementById('notes-saved');
+      saved.classList.add('show');
+      setTimeout(() => saved.classList.remove('show'), 1500);
+    }, 500);
+  });
+}
+
+// Filter chips
+document.querySelectorAll('.chip').forEach(chip => {
+  chip.addEventListener('click', () => {
+    const f = chip.dataset.filter;
+    const v = chip.dataset.val;
+    if (filters[f] === v) { filters[f] = null; chip.classList.remove('active'); }
+    else {
+      document.querySelectorAll(`.chip[data-filter="${f}"]`).forEach(c => c.classList.remove('active'));
+      filters[f] = v;
+      chip.classList.add('active');
+    }
+    render();
+  });
+});
+
+document.getElementById('search').addEventListener('input', render);
+document.getElementById('sort').addEventListener('change', render);
+</script>
+</body>
+</html>
