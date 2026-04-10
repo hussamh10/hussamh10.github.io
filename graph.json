@@ -228,6 +228,39 @@
       "ref": "https://ojs.aaai.org/index.php/ICWSM/article/download/22147/21926"
     },
     {
+      "id": "desire-architecture",
+      "label": "Desire Architecture",
+      "x": 200,
+      "y": 380,
+      "type": "shape",
+      "color": "#e07a5f",
+      "size": 40,
+      "panel-type": "website",
+      "source": "/desire-architecture/"
+    },
+    {
+      "id": "podcast-analysis",
+      "label": "Podcast Analysis",
+      "x": 340,
+      "y": 380,
+      "type": "shape",
+      "color": "#81b29a",
+      "size": 40,
+      "panel-type": "website",
+      "source": "/podcast-analysis/"
+    },
+    {
+      "id": "twitter-algo",
+      "label": "Twitter Algorithm",
+      "x": 270,
+      "y": 440,
+      "type": "shape",
+      "color": "#5da9e9",
+      "size": 40,
+      "panel-type": "website",
+      "source": "/twitter-algo/"
+    },
+    {
       "id": "?_curation",
       "label": "Do curation algorithms cause dysfunction?",
       "x": 0,
@@ -338,6 +371,18 @@
     {
       "source": "p_aceap",
       "target": "t_audit"
+    },
+    {
+      "source": "things",
+      "target": "desire-architecture"
+    },
+    {
+      "source": "things",
+      "target": "podcast-analysis"
+    },
+    {
+      "source": "things",
+      "target": "twitter-algo"
     },
     {
       "source": "travel",
