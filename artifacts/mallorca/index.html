@@ -1,0 +1,1635 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Mallorca · A Slow Field Guide</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,600;1,9..144,300;1,9..144,400&family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;1,6..72,300;1,6..72,400&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet" />
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+      integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+      crossorigin="" />
+
+<style>
+  :root {
+    /* deep editorial night — warm bone type on ink */
+    --bone:      #11141A;   /* page background */
+    --bone-2:    #1A1F28;   /* card surface */
+    --bone-3:    #232936;   /* deeper surface */
+    --ink:       #EFE7D2;   /* warm bone (type) */
+    --ink-soft:  #C8C0AC;
+    --ink-mute:  #837F6F;
+    --olive:     #B8D26A;   /* sage chartreuse — Tuesday */
+    --terra:     #FF6F58;   /* coral — Sunday */
+    --terra-soft:#FF9A86;
+    --sea:       #5DBED1;   /* aegean — Monday */
+    --sea-soft:  #8FD3DF;
+    --sun:       #F4C95D;   /* butter — Wednesday */
+    --rule:      rgba(239, 231, 210, 0.14);
+    --rule-soft: rgba(239, 231, 210, 0.07);
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: var(--bone);
+    color: var(--ink);
+    font-family: "Newsreader", Georgia, serif;
+    font-weight: 400;
+    font-size: 17px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+  body { -webkit-text-size-adjust: 100%; }
+
+  /* film grain — light particles on screen blend so they show on dark */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 1000;
+    opacity: 0.10;
+    mix-blend-mode: screen;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.94 0 0 0 0 0.90 0 0 0 0 0.78 0 0 0 0.55 0'/></filter><rect width='240' height='240' filter='url(%23n)' opacity='0.55'/></svg>");
+  }
+
+  ::selection { background: var(--terra); color: var(--bone); }
+
+  /* ---------- HEADER ---------- */
+  header.masthead {
+    padding: 56px clamp(20px, 5vw, 80px) 40px;
+    border-bottom: 1px solid var(--rule);
+    position: relative;
+  }
+  .eyebrow {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 11px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+    margin: 0 0 22px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .eyebrow .dot {
+    width: 5px; height: 5px; border-radius: 50%;
+    background: var(--terra);
+  }
+  h1.title {
+    font-family: "Fraunces", serif;
+    font-style: italic;
+    font-weight: 300;
+    font-size: clamp(64px, 11vw, 168px);
+    line-height: 0.92;
+    margin: 0;
+    letter-spacing: -0.025em;
+    color: var(--ink);
+    font-variation-settings: "opsz" 144, "SOFT" 100;
+  }
+  .subtitle {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 22px 36px;
+    margin-top: 28px;
+    padding-top: 22px;
+    border-top: 1px solid var(--rule-soft);
+    font-family: "Newsreader", serif;
+    font-size: 15px;
+    color: var(--ink-soft);
+  }
+  .subtitle b {
+    font-family: "JetBrains Mono", monospace;
+    font-weight: 400;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+    margin-right: 6px;
+  }
+  .lede {
+    margin-top: 30px;
+    max-width: 62ch;
+    font-style: italic;
+    font-size: 18px;
+    color: var(--ink-soft);
+    line-height: 1.6;
+  }
+
+  /* ---------- DAY FILTER ---------- */
+  nav.filters {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: var(--bone);
+    border-bottom: 1px solid var(--rule);
+    padding: 14px clamp(20px, 5vw, 80px);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    align-items: center;
+  }
+  nav.filters::before {
+    content: "DAYS —";
+    font-family: "JetBrains Mono", monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    color: var(--ink-mute);
+    margin-right: 16px;
+  }
+  .chip {
+    appearance: none;
+    background: transparent;
+    border: 1px solid var(--rule);
+    color: var(--ink-soft);
+    padding: 9px 18px 8px;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    cursor: pointer;
+    border-radius: 999px;
+    transition: all 0.18s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .chip:hover { border-color: var(--ink-soft); color: var(--ink); }
+  .chip .num {
+    font-style: italic;
+    color: var(--ink-mute);
+    font-size: 10px;
+  }
+  .chip.active {
+    background: var(--ink);
+    color: var(--bone);
+    border-color: var(--ink);
+  }
+  .chip.active .num { color: var(--bone-3); }
+  .chip[data-day="sun"].active { background: var(--terra); border-color: var(--terra); }
+  .chip[data-day="mon"].active { background: var(--sea); border-color: var(--sea); }
+  .chip[data-day="tue"].active { background: var(--olive); border-color: var(--olive); }
+  .chip[data-day="wed"].active { background: var(--sun); border-color: var(--sun); color: var(--bone); }
+
+  /* ---------- LAYOUT ---------- */
+  main {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+  @media (min-width: 980px) {
+    main {
+      grid-template-columns: minmax(420px, 46%) 1fr;
+    }
+  }
+
+  /* ---------- MAP ---------- */
+  aside.map-pane {
+    position: relative;
+    background: var(--bone-2);
+    border-right: 1px solid var(--rule);
+  }
+  @media (min-width: 980px) {
+    aside.map-pane {
+      position: sticky;
+      top: 49px;
+      height: calc(100vh - 49px);
+    }
+  }
+  #map {
+    width: 100%;
+    height: 100%;
+    min-height: 420px;
+    background: var(--bone-2);
+  }
+  @media (max-width: 979px) {
+    #map { height: 60vh; }
+  }
+  /* very subtle adjust on the dark base tiles */
+  .leaflet-tile-pane {
+    filter: saturate(0.85) brightness(1.04) contrast(1.02);
+  }
+  .leaflet-container {
+    background: var(--bone-2) !important;
+    font-family: "Newsreader", serif;
+  }
+  .leaflet-control-attribution {
+    background: rgba(17, 20, 26, 0.85) !important;
+    font-family: "JetBrains Mono", monospace !important;
+    font-size: 9px !important;
+    color: var(--ink-mute) !important;
+  }
+  .leaflet-control-attribution a { color: var(--ink-soft) !important; }
+  .leaflet-control-zoom a {
+    background: var(--bone) !important;
+    color: var(--ink) !important;
+    border: 1px solid var(--rule) !important;
+    font-family: "Fraunces", serif !important;
+    font-weight: 400 !important;
+  }
+  .leaflet-popup-content-wrapper {
+    background: var(--bone) !important;
+    color: var(--ink) !important;
+    border-radius: 2px !important;
+    box-shadow: 0 12px 32px rgba(0,0,0,0.55) !important;
+    border: 1px solid var(--rule) !important;
+  }
+  .leaflet-popup-tip { background: var(--bone) !important; border: 1px solid var(--rule) !important; }
+  .leaflet-popup-content { margin: 14px 16px !important; font-size: 13px !important; }
+  .leaflet-popup-content .pop-name {
+    font-family: "Fraunces", serif;
+    font-style: italic;
+    font-size: 18px;
+    line-height: 1.15;
+    margin: 0 0 4px;
+    color: var(--ink);
+  }
+  .leaflet-popup-content .pop-meta {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+    margin-bottom: 8px;
+  }
+  .leaflet-popup-content a {
+    color: var(--terra);
+    text-decoration: none;
+    border-bottom: 1px solid var(--terra-soft);
+    font-family: "JetBrains Mono", monospace;
+    font-size: 11px;
+    letter-spacing: 0.06em;
+  }
+
+  /* custom marker */
+  .pin {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    color: var(--bone);
+    font-family: "JetBrains Mono", monospace;
+    font-size: 11px;
+    font-weight: 500;
+    border: 1.5px solid rgba(239, 231, 210, 0.35);
+    box-shadow: 0 4px 14px rgba(0,0,0,0.55);
+    transition: transform 0.18s ease;
+  }
+  .pin:hover { transform: scale(1.2); }
+  .pin.sun { background: var(--terra); }
+  .pin.mon { background: var(--sea); }
+  .pin.tue { background: var(--olive); }
+  .pin.wed { background: var(--sun); }
+
+  /* ---------- ITINERARY ---------- */
+  section.itinerary {
+    padding: 24px clamp(20px, 4vw, 56px) 80px;
+    max-width: 760px;
+  }
+
+  article.day {
+    position: relative;
+    padding: 60px 0 48px;
+    border-bottom: 1px solid var(--rule);
+  }
+  article.day:last-of-type { border-bottom: none; }
+
+  .day-header {
+    position: relative;
+    margin-bottom: 36px;
+  }
+  .day-roman {
+    position: absolute;
+    top: -28px;
+    right: -10px;
+    font-family: "Fraunces", serif;
+    font-style: italic;
+    font-weight: 300;
+    font-size: clamp(120px, 18vw, 220px);
+    line-height: 1;
+    color: var(--ink);
+    opacity: 0.06;
+    letter-spacing: -0.04em;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .day-tag {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 10px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 14px;
+    position: relative;
+    z-index: 1;
+  }
+  .day-tag .swatch {
+    width: 28px; height: 1px; background: currentColor;
+  }
+  article[data-day="sun"] .day-tag { color: var(--terra); }
+  article[data-day="mon"] .day-tag { color: var(--sea); }
+  article[data-day="tue"] .day-tag { color: var(--olive); }
+  article[data-day="wed"] .day-tag { color: var(--sun); }
+
+  .day-title {
+    font-family: "Fraunces", serif;
+    font-style: italic;
+    font-weight: 300;
+    font-size: clamp(40px, 6vw, 64px);
+    line-height: 0.95;
+    letter-spacing: -0.02em;
+    margin: 0 0 10px;
+    position: relative;
+    z-index: 1;
+  }
+  .day-route {
+    font-family: "Newsreader", serif;
+    font-style: italic;
+    color: var(--ink-soft);
+    font-size: 16px;
+    line-height: 1.5;
+    max-width: 56ch;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* drive-leg label between stops */
+  .leg {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+    margin: -2px 0 12px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    line-height: 1.4;
+  }
+  .leg::before {
+    content: "↓";
+    font-family: "Newsreader", serif;
+    font-style: italic;
+    font-size: 15px;
+    text-transform: none;
+    letter-spacing: 0;
+    opacity: 0.85;
+  }
+  article[data-day="sun"] .leg { color: var(--terra-soft); }
+  article[data-day="mon"] .leg { color: var(--sea-soft); }
+  article[data-day="tue"] .leg { color: var(--olive); }
+  article[data-day="wed"] .leg { color: var(--sun); }
+
+  /* timeline */
+  ol.timeline {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    position: relative;
+  }
+  ol.timeline::before {
+    content: "";
+    position: absolute;
+    left: 9px;
+    top: 8px;
+    bottom: 8px;
+    border-left: 1px dashed var(--rule);
+  }
+  li.stop {
+    position: relative;
+    padding: 0 0 32px 38px;
+  }
+  li.stop:last-child { padding-bottom: 0; }
+  li.stop::before {
+    content: "";
+    position: absolute;
+    left: 4px;
+    top: 8px;
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
+    background: var(--bone);
+    border: 1.5px solid var(--ink);
+  }
+  article[data-day="sun"] li.stop::before { border-color: var(--terra); }
+  article[data-day="mon"] li.stop::before { border-color: var(--sea); }
+  article[data-day="tue"] li.stop::before { border-color: var(--olive); }
+  article[data-day="wed"] li.stop::before { border-color: var(--sun); }
+
+  .stop-time {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    color: var(--ink-mute);
+    background: var(--bone-2);
+    border: 1px solid var(--rule-soft);
+    padding: 3px 9px 2px;
+    border-radius: 2px;
+    display: inline-block;
+    margin-bottom: 8px;
+  }
+  .stop-name {
+    font-family: "Fraunces", serif;
+    font-style: italic;
+    font-weight: 400;
+    font-size: 26px;
+    line-height: 1.15;
+    margin: 0 0 6px;
+    color: var(--ink);
+  }
+  .stop-name .num {
+    font-family: "JetBrains Mono", monospace;
+    font-style: normal;
+    font-size: 11px;
+    color: var(--ink-mute);
+    letter-spacing: 0.1em;
+    margin-right: 10px;
+    vertical-align: 4px;
+  }
+  .stop-note {
+    color: var(--ink-soft);
+    font-size: 15.5px;
+    line-height: 1.55;
+    margin: 0 0 10px;
+    max-width: 58ch;
+  }
+  .stop-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 18px;
+    align-items: center;
+    margin-top: 6px;
+  }
+  .map-link {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 10.5px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    text-decoration: none;
+    border-bottom: 1px solid var(--rule);
+    padding-bottom: 2px;
+    transition: color 0.18s, border-color 0.18s;
+  }
+  .map-link:hover { color: var(--terra); border-color: var(--terra); }
+  .map-link::before { content: "↗ "; color: var(--ink-mute); }
+
+  /* restaurant card */
+  .resto {
+    margin-top: 14px;
+    padding: 14px 16px 16px;
+    background: var(--bone-2);
+    border: 1px solid var(--rule-soft);
+    border-left: 3px solid var(--terra);
+    border-radius: 2px;
+    position: relative;
+  }
+  .resto-badge {
+    position: absolute;
+    top: -8px;
+    right: 14px;
+    background: var(--terra);
+    color: var(--bone);
+    font-family: "JetBrains Mono", monospace;
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    padding: 3px 8px 2px;
+    border-radius: 2px;
+  }
+  .resto-name {
+    font-family: "Fraunces", serif;
+    font-style: italic;
+    font-size: 19px;
+    margin: 0 0 4px;
+  }
+  .resto-meta {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+    margin-bottom: 8px;
+  }
+  .resto-meta .price { color: var(--olive); margin-right: 8px; }
+  .resto-note {
+    font-size: 14.5px;
+    color: var(--ink-soft);
+    line-height: 1.5;
+    margin: 0 0 8px;
+  }
+
+  .heads-up {
+    margin-top: 22px;
+    padding: 14px 16px;
+    border: 1px dashed var(--rule);
+    background: rgba(217, 162, 59, 0.08);
+    border-radius: 2px;
+    font-size: 14px;
+    color: var(--ink-soft);
+    font-style: italic;
+  }
+  .heads-up b {
+    font-family: "JetBrains Mono", monospace;
+    font-style: normal;
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--sun);
+    margin-right: 6px;
+  }
+
+  /* hidden state for filtered days */
+  article.day.dim {
+    display: none;
+  }
+
+  /* ---------- FOOD CHECKLIST ---------- */
+  section.food {
+    padding: 80px clamp(20px, 5vw, 80px) 100px;
+    border-top: 1px solid var(--rule);
+    background: var(--bone-2);
+    position: relative;
+  }
+  .food-eyebrow {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 11px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+    margin: 0 0 18px;
+  }
+  .food-title {
+    font-family: "Fraunces", serif;
+    font-style: italic;
+    font-weight: 300;
+    font-size: clamp(44px, 7vw, 88px);
+    line-height: 0.95;
+    margin: 0 0 20px;
+    letter-spacing: -0.02em;
+  }
+  .food-lede {
+    max-width: 60ch;
+    font-style: italic;
+    color: var(--ink-soft);
+    font-size: 17px;
+    margin: 0 0 56px;
+  }
+  .food-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 48px;
+  }
+  @media (min-width: 760px) {
+    .food-grid { grid-template-columns: repeat(3, 1fr); gap: 56px; }
+  }
+  .meal h3 {
+    font-family: "Fraunces", serif;
+    font-style: italic;
+    font-weight: 300;
+    font-size: 32px;
+    margin: 0 0 6px;
+  }
+  .meal .meal-tag {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+    margin-bottom: 22px;
+    display: block;
+  }
+  .meal ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .meal li {
+    border-bottom: 1px solid var(--rule-soft);
+    padding: 14px 0;
+  }
+  .meal li:last-child { border-bottom: none; }
+  .meal label {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 14px;
+    cursor: pointer;
+    align-items: start;
+  }
+  .meal input[type="checkbox"] {
+    appearance: none;
+    width: 18px;
+    height: 18px;
+    border: 1.5px solid var(--ink-mute);
+    border-radius: 2px;
+    background: var(--bone);
+    cursor: pointer;
+    margin-top: 4px;
+    position: relative;
+    transition: all 0.18s;
+  }
+  .meal input[type="checkbox"]:hover { border-color: var(--ink); }
+  .meal input[type="checkbox"]:checked {
+    background: var(--olive);
+    border-color: var(--olive);
+  }
+  .meal input[type="checkbox"]:checked::after {
+    content: "✓";
+    position: absolute;
+    inset: 0;
+    color: var(--bone);
+    font-size: 12px;
+    display: grid;
+    place-items: center;
+    font-family: "Newsreader", serif;
+    font-weight: 500;
+  }
+  .meal label:has(input:checked) .dish { text-decoration: line-through; color: var(--ink-mute); }
+  .meal label:has(input:checked) .dish-name { color: var(--ink-mute); }
+  .dish-name {
+    font-family: "Fraunces", serif;
+    font-style: italic;
+    font-size: 19px;
+    line-height: 1.2;
+    color: var(--ink);
+    display: block;
+    margin-bottom: 2px;
+  }
+  .dish-note {
+    font-size: 14px;
+    color: var(--ink-soft);
+    line-height: 1.45;
+  }
+  .dish-price {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 10px;
+    color: var(--olive);
+    letter-spacing: 0.08em;
+    margin-left: 6px;
+  }
+  .progress {
+    margin-top: 48px;
+    padding-top: 24px;
+    border-top: 1px solid var(--rule);
+    font-family: "JetBrains Mono", monospace;
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+    display: flex;
+    gap: 18px;
+    align-items: center;
+  }
+  .progress .bar {
+    flex: 1;
+    height: 1px;
+    background: var(--rule);
+    position: relative;
+    max-width: 360px;
+  }
+  .progress .bar::after {
+    content: "";
+    position: absolute;
+    left: 0; top: 0;
+    height: 100%;
+    width: var(--pct, 0%);
+    background: var(--olive);
+    transition: width 0.3s ease;
+  }
+  .reset-btn {
+    appearance: none;
+    background: transparent;
+    border: 1px solid var(--rule);
+    color: var(--ink-mute);
+    padding: 6px 12px 5px;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 9px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    border-radius: 999px;
+    cursor: pointer;
+    transition: all 0.18s;
+  }
+  .reset-btn:hover { color: var(--terra); border-color: var(--terra); }
+
+  /* drinks subsection */
+  .drinks {
+    margin-top: 60px;
+    padding-top: 30px;
+    border-top: 1px solid var(--rule);
+  }
+  .drinks-row {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+  @media (min-width: 760px) {
+    .drinks-row { grid-template-columns: repeat(3, 1fr); }
+  }
+  .drink {
+    border-left: 2px solid var(--terra-soft);
+    padding-left: 14px;
+  }
+  .drink h4 {
+    font-family: "Fraunces", serif;
+    font-style: italic;
+    font-weight: 400;
+    font-size: 20px;
+    margin: 0 0 4px;
+  }
+  .drink p {
+    font-size: 14px;
+    color: var(--ink-soft);
+    margin: 0;
+  }
+
+  /* ---------- FOOTER ---------- */
+  footer {
+    padding: 40px clamp(20px, 5vw, 80px);
+    border-top: 1px solid var(--rule);
+    text-align: center;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+  }
+  footer .divider {
+    display: inline-block;
+    width: 80px;
+    height: 1px;
+    background: var(--rule);
+    vertical-align: middle;
+    margin: 0 16px;
+  }
+
+  /* ---------- PHONE TUNING (≤640px) ---------- */
+  @media (max-width: 640px) {
+    body { font-size: 16px; }
+
+    header.masthead {
+      padding: 36px 22px 28px;
+    }
+    .eyebrow { font-size: 10px; margin-bottom: 16px; gap: 10px; }
+    h1.title {
+      font-size: clamp(54px, 16vw, 84px);
+      line-height: 0.95;
+      letter-spacing: -0.02em;
+    }
+    .subtitle {
+      gap: 12px 24px;
+      margin-top: 22px;
+      padding-top: 18px;
+      font-size: 14px;
+    }
+    .lede {
+      margin-top: 22px;
+      font-size: 16px;
+    }
+
+    nav.filters {
+      padding: 10px 14px;
+      gap: 6px;
+      overflow-x: auto;
+      flex-wrap: nowrap;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+    }
+    nav.filters::-webkit-scrollbar { display: none; }
+    nav.filters::before {
+      margin-right: 8px;
+      flex-shrink: 0;
+    }
+    .chip {
+      flex-shrink: 0;
+      padding: 10px 14px 9px;
+      min-height: 36px;
+      font-size: 10.5px;
+    }
+
+    aside.map-pane {
+      position: static;
+      height: auto;
+      border-right: none;
+      border-bottom: 1px solid var(--rule);
+    }
+    #map { height: 50vh; min-height: 320px; }
+
+    section.itinerary {
+      padding: 8px 22px 56px;
+    }
+
+    article.day {
+      padding: 44px 0 32px;
+    }
+    .day-roman {
+      font-size: clamp(110px, 36vw, 180px);
+      top: -10px;
+      right: -8px;
+      opacity: 0.05;
+    }
+    .day-tag { font-size: 9.5px; margin-bottom: 12px; }
+    .day-tag .swatch { width: 22px; }
+    .day-title {
+      font-size: clamp(36px, 9vw, 48px);
+      line-height: 1;
+    }
+    .day-route {
+      font-size: 15px;
+      margin-top: 6px;
+    }
+
+    ol.timeline::before { left: 7px; }
+    li.stop {
+      padding: 0 0 28px 32px;
+    }
+    li.stop::before {
+      left: 2px;
+      width: 11px;
+      height: 11px;
+    }
+    .stop-time {
+      font-size: 10.5px;
+      padding: 4px 10px 3px;
+    }
+    .stop-name {
+      font-size: 22px;
+    }
+    .stop-name .num {
+      display: block;
+      margin: 0 0 2px;
+      vertical-align: baseline;
+    }
+    .stop-note {
+      font-size: 15px;
+    }
+    .stop-actions {
+      gap: 14px 18px;
+    }
+    .map-link {
+      padding: 6px 0;
+      font-size: 10px;
+      min-height: 32px;
+      display: inline-flex;
+      align-items: center;
+    }
+
+    .resto {
+      padding: 14px 14px 14px;
+      margin-top: 12px;
+    }
+    .resto-badge {
+      right: 10px;
+      font-size: 8.5px;
+    }
+    .resto-name { font-size: 18px; }
+    .resto-meta { font-size: 9.5px; }
+    .resto-note { font-size: 14px; }
+
+    .heads-up { font-size: 13.5px; padding: 12px 14px; }
+
+    section.food {
+      padding: 56px 22px 72px;
+    }
+    .food-eyebrow { font-size: 10px; margin-bottom: 14px; }
+    .food-title {
+      font-size: clamp(38px, 11vw, 56px);
+    }
+    .food-lede {
+      font-size: 16px;
+      margin-bottom: 40px;
+    }
+    .food-grid { gap: 36px; }
+    .meal h3 { font-size: 28px; }
+    .meal .meal-tag { font-size: 9.5px; margin-bottom: 16px; }
+    .meal li { padding: 16px 0; }
+    .meal label { gap: 12px; }
+    .meal input[type="checkbox"] {
+      width: 22px;
+      height: 22px;
+      margin-top: 2px;
+    }
+    .meal input[type="checkbox"]:checked::after {
+      font-size: 14px;
+    }
+    .dish-name { font-size: 17px; }
+    .dish-note { font-size: 13.5px; }
+
+    .drinks { margin-top: 44px; padding-top: 24px; }
+    .drinks-row { gap: 20px; }
+    .drink h4 { font-size: 18px; }
+    .drink p { font-size: 13.5px; }
+
+    .progress {
+      margin-top: 36px;
+      flex-wrap: wrap;
+      gap: 14px;
+      font-size: 10px;
+    }
+    .progress .bar {
+      order: 3;
+      width: 100%;
+      max-width: none;
+      flex: 0 0 100%;
+    }
+
+    footer {
+      padding: 28px 22px;
+      font-size: 9px;
+      line-height: 2;
+    }
+    footer .divider {
+      width: 40px;
+      margin: 0 10px;
+    }
+
+    /* Map popup tighter on phone */
+    .leaflet-popup-content { margin: 12px 14px !important; font-size: 13px !important; }
+    .leaflet-popup-content .pop-name { font-size: 17px; }
+    .leaflet-popup-content a {
+      display: inline-block;
+      padding: 6px 0;
+      min-height: 32px;
+    }
+  }
+
+  /* very small phones */
+  @media (max-width: 380px) {
+    header.masthead { padding: 32px 18px 24px; }
+    section.itinerary { padding: 8px 18px 48px; }
+    section.food { padding: 48px 18px 64px; }
+    h1.title { font-size: 52px; }
+  }
+</style>
+</head>
+<body>
+
+<header class="masthead">
+  <p class="eyebrow"><span class="dot"></span> Field Guide № 01 · Balearic Sea</p>
+  <h1 class="title">Mallorca,<br>slowly.</h1>
+  <div class="subtitle">
+    <span><b>Dates</b> Sun–Wed</span>
+    <span><b>Base</b> Palma → Sóller → Pollença → Palma</span>
+    <span><b>Vibe</b> Coast, ink, lemon trees, no rush</span>
+  </div>
+  <p class="lede">
+    A four-day loop of the island built around long beach hours, slow lunches, and one short hike.
+    Times below are wide on purpose — every block has wiggle room. If you're an hour late, you're on schedule.
+  </p>
+</header>
+
+<nav class="filters" id="filters">
+  <button class="chip active" data-day="all"><span class="num">∞</span>All Days</button>
+  <button class="chip" data-day="sun"><span class="num">I</span>Sunday</button>
+  <button class="chip" data-day="mon"><span class="num">II</span>Monday</button>
+  <button class="chip" data-day="tue"><span class="num">III</span>Tuesday</button>
+  <button class="chip" data-day="wed"><span class="num">IV</span>Wednesday</button>
+</nav>
+
+<main>
+  <aside class="map-pane">
+    <div id="map"></div>
+  </aside>
+
+  <section class="itinerary">
+
+    <!-- ============== SUNDAY ============== -->
+    <article class="day" data-day="sun">
+      <div class="day-header">
+        <span class="day-roman">I</span>
+        <p class="day-tag"><span class="swatch"></span>Diumenge · Day One</p>
+        <h2 class="day-title">Tramuntana, west.</h2>
+        <p class="day-route">A coastal drive through the Serra de Tramuntana — pine, terraces, and the kind of silver light that costs €0 to look at.</p>
+      </div>
+
+      <ol class="timeline">
+        <li class="stop">
+          <span class="stop-time">until 12:00</span>
+          <h3 class="stop-name"><span class="num">01</span>Palma, slow morning</h3>
+          <p class="stop-note">Lazy breakfast, walk the old town, coffee. Target wheels-up by 12:00 — pick up the rental car when you're ready.</p>
+          <div class="stop-actions">
+            <a class="map-link" href="https://www.google.com/maps/place/Palma,+Mallorca/@39.5696,2.6502,13z" target="_blank" rel="noopener">Open Palma in Maps</a>
+          </div>
+          <div class="resto">
+            <span class="resto-badge">Must Eat</span>
+            <h4 class="resto-name">Ca'n Joan de S'Aigo</h4>
+            <p class="resto-meta"><span class="price">€</span>Open Sundays · since 1700</p>
+            <p class="resto-note">Palma's oldest café — frequented by Chopin and George Sand. Order an ensaïmada with hot chocolate, or the almond ice cream with quarto sponge cake. (Forn des Teatre is closed Sun/Mon — go on Wednesday.)</p>
+            <a class="map-link" href="https://www.google.com/maps/search/?api=1&query=Ca'n+Joan+de+S'Aigo+Palma" target="_blank" rel="noopener">Open in Maps</a>
+          </div>
+        </li>
+
+        <li class="stop">
+          <div class="leg">≈50 min · 50 km west · Ma-1 then winding Ma-10</div>
+          <span class="stop-time">12:50 — 13:10</span>
+          <h3 class="stop-name"><span class="num">02</span>Mirador Ricardo Roca</h3>
+          <p class="stop-note">Pull over, walk to the small chapel terrace, look at sea. Five quiet minutes.</p>
+          <div class="stop-actions">
+            <a class="map-link" href="https://www.google.com/maps/search/?api=1&query=Mirador+Ricardo+Roca" target="_blank" rel="noopener">Open in Maps</a>
+          </div>
+        </li>
+
+        <li class="stop">
+          <div class="leg">≈12 min · 7 km · stay on Ma-10 toward Banyalbufar</div>
+          <span class="stop-time">13:30 — 15:30</span>
+          <h3 class="stop-name"><span class="num">03</span>Sa Volta des General</h3>
+          <p class="stop-note">Easy ~2hr loop hike on an old military road, sea on one side. Bring water + a swim layer for the cala below.</p>
+          <div class="stop-actions">
+            <a class="map-link" href="https://www.google.com/maps/search/?api=1&query=Sa+Volta+des+General+Estellencs" target="_blank" rel="noopener">Open in Maps</a>
+          </div>
+        </li>
+
+        <li class="stop">
+          <div class="leg">≈50 min · 30 km · Tramuntana coast (Banyalbufar → Valldemossa → Deià)</div>
+          <span class="stop-time">16:30 — 18:30</span>
+          <h3 class="stop-name"><span class="num">04</span>Deià, late lunch</h3>
+          <p class="stop-note">Stone village stacked into the hill. Wander, eat slowly. Optional 15-min detour: Cala Deià for a swim before lunch.</p>
+          <div class="stop-actions">
+            <a class="map-link" href="https://www.google.com/maps/search/?api=1&query=Dei%C3%A0+Mallorca" target="_blank" rel="noopener">Open Deià in Maps</a>
+            <a class="map-link" href="https://www.google.com/maps/search/?api=1&query=Cala+Dei%C3%A0" target="_blank" rel="noopener">Cala Deià</a>
+          </div>
+          <div class="resto">
+            <span class="resto-badge">Walk-in Pick</span>
+            <h4 class="resto-name">Sa Fonda</h4>
+            <p class="resto-meta"><span class="price">€</span>Deià village · no reservations · since the 70s</p>
+            <p class="resto-note">A village institution — old wood, courtyard tables, no-fuss kitchen. Pa amb oli, sobrassada, salads, simple grills. Walk in, sit down, eat slowly. Mains €8–15. (If you want a sit-down with white tablecloths, <em>Jaume</em> a few doors down is €€ traditional Mallorcan.)</p>
+            <a class="map-link" href="https://www.google.com/maps/search/?api=1&query=Sa+Fonda+Dei%C3%A0" target="_blank" rel="noopener">Open in Maps</a>
+          </div>
+        </li>
+
+        <li class="stop">
+          <div class="leg">≈20 min · 10 km on Ma-10</div>
+          <span class="stop-time">18:50 — 19:30</span>
+          <h3 class="stop-name"><span class="num">05</span>Sóller — settle in</h3>
+          <p class="stop-note">Drop bags. Wander the plaça, gelato at Sa Fàbrica de Gelats.</p>
+          <div class="stop-actions">
+            <a class="map-link" href="https://www.google.com/maps/search/?api=1&query=S%C3%B3ller+Mallorca" target="_blank" rel="noopener">Open Sóller in Maps</a>
+          </div>
+        </li>
+
+        <li class="stop">
+          <div class="leg">≈10 min · 5 km · or 25 min on the historic wooden tram from Sóller</div>
+          <span class="stop-time">19:45 — 20:45</span>
+          <h3 class="stop-name"><span class="num">06</span>Port de Sóller — sunset</h3>
+          <p class="stop-note">Optional but worth it. Sundown over the bay from Faro de Sa Creu — sunset lands ≈20:30 in late April, ≈21:15 high summer.</p>
+          <div class="stop-actions">
+            <a class="map-link" href="https://www.google.com/maps/search/?api=1&query=Faro+de+Sa+Creu+Port+de+S%C3%B3ller" target="_blank" rel="noopener">Open in Maps</a>
+          </div>
+        </li>
+
+        <li class="stop">
+          <div class="leg">≈10 min back to Sóller centre from Port de Sóller</div>
+          <span class="stop-time">21:00 — late</span>
+          <h3 class="stop-name"><span class="num">07</span>Dinner — Sa Cova</h3>
+          <p class="stop-note">Old stone-walled celler 5 min from the main plaça. Walk-in friendly Sunday evening.</p>
+          <div class="stop-actions">
+            <a class="map-link" href="https://www.google.com/maps/search/?api=1&query=Sa+Cova+S%C3%B3ller" target="_blank" rel="noopener">Open in Maps</a>
+          </div>
+          <div class="resto">
+            <span class="resto-badge">Walk-in Pick</span>
+            <h4 class="resto-name">Sa Cova</h4>
+            <p class="resto-meta"><span class="price">€€</span>Sóller centre · no reservation needed · traditional celler</p>
+            <p class="resto-note">Traditional Mallorcan kitchen — frito mallorquín, grilled fish, sobrassada, lechona. Mains €12–20. (If you don't feel like driving back, <em>Patiki Beach</em> in Port de Sóller is feet-in-sand walk-in €€. For pintxos bar style €, <em>Ca'n Pintxo</em> on Carrer de sa Lluna.)</p>
+            <a class="map-link" href="https://www.google.com/maps/search/?api=1&query=Sa+Cova+S%C3%B3ller" target="_blank" rel="noopener">Open in Maps</a>
+          </div>
+        </li>
+      </ol>
+    </article>
+
+    <!-- ============== MONDAY ============== -->
+    <article class="day" data-day="mon">
+      <div class="day-header">
+        <span class="day-roman">II</span>
+        <p class="day-tag"><span class="swatch"></span>Dilluns · Day Two</p>
+        <h2 class="day-title">North cape, blue water.</h2>
+        <p class="day-route">Sóller across to the Formentor peninsula — the most dramatic stretch of road and a beach that earns the drive.</p>
+      </div>
+
+      <ol class="timeline">
+        <li class="stop">
+          <span class="stop-time">09:00 — 10:30</span>
+          <h3 class="stop-name"><span class="num">01</span>Sóller → Formentor</h3>
+          <p class="stop-note">Slow breakfast first. ≈1h15 · 90 km · Sóller tunnel (Ma-11) down to Ma-13 motorway, then north to the peninsula. Take it easy.</p>
+        </li>
+
+        <li class="stop">
+          <span class="stop-time">10:30 — 13:00</span>
+          <h3 class="stop-name"><span class="num">02</span>Cala Formentor</h3>
+          <p class="stop-note">Long pine-fringed beach, turquoise water. Big hours here — swim, read, snack.</p>
+          <div class="stop-actions">
+            <a class="map-link" href="https://www.google.com/maps/search/?api=1&query=Platja+de+Formentor" target="_blank" rel="noopener">Open in Maps</a>
+          </div>
+        </li>
+
+        <li class="stop">
+          <div class="leg">≈15 min · 7 km · winding peninsula road, hairpins</div>
+          <span class="stop-time">13:00 — 14:00</span>
+          <h3 class="stop-name"><span class="num">03</span>Cap de Formentor</h3>
+          <p class="stop-note">The lighthouse at the end of the world. Photos, then drive back toward Pollença.</p>
+          <div class="stop-actions">
+            <a class="map-link" href="https://www.google.com/maps/search/?api=1&query=Far+de+Formentor" target="_blank" rel="noopener">Open in Maps</a>
+          </div>
+          <div class="heads-up">
+            <b>Note</b> Mid-June through mid-September private cars are blocked 10:00–19:00 — a shuttle runs from Port de Pollença. Either go very early or take the bus.
+          </div>
+        </li>
+
+        <li class="stop">
+          <div class="leg">≈40 min · 25 km · back along the cape road then inland to Pollença</div>
+          <span class="stop-time">14:00 — 16:30</span>
+          <h3 class="stop-name"><span class="num">04</span>Pollença — lunch + Calvari</h3>
+          <p class="stop-note">Old-town lunch in a celler, then walk the Calvari steps — 365 cypress-lined stairs to a chapel above town. Twenty quiet minutes.</p>
+          <div class="stop-actions">
+            <a class="map-link" href="https://www.google.com/maps/search/?api=1&query=Pollen%C3%A7a+Mallorca" target="_blank" rel="noopener">Open Pollença in Maps</a>
+            <a class="map-link" href="https://www.google.com/maps/search/?api=1&query=Escala+del+Calvari+Pollen%C3%A7a" target="_blank" rel="noopener">Calvari steps</a>
+          </div>
+          <div class="resto">
+            <span class="resto-badge">Local Pick</span>
+            <h4 class="resto-name">Cellar La Parra</h4>
+            <p class="resto-meta"><span class="price">€€</span>Mallorcan celler · old vines</p>
+            <p class="resto-note">Order frito mallorquín or arròs brut. Vi de la terra by the jug. Slow, generous, the real thing.</p>
+            <a class="map-link" href="https://www.google.com/maps/search/?api=1&query=Cellar+La+Parra+Pollen%C3%A7a" target="_blank" rel="noopener">Open in Maps</a>
+          </div>
+        </li>
+
+        <li class="stop">
+          <div class="leg">≈12 min · 7 km · short hop north of Pollença</div>
+          <span class="stop-time">16:30 — 19:00</span>
+          <h3 class="stop-name"><span class="num">05</span>Cala Sant Vicenç</h3>
+          <p class="stop-note">Smaller, calmer beach in a rocky bowl. Late-afternoon swim, no agenda.</p>
+          <div class="stop-actions">
+            <a class="map-link" href="https://www.google.com/maps/search/?api=1&query=Cala+Sant+Vicen%C3%A7+Mallorca" target="_blank" rel="noopener">Open in Maps</a>
+          </div>
+        </li>
+
+        <li class="stop">
+          <div class="leg">≈10 min · 6 km south to your base</div>
+          <span class="stop-time">19:30 — 21:00</span>
+          <h3 class="stop-name"><span class="num">06</span>Port de Pollença — settle</h3>
+          <p class="stop-note">Drop bags. Walk the seafront passeig. Vermut on a terrace.</p>
+          <div class="stop-actions">
+            <a class="map-link" href="https://www.google.com/maps/search/?api=1&query=Port+de+Pollen%C3%A7a" target="_blank" rel="noopener">Open in Maps</a>
+          </div>
+        </li>
+
+        <li class="stop">
+          <div class="leg">≈walking distance from your room</div>
+          <span class="stop-time">21:00 — late</span>
+          <h3 class="stop-name"><span class="num">07</span>Dinner — port-side</h3>
+          <p class="stop-note">Grilled fish, snails, hierbas to finish. Bed.</p>
+          <div class="resto">
+            <span class="resto-badge">Local Pick</span>
+            <h4 class="resto-name">Stay Restaurant</h4>
+            <p class="resto-meta"><span class="price">€€</span>On the marina jetty</p>
+            <p class="resto-note">Fresh fish, sunset over the bay. Long-running, reliable, not stuffy.</p>
+            <a class="map-link" href="https://www.google.com/maps/search/?api=1&query=Stay+Restaurant+Port+de+Pollen%C3%A7a" target="_blank" rel="noopener">Open in Maps</a>
+          </div>
+        </li>
+      </ol>
+    </article>
+
+    <!-- ============== TUESDAY ============== -->
+    <article class="day" data-day="tue">
+      <div class="day-header">
+        <span class="day-roman">III</span>
+        <p class="day-tag"><span class="swatch"></span>Dimarts · Day Three</p>
+        <h2 class="day-title">South sand, east cove.</h2>
+        <p class="day-route">A two-beach day. Caribbean-white in the south, then a sheltered double-cove on the east coast before circling back to Palma.</p>
+      </div>
+
+      <ol class="timeline">
+        <li class="stop">
+          <span class="stop-time">09:00 — 11:00</span>
+          <h3 class="stop-name"><span class="num">01</span>Drive south</h3>
+          <p class="stop-note">≈1h30 · 95 km · Ma-13 motorway south through Inca + Algaida, then Ma-19 toward the south coast. Coffee stop in Algaida or Llucmajor en route if you want to stretch.</p>
+        </li>
+
+        <li class="stop">
+          <span class="stop-time">11:00 — 14:00</span>
+          <h3 class="stop-name"><span class="num">02</span>Es Trenc</h3>
+          <p class="stop-note">The white-sand belt. Park, walk, swim, repeat. Three hours dissolve.</p>
+          <div class="stop-actions">
+            <a class="map-link" href="https://www.google.com/maps/search/?api=1&query=Platja+des+Trenc" target="_blank" rel="noopener">Open in Maps</a>
+          </div>
+        </li>
+
+        <li class="stop">
+          <span class="stop-time">14:00 — 15:00</span>
+          <h3 class="stop-name"><span class="num">03</span>Drive east</h3>
+          <p class="stop-note">≈50 min · 35 km · inland through Campos and Santanyí toward Cala Mondragó. Pick up something from a boulangerie on the way or eat at the beach bar.</p>
+          <div class="resto">
+            <span class="resto-badge">Beach Lunch</span>
+            <h4 class="resto-name">Es Mollet (Colònia de Sant Jordi)</h4>
+            <p class="resto-meta"><span class="price">€€</span>Harbour-side · fish straight off the boat</p>
+            <p class="resto-note">If you don't want to wait until Mondragó: a 15-min detour to Colònia de Sant Jordi. Grilled sepia, simple, perfect.</p>
+            <a class="map-link" href="https://www.google.com/maps/search/?api=1&query=Restaurant+Es+Mollet+Colonia+Sant+Jordi" target="_blank" rel="noopener">Open in Maps</a>
+          </div>
+        </li>
+
+        <li class="stop">
+          <span class="stop-time">15:00 — 18:00</span>
+          <h3 class="stop-name"><span class="num">04</span>Cala Mondragó</h3>
+          <p class="stop-note">Two protected coves inside a natural park. Walk the short coastal path between them. Last swim of the trip.</p>
+          <div class="stop-actions">
+            <a class="map-link" href="https://www.google.com/maps/search/?api=1&query=Parc+Natural+de+Mondrag%C3%B3" target="_blank" rel="noopener">Open in Maps</a>
+          </div>
+        </li>
+
+        <li class="stop">
+          <span class="stop-time">18:00 — 19:30</span>
+          <h3 class="stop-name"><span class="num">05</span>Drive back to Palma</h3>
+          <p class="stop-note">≈1h · 65 km · Ma-19 motorway west, sun in the rearview. Check in, shower the salt off, change.</p>
+          <div class="stop-actions">
+            <a class="map-link" href="https://www.google.com/maps/search/?api=1&query=Palma+de+Mallorca" target="_blank" rel="noopener">Open Palma in Maps</a>
+          </div>
+        </li>
+
+        <li class="stop">
+          <div class="leg">≈short walk through the old town</div>
+          <span class="stop-time">21:00 — late</span>
+          <h3 class="stop-name"><span class="num">06</span>Dinner — La Malvasia</h3>
+          <p class="stop-note">The dinner you booked. Final night, take it slow.</p>
+          <div class="stop-actions">
+            <a class="map-link" href="https://www.google.com/maps/search/?api=1&query=La+Malvasia+Palma" target="_blank" rel="noopener">Open in Maps</a>
+          </div>
+        </li>
+      </ol>
+    </article>
+
+    <!-- ============== WEDNESDAY ============== -->
+    <article class="day" data-day="wed">
+      <div class="day-header">
+        <span class="day-roman">IV</span>
+        <p class="day-tag"><span class="swatch"></span>Dimecres · Day Four</p>
+        <h2 class="day-title">One last coffee.</h2>
+        <p class="day-route">Departure day. Buffer time, no errands, one good breakfast.</p>
+      </div>
+
+      <ol class="timeline">
+        <li class="stop">
+          <span class="stop-time">flexible AM</span>
+          <h3 class="stop-name"><span class="num">01</span>Mercat de l'Olivar</h3>
+          <p class="stop-note">Breakfast at a market bar — pa amb oli, fresh juice, espresso. Walk a slow lap of the stalls.</p>
+          <div class="stop-actions">
+            <a class="map-link" href="https://www.google.com/maps/search/?api=1&query=Mercat+de+l%27Olivar+Palma" target="_blank" rel="noopener">Open in Maps</a>
+          </div>
+        </li>
+
+        <li class="stop">
+          <div class="leg">≈15–20 min · 10 km · Ma-19 east (longer at peak hours)</div>
+          <span class="stop-time">— 2hr before flight</span>
+          <h3 class="stop-name"><span class="num">02</span>Palma → Airport (PMI)</h3>
+          <p class="stop-note">Drop the rental, wander duty-free with a sobrassada to take home.</p>
+          <div class="stop-actions">
+            <a class="map-link" href="https://www.google.com/maps/search/?api=1&query=Palma+de+Mallorca+Airport+PMI" target="_blank" rel="noopener">Open in Maps</a>
+          </div>
+        </li>
+      </ol>
+    </article>
+
+  </section>
+</main>
+
+<!-- ============== FOOD CHECKLIST ============== -->
+<section class="food">
+  <p class="food-eyebrow">Carta · Tick as you taste</p>
+  <h2 class="food-title">Things you must put in your mouth.</h2>
+  <p class="food-lede">Budget-friendly local finds, with a few splurges marked. Look for a <em>celler</em> — old wine-cellar restaurants, low ceilings, huge wooden barrels. Skip anywhere with a multilingual photo menu out front.</p>
+
+  <div class="food-grid" id="foodGrid">
+
+    <div class="meal" data-meal="breakfast">
+      <h3>Breakfast</h3>
+      <span class="meal-tag">Esmorzar — slow, sweet, short</span>
+      <ul>
+        <li><label>
+          <input type="checkbox" data-id="b1">
+          <span class="dish">
+            <span class="dish-name">Ensaïmada (plain — <em>llisa</em>)<span class="dish-price">€2–3</span></span>
+            <span class="dish-note">Spiral lard pastry, the island's signature. Forn des Teatre or Forn Fondo in Palma.</span>
+          </span>
+        </label></li>
+        <li><label>
+          <input type="checkbox" data-id="b2">
+          <span class="dish">
+            <span class="dish-name">Pa amb oli<span class="dish-price">€4–7</span></span>
+            <span class="dish-note">Rustic bread rubbed with tomato + olive oil, often topped with cheese or sobrassada. Anytime food.</span>
+          </span>
+        </label></li>
+        <li><label>
+          <input type="checkbox" data-id="b3">
+          <span class="dish">
+            <span class="dish-name">Coca de patata<span class="dish-price">€1.50</span></span>
+            <span class="dish-note">Fluffy potato sweet bun. Valldemossa specialty — any forn carries them.</span>
+          </span>
+        </label></li>
+        <li><label>
+          <input type="checkbox" data-id="b4">
+          <span class="dish">
+            <span class="dish-name">Café amb llet at a bar<span class="dish-price">€1.50</span></span>
+            <span class="dish-note">Standing at the counter with the locals. The proper Mallorcan morning.</span>
+          </span>
+        </label></li>
+      </ul>
+    </div>
+
+    <div class="meal" data-meal="lunch">
+      <h3>Lunch</h3>
+      <span class="meal-tag">Dinar — the meal that matters</span>
+      <ul>
+        <li><label>
+          <input type="checkbox" data-id="l1">
+          <span class="dish">
+            <span class="dish-name">Frito mallorquín<span class="dish-price">€8–12</span></span>
+            <span class="dish-note">Offal, potato, peppers, fennel — all fried together. Looks rough, tastes incredible. Order at any old celler.</span>
+          </span>
+        </label></li>
+        <li><label>
+          <input type="checkbox" data-id="l2">
+          <span class="dish">
+            <span class="dish-name">Tumbet<span class="dish-price">€7–10</span></span>
+            <span class="dish-note">Layered potato, eggplant, pepper, tomato sauce. Vegetarian and excellent.</span>
+          </span>
+        </label></li>
+        <li><label>
+          <input type="checkbox" data-id="l3">
+          <span class="dish">
+            <span class="dish-name">Arròs brut<span class="dish-price">€10–14</span></span>
+            <span class="dish-note">"Dirty rice" — brothy game/rabbit/snail rice. Hearty inland classic.</span>
+          </span>
+        </label></li>
+        <li><label>
+          <input type="checkbox" data-id="l4">
+          <span class="dish">
+            <span class="dish-name">Llonguet sandwich<span class="dish-price">€3–5</span></span>
+            <span class="dish-note">Local roll with sobrassada, cheese or jamón. Bakery lunch on the go.</span>
+          </span>
+        </label></li>
+        <li><label>
+          <input type="checkbox" data-id="l5">
+          <span class="dish">
+            <span class="dish-name">Variats at a celler<span class="dish-price">€3–5/plate</span></span>
+            <span class="dish-note">Croquetas, albóndigas, patatas bravas, boquerones. Order four. Try Celler Sa Premsa in Palma.</span>
+          </span>
+        </label></li>
+      </ul>
+    </div>
+
+    <div class="meal" data-meal="dinner">
+      <h3>Dinner</h3>
+      <span class="meal-tag">Sopar — late, long, generous</span>
+      <ul>
+        <li><label>
+          <input type="checkbox" data-id="d1">
+          <span class="dish">
+            <span class="dish-name">Sobrassada amb mel<span class="dish-price">€4–6</span></span>
+            <span class="dish-note">Cured paprika-spiked pork spread drizzled with honey, on toast. Order as starter everywhere.</span>
+          </span>
+        </label></li>
+        <li><label>
+          <input type="checkbox" data-id="d2">
+          <span class="dish">
+            <span class="dish-name">Caracoles (snails)<span class="dish-price">€8–10</span></span>
+            <span class="dish-note">Mallorcan-style with fennel and herbs. Cheap and very local.</span>
+          </span>
+        </label></li>
+        <li><label>
+          <input type="checkbox" data-id="d3">
+          <span class="dish">
+            <span class="dish-name">Lechona / porcella<span class="dish-price">€15–18</span></span>
+            <span class="dish-note">Suckling pig, crackling skin. Splurge-adjacent at any traditional celler.</span>
+          </span>
+        </label></li>
+        <li><label>
+          <input type="checkbox" data-id="d4">
+          <span class="dish">
+            <span class="dish-name">Sepia a la mallorquina<span class="dish-price">€10–14</span></span>
+            <span class="dish-note">Grilled cuttlefish at any port-side spot. Lemon, parsley, salt. Done.</span>
+          </span>
+        </label></li>
+        <li><label>
+          <input type="checkbox" data-id="d5">
+          <span class="dish">
+            <span class="dish-name">Gató d'ametlla amb gelat d'ametlla<span class="dish-price">€4–6</span></span>
+            <span class="dish-note">Flourless almond cake with almond ice cream. THE Mallorcan dessert.</span>
+          </span>
+        </label></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="drinks">
+    <p class="food-eyebrow">Glass in hand</p>
+    <div class="drinks-row">
+      <div class="drink">
+        <h4>Hierbas mallorquinas</h4>
+        <p>Anise/herb digestif, served ice-cold after meals. Often free pour at cellers — say yes.</p>
+      </div>
+      <div class="drink">
+        <h4>Palo</h4>
+        <p>Bittersweet carob liqueur with soda. Acquired taste, very local. Try once.</p>
+      </div>
+      <div class="drink">
+        <h4>Vi de la terra</h4>
+        <p>House wine from a Mallorcan jug — €2–3 a glass at any celler.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="progress" id="progress">
+    <span id="progressLabel">0 of 14 tasted</span>
+    <div class="bar"></div>
+    <button class="reset-btn" id="resetBtn">Reset</button>
+  </div>
+</section>
+
+<footer>
+  Field guide assembled with care <span class="divider"></span> Sun · Mon · Tue · Wed <span class="divider"></span> Bon profit
+</footer>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+        crossorigin=""></script>
+<script>
+/* ============== STOPS DATA ============== */
+const STOPS = [
+  // SUNDAY — terra
+  { day: "sun", n: "01", name: "Palma — slow start",        lat: 39.5696, lng: 2.6502, time: "until 12:00" },
+  { day: "sun", n: "02", name: "Mirador Ricardo Roca",       lat: 39.6465, lng: 2.4193, time: "12:50–13:10" },
+  { day: "sun", n: "03", name: "Sa Volta des General hike",  lat: 39.6520, lng: 2.4520, time: "13:30–15:30" },
+  { day: "sun", n: "04", name: "Deià (lunch)",               lat: 39.7475, lng: 2.6491, time: "16:30–18:30" },
+  { day: "sun", n: "05", name: "Sóller",                     lat: 39.7666, lng: 2.7148, time: "18:50–19:30" },
+  { day: "sun", n: "06", name: "Port de Sóller — sunset",    lat: 39.7969, lng: 2.6939, time: "19:45–20:45" },
+
+  // MONDAY — sea
+  { day: "mon", n: "01", name: "Cala Formentor",             lat: 39.9344, lng: 3.1310, time: "10:30–13:00" },
+  { day: "mon", n: "02", name: "Cap de Formentor",           lat: 39.9573, lng: 3.2128, time: "13:00–14:00" },
+  { day: "mon", n: "03", name: "Pollença + Calvari",         lat: 39.8767, lng: 3.0156, time: "14:00–16:30" },
+  { day: "mon", n: "04", name: "Cala Sant Vicenç",           lat: 39.9133, lng: 3.0660, time: "16:30–19:00" },
+  { day: "mon", n: "05", name: "Port de Pollença",           lat: 39.9067, lng: 3.0822, time: "19:30–21:00" },
+
+  // TUESDAY — olive
+  { day: "tue", n: "01", name: "Es Trenc",                   lat: 39.3478, lng: 2.9919, time: "11:00–14:00" },
+  { day: "tue", n: "02", name: "Cala Mondragó",              lat: 39.3474, lng: 3.1873, time: "15:00–18:00" },
+  { day: "tue", n: "03", name: "Palma — La Malvasia",        lat: 39.5696, lng: 2.6502, time: "21:00 →" },
+
+  // WEDNESDAY — sun
+  { day: "wed", n: "01", name: "Mercat de l'Olivar",         lat: 39.5731, lng: 2.6549, time: "AM" },
+  { day: "wed", n: "02", name: "Palma Airport (PMI)",        lat: 39.5517, lng: 2.7388, time: "Depart" },
+];
+
+const DAY_COLORS = {
+  sun: "#B85331",
+  mon: "#2E5A6F",
+  tue: "#5E6B3A",
+  wed: "#D9A23B",
+};
+
+/* ============== MAP ============== */
+const map = L.map("map", {
+  zoomControl: true,
+  scrollWheelZoom: true,
+  attributionControl: true,
+}).setView([39.69, 2.95], 9);
+
+L.tileLayer("https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png", {
+  attribution: '&copy; OpenStreetMap &copy; CARTO',
+  subdomains: "abcd",
+  maxZoom: 19,
+}).addTo(map);
+
+const markerLayers = { sun: L.layerGroup(), mon: L.layerGroup(), tue: L.layerGroup(), wed: L.layerGroup() };
+const routeLayers  = { sun: null, mon: null, tue: null, wed: null };
+
+function makePin(stop) {
+  const html = `<div class="pin ${stop.day}">${stop.n}</div>`;
+  return L.divIcon({ html, className: "", iconSize: [28, 28], iconAnchor: [14, 14] });
+}
+
+function popupHtml(stop) {
+  const dayName = { sun: "Sunday", mon: "Monday", tue: "Tuesday", wed: "Wednesday" }[stop.day];
+  const gmaps = `https://www.google.com/maps/search/?api=1&query=${stop.lat},${stop.lng}`;
+  return `
+    <div class="pop-name">${stop.name}</div>
+    <div class="pop-meta">${dayName} · ${stop.time}</div>
+    <a href="${gmaps}" target="_blank" rel="noopener">Open in Google Maps ↗</a>
+  `;
+}
+
+STOPS.forEach((s) => {
+  const m = L.marker([s.lat, s.lng], { icon: makePin(s) }).bindPopup(popupHtml(s));
+  markerLayers[s.day].addLayer(m);
+});
+
+["sun","mon","tue","wed"].forEach((d) => {
+  const pts = STOPS.filter((s) => s.day === d).map((s) => [s.lat, s.lng]);
+  if (pts.length > 1) {
+    routeLayers[d] = L.polyline(pts, {
+      color: DAY_COLORS[d],
+      weight: 2,
+      opacity: 0.65,
+      dashArray: "2 8",
+      lineCap: "round",
+    });
+  }
+});
+
+/* show all by default */
+let activeDay = "all";
+function applyFilter(day) {
+  activeDay = day;
+  ["sun","mon","tue","wed"].forEach((d) => {
+    const visible = (day === "all" || day === d);
+    if (visible) {
+      if (!map.hasLayer(markerLayers[d])) map.addLayer(markerLayers[d]);
+      if (routeLayers[d] && !map.hasLayer(routeLayers[d])) map.addLayer(routeLayers[d]);
+    } else {
+      if (map.hasLayer(markerLayers[d])) map.removeLayer(markerLayers[d]);
+      if (routeLayers[d] && map.hasLayer(routeLayers[d])) map.removeLayer(routeLayers[d]);
+    }
+  });
+
+  // fit bounds
+  const visibleStops = STOPS.filter((s) => day === "all" || s.day === day);
+  if (visibleStops.length) {
+    const bounds = L.latLngBounds(visibleStops.map((s) => [s.lat, s.lng]));
+    map.fitBounds(bounds, { padding: [50, 50], maxZoom: day === "all" ? 9 : 11 });
+  }
+
+  // toggle itinerary cards
+  document.querySelectorAll("article.day").forEach((el) => {
+    if (day === "all" || el.dataset.day === day) el.classList.remove("dim");
+    else el.classList.add("dim");
+  });
+}
+applyFilter("all");
+
+/* ============== FILTER CHIPS ============== */
+document.querySelectorAll(".chip").forEach((btn) => {
+  btn.addEventListener("click", () => {
+    document.querySelectorAll(".chip").forEach((b) => b.classList.remove("active"));
+    btn.classList.add("active");
+    applyFilter(btn.dataset.day);
+  });
+});
+
+/* ============== FOOD CHECKLIST PERSISTENCE ============== */
+const STORAGE_KEY = "mallorca-food-v1";
+const checkboxes = document.querySelectorAll('.meal input[type="checkbox"]');
+const total = checkboxes.length;
+const progressLabel = document.getElementById("progressLabel");
+const progressBar = document.querySelector("#progress .bar");
+
+function loadState() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return {};
+    return JSON.parse(raw);
+  } catch { return {}; }
+}
+function saveState(state) {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+}
+function refreshProgress() {
+  const checked = [...checkboxes].filter((c) => c.checked).length;
+  progressLabel.textContent = `${checked} of ${total} tasted`;
+  progressBar.style.setProperty("--pct", `${(checked / total) * 100}%`);
+}
+
+const state = loadState();
+checkboxes.forEach((c) => {
+  const id = c.dataset.id;
+  if (state[id]) c.checked = true;
+  c.addEventListener("change", () => {
+    const s = loadState();
+    s[c.dataset.id] = c.checked;
+    saveState(s);
+    refreshProgress();
+  });
+});
+refreshProgress();
+
+document.getElementById("resetBtn").addEventListener("click", () => {
+  if (!confirm("Clear the food checklist?")) return;
+  localStorage.removeItem(STORAGE_KEY);
+  checkboxes.forEach((c) => (c.checked = false));
+  refreshProgress();
+});
+
+/* ============== MAP RESIZE FIX ============== */
+window.addEventListener("load", () => setTimeout(() => map.invalidateSize(), 100));
+</script>
+
+</body>
+</html>
