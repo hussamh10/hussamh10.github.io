@@ -1052,7 +1052,7 @@
 
         <li class="stop">
           <div class="leg">≈50 min · 30 km · Tramuntana coast (Banyalbufar → Valldemossa → Deià)</div>
-          <span class="stop-time">16:30 — 18:30</span>
+          <span class="stop-time">16:30 — 18:00</span>
           <h3 class="stop-name"><span class="num">04</span>Deià, late lunch</h3>
           <p class="stop-note">Stone village stacked into the hill. Wander, eat slowly. Optional 15-min detour: Cala Deià for a swim before lunch.</p>
           <div class="stop-actions">
@@ -1069,20 +1069,30 @@
         </li>
 
         <li class="stop">
-          <div class="leg">≈20 min · 10 km on Ma-10</div>
-          <span class="stop-time">18:50 — 19:30</span>
-          <h3 class="stop-name"><span class="num">05</span>Sóller — settle in</h3>
-          <p class="stop-note">Drop bags. Wander the plaça, gelato at Sa Fàbrica de Gelats.</p>
+          <div class="leg">≈10 min · 5 km · short hop along Ma-10 toward Sóller</div>
+          <span class="stop-time">18:10 — 19:25</span>
+          <h3 class="stop-name"><span class="num">05</span>Es Canyaret — Llucalcari</h3>
+          <p class="stop-note">Local-secret cliff cove with a freshwater spring producing grey clay. Steep ~1km path down, smear the clay (face/body), rinse in the sea, dry on the rocks, climb back up. There's also a saltwater cave-pool to the right. No signs, no facilities, nudist-tolerant. Wear shoes you can hike + swim in.</p>
+          <div class="stop-actions">
+            <a class="map-link" href="https://www.google.com/maps/search/?api=1&query=Es+Canyaret+Llucalcari" target="_blank" rel="noopener">Open in Maps</a>
+          </div>
+        </li>
+
+        <li class="stop">
+          <div class="leg">≈10 min · 5 km onward along Ma-10</div>
+          <span class="stop-time">19:35 — 19:55</span>
+          <h3 class="stop-name"><span class="num">06</span>Sóller — drop bags</h3>
+          <p class="stop-note">Quick stop: drop bags, rinse off, change. Gelato at Sa Fàbrica de Gelats if you have a moment — order the <em>gelat d'ametlla</em> (almond).</p>
           <div class="stop-actions">
             <a class="map-link" href="https://www.google.com/maps/search/?api=1&query=S%C3%B3ller+Mallorca" target="_blank" rel="noopener">Open Sóller in Maps</a>
           </div>
         </li>
 
         <li class="stop">
-          <div class="leg">≈10 min · 5 km · or 25 min on the historic wooden tram from Sóller</div>
-          <span class="stop-time">19:45 — 20:45</span>
-          <h3 class="stop-name"><span class="num">06</span>Port de Sóller — sunset</h3>
-          <p class="stop-note">Optional but worth it. Sundown over the bay from Faro de Sa Creu — sunset lands ≈20:30 in late April, ≈21:15 high summer.</p>
+          <div class="leg">≈10 min · 5 km to the port · or 25 min on the historic wooden tram</div>
+          <span class="stop-time">20:05 — 20:45</span>
+          <h3 class="stop-name"><span class="num">07</span>Port de Sóller — sunset</h3>
+          <p class="stop-note">Sundown over the bay from Faro de Sa Creu — sunset lands ≈20:30 in late April, ≈21:15 high summer.</p>
           <div class="stop-actions">
             <a class="map-link" href="https://www.google.com/maps/search/?api=1&query=Faro+de+Sa+Creu+Port+de+S%C3%B3ller" target="_blank" rel="noopener">Open in Maps</a>
           </div>
@@ -1091,7 +1101,7 @@
         <li class="stop">
           <div class="leg">≈10 min back to Sóller centre from Port de Sóller</div>
           <span class="stop-time">21:00 — late</span>
-          <h3 class="stop-name"><span class="num">07</span>Dinner — Sa Cova</h3>
+          <h3 class="stop-name"><span class="num">08</span>Dinner — Sa Cova</h3>
           <p class="stop-note">Old stone-walled celler 5 min from the main plaça. Walk-in friendly Sunday evening.</p>
           <div class="stop-actions">
             <a class="map-link" href="https://www.google.com/maps/search/?api=1&query=Sa+Cova+S%C3%B3ller" target="_blank" rel="noopener">Open in Maps</a>
@@ -1430,6 +1440,21 @@
   </div>
 
   <div class="drinks">
+    <p class="food-eyebrow">Take home</p>
+    <div class="meal" data-meal="pantry">
+      <ul>
+        <li><label>
+          <input type="checkbox" data-id="t1">
+          <span class="dish">
+            <span class="dish-name">Pimentón Tap de Cortí — Crespí brand<span class="dish-price">€3–5</span></span>
+            <span class="dish-note">The indigenous Mallorcan paprika — the pepper grown nowhere else, the spice that gives sobrassada its colour. Tin or paper bag. Mercat de l'Olivar, Eroski, or any island supermarket. <em>Crespí</em> (since 1945) is the brand to find. Vastly more aromatic than mainland pimentón.</span>
+          </span>
+        </label></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="drinks">
     <p class="food-eyebrow">Glass in hand</p>
     <div class="drinks-row">
       <div class="drink">
@@ -1465,12 +1490,14 @@
 /* ============== STOPS DATA ============== */
 const STOPS = [
   // SUNDAY — terra
-  { day: "sun", n: "01", name: "Palma — slow start",        lat: 39.5696, lng: 2.6502, time: "until 12:00" },
+  { day: "sun", n: "01", name: "Palma — slow start",         lat: 39.5696, lng: 2.6502, time: "until 12:00" },
   { day: "sun", n: "02", name: "Mirador Ricardo Roca",       lat: 39.6465, lng: 2.4193, time: "12:50–13:10" },
   { day: "sun", n: "03", name: "Sa Volta des General hike",  lat: 39.6520, lng: 2.4520, time: "13:30–15:30" },
-  { day: "sun", n: "04", name: "Deià (lunch)",               lat: 39.7475, lng: 2.6491, time: "16:30–18:30" },
-  { day: "sun", n: "05", name: "Sóller",                     lat: 39.7666, lng: 2.7148, time: "18:50–19:30" },
-  { day: "sun", n: "06", name: "Port de Sóller — sunset",    lat: 39.7969, lng: 2.6939, time: "19:45–20:45" },
+  { day: "sun", n: "04", name: "Deià (lunch)",               lat: 39.7475, lng: 2.6491, time: "16:30–18:00" },
+  { day: "sun", n: "05", name: "Es Canyaret — Llucalcari",   lat: 39.7585, lng: 2.6748, time: "18:10–19:25" },
+  { day: "sun", n: "06", name: "Sóller — drop bags",         lat: 39.7666, lng: 2.7148, time: "19:35–19:55" },
+  { day: "sun", n: "07", name: "Port de Sóller — sunset",    lat: 39.7969, lng: 2.6939, time: "20:05–20:45" },
+  { day: "sun", n: "08", name: "Sa Cova — dinner",           lat: 39.7666, lng: 2.7148, time: "21:00 →" },
 
   // MONDAY — sea
   { day: "mon", n: "01", name: "Cala Formentor",             lat: 39.9344, lng: 3.1310, time: "10:30–13:00" },
