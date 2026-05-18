@@ -263,6 +263,17 @@
       "source": "/artifacts/twitter-algo/"
     },
     {
+      "id": "unequal-visibility",
+      "label": "Unequal Visibility",
+      "x": 400,
+      "y": 440,
+      "type": "shape",
+      "color": "#f4a261",
+      "size": 40,
+      "panel-type": "website",
+      "source": "/artifacts/unequal-visibility/"
+    },
+    {
       "id": "?_curation",
       "label": "Do curation algorithms cause dysfunction?",
       "x": 0,
@@ -385,6 +396,10 @@
     {
       "source": "things",
       "target": "twitter-algo"
+    },
+    {
+      "source": "things",
+      "target": "unequal-visibility"
     },
     {
       "source": "travel",

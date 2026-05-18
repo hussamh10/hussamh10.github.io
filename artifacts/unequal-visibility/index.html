@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Unequal Visibility Research</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif; background: #f5f5f5; color: #222; }
+
+  /* Layout */
+  .app { display: flex; height: 100vh; }
+  .sidebar { width: 420px; min-width: 420px; border-right: 1px solid #ddd; display: flex; flex-direction: column; background: #fff; }
+  .main { flex: 1; overflow-y: auto; padding: 32px 40px; background: #fafafa; }
+
+  /* Tabs */
+  .tabs { display: flex; border-bottom: 1px solid #ddd; }
+  .tab { flex: 1; padding: 10px 12px; font-size: 12px; font-weight: 600; text-align: center; cursor: pointer; background: #f9f9f9; color: #777; border-bottom: 2px solid transparent; transition: all 0.15s; }
+  .tab:hover { color: #444; background: #f0f0f0; }
+  .tab.active { color: #1d4ed8; background: #fff; border-bottom-color: #1d4ed8; }
+
+  /* Sidebar header */
+  .sidebar-header { padding: 12px 16px; border-bottom: 1px solid #eee; }
+  .sidebar-header h1 { font-size: 13px; font-weight: 600; color: #111; margin-bottom: 8px; }
+  .search { width: 100%; padding: 8px 12px; background: #f5f5f5; border: 1px solid #ddd; border-radius: 6px; color: #222; font-size: 13px; outline: none; }
+  .search:focus { border-color: #1d4ed8; background: #fff; }
+
+  /* Filters */
+  .filters { padding: 10px 16px; border-bottom: 1px solid #eee; display: flex; flex-direction: column; gap: 8px; }
+  .filter-row { display: flex; gap: 5px; flex-wrap: wrap; align-items: center; }
+  .filter-row label { font-size: 10px; color: #999; width: 100%; margin-bottom: 1px; text-transform: uppercase; letter-spacing: 0.5px; }
+  .chip { padding: 3px 8px; border-radius: 4px; font-size: 11px; cursor: pointer; border: 1px solid #ddd; background: #fff; color: #666; transition: all 0.15s; user-select: none; }
+  .chip:hover { border-color: #aaa; color: #333; }
+  .chip.active { background: #1d4ed8; border-color: #1d4ed8; color: #fff; }
+  .chip.active.chip-stance-pro { background: #16a34a; border-color: #16a34a; }
+  .chip.active.chip-stance-anti { background: #dc2626; border-color: #dc2626; }
+  .chip.active.chip-stance-mixed { background: #d97706; border-color: #d97706; }
+  .chip.active.chip-stance-neutral { background: #888; border-color: #888; }
+
+  /* Select dropdown */
+  .filters select { flex: 1; padding: 4px 8px; font-size: 11px; border: 1px solid #ddd; border-radius: 4px; background: #fff; color: #444; outline: none; }
+  .filters select:focus { border-color: #1d4ed8; }
+
+  /* Sort */
+  .sort-bar { padding: 6px 16px; border-bottom: 1px solid #eee; display: flex; align-items: center; gap: 8px; }
+  .sort-bar label { font-size: 11px; color: #999; }
+  .sort-bar select { background: #fff; border: 1px solid #ddd; border-radius: 4px; color: #444; font-size: 11px; padding: 3px 6px; outline: none; }
+
+  /* Doc list */
+  .doc-list { flex: 1; overflow-y: auto; }
+  .doc-item { padding: 10px 16px; border-bottom: 1px solid #f0f0f0; cursor: pointer; transition: background 0.1s; display: flex; gap: 10px; align-items: flex-start; }
+  .doc-item:hover { background: #f5f8ff; }
+  .doc-item.selected { background: #eef2ff; border-left: 3px solid #3b82f6; }
+  .doc-item.is-read { opacity: 0.5; }
+  .doc-item-content { flex: 1; min-width: 0; }
+  .doc-item-title { font-size: 13px; font-weight: 500; color: #222; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .doc-item.is-read .doc-item-title { text-decoration: line-through; color: #999; }
+  .doc-item-author { font-size: 11px; color: #777; margin-top: 1px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .doc-item-meta { font-size: 11px; color: #999; margin-top: 4px; display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
+  .doc-count { padding: 6px 16px; font-size: 11px; color: #999; border-bottom: 1px solid #eee; background: #fafafa; }
+  .read-check { width: 16px; height: 16px; margin-top: 2px; accent-color: #1d4ed8; cursor: pointer; flex-shrink: 0; }
+
+  /* Strategy section header */
+  .strategy-section { padding: 10px 16px; font-size: 11px; font-weight: 700; color: #1d4ed8; background: #eef2ff; border-bottom: 1px solid #dbeafe; text-transform: uppercase; letter-spacing: 0.5px; }
+  .strategy-section .phase-num { display: inline-block; background: #1d4ed8; color: #fff; padding: 2px 6px; border-radius: 3px; font-size: 10px; margin-right: 6px; }
+  .strategy-section .phase-blurb { display: block; margin-top: 4px; color: #555; font-size: 11px; font-weight: 400; text-transform: none; letter-spacing: 0; line-height: 1.4; }
+
+  /* Badges */
+  .badge { display: inline-block; padding: 1px 6px; border-radius: 3px; font-size: 10px; font-weight: 500; white-space: nowrap; }
+  .badge-priority-1 { background: #fef2f2; color: #dc2626; border: 1px solid #fecaca; }
+  .badge-priority-2 { background: #fffbeb; color: #d97706; border: 1px solid #fde68a; }
+  .badge-priority-3 { background: #eff6ff; color: #2563eb; border: 1px solid #bfdbfe; }
+  .badge-priority-4 { background: #f5f5f5; color: #888; border: 1px solid #e5e5e5; }
+
+  .badge-stance-pro { background: #f0fdf4; color: #15803d; border: 1px solid #bbf7d0; }
+  .badge-stance-anti { background: #fef2f2; color: #dc2626; border: 1px solid #fecaca; }
+  .badge-stance-mixed { background: #fffbeb; color: #d97706; border: 1px solid #fde68a; }
+  .badge-stance-neutral { background: #f5f5f5; color: #777; border: 1px solid #e5e5e5; }
+
+  .badge-type-book { background: #faf5ff; color: #7c3aed; border: 1px solid #ddd6fe; }
+  .badge-type-paper { background: #eff6ff; color: #2563eb; border: 1px solid #bfdbfe; }
+  .badge-type-chapter { background: #f0fdfa; color: #0d9488; border: 1px solid #99f6e4; }
+  .badge-type-report { background: #fdf2f8; color: #be185d; border: 1px solid #fbcfe8; }
+  .badge-type-essay { background: #fef3c7; color: #92400e; border: 1px solid #fde68a; }
+  .badge-type-preprint { background: #f1f5f9; color: #475569; border: 1px solid #cbd5e1; }
+
+  .badge-verified-false { background: #fff7ed; color: #c2410c; border: 1px solid #fed7aa; }
+  .badge-verified-true { background: #f0fdf4; color: #166534; border: 1px solid #bbf7d0; }
+
+  /* Main panel */
+  .empty-state { display: flex; align-items: center; justify-content: center; height: 100%; color: #bbb; font-size: 14px; flex-direction: column; gap: 12px; }
+  .empty-state .hint { font-size: 12px; max-width: 400px; text-align: center; line-height: 1.6; }
+
+  .doc-detail h2 { font-size: 22px; font-weight: 600; color: #111; margin-bottom: 4px; line-height: 1.3; }
+  .doc-detail .authors-line { font-size: 13px; color: #555; margin-bottom: 8px; }
+  .doc-detail .venue-line { font-size: 12px; color: #888; margin-bottom: 10px; }
+  .doc-detail .venue-line .sep { color: #ccc; margin: 0 6px; }
+  .doc-detail .url { font-size: 12px; color: #1d4ed8; text-decoration: none; word-break: break-all; display: inline-block; margin-top: 4px; }
+  .doc-detail .url:hover { text-decoration: underline; }
+
+  .read-toggle { margin: 16px 0; display: flex; align-items: center; gap: 8px; }
+  .read-toggle input { width: 18px; height: 18px; accent-color: #1d4ed8; cursor: pointer; }
+  .read-toggle label { font-size: 13px; color: #555; cursor: pointer; }
+
+  .status-row { display: flex; gap: 8px; align-items: center; margin: 12px 0; flex-wrap: wrap; }
+  .status-row .badge { font-size: 12px; padding: 4px 12px; }
+
+  .section { margin: 20px 0; }
+  .section h3 { font-size: 12px; color: #999; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
+
+  .note-box { font-size: 14px; line-height: 1.7; color: #444; background: #fff; border: 1px solid #e5e5e5; border-radius: 8px; padding: 16px; }
+
+  .tag-list { display: flex; flex-wrap: wrap; gap: 6px; }
+  .tag { padding: 3px 10px; border-radius: 4px; font-size: 12px; }
+  .tag-area { background: #eef2ff; color: #4338ca; border: 1px solid #c7d2fe; }
+  .tag-cluster { background: #f0fdf4; color: #15803d; border: 1px solid #bbf7d0; }
+  .tag-method { background: #fdf2f8; color: #be185d; border: 1px solid #fbcfe8; }
+
+  /* Notes */
+  .notes-section { margin: 24px 0; }
+  .notes-section h3 { font-size: 12px; color: #999; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
+  .notes-area { width: 100%; min-height: 120px; padding: 12px; font-family: inherit; font-size: 13px; line-height: 1.6; color: #333; background: #fff; border: 1px solid #ddd; border-radius: 8px; outline: none; resize: vertical; }
+  .notes-area:focus { border-color: #1d4ed8; }
+  .notes-saved { font-size: 11px; color: #16a34a; margin-top: 4px; opacity: 0; transition: opacity 0.3s; }
+  .notes-saved.show { opacity: 1; }
+
+  /* Footer credit */
+  .credit { position:fixed; bottom:16px; right:16px; background:#fff; border:1px solid #ddd; border-radius:8px; padding:6px 14px; display:flex; align-items:center; gap:8px; font-family:-apple-system,system-ui,sans-serif; font-size:12px; color:#666; box-shadow:0 2px 8px rgba(0,0,0,0.08); z-index:9999; }
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="sidebar">
+    <div class="tabs">
+      <div class="tab active" data-tab="all">All Sources</div>
+      <div class="tab" data-tab="strategy">Reading Strategy</div>
+    </div>
+    <div class="sidebar-header">
+      <h1 id="sidebar-title">Unequal Visibility &mdash; 249 sources</h1>
+      <input class="search" type="text" placeholder="Search title, author, note, area..." id="search">
+    </div>
+    <div class="filters" id="filters-panel">
+      <div class="filter-row">
+        <label>Priority</label>
+        <span class="chip" data-filter="priority" data-val="1">1 &middot; Must-Read</span>
+        <span class="chip" data-filter="priority" data-val="2">2 &middot; Important</span>
+        <span class="chip" data-filter="priority" data-val="3">3 &middot; Supporting</span>
+        <span class="chip" data-filter="priority" data-val="4">4 &middot; Context</span>
+      </div>
+      <div class="filter-row">
+        <label>Stance (toward thesis)</label>
+        <span class="chip chip-stance-pro" data-filter="stance" data-val="pro">Pro</span>
+        <span class="chip chip-stance-anti" data-filter="stance" data-val="anti">Anti</span>
+        <span class="chip chip-stance-mixed" data-filter="stance" data-val="mixed">Mixed</span>
+        <span class="chip chip-stance-neutral" data-filter="stance" data-val="neutral">Neutral</span>
+      </div>
+      <div class="filter-row">
+        <label>Area</label>
+        <span class="chip" data-filter="area" data-val="smp-causes-unequal-vis" title="SMP causes unequal visibility">Descriptive</span>
+        <span class="chip" data-filter="area" data-val="why-unequal-vis-happens" title="Why unequal visibility happens">Mechanism</span>
+        <span class="chip" data-filter="area" data-val="is-unequal-vis-bad" title="Is unequal visibility bad">Outcomes</span>
+        <span class="chip" data-filter="area" data-val="historical-baseline" title="Pre-platform baseline">Baseline</span>
+        <span class="chip" data-filter="area" data-val="counter-democratization" title="Counter-arguments">Counter</span>
+      </div>
+      <div class="filter-row">
+        <label>Cluster</label>
+        <select id="cluster-filter">
+          <option value="">All clusters</option>
+          <option value="01-visibility-concept">01 &middot; Visibility concept</option>
+          <option value="02-attention-concentration">02 &middot; Attention concentration</option>
+          <option value="03-algorithmic-amplification">03 &middot; Algorithmic amplification</option>
+          <option value="04-network-mechanisms">04 &middot; Network mechanisms</option>
+          <option value="05-agenda-setting-influencers">05 &middot; Agenda-setting + influencers</option>
+          <option value="06-baseline-legacy-media">06 &middot; Legacy-media baseline</option>
+          <option value="07-political-dysfunction">07 &middot; Political dysfunction</option>
+          <option value="08-counter-arguments">08 &middot; Counter-arguments</option>
+        </select>
+      </div>
+    </div>
+    <div class="sort-bar" id="sort-bar">
+      <label>Sort by</label>
+      <select id="sort">
+        <option value="priority">Priority (1 first)</option>
+        <option value="year-desc">Year (newest)</option>
+        <option value="year-asc">Year (oldest)</option>
+        <option value="author">Author (A&ndash;Z)</option>
+        <option value="id">ID (A&ndash;Z)</option>
+      </select>
+    </div>
+    <div class="doc-count" id="doc-count"></div>
+    <div class="doc-list" id="doc-list"></div>
+  </div>
+  <div class="main" id="main">
+    <div class="empty-state">
+      <div>Select a source from the list.</div>
+      <div class="hint">Switch to <b>Reading Strategy</b> for a curated nine-phase path through the literature. Use filters to narrow by priority, stance, area, or cluster.</div>
+    </div>
+  </div>
+</div>
+
+<script>
+let DATA = [];
+let selected = null;
+let currentTab = 'all';
+let filters = { priority: null, stance: null, area: null, cluster: null };
+let readState = JSON.parse(localStorage.getItem('uv-read') || '{}');
+let notesState = JSON.parse(localStorage.getItem('uv-notes') || '{}');
+
+const STRATEGY = [
+  {
+    label: 'Phase 1 — Frame: what does "visibility" mean?',
+    blurb: 'Pin down the concept before defending any claim about it. Visibility on platforms is structurally different from "being seen" in earlier media regimes.',
+    ids: [
+      'bucher-2012-want-to-be-on-top',
+      'cotter-2019-visibility-game',
+      'zeng-kaye-2022-visibility-moderation',
+      'gillespie-2018-custodians',
+      'pasquale-2015-black-box-society'
+    ]
+  },
+  {
+    label: 'Phase 2 — Descriptive baseline: does unequal visibility actually happen?',
+    blurb: 'Empirical confirmation that attention on platforms is extremely skewed. Lock down the numbers before moving to mechanism or normative claims.',
+    ids: [
+      'hindman-2018-internet-trap',
+      'wojcik-hughes-2019-sizing-up-twitter',
+      'mcclain-widjaya-2021-behaviors-attitudes-twitter',
+      'bestvater-shah-2022-politics-twitter',
+      'wu-hofman-mason-watts-2011-who-says-what',
+      'cha-kwak-2009-youtube-video-popularity',
+      'bartl-2018-youtube-statistical-analysis'
+    ]
+  },
+  {
+    label: 'Phase 3 — Historical baseline: was visibility ever equal?',
+    blurb: 'The "compared to what?" question. Legacy media was also concentrated. The thesis must argue for "differently unequal," not "uniquely unequal."',
+    ids: [
+      'bagdikian-2004-media-monopoly',
+      'mcchesney-1999-rich-media',
+      'hindman-2008-myth-digital-democracy',
+      'prior-2007-post-broadcast-democracy',
+      'habermas-1962-public-sphere',
+      'fraser-1990-rethinking-public-sphere',
+      'lippmann-1922-public-opinion',
+      'boorstin-1961-image-pseudo-events'
+    ]
+  },
+  {
+    label: 'Phase 4 — Mechanism: why does the skew happen?',
+    blurb: 'Splits two threads: network endogeneity (preferential attachment generates power laws on its own) vs. platform-attributable amplification (algorithm + design). Both matter.',
+    ids: [
+      'salganik-dodds-watts-2006-inequality',
+      'salganik-watts-2008-leading-herd-astray',
+      'muchnik-aral-taylor-2013-social-influence-bias',
+      'barabasi-albert-1999-scaling-random-networks',
+      'broido-clauset-2019-scale-free-rare',
+      'huszar-2022-algorithmic-amplification-twitter',
+      'milli-2025-engagement-divisive-content',
+      'haroon-2023-youtube-sock-puppet',
+      'bandy-diakopoulos-2021-more-accounts',
+      'ye-2025-x-2024-election-audit'
+    ]
+  },
+  {
+    label: 'Phase 5 — Outcomes: is unequal visibility bad?',
+    blurb: 'Empirical evidence on dysfunction. Concentration of misinformation in a tiny minority is the strongest pro-thesis finding here.',
+    ids: [
+      'bail-2021-prism',
+      'vosoughi-2018-true-false-news',
+      'grinberg-joseph-2019-fake-news-twitter',
+      'baribi-bartov-2024-supersharers',
+      'rathje-2021-out-group-animosity',
+      'brady-2017-moral-emotional',
+      'iyengar-2019-affective-polarization',
+      'hindman-barash-2018-disinformation-twitter',
+      'benkler-2018-network-propaganda'
+    ]
+  },
+  {
+    label: 'Phase 6 — Pipeline: visibility &rarr; political power',
+    blurb: 'The conversion step. Agenda-setting + parasocial intimacy turns attention into influence. Strongest individual-case causal evidence is here.',
+    ids: [
+      'mccombs-shaw-1972-agenda-setting',
+      'guo-mccombs-2015-power-information-networks',
+      'horton-wohl-1956-parasocial',
+      'marwick-2013-status-update',
+      'wells-shah-pevehouse-2016-trump-hybrid-media',
+      'kluver-2025-social-influencers-elections',
+      'schafer-2025-influencers-collective-action',
+      'bond-2012-61-million',
+      'lewis-2018-alternative-influence'
+    ]
+  },
+  {
+    label: 'Phase 7 — The null-effects complication',
+    blurb: 'The literature that makes the strong "platforms cause polarization" version of the thesis hard to defend. The Meta/NYU 2023 papers are the central problem. Engage them directly.',
+    ids: [
+      'guess-2023-feed-algorithms',
+      'guess-2023-reshares',
+      'nyhan-2023-like-minded-sources',
+      'allcott-2024-deactivation',
+      'gonzalez-bailon-2023-asymmetric-segregation',
+      'boxell-2017-internet-polarization',
+      'bruns-2019-filter-bubbles',
+      'hosseinmardi-2021-youtube-consumption',
+      'bakshy-messing-adamic-2015-ideologically-diverse'
+    ]
+  },
+  {
+    label: 'Phase 8 — Counter-arguments: democratization, access, counterpublics',
+    blurb: 'The strongest opposition. Tufekci is the most sophisticated internal critic; Margetts is the most direct doctrinal opponent.',
+    ids: [
+      'tufekci-2017-twitter-tear-gas',
+      'jackson-bailey-welles-2020-hashtag-activism',
+      'benkler-2006-wealth-networks',
+      'margetts-etal-2016-political-turbulence',
+      'lorenz-spreen-2023-systematic-review',
+      'castells-2012-networks-outrage',
+      'morozov-2011-net-delusion'
+    ]
+  },
+  {
+    label: 'Phase 9 — Synthesis: build the defensible thesis',
+    blurb: 'Pull threads together. Complex contagion qualifies the hub-broadcast claim. Reviews give consensus posture. Last step before drafting.',
+    ids: [
+      'centola-2018-how-behavior-spreads',
+      'goel-anderson-hofman-watts-2016-structural-virality',
+      'tucker-2018-hewlett-review',
+      'persily-tucker-2020-social-media-democracy',
+      'kreiss-mcgregor-2024-polarization-platforms',
+      'lazer-2018-science-fake-news'
+    ]
+  }
+];
+
+const strategyIds = new Set(STRATEGY.flatMap(s => s.ids));
+
+const priorityLabel = { 1: 'must-read', 2: 'important', 3: 'supporting', 4: 'context' };
+
+fetch('sources.json')
+  .then(r => r.json())
+  .then(payload => {
+    DATA = payload.sources || payload;
+    document.getElementById('sidebar-title').textContent = `Unequal Visibility — ${DATA.length} sources`;
+    render();
+  })
+  .catch(err => {
+    document.getElementById('doc-list').innerHTML = `<div style="padding:20px;color:#dc2626">Failed to load sources.json: ${err.message}</div>`;
+  });
+
+function setTab(tab) {
+  currentTab = tab;
+  document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t.dataset.tab === tab));
+  const fp = document.getElementById('filters-panel');
+  const sb = document.getElementById('sort-bar');
+  if (tab === 'strategy') {
+    fp.style.display = 'none';
+    sb.style.display = 'none';
+  } else {
+    fp.style.display = '';
+    sb.style.display = '';
+  }
+  render();
+}
+
+document.querySelectorAll('.tab').forEach(t => t.addEventListener('click', () => setTab(t.dataset.tab)));
+
+function render() {
+  if (currentTab === 'strategy') return renderStrategy();
+  renderAll();
+}
+
+function matchesFilters(d, q) {
+  if (filters.priority && String(d.priority) !== String(filters.priority)) return false;
+  if (filters.stance && d.stance !== filters.stance) return false;
+  if (filters.area && !(d.areas || []).includes(filters.area)) return false;
+  if (filters.cluster && !(d.clusters || []).includes(filters.cluster)) return false;
+  if (q) {
+    const hay = [
+      d.title,
+      d.id,
+      (d.authors || []).join(' '),
+      d.venue,
+      d.note,
+      d.method,
+      ...(d.areas || []),
+      ...(d.clusters || [])
+    ].filter(Boolean).join(' ').toLowerCase();
+    if (!hay.includes(q)) return false;
+  }
+  return true;
+}
+
+function renderAll() {
+  const q = document.getElementById('search').value.toLowerCase().trim();
+  const sort = document.getElementById('sort').value;
+
+  let docs = DATA.filter(d => matchesFilters(d, q));
+
+  docs.sort((a, b) => {
+    if (sort === 'priority') {
+      const pa = a.priority || 9, pb = b.priority || 9;
+      if (pa !== pb) return pa - pb;
+      return (b.year || 0) - (a.year || 0);
+    }
+    if (sort === 'year-desc') return (b.year || 0) - (a.year || 0);
+    if (sort === 'year-asc') return (a.year || 0) - (b.year || 0);
+    if (sort === 'author') {
+      const aa = (a.authors && a.authors[0] || 'zzz').toLowerCase();
+      const ab = (b.authors && b.authors[0] || 'zzz').toLowerCase();
+      return aa.localeCompare(ab);
+    }
+    if (sort === 'id') return (a.id || '').localeCompare(b.id || '');
+    return 0;
+  });
+
+  const readCount = docs.filter(d => readState[d.id]).length;
+  document.getElementById('doc-count').textContent = `${docs.length} sources (${readCount} read)`;
+
+  const list = document.getElementById('doc-list');
+  list.innerHTML = docs.map(d => docItemHTML(d)).join('') || '<div style="padding:20px;color:#bbb;font-size:13px">No sources match.</div>';
+  bindDocItems();
+}
+
+function renderStrategy() {
+  const q = document.getElementById('search').value.toLowerCase().trim();
+  let totalCount = 0;
+  let readCount = 0;
+  let html = '';
+
+  for (let i = 0; i < STRATEGY.length; i++) {
+    const phase = STRATEGY[i];
+    let docs = phase.ids.map(id => DATA.find(d => d.id === id)).filter(Boolean);
+    if (q) docs = docs.filter(d => matchesFilters(d, q));
+    if (docs.length === 0) continue;
+    totalCount += docs.length;
+    readCount += docs.filter(d => readState[d.id]).length;
+    html += `<div class="strategy-section"><span class="phase-num">${i + 1}</span>${phase.label.replace(/^Phase \d+\s*—\s*/, '')}<span class="phase-blurb">${phase.blurb}</span></div>`;
+    html += docs.map(d => docItemHTML(d)).join('');
+  }
+
+  document.getElementById('doc-count').textContent = `${totalCount} sources across 9 phases (${readCount} read)`;
+  document.getElementById('doc-list').innerHTML = html;
+  bindDocItems();
+}
+
+function docItemHTML(d) {
+  const isRead = readState[d.id];
+  const firstAuthor = (d.authors && d.authors[0]) || 'Unknown';
+  const authorShort = firstAuthor.split(',')[0] + (d.authors && d.authors.length > 1 ? ' et al.' : '');
+  return `
+    <div class="doc-item ${selected === d.id ? 'selected' : ''} ${isRead ? 'is-read' : ''}" data-id="${d.id}">
+      <input type="checkbox" class="read-check" data-id="${d.id}" ${isRead ? 'checked' : ''} title="Mark as read">
+      <div class="doc-item-content">
+        <div class="doc-item-title">${escapeHTML(d.title || d.id)}</div>
+        <div class="doc-item-author">${escapeHTML(authorShort)} &middot; ${d.year || '—'} &middot; ${escapeHTML(d.venue || '')}</div>
+        <div class="doc-item-meta">
+          <span class="badge badge-priority-${d.priority}">P${d.priority}</span>
+          <span class="badge badge-stance-${d.stance || 'neutral'}">${d.stance || 'neutral'}</span>
+          <span class="badge badge-type-${d.type || 'paper'}">${d.type || 'paper'}</span>
+        </div>
+      </div>
+    </div>`;
+}
+
+function bindDocItems() {
+  document.querySelectorAll('.doc-item').forEach(el => {
+    el.addEventListener('click', (e) => {
+      if (e.target.classList.contains('read-check')) return;
+      selected = el.dataset.id;
+      // refresh selection styling without full re-render
+      document.querySelectorAll('.doc-item').forEach(x => x.classList.toggle('selected', x.dataset.id === selected));
+      const d = DATA.find(x => x.id === selected);
+      if (d) showDoc(d);
+    });
+  });
+  document.querySelectorAll('.read-check').forEach(cb => {
+    cb.addEventListener('change', (e) => {
+      e.stopPropagation();
+      const id = cb.dataset.id;
+      readState[id] = cb.checked;
+      localStorage.setItem('uv-read', JSON.stringify(readState));
+      render();
+      if (selected === id) showDoc(DATA.find(d => d.id === id));
+    });
+  });
+}
+
+function showDoc(d) {
+  const main = document.getElementById('main');
+  const isRead = readState[d.id];
+  const notes = notesState[d.id] || '';
+  const authors = (d.authors || []).join('; ') || 'Unknown';
+  const venueLine = [d.venue, d.year, d.type].filter(Boolean).join(' · ');
+
+  const areas = (d.areas || []).map(a => {
+    const label = {
+      'smp-causes-unequal-vis': 'descriptive — SMP causes unequal vis',
+      'why-unequal-vis-happens': 'mechanism — why it happens',
+      'is-unequal-vis-bad': 'outcomes — is it bad?',
+      'historical-baseline': 'historical baseline',
+      'counter-democratization': 'counter — democratization'
+    }[a] || a;
+    return `<span class="tag tag-area">${label}</span>`;
+  }).join('');
+
+  const clusters = (d.clusters || []).map(c => `<span class="tag tag-cluster">${c}</span>`).join('');
+
+  main.innerHTML = `
+    <div class="doc-detail">
+      <h2>${escapeHTML(d.title)}</h2>
+      <div class="authors-line">${escapeHTML(authors)}</div>
+      <div class="venue-line">${escapeHTML(venueLine)}</div>
+      ${d.url ? `<a class="url" href="${escapeAttr(d.url)}" target="_blank" rel="noopener">${escapeHTML(d.url)}</a>` : ''}
+      ${d.doi ? `<div style="font-size:12px;color:#888;margin-top:2px">DOI: <a class="url" href="https://doi.org/${escapeAttr(d.doi)}" target="_blank" rel="noopener">${escapeHTML(d.doi)}</a></div>` : ''}
+
+      <div class="read-toggle">
+        <input type="checkbox" id="read-main" ${isRead ? 'checked' : ''}>
+        <label for="read-main">${isRead ? 'Read' : 'Mark as read'}</label>
+      </div>
+
+      <div class="status-row">
+        <span class="badge badge-priority-${d.priority}">P${d.priority} · ${priorityLabel[d.priority] || ''}</span>
+        <span class="badge badge-stance-${d.stance || 'neutral'}">${(d.stance || 'neutral').toUpperCase()}</span>
+        <span class="badge badge-type-${d.type || 'paper'}">${d.type || 'paper'}</span>
+        ${d.method ? `<span class="badge" style="background:#fdf2f8;color:#be185d;border:1px solid #fbcfe8">${escapeHTML(d.method)}</span>` : ''}
+        <span class="badge badge-verified-${d.verified ? 'true' : 'false'}">${d.verified ? '✓ verified' : '⚠ flagged'}</span>
+      </div>
+
+      <div class="section">
+        <h3>Contribution to thesis</h3>
+        <div class="note-box">${escapeHTML(d.note || 'No summary recorded.')}</div>
+      </div>
+
+      ${areas ? `<div class="section"><h3>Areas addressed</h3><div class="tag-list">${areas}</div></div>` : ''}
+
+      ${clusters ? `<div class="section"><h3>Appears in clusters</h3><div class="tag-list">${clusters}</div></div>` : ''}
+
+      <div class="notes-section">
+        <h3>Your notes</h3>
+        <textarea class="notes-area" id="notes-area" placeholder="Write your notes here...">${escapeHTML(notes)}</textarea>
+        <div class="notes-saved" id="notes-saved">Saved</div>
+      </div>
+    </div>
+  `;
+  main.scrollTop = 0;
+
+  document.getElementById('read-main').addEventListener('change', (e) => {
+    readState[d.id] = e.target.checked;
+    localStorage.setItem('uv-read', JSON.stringify(readState));
+    document.querySelector(`label[for="read-main"]`).textContent = e.target.checked ? 'Read' : 'Mark as read';
+    render();
+  });
+
+  let saveTimer;
+  document.getElementById('notes-area').addEventListener('input', (e) => {
+    notesState[d.id] = e.target.value;
+    clearTimeout(saveTimer);
+    saveTimer = setTimeout(() => {
+      localStorage.setItem('uv-notes', JSON.stringify(notesState));
+      const saved = document.getElementById('notes-saved');
+      saved.classList.add('show');
+      setTimeout(() => saved.classList.remove('show'), 1500);
+    }, 500);
+  });
+}
+
+function escapeHTML(s) {
+  if (s == null) return '';
+  return String(s).replace(/[&<>"']/g, c => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c]));
+}
+function escapeAttr(s) { return escapeHTML(s); }
+
+// Filter chips
+document.querySelectorAll('.chip').forEach(chip => {
+  chip.addEventListener('click', () => {
+    const f = chip.dataset.filter;
+    const v = chip.dataset.val;
+    if (filters[f] === v) { filters[f] = null; chip.classList.remove('active'); }
+    else {
+      document.querySelectorAll(`.chip[data-filter="${f}"]`).forEach(c => c.classList.remove('active'));
+      filters[f] = v;
+      chip.classList.add('active');
+    }
+    render();
+  });
+});
+
+document.getElementById('cluster-filter').addEventListener('change', (e) => {
+  filters.cluster = e.target.value || null;
+  render();
+});
+
+document.getElementById('search').addEventListener('input', render);
+document.getElementById('sort').addEventListener('change', render);
+</script>
+
+<div class="credit">
+  <svg width="16" height="16" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="32" height="32" rx="6" fill="#D97757"/><path d="M22.5 10.8C20.8 9 18.5 8 16 8c-4.4 0-8 3.6-8 8s3.6 8 8 8c2.5 0 4.8-1 6.5-2.8l-2.2-2.1C19 20.3 17.6 21 16 21c-2.8 0-5-2.2-5-5s2.2-5 5-5c1.6 0 3 .7 4 1.8l2.5-2z" fill="#fff"/></svg>
+  Made by Claude
+</div>
+</body>
+</html>
