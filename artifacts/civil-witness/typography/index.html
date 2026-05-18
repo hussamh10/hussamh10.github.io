@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Civil Witness — Typography & Layout Tests</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;700&family=IBM+Plex+Sans:wght@400;500;700&family=IBM+Plex+Serif:wght@400;500;700&display=swap');
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'IBM Plex Serif', serif; background: #EFEAE0; color: #1A1714; padding: 48px 32px; min-height: 100vh; }
+  .wrap { max-width: 1100px; margin: 0 auto; }
+  h1 { font-size: 42px; font-weight: 700; letter-spacing: -1px; margin-bottom: 8px; }
+  .sub { font-family: 'IBM Plex Mono', monospace; font-size: 12px; text-transform: uppercase; letter-spacing: 1.5px; color: #6E6A62; margin-bottom: 12px; }
+  .case { font-family: 'IBM Plex Sans', sans-serif; font-size: 15px; max-width: 720px; line-height: 1.55; color: #3A3530; margin-bottom: 40px; padding: 16px 20px; border: 1px solid #1A1714; background: #F4EFE4; }
+  .case strong { font-weight: 700; }
+
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 24px; }
+  .card { border: 2px solid #1A1714; background: #F4EFE4; box-shadow: 8px 8px 0 #1A1714; text-decoration: none; color: inherit; display: flex; flex-direction: column; transition: transform 0.08s ease; }
+  .card:hover { transform: translate(-2px, -2px); box-shadow: 10px 10px 0 #1A1714; }
+  .num { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #6E6A62; text-transform: uppercase; letter-spacing: 1.5px; padding: 14px 18px 4px; }
+  .name { font-family: 'IBM Plex Sans', sans-serif; font-size: 22px; font-weight: 700; letter-spacing: -0.3px; padding: 0 18px 8px; }
+  .desc { font-family: 'IBM Plex Sans', sans-serif; font-size: 14px; line-height: 1.45; color: #3A3530; padding: 0 18px 14px; }
+  .specs { font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: #6E6A62; text-transform: uppercase; letter-spacing: 1px; padding: 10px 18px 14px; border-top: 1px solid #1A1714; background: #EFEAE0; }
+  .specs span { display: block; margin-bottom: 2px; }
+
+  .note { margin-top: 48px; font-family: 'IBM Plex Sans', sans-serif; font-size: 14px; line-height: 1.6; color: #3A3530; max-width: 720px; border-top: 2px solid #1A1714; padding-top: 24px; }
+  .back { margin-bottom: 32px; font-family: 'IBM Plex Mono', monospace; font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px; }
+  .back a { color: #1A1714; text-decoration: none; border-bottom: 1px solid #1A1714; }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="back"><a href="../index.html">← back to palettes</a></div>
+
+    <h1>Civil Witness — Typography &amp; Layout Tests</h1>
+    <div class="sub">10 worked-on field dispatches · same case study · IBM Plex family</div>
+
+    <div class="case">
+      <strong>The case study:</strong> "The 24-Hour Talking Point" — how the phrase <em>"anti-state elements seeking to destabilize the federation"</em> appeared in chyrons on six Pakistani TV channels within 24 hours of a single press conference. Same content, populated into 10 different layouts and typographic systems so the structural choice can be isolated.
+    </div>
+
+    <div class="grid">
+      <a class="card" href="type-01-fa-field-dispatch.html">
+        <div class="num">Type 01</div>
+        <div class="name">FA Field Dispatch</div>
+        <div class="desc">Pure FA register. Hard grid. Mono labels everywhere. Sans display. B&amp;W with one saffron accent. Clinical and credible.</div>
+        <div class="specs"><span>Display: Plex Sans Bold</span><span>Body: Plex Sans</span><span>Labels: Plex Mono</span></div>
+      </a>
+
+      <a class="card" href="type-02-heavy-serif-masthead.html">
+        <div class="num">Type 02</div>
+        <div class="name">Heavy Serif Masthead</div>
+        <div class="desc">Newspaper investigative layout. Centered masthead, two-column body, drop cap, pull quote. The "from the press" register.</div>
+        <div class="specs"><span>Display: Plex Serif Bold</span><span>Body: Plex Serif</span><span>Labels: Plex Mono</span></div>
+      </a>
+
+      <a class="card" href="type-03-annotated-dossier.html">
+        <div class="num">Type 03</div>
+        <div class="name">Annotated Dossier</div>
+        <div class="desc">Clean base + worked-on overlay. Stamps, pen circles, hand-marked redaction bars, marginal notes. Document being handled.</div>
+        <div class="specs"><span>Display: Plex Serif Bold</span><span>Body: Plex Sans</span><span>Annotations: Caveat</span></div>
+      </a>
+
+      <a class="card" href="type-04-riso-pamphlet.html">
+        <div class="num">Type 04</div>
+        <div class="name">Riso Pamphlet</div>
+        <div class="desc">Misregistered ink shadows on type, riso pink + ultramarine + orange, drop caps. Indie-zine but credible.</div>
+        <div class="specs"><span>Display: Plex Sans Bold</span><span>Body: Plex Serif</span><span>Inks: Riso pink/blue/orange</span></div>
+      </a>
+
+      <a class="card" href="type-05-timeline-first.html">
+        <div class="num">Type 05</div>
+        <div class="name">Timeline-First</div>
+        <div class="desc">Horizontal 24-hour timeline as the central architecture. Press conference at one end, chyrons placed in time. The shape IS the finding.</div>
+        <div class="specs"><span>Display: Plex Sans Bold</span><span>Body: Plex Sans</span><span>Labels: Plex Mono</span></div>
+      </a>
+
+      <a class="card" href="type-06-chyron-stripe.html">
+        <div class="num">Type 06</div>
+        <div class="name">Chyron-Stripe Layout</div>
+        <div class="desc">Page is six stacked chyrons — six channels carrying the same phrase. The repetition is the visual finding. No commentary needed.</div>
+        <div class="specs"><span>Display: Plex Sans Bold</span><span>Body: Plex Sans</span><span>Labels: Plex Mono</span></div>
+      </a>
+
+      <a class="card" href="type-07-court-filing.html">
+        <div class="num">Type 07</div>
+        <div class="name">Court Filing</div>
+        <div class="desc">Line-numbered margins, "IN THE MATTER OF…" heading, sectioned § text, formal exhibit table, signed at the foot. Legal register, all-the-way.</div>
+        <div class="specs"><span>Display: Plex Serif Bold</span><span>Body: Plex Serif</span><span>Labels: Plex Mono</span></div>
+      </a>
+
+      <a class="card" href="type-08-field-notebook.html">
+        <div class="num">Type 08</div>
+        <div class="name">Field Notebook</div>
+        <div class="desc">Quad-ruled paper. Handwritten Caveat for headline + annotations. Body in Plex. Most handmade and physical of the set.</div>
+        <div class="specs"><span>Display: Caveat (handwritten)</span><span>Body: Plex Sans</span><span>Labels: Plex Mono</span></div>
+      </a>
+
+      <a class="card" href="type-09-the-brief.html">
+        <div class="num">Type 09</div>
+        <div class="name">The Brief</div>
+        <div class="desc">Three huge numbers up top — 06, 04 hr, 100% — supporting body compressed below. Findings-card register, scannable in 4 seconds.</div>
+        <div class="specs"><span>Display: Plex Sans Bold</span><span>Body: Plex Serif</span><span>Numbers: Plex Sans 140px</span></div>
+      </a>
+
+      <a class="card" href="type-10-side-margin.html">
+        <div class="num">Type 10</div>
+        <div class="name">Side-Channel Margin</div>
+        <div class="desc">Body left (60%), all evidence/quotes/data in margin (40%). Body references margin elements (¹²³). Academic-paper architecture, populated for media.</div>
+        <div class="specs"><span>Display: Plex Serif Bold</span><span>Body: Plex Serif</span><span>Margin: Plex Sans + Mono</span></div>
+      </a>
+    </div>
+
+    <p class="note">
+      All 10 use the same case study so layout and typography are the only variables. They use IBM Plex (free via Google Fonts) — Sans / Serif / Mono — plus Caveat for handwritten annotations where applicable. Open them at full screen; the dispatches are designed for desktop reading.
+    </p>
+  </div>
+</body>
+</html>

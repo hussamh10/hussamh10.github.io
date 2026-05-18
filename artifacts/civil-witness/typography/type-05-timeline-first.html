@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Civil Witness — Timeline-First</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;700&family=IBM+Plex+Sans:wght@400;500;700&display=swap');
+
+  :root {
+    --bg: #F4EFE4;
+    --ink: #1A1714;
+    --saffron: #E8A325;
+    --brick: #8B2A22;
+    --muted: #6E6A62;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: var(--bg); color: var(--ink); }
+  body { font-family: 'IBM Plex Sans', sans-serif; font-size: 15px; line-height: 1.55; padding: 32px 24px; min-height: 100vh; }
+
+  .frame { max-width: 1280px; margin: 0 auto; border: 1px solid var(--ink); }
+
+  .top { padding: 22px 32px; display: flex; justify-content: space-between; align-items: baseline; border-bottom: 1px solid var(--ink); }
+  .wordmark { font-family: 'IBM Plex Sans', sans-serif; font-size: 22px; font-weight: 700; letter-spacing: -0.4px; }
+  .meta { font-family: 'IBM Plex Mono', monospace; font-size: 10px; text-transform: uppercase; letter-spacing: 1.5px; color: var(--muted); }
+
+  .heading { padding: 48px 32px 36px; border-bottom: 1px solid var(--ink); display: grid; grid-template-columns: 2fr 1fr; gap: 60px; align-items: end; }
+  .kicker { font-family: 'IBM Plex Mono', monospace; font-size: 10px; text-transform: uppercase; letter-spacing: 2px; color: var(--brick); margin-bottom: 12px; }
+  .heading h1 { font-family: 'IBM Plex Sans', sans-serif; font-size: 56px; line-height: 1.04; font-weight: 700; letter-spacing: -1.8px; }
+  .heading h1 .accent { background: var(--saffron); padding: 0 5px; }
+  .heading .meta-side { font-family: 'IBM Plex Mono', monospace; font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px; color: var(--muted); display: flex; flex-direction: column; gap: 8px; }
+  .heading .meta-side .item .k { color: var(--muted); display: block; font-size: 9px; }
+  .heading .meta-side .item .v { color: var(--ink); font-size: 12px; font-weight: 500; }
+
+  /* TIMELINE */
+  .timeline-wrap { padding: 60px 32px 80px; border-bottom: 1px solid var(--ink); position: relative; }
+  .axis-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; text-transform: uppercase; letter-spacing: 1.5px; color: var(--muted); margin-bottom: 30px; }
+  .axis { position: relative; height: 200px; border-bottom: 2px solid var(--ink); margin-bottom: 12px; }
+  .tick { position: absolute; top: 0; bottom: 0; border-left: 1px dashed var(--muted); }
+  .tick .label { position: absolute; bottom: -28px; left: -22px; font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--muted); width: 44px; text-align: center; text-transform: uppercase; letter-spacing: 1px; }
+  .tick.pc { border-left: 3px solid var(--brick); }
+  .tick.pc .label { color: var(--brick); font-weight: 700; left: -36px; width: 72px; }
+  .tick.pc .label::before { content: "PRESS CONF"; display: block; font-size: 9px; }
+
+  .event { position: absolute; bottom: 4px; transform: translateX(-50%); }
+  .event .ball { width: 18px; height: 18px; background: var(--saffron); border: 2px solid var(--ink); border-radius: 50%; }
+  .event .stick { width: 2px; background: var(--ink); }
+  .event.h1 .stick { height: 60px; }
+  .event.h2 .stick { height: 90px; }
+  .event.h3 .stick { height: 75px; }
+  .event.h4 .stick { height: 105px; }
+  .event.h5 .stick { height: 130px; }
+  .event.h6 .stick { height: 160px; }
+  .event .card { position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%); white-space: nowrap; padding: 6px 10px; background: var(--bg); border: 1px solid var(--ink); margin-bottom: 4px; }
+  .event .card .ch { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; }
+  .event .card .t { font-family: 'IBM Plex Mono', monospace; font-size: 9px; color: var(--muted); margin-left: 8px; }
+
+  .timeline-legend { display: flex; gap: 20px; font-family: 'IBM Plex Mono', monospace; font-size: 10px; text-transform: uppercase; letter-spacing: 1.5px; color: var(--muted); margin-top: 40px; }
+  .legend-item { display: flex; align-items: center; gap: 8px; }
+  .legend-item .dot { width: 12px; height: 12px; border: 2px solid var(--ink); border-radius: 50%; }
+  .legend-item .dot.pc { background: var(--brick); border-color: var(--brick); }
+  .legend-item .dot.chy { background: var(--saffron); }
+
+  .findings { padding: 36px 32px; border-bottom: 1px solid var(--ink); display: grid; grid-template-columns: repeat(3, 1fr); gap: 36px; }
+  .finding { }
+  .finding .num { font-family: 'IBM Plex Mono', monospace; font-size: 10px; text-transform: uppercase; letter-spacing: 1.5px; color: var(--muted); margin-bottom: 8px; padding-bottom: 6px; border-bottom: 1px solid var(--ink); }
+  .finding h3 { font-family: 'IBM Plex Sans', sans-serif; font-size: 22px; font-weight: 700; line-height: 1.2; letter-spacing: -0.5px; margin-bottom: 6px; }
+  .finding p { font-size: 13px; color: var(--muted); line-height: 1.5; }
+
+  .body { padding: 36px 32px; border-bottom: 1px solid var(--ink); display: grid; grid-template-columns: 1fr 2fr; gap: 60px; }
+  .body .l { font-family: 'IBM Plex Mono', monospace; font-size: 10px; text-transform: uppercase; letter-spacing: 1.5px; color: var(--muted); border-top: 1px solid var(--ink); padding-top: 14px; }
+  .body .r { font-size: 16px; line-height: 1.65; max-width: 700px; }
+  .body .r p { margin-bottom: 1em; }
+
+  .footer { padding: 14px 32px; display: flex; justify-content: space-between; font-family: 'IBM Plex Mono', monospace; font-size: 10px; text-transform: uppercase; letter-spacing: 1.5px; color: var(--muted); }
+</style>
+</head>
+<body>
+  <div class="frame">
+    <div class="top">
+      <div class="wordmark">Civil Witness</div>
+      <div class="meta">Field Note 04 · April 2026 · Sijill 04/127</div>
+    </div>
+
+    <div class="heading">
+      <div>
+        <div class="kicker">Field Note 04 — TV Coordination</div>
+        <h1>The <span class="accent">24-Hour</span> Talking Point.</h1>
+      </div>
+      <div class="meta-side">
+        <div class="item"><span class="k">From</span><span class="v">12 Apr 2026 · 16:30 PKT</span></div>
+        <div class="item"><span class="k">To</span><span class="v">13 Apr 2026 · 16:30 PKT</span></div>
+        <div class="item"><span class="k">Channels</span><span class="v">06</span></div>
+        <div class="item"><span class="k">Phrase</span><span class="v">"Anti-state elements…"</span></div>
+      </div>
+    </div>
+
+    <div class="timeline-wrap">
+      <div class="axis-label">▶ Timeline · 24 hours · 12 Apr 16:30 → 13 Apr 16:30</div>
+      <div class="axis">
+        <div class="tick pc" style="left: 0%;"><span class="label">16:30</span></div>
+        <div class="tick" style="left: 16.7%;"><span class="label">20:30</span></div>
+        <div class="tick" style="left: 33.3%;"><span class="label">00:30</span></div>
+        <div class="tick" style="left: 50%;"><span class="label">04:30</span></div>
+        <div class="tick" style="left: 66.7%;"><span class="label">08:30</span></div>
+        <div class="tick" style="left: 83.3%;"><span class="label">12:30</span></div>
+
+        <div class="event h1" style="left: 3.4%;"><div class="card"><span class="ch">CH 7</span><span class="t">17:14</span></div><div class="stick"></div><div class="ball"></div></div>
+        <div class="event h2" style="left: 5.4%;"><div class="card"><span class="ch">CH 24</span><span class="t">17:42</span></div><div class="stick"></div><div class="ball"></div></div>
+        <div class="event h3" style="left: 6.5%;"><div class="card"><span class="ch">CH 13</span><span class="t">18:03</span></div><div class="stick"></div><div class="ball"></div></div>
+        <div class="event h4" style="left: 7.6%;"><div class="card"><span class="ch">CH 92</span><span class="t">18:30</span></div><div class="stick"></div><div class="ball"></div></div>
+        <div class="event h5" style="left: 11%;"><div class="card"><span class="ch">CH 4</span><span class="t">19:15</span></div><div class="stick"></div><div class="ball"></div></div>
+        <div class="event h6" style="left: 17.5%;"><div class="card"><span class="ch">CH 11</span><span class="t">20:42</span></div><div class="stick"></div><div class="ball"></div></div>
+      </div>
+      <div class="timeline-legend">
+        <div class="legend-item"><span class="dot pc"></span>Press conference</div>
+        <div class="legend-item"><span class="dot chy"></span>Chyron carrying verbatim phrase</div>
+      </div>
+    </div>
+
+    <div class="findings">
+      <div class="finding"><div class="num">Finding 01</div><h3>Six channels, verbatim.</h3><p>No paraphrase. No rewrite. The exact phrase.</p></div>
+      <div class="finding"><div class="num">Finding 02</div><h3>Five within four hours.</h3><p>Tightly clustered window beginning 45 minutes after the press conference ended.</p></div>
+      <div class="finding"><div class="num">Finding 03</div><h3>Identical placement.</h3><p>Four out of six in chyron, not anchor read or guest commentary.</p></div>
+    </div>
+
+    <div class="body">
+      <div class="l">From the field</div>
+      <div class="r">
+        <p>The shape of the timeline is the finding. Independent newsrooms, working separate prime-time blocks, did not arrive at the same wording over a working day. The cluster is too tight, the wording too identical, the placement too consistent.</p>
+        <p>This is what coordinated talking points look like in the data. The phrase did not emerge organically — it appeared, verbatim, in clustered time, in the same broadcast position, in six places at once. Civil Witness is keeping the record.</p>
+      </div>
+    </div>
+
+    <div class="footer">
+      <span>Civil Witness · 2026</span>
+      <span>Type 05 — Timeline-First</span>
+      <span>Sijill 04/127</span>
+    </div>
+  </div>
+</body>
+</html>

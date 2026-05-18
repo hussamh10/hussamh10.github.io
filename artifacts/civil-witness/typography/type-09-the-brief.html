@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Civil Witness — The Brief</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;700&family=IBM+Plex+Sans:wght@400;500;700&family=IBM+Plex+Serif:wght@400;500;700&display=swap');
+
+  :root {
+    --bg: #F4EFE4;
+    --ink: #1A1714;
+    --saffron: #E8A325;
+    --brick: #8B2A22;
+    --muted: #6E6A62;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: var(--bg); color: var(--ink); }
+  body { font-family: 'IBM Plex Sans', sans-serif; font-size: 15px; line-height: 1.55; padding: 32px 24px; min-height: 100vh; }
+
+  .frame { max-width: 1100px; margin: 0 auto; border: 2px solid var(--ink); }
+
+  .top { padding: 22px 32px; display: flex; justify-content: space-between; align-items: baseline; border-bottom: 2px solid var(--ink); }
+  .wordmark { font-family: 'IBM Plex Sans', sans-serif; font-size: 22px; font-weight: 700; letter-spacing: -0.4px; }
+  .meta { font-family: 'IBM Plex Mono', monospace; font-size: 10px; text-transform: uppercase; letter-spacing: 1.5px; color: var(--muted); }
+
+  .brief-label { padding: 8px 32px; background: var(--ink); color: var(--bg); font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; display: flex; justify-content: space-between; }
+
+  /* THE THREE BIG NUMBERS */
+  .summary { padding: 60px 32px; border-bottom: 2px solid var(--ink); display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; }
+  .num-cell { padding: 0 28px; border-right: 1px solid var(--ink); display: flex; flex-direction: column; gap: 16px; }
+  .num-cell:first-child { padding-left: 0; }
+  .num-cell:last-child { border-right: none; padding-right: 0; }
+  .num-cell .big { font-family: 'IBM Plex Sans', sans-serif; font-size: 140px; font-weight: 700; line-height: 0.9; letter-spacing: -6px; color: var(--ink); }
+  .num-cell.accent .big { color: var(--brick); }
+  .num-cell .lab { font-family: 'IBM Plex Mono', monospace; font-size: 11px; text-transform: uppercase; letter-spacing: 1.8px; color: var(--ink); font-weight: 500; }
+  .num-cell .desc { font-family: 'IBM Plex Sans', sans-serif; font-size: 13px; line-height: 1.5; color: var(--muted); margin-top: 4px; }
+
+  .dispatch { padding: 48px 32px; border-bottom: 2px solid var(--ink); display: grid; grid-template-columns: 1fr 2fr; gap: 60px; }
+  .dispatch .l { font-family: 'IBM Plex Mono', monospace; font-size: 11px; text-transform: uppercase; letter-spacing: 2px; color: var(--brick); border-top: 2px solid var(--brick); padding-top: 12px; }
+  .dispatch h1 { font-family: 'IBM Plex Serif', serif; font-size: 44px; line-height: 1.08; font-weight: 700; letter-spacing: -1.2px; margin-bottom: 22px; max-width: 700px; }
+  .dispatch h1 .accent { background: var(--saffron); padding: 0 5px; }
+  .dispatch .dek { font-family: 'IBM Plex Sans', sans-serif; font-size: 18px; line-height: 1.5; max-width: 660px; }
+
+  .evidence-row { padding: 32px 32px; border-bottom: 2px solid var(--ink); }
+  .evidence-row .label { font-family: 'IBM Plex Mono', monospace; font-size: 11px; text-transform: uppercase; letter-spacing: 2px; color: var(--muted); margin-bottom: 14px; }
+  .evidence-row .grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px; }
+  .ev-cell { padding: 10px 12px; border: 1px solid var(--ink); }
+  .ev-cell .ch { font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 700; }
+  .ev-cell .t { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--muted); display: block; margin-top: 4px; }
+
+  .body { padding: 36px 32px; border-bottom: 2px solid var(--ink); display: grid; grid-template-columns: 1fr 2fr; gap: 60px; }
+  .body .l { font-family: 'IBM Plex Mono', monospace; font-size: 11px; text-transform: uppercase; letter-spacing: 2px; color: var(--muted); border-top: 1px solid var(--ink); padding-top: 14px; }
+  .body .r { font-size: 16px; line-height: 1.65; max-width: 680px; }
+  .body .r p { margin-bottom: 1em; }
+
+  .footer { padding: 14px 32px; display: flex; justify-content: space-between; font-family: 'IBM Plex Mono', monospace; font-size: 10px; text-transform: uppercase; letter-spacing: 1.5px; color: var(--muted); }
+</style>
+</head>
+<body>
+  <div class="frame">
+    <div class="top">
+      <div class="wordmark">Civil Witness</div>
+      <div class="meta">Field Note 04 · April 2026 · Sijill 04/127</div>
+    </div>
+
+    <div class="brief-label">
+      <span>▸ The Brief — coordinated chyron language, 12-13 April 2026</span>
+      <span>One page · Read first</span>
+    </div>
+
+    <section class="summary">
+      <div class="num-cell">
+        <div class="big">06</div>
+        <div class="lab">Channels carrying the verbatim phrase</div>
+        <div class="desc">Six independent prime-time broadcasters, three cities, no rewriting or paraphrase.</div>
+      </div>
+      <div class="num-cell accent">
+        <div class="big">04 hr</div>
+        <div class="lab">Window in which 5 of 6 occurred</div>
+        <div class="desc">A tight cluster beginning 45 minutes after the press conference ended.</div>
+      </div>
+      <div class="num-cell">
+        <div class="big">100%</div>
+        <div class="lab">Verbatim · No paraphrase · No rewrite</div>
+        <div class="desc">The exact phrase, in the exact word order, on every channel.</div>
+      </div>
+    </section>
+
+    <section class="dispatch">
+      <div class="l">Field Note 04</div>
+      <div>
+        <h1>The same phrase, on six channels, in <span class="accent">twenty-four hours.</span></h1>
+        <p class="dek">A senior official used the phrase "anti-state elements seeking to destabilize the federation" in a press conference at 16:30 on April 12. By 16:30 the next day, that phrase — verbatim — had appeared in chyrons on six different prime-time news broadcasts. Below: the chyrons.</p>
+      </div>
+    </section>
+
+    <div class="evidence-row">
+      <div class="label">▸ Six channels · same phrase · 17:14 → 20:42</div>
+      <div class="grid">
+        <div class="ev-cell"><div class="ch">CH 7</div><div class="t">17:14</div></div>
+        <div class="ev-cell"><div class="ch">CH 24</div><div class="t">17:42</div></div>
+        <div class="ev-cell"><div class="ch">CH 13</div><div class="t">18:03</div></div>
+        <div class="ev-cell"><div class="ch">CH 92</div><div class="t">18:30</div></div>
+        <div class="ev-cell"><div class="ch">CH 4</div><div class="t">19:15</div></div>
+        <div class="ev-cell"><div class="ch">CH 11</div><div class="t">20:42</div></div>
+      </div>
+    </div>
+
+    <div class="body">
+      <div class="l">Reading</div>
+      <div class="r">
+        <p>This is what coordinated talking points look like in the data. The phrase did not emerge across newsrooms organically over a working day — it appeared, in the same words, in clustered time, in the same broadcast position, in six places at once.</p>
+        <p>We do not claim coordination on the basis of a single phrase. We claim the structural pattern is the kind of artifact that, repeated across cases, draws the architecture of manufactured consent. Civil Witness is keeping the record.</p>
+      </div>
+    </div>
+
+    <div class="footer">
+      <span>Civil Witness · 2026</span>
+      <span>Type 09 — The Brief</span>
+      <span>Sijill 04/127</span>
+    </div>
+  </div>
+</body>
+</html>

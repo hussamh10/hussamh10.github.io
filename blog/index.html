@@ -1,0 +1,231 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Blog Posts</title>
+<style>
+  :root{
+    --rule: 3px;          /* separator thickness */
+    --line: #0e6b85;      /* separator color */
+    --bg: #ffffff;           /* page background to hide any sub-pixel seams */
+    --fade: .28s;         /* hover crossfade duration */
+  }
+
+  /* reset */
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; padding: 0;
+    width: 100%; height: 100%;
+    background: var(--bg);
+  }
+
+  .board { margin: 0; padding: 0; width: 100%; }
+
+  /* Each ROW is a full-width link — entire row is clickable */
+  a.strip{
+    display: block;
+    position: relative;
+    margin: 0; padding: 0;
+    width: 100%;
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+  }
+  /* horizontal separator BETWEEN rows (on the next row’s top edge) */
+  a.strip + a.strip{ border-top: var(--rule) solid var(--line); }
+
+  /* Base image defines layout height (no cropping) */
+  .strip > img.base{
+    display: block;
+    width: 100%;
+    height: auto;              /* keeps aspect ratio */
+    user-select: none;
+    -webkit-user-drag: none;
+  }
+
+  /* Hover image sits on top and fades in */
+  .strip > img.hover{
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;         /* assumes same aspect as base; adjust if needed */
+    opacity: 0;
+    transition: opacity var(--fade) ease;
+    pointer-events: none;      /* overlay never blocks clicks */
+  }
+
+  /* Show hover image on hover/focus */
+  a.strip:is(:hover, :focus-visible) > img.hover{ opacity: 1; }
+
+  /* Accessibility: respect reduced motion */
+  @media (prefers-reduced-motion: reduce){
+    .strip > img.hover{ transition: none; }
+  }
+
+  #loader {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #fff;
+    color: #111;
+    font-size: 0.85rem;
+    font-family: system-ui, sans-serif;
+    letter-spacing: 0.04em;
+    z-index: 9999;
+    transition: opacity 0.35s ease;
+  }
+
+  body.loaded #loader {
+    opacity: 0;
+    pointer-events: none;
+  }
+  body.loaded .board {
+    visibility: visible;
+  }
+  .board {
+    visibility: hidden;
+    transition: visibility 0s linear 0.35s;
+  }
+
+  .mobile-grid {
+    display: none;
+  }
+  .mobile-grid a {
+    text-decoration: none;
+    color: inherit;
+  }
+  .mobile-grid img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 3px;
+    object-fit: cover;
+  }
+
+  @media (max-width: 768px) {
+    .board {
+      display: none;
+    }
+    .mobile-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+      padding: 16px;
+    }
+    .mobile-grid img {
+      aspect-ratio: 1;
+    }
+  }
+</style>
+</head>
+<body>
+
+<div id="loader" aria-live="polite">
+  Hello!<br>
+  Loading...
+</div>
+<div class="board">
+  <!-- Update href targets; keep your files in /res -->
+  <a class="strip" href="ragbrai.html" aria-label="Open page 1">
+    <img class="base"  src="res/tiles/ragbrai.webp"        alt="" loading="lazy" decoding="async">
+    <img class="hover" src="res/tiles/ragbrai_hover.webp"  alt="" loading="lazy" decoding="async" aria-hidden="true">
+  </a>
+
+  <a class="strip" href="alpenglow.html" aria-label="Open page 2">
+    <img class="base"  src="res/tiles/alpenglow.webp"        alt="" loading="lazy" decoding="async">
+    <img class="hover" src="res/tiles/alpenglow_hover.webp"  alt="" loading="lazy" decoding="async" aria-hidden="true">
+  </a>
+
+  <a class="strip" href="westwinds.html" aria-label="Open page 3">
+    <img class="base"  src="res/tiles/westwinds.webp"        alt="" loading="lazy" decoding="async">
+    <img class="hover" src="res/tiles/westwinds_hover.webp"  alt="" loading="lazy" decoding="async" aria-hidden="true">
+  </a>
+  <a class="strip" href="nyc.html" aria-label="Open New York page">
+    <img class="base"  src="res/tiles/nyc.webp"        alt="" loading="lazy" decoding="async">
+    <img class="hover" src="res/tiles/nyc_hover.webp"  alt="" loading="lazy" decoding="async" aria-hidden="true">
+  </a>
+  <a class="strip" href="luckenback.html" aria-label="Open Luckenback page">
+    <img class="base"  src="res/tiles/luckenback.webp"        alt="" loading="lazy" decoding="async">
+    <img class="hover" src="res/tiles/luckenback_hover.webp"  alt="" loading="lazy" decoding="async" aria-hidden="true">
+  </a>
+  <a class="strip" href="hawaii.html" aria-label="Open Hawaii page">
+    <img class="base"  src="res/tiles/hawaii.webp"        alt="" loading="lazy" decoding="async">
+    <img class="hover" src="res/tiles/hawaii_hover.webp"  alt="" loading="lazy" decoding="async" aria-hidden="true">
+  </a>
+</div>
+
+<div class="mobile-grid">
+  <a href="ragbrai.html" aria-label="Open ragbrai post">
+    <img src="res/squares/ragbrai.webp" alt="" loading="lazy" decoding="async">
+  </a>
+  <a href="alpenglow.html" aria-label="Open alpenglow post">
+    <img src="res/squares/alpenglow.webp" alt="" loading="lazy" decoding="async">
+  </a>
+  <a href="westwinds.html" aria-label="Open westwinds post">
+    <img src="res/squares/westwinds.webp" alt="" loading="lazy" decoding="async">
+  </a>
+  <a href="nyc.html" aria-label="Open nyc post">
+    <img src="res/squares/nyc.webp" alt="" loading="lazy" decoding="async">
+  </a>
+  <a href="luckenback.html" aria-label="Open luckenback post">
+    <img src="res/squares/luckenback.webp" alt="" loading="lazy" decoding="async">
+  </a>
+  <a href="hawaii.html" aria-label="Open hawaii post">
+    <img src="res/squares/hawaii.webp" alt="" loading="lazy" decoding="async">
+  </a>
+</div>
+
+<script>
+  const loader = document.getElementById('loader');
+  const board = document.querySelector('.board');
+  const finish = () => {
+    document.body.classList.add('loaded');
+    if (loader) {
+      loader.addEventListener('transitionend', () => loader.remove(), { once: true });
+    }
+  };
+
+  const getTrackedImages = () => {
+    const mobileGrid = document.querySelector('.mobile-grid');
+    const isMobile = window.matchMedia('(max-width: 768px)').matches;
+    if (isMobile) {
+      return Array.from(mobileGrid?.querySelectorAll('img') ?? []);
+    }
+    return Array.from(board?.querySelectorAll('img') ?? []);
+  };
+
+  const waitForImages = new Promise((resolve) => {
+    const images = getTrackedImages();
+    if (!images.length) {
+      resolve();
+      return;
+    }
+
+    let remaining = images.length;
+    const check = () => {
+      remaining -= 1;
+      if (remaining <= 0) {
+        resolve();
+      }
+    };
+
+    images.forEach((img) => {
+      if (img.complete && img.naturalWidth !== 0) {
+        check();
+      } else {
+        img.addEventListener('load', check, { once: true });
+        img.addEventListener('error', check, { once: true });
+      }
+    });
+  });
+
+  waitForImages.then(finish);
+</script>
+
+</body>
+</html>

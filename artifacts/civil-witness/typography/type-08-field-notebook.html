@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Civil Witness — Field Notebook</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;700&family=IBM+Plex+Sans:wght@400;500;700&family=Caveat:wght@400;700&display=swap');
+
+  :root {
+    --paper: #F4EFE4;
+    --ink: #1A1714;
+    --pen: #1748A7;
+    --brick: #8B2A22;
+    --saffron: #E8A325;
+    --muted: #6E6A62;
+    --grid: #BDB5A6;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: var(--paper); color: var(--ink); }
+  body { font-family: 'IBM Plex Sans', sans-serif; font-size: 15px; line-height: 1.55; padding: 32px 24px; min-height: 100vh; }
+
+  .notebook { max-width: 1100px; margin: 0 auto; background: var(--paper); border: 1px solid var(--ink); padding: 56px 64px; position: relative;
+    background-image: linear-gradient(var(--grid) 1px, transparent 1px), linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+    background-size: 24px 24px;
+  }
+
+  /* RED MARGIN LINE */
+  .notebook::before { content: ""; position: absolute; left: 56px; top: 0; bottom: 0; width: 2px; background: var(--brick); opacity: 0.6; }
+
+  .top-row { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 36px; padding-bottom: 14px; border-bottom: 1px solid var(--ink); position: relative; z-index: 1; }
+  .wordmark { font-family: 'IBM Plex Sans', sans-serif; font-size: 22px; font-weight: 700; letter-spacing: -0.4px; }
+  .meta { font-family: 'Caveat', cursive; font-size: 18px; color: var(--pen); }
+
+  .penned-date { font-family: 'Caveat', cursive; font-size: 24px; color: var(--pen); margin-bottom: 12px; }
+  .kicker { font-family: 'IBM Plex Mono', monospace; font-size: 10px; text-transform: uppercase; letter-spacing: 2px; color: var(--muted); margin-bottom: 14px; }
+
+  h1 { font-family: 'Caveat', cursive; font-size: 80px; line-height: 0.95; font-weight: 700; letter-spacing: -1px; margin-bottom: 24px; color: var(--ink); max-width: 800px; }
+  h1 .underline { text-decoration: underline; text-decoration-color: var(--pen); text-decoration-thickness: 3px; text-underline-offset: 8px; }
+
+  .dek { font-family: 'IBM Plex Sans', sans-serif; font-size: 18px; line-height: 1.55; max-width: 720px; margin-bottom: 24px; position: relative; }
+  .dek mark { background: var(--saffron); padding: 0 3px; }
+
+  .penned-note { font-family: 'Caveat', cursive; color: var(--pen); font-size: 22px; line-height: 1.3; margin: 24px 0; padding-left: 30px; position: relative; }
+  .penned-note::before { content: "→"; position: absolute; left: 0; top: -2px; font-size: 28px; }
+
+  .observation-block { margin-bottom: 36px; }
+  .obs-label { font-family: 'IBM Plex Mono', monospace; font-size: 11px; text-transform: uppercase; letter-spacing: 2px; color: var(--muted); margin-bottom: 14px; }
+
+  .chy-row { display: grid; grid-template-columns: 70px 70px 1fr 60px; gap: 20px; align-items: baseline; padding: 12px 0; border-bottom: 1px dashed var(--muted); position: relative; }
+  .chy-row .ch { font-family: 'IBM Plex Mono', monospace; font-size: 13px; font-weight: 700; }
+  .chy-row .t { font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: var(--muted); }
+  .chy-row .quote { font-family: 'IBM Plex Sans', sans-serif; font-size: 15px; font-weight: 500; }
+  .chy-row .quote em { font-style: normal; background: var(--saffron); padding: 0 3px; }
+  .chy-row .pen-mark { font-family: 'Caveat', cursive; font-size: 18px; color: var(--pen); }
+
+  .scribbled-aside { margin-top: 8px; font-family: 'Caveat', cursive; font-size: 20px; color: var(--pen); padding-left: 90px; transform: rotate(-1deg); }
+
+  .body-block { margin-top: 36px; padding-top: 24px; border-top: 1px solid var(--ink); }
+  .body-label { font-family: 'IBM Plex Mono', monospace; font-size: 11px; text-transform: uppercase; letter-spacing: 2px; color: var(--muted); margin-bottom: 14px; }
+  .body-text { font-family: 'IBM Plex Sans', sans-serif; font-size: 16px; line-height: 1.65; max-width: 700px; }
+  .body-text p { margin-bottom: 1em; }
+  .body-text .penned { font-family: 'Caveat', cursive; font-size: 19px; color: var(--pen); display: inline-block; transform: rotate(-1deg); }
+
+  .signoff { margin-top: 40px; font-family: 'Caveat', cursive; font-size: 28px; color: var(--pen); text-align: right; }
+
+  .corner-stamp { position: absolute; top: 28px; right: 36px; border: 2px solid var(--brick); color: var(--brick); font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 2px; padding: 4px 10px; transform: rotate(6deg); text-transform: uppercase; background: var(--paper); }
+
+  .footer-row { margin-top: 36px; padding-top: 14px; border-top: 1px solid var(--ink); display: flex; justify-content: space-between; font-family: 'IBM Plex Mono', monospace; font-size: 10px; text-transform: uppercase; letter-spacing: 1.5px; color: var(--muted); }
+</style>
+</head>
+<body>
+  <div class="notebook">
+    <div class="corner-stamp">FIELD · 04/127</div>
+
+    <div class="top-row">
+      <div class="wordmark">Civil Witness</div>
+      <div class="meta">— a notebook from the field —</div>
+    </div>
+
+    <div class="penned-date">14 April 2026, Karachi.</div>
+    <div class="kicker">Field Note 04 · Sijill 04/127</div>
+
+    <h1>Six channels. <span class="underline">Same phrase.</span> 24 hours.</h1>
+    <p class="dek">On April 12 at 16:30 a senior official used the phrase <mark>"anti-state elements seeking to destabilize the federation"</mark> in a press conference. By April 13 at 16:30 — exactly 24 hours later — the same phrase had appeared in chyrons on six different prime-time news shows, verbatim.</p>
+
+    <div class="penned-note">extemporaneous in the press conf, then verbatim across six outlets. timing matters.</div>
+
+    <div class="observation-block">
+      <div class="obs-label">▸ Observed — chyrons in order of broadcast</div>
+      <div class="chy-row">
+        <span class="ch">CH 7</span><span class="t">17:14</span>
+        <span class="quote"><em>"Anti-state elements seeking to destabilize the federation"</em> — sources</span>
+        <span class="pen-mark">✓</span>
+      </div>
+      <div class="chy-row">
+        <span class="ch">CH 24</span><span class="t">17:42</span>
+        <span class="quote"><em>"Anti-state elements seeking to destabilize the federation"</em> — intelligence</span>
+        <span class="pen-mark">✓</span>
+      </div>
+      <div class="chy-row">
+        <span class="ch">CH 13</span><span class="t">18:03</span>
+        <span class="quote"><em>"Anti-state elements seeking to destabilize the federation"</em> — official</span>
+        <span class="pen-mark">✓</span>
+      </div>
+      <div class="chy-row">
+        <span class="ch">CH 92</span><span class="t">18:30</span>
+        <span class="quote"><em>"Anti-state elements seeking to destabilize the federation"</em> — report</span>
+        <span class="pen-mark">✓</span>
+      </div>
+      <div class="chy-row">
+        <span class="ch">CH 4</span><span class="t">19:15</span>
+        <span class="quote"><em>"Anti-state elements seeking to destabilize the federation"</em></span>
+        <span class="pen-mark">✓</span>
+      </div>
+      <div class="chy-row">
+        <span class="ch">CH 11</span><span class="t">20:42</span>
+        <span class="quote"><em>"Anti-state elements seeking to destabilize the federation"</em> — security</span>
+        <span class="pen-mark">✓</span>
+      </div>
+      <div class="scribbled-aside">5 of 6 within four hours. tight cluster — not organic newsroom timing.</div>
+    </div>
+
+    <div class="body-block">
+      <div class="body-label">▸ Reading — what the pattern says</div>
+      <div class="body-text">
+        <p>This is what coordinated talking points look like in the data. The phrase did not emerge across newsrooms organically over a working day — it appeared, in the same words, in clustered time, in the same broadcast position, in six places at once.</p>
+        <p>We do not claim coordination on the basis of a single phrase. We claim that the structural pattern is <span class="penned">the kind of artifact</span> that, repeated across cases, draws the architecture of manufactured consent.</p>
+        <p>Civil Witness is keeping the record.</p>
+      </div>
+    </div>
+
+    <div class="signoff">— filed, 04/127. more to come.</div>
+
+    <div class="footer-row">
+      <span>Civil Witness · 2026</span>
+      <span>Type 08 — Field Notebook</span>
+      <span>Sijill 04/127</span>
+    </div>
+  </div>
+</body>
+</html>

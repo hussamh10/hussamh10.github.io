@@ -1,0 +1,8 @@
+*.swp
+.DS_STORE
+.DS_Store
+_site
+*.lock
+.bundle
+website.tar.gz
+*.tar.gz

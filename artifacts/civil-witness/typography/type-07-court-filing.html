@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Civil Witness — Court Filing</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;700&family=IBM+Plex+Serif:wght@400;500;700&display=swap');
+
+  :root {
+    --paper: #F4EFE4;
+    --ink: #1A1714;
+    --brick: #8B2A22;
+    --muted: #6E6A62;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: var(--paper); color: var(--ink); font-family: 'IBM Plex Serif', serif; }
+  body { padding: 32px 24px; min-height: 100vh; }
+
+  .page { max-width: 880px; margin: 0 auto; background: var(--paper); border: 2px solid var(--ink); padding: 0; position: relative; }
+
+  .court-header { padding: 32px 80px 20px; text-align: center; border-bottom: 4px double var(--ink); }
+  .court-header .seal { display: inline-block; border: 3px double var(--ink); padding: 14px 24px; font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 14px; }
+  .court-header .wordmark { font-family: 'IBM Plex Serif', serif; font-size: 32px; font-weight: 700; letter-spacing: -0.5px; margin-bottom: 4px; }
+  .court-header .strap { font-family: 'IBM Plex Mono', monospace; font-size: 10px; text-transform: uppercase; letter-spacing: 2.5px; color: var(--muted); }
+
+  .docket-row { padding: 14px 80px; display: flex; justify-content: space-between; font-family: 'IBM Plex Mono', monospace; font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px; border-bottom: 1px solid var(--ink); }
+
+  .matter { padding: 36px 80px 28px; text-align: center; border-bottom: 2px solid var(--ink); }
+  .matter .heading { font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 500; letter-spacing: 3px; text-transform: uppercase; color: var(--muted); margin-bottom: 14px; }
+  .matter h1 { font-family: 'IBM Plex Serif', serif; font-size: 36px; line-height: 1.15; font-weight: 700; letter-spacing: -0.8px; max-width: 640px; margin: 0 auto 16px; }
+  .matter .subtitle { font-family: 'IBM Plex Serif', serif; font-style: italic; font-size: 17px; color: var(--ink); }
+
+  .filed-line { padding: 18px 80px; border-bottom: 1px solid var(--ink); font-family: 'IBM Plex Serif', serif; font-style: italic; font-size: 14px; color: var(--muted); text-align: center; }
+
+  /* LINE-NUMBERED BODY */
+  .doc-body { padding: 36px 0 36px 0; position: relative; }
+  .doc-body .lines { display: grid; grid-template-columns: 56px 1fr; }
+  .line-numbers { padding: 0 12px 0 16px; border-right: 1px solid var(--ink); font-family: 'IBM Plex Mono', monospace; font-size: 11px; line-height: 1.85; color: var(--muted); text-align: right; padding-top: 4px; }
+  .line-numbers div { line-height: 1.85; }
+  .line-content { padding: 0 32px 0 24px; font-family: 'IBM Plex Serif', serif; font-size: 15px; line-height: 1.85; }
+  .line-content .section-title { font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--brick); display: block; margin-top: 4px; }
+  .line-content p { margin: 0; }
+  .line-content em { font-style: italic; }
+  .line-content .underline { background: linear-gradient(transparent 78%, var(--ink) 78%, var(--ink) 88%, transparent 88%); }
+
+  .exhibit { padding: 28px 80px; border-top: 2px solid var(--ink); border-bottom: 2px solid var(--ink); }
+  .exhibit .label { font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--brick); margin-bottom: 14px; }
+  .exhibit table { width: 100%; border-collapse: collapse; font-family: 'IBM Plex Mono', monospace; font-size: 12px; }
+  .exhibit th, .exhibit td { border-bottom: 1px solid var(--ink); padding: 8px 6px; text-align: left; vertical-align: baseline; }
+  .exhibit th { font-weight: 700; text-transform: uppercase; letter-spacing: 1.2px; font-size: 10px; color: var(--muted); border-bottom: 2px solid var(--ink); }
+  .exhibit .ch { font-weight: 700; }
+  .exhibit .quote { font-family: 'IBM Plex Serif', serif; font-style: italic; font-size: 13px; }
+
+  .signed { padding: 28px 80px; text-align: right; border-bottom: 2px solid var(--ink); }
+  .signed .by { font-family: 'IBM Plex Serif', serif; font-style: italic; font-size: 14px; color: var(--muted); margin-bottom: 6px; }
+  .signed .org { font-family: 'IBM Plex Serif', serif; font-size: 18px; font-weight: 700; }
+  .signed .stamp { display: inline-block; border: 2px solid var(--brick); color: var(--brick); padding: 4px 12px; font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; transform: rotate(-3deg); margin-top: 12px; }
+
+  .footer { padding: 14px 80px; display: flex; justify-content: space-between; font-family: 'IBM Plex Mono', monospace; font-size: 10px; text-transform: uppercase; letter-spacing: 1.5px; color: var(--muted); }
+</style>
+</head>
+<body>
+  <div class="page">
+    <div class="court-header">
+      <div class="seal">Civil Witness · Pakistan · 2026</div>
+      <div class="wordmark">Civil Witness</div>
+      <div class="strap">The civil record · Field Notes</div>
+    </div>
+
+    <div class="docket-row">
+      <span>Sijill No. 04/127</span>
+      <span>Filed 14 April 2026</span>
+      <span>Field Note No. 04</span>
+    </div>
+
+    <div class="matter">
+      <div class="heading">In the matter of —</div>
+      <h1>Coordinated chyron language across six prime-time channels, 12–13 April 2026</h1>
+      <div class="subtitle">A finding on the structure of broadcast talking points.</div>
+    </div>
+
+    <div class="filed-line">Submitted to the public record by Civil Witness, the civil record on Pakistan's information ecosystem.</div>
+
+    <div class="doc-body">
+      <div class="lines">
+        <div class="line-numbers">
+          <div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div><div>8</div><div>9</div><div>10</div><div>11</div><div>12</div><div>13</div><div>14</div><div>15</div><div>16</div><div>17</div><div>18</div><div>19</div><div>20</div><div>21</div><div>22</div><div>23</div><div>24</div><div>25</div><div>26</div><div>27</div><div>28</div><div>29</div><div>30</div>
+        </div>
+        <div class="line-content">
+          <span class="section-title">§ 1 — Subject</span>
+          <p>This dispatch concerns the appearance of the phrase <em>"anti-state elements seeking to destabilize the federation"</em> on six Pakistani prime-time news broadcasts within a twenty-four hour period.</p>
+          <p>&nbsp;</p>
+          <span class="section-title">§ 2 — Origin</span>
+          <p>On 12 April 2026 at 16:30 PKT, a senior official used the phrase, extemporaneously, in a televised press conference. The phrase did not appear in any prepared briefing released to journalists.</p>
+          <p>&nbsp;</p>
+          <span class="section-title">§ 3 — Subsequent broadcast</span>
+          <p>Between 17:14 and 20:42 the same evening, the phrase appeared in <span class="underline">chyrons on six independent channels</span>, in three cities, with no rewriting or paraphrase. Five of six occurrences fell within a four-hour window. Four of six were placed in the lower-third chyron rather than anchor read.</p>
+          <p>&nbsp;</p>
+          <span class="section-title">§ 4 — Finding</span>
+          <p>The structural pattern — verbatim wording, clustered timing, identical broadcast position — is inconsistent with independent newsroom selection. We do not claim coordination on the basis of a single phrase. We claim this is the kind of artifact that, repeated across cases, draws the architecture of manufactured consent.</p>
+          <p>&nbsp;</p>
+          <span class="section-title">§ 5 — On the record</span>
+          <p>The full archive of broadcast captures, with timestamps and channel metadata, is filed under <em>Sijill 04/127</em> and is available on request. Civil Witness is keeping the record.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="exhibit">
+      <div class="label">▸ Exhibit A — chyron captures, in order of broadcast</div>
+      <table>
+        <thead><tr><th>Channel</th><th>Time</th><th>Chyron text</th><th>Attribution</th></tr></thead>
+        <tbody>
+          <tr><td class="ch">CH 7</td><td>17:14</td><td class="quote">"Anti-state elements seeking to destabilize the federation"</td><td>Sources</td></tr>
+          <tr><td class="ch">CH 24</td><td>17:42</td><td class="quote">"Anti-state elements seeking to destabilize the federation"</td><td>Intelligence</td></tr>
+          <tr><td class="ch">CH 13</td><td>18:03</td><td class="quote">"Anti-state elements seeking to destabilize the federation"</td><td>Official</td></tr>
+          <tr><td class="ch">CH 92</td><td>18:30</td><td class="quote">"Anti-state elements seeking to destabilize the federation"</td><td>Report</td></tr>
+          <tr><td class="ch">CH 4</td><td>19:15</td><td class="quote">"Anti-state elements seeking to destabilize the federation"</td><td>—</td></tr>
+          <tr><td class="ch">CH 11</td><td>20:42</td><td class="quote">"Anti-state elements seeking to destabilize the federation"</td><td>Security</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="signed">
+      <div class="by">Filed and respectfully submitted —</div>
+      <div class="org">Civil Witness</div>
+      <div class="stamp">Public record · 04/127</div>
+    </div>
+
+    <div class="footer">
+      <span>Civil Witness · 2026 · Pakistan</span>
+      <span>Type 07 — Court Filing</span>
+      <span>Sijill 04/127</span>
+    </div>
+  </div>
+</body>
+</html>

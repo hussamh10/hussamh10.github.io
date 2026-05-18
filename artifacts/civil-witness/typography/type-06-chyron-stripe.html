@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Civil Witness — Chyron-Stripe Layout</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;700&family=IBM+Plex+Sans:wght@400;500;700&display=swap');
+
+  :root {
+    --bg: #F4EFE4;
+    --ink: #1A1714;
+    --saffron: #E8A325;
+    --brick: #8B2A22;
+    --muted: #6E6A62;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: var(--bg); color: var(--ink); }
+  body { font-family: 'IBM Plex Sans', sans-serif; font-size: 15px; line-height: 1.55; padding: 32px 24px; min-height: 100vh; }
+
+  .frame { max-width: 1280px; margin: 0 auto; border: 2px solid var(--ink); }
+
+  .top { padding: 22px 32px; display: flex; justify-content: space-between; align-items: baseline; border-bottom: 2px solid var(--ink); }
+  .wordmark { font-family: 'IBM Plex Sans', sans-serif; font-size: 22px; font-weight: 700; letter-spacing: -0.4px; }
+  .meta { font-family: 'IBM Plex Mono', monospace; font-size: 10px; text-transform: uppercase; letter-spacing: 1.5px; color: var(--muted); }
+
+  .head { padding: 60px 32px 40px; border-bottom: 2px solid var(--ink); }
+  .kicker { font-family: 'IBM Plex Mono', monospace; font-size: 10px; text-transform: uppercase; letter-spacing: 2px; color: var(--brick); margin-bottom: 14px; }
+  h1 { font-family: 'IBM Plex Sans', sans-serif; font-size: 56px; line-height: 1.04; font-weight: 700; letter-spacing: -1.8px; max-width: 900px; margin-bottom: 22px; }
+  h1 .accent { background: var(--saffron); padding: 0 6px; }
+  .dek { font-size: 18px; line-height: 1.5; max-width: 700px; color: var(--ink); }
+
+  /* THE CHYRON STACK — page IS the evidence */
+  .stack-label { padding: 18px 32px; border-bottom: 2px solid var(--ink); font-family: 'IBM Plex Mono', monospace; font-size: 11px; text-transform: uppercase; letter-spacing: 2px; color: var(--ink); display: flex; justify-content: space-between; }
+  .stack-label .right { color: var(--brick); font-weight: 700; }
+  .stack { background: var(--ink); padding: 0; border-bottom: 2px solid var(--ink); }
+
+  .channel-strip { display: grid; grid-template-columns: 90px 90px 1fr 90px; align-items: center; padding: 0; border-bottom: 1px solid #2A2521; height: 64px; position: relative; }
+  .channel-strip:last-child { border-bottom: none; }
+  .channel-strip .id-block { background: var(--saffron); color: var(--ink); height: 100%; display: flex; align-items: center; justify-content: center; font-family: 'IBM Plex Mono', monospace; font-size: 14px; font-weight: 700; letter-spacing: 1.2px; }
+  .channel-strip .time { font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: var(--bg); padding: 0 16px; letter-spacing: 1px; }
+  .channel-strip .chyron { font-family: 'IBM Plex Sans', sans-serif; font-size: 18px; font-weight: 700; color: var(--bg); padding: 0 16px; letter-spacing: 0.4px; }
+  .channel-strip .source { font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--muted); padding-right: 20px; text-align: right; text-transform: uppercase; letter-spacing: 1.2px; }
+
+  .findings { padding: 40px 32px; border-bottom: 2px solid var(--ink); display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; }
+  .finding .num { font-family: 'IBM Plex Mono', monospace; font-size: 10px; text-transform: uppercase; letter-spacing: 1.5px; color: var(--muted); margin-bottom: 8px; padding-bottom: 6px; border-bottom: 2px solid var(--ink); }
+  .finding h3 { font-family: 'IBM Plex Sans', sans-serif; font-size: 22px; font-weight: 700; line-height: 1.2; letter-spacing: -0.5px; margin-bottom: 6px; }
+  .finding p { font-size: 13px; color: var(--muted); line-height: 1.5; }
+
+  .body { padding: 40px 32px; border-bottom: 2px solid var(--ink); display: grid; grid-template-columns: 1fr 2fr; gap: 60px; }
+  .body .l { font-family: 'IBM Plex Mono', monospace; font-size: 10px; text-transform: uppercase; letter-spacing: 1.5px; color: var(--muted); border-top: 1px solid var(--ink); padding-top: 14px; }
+  .body .r { font-size: 16px; line-height: 1.65; max-width: 700px; }
+  .body .r p { margin-bottom: 1em; }
+
+  .footer { padding: 14px 32px; display: flex; justify-content: space-between; font-family: 'IBM Plex Mono', monospace; font-size: 10px; text-transform: uppercase; letter-spacing: 1.5px; color: var(--muted); }
+</style>
+</head>
+<body>
+  <div class="frame">
+    <div class="top">
+      <div class="wordmark">Civil Witness</div>
+      <div class="meta">Field Note 04 · April 2026 · Sijill 04/127</div>
+    </div>
+
+    <div class="head">
+      <div class="kicker">Field Note 04 — TV Coordination</div>
+      <h1>Read the chyrons in order. <span class="accent">Six channels.</span> The same phrase.</h1>
+      <p class="dek">On April 12 at 16:30, a senior official used a phrase about "anti-state elements" in a press conference. Within twenty-four hours, that exact phrase had appeared in chyrons on six prime-time news shows. Below: the chyrons themselves, as they aired.</p>
+    </div>
+
+    <div class="stack-label">
+      <span>▶ Six chyrons · 12-13 April 2026</span>
+      <span class="right">Read top to bottom. Notice the wording.</span>
+    </div>
+
+    <div class="stack">
+      <div class="channel-strip">
+        <div class="id-block">CH 7</div>
+        <div class="time">17:14</div>
+        <div class="chyron">ANTI-STATE ELEMENTS SEEKING TO DESTABILIZE THE FEDERATION — SOURCES</div>
+        <div class="source">Live · Karachi</div>
+      </div>
+      <div class="channel-strip">
+        <div class="id-block">CH 24</div>
+        <div class="time">17:42</div>
+        <div class="chyron">ANTI-STATE ELEMENTS SEEKING TO DESTABILIZE THE FEDERATION — INTELLIGENCE</div>
+        <div class="source">Live · Lahore</div>
+      </div>
+      <div class="channel-strip">
+        <div class="id-block">CH 13</div>
+        <div class="time">18:03</div>
+        <div class="chyron">ANTI-STATE ELEMENTS SEEKING TO DESTABILIZE THE FEDERATION — OFFICIAL</div>
+        <div class="source">Live · Islamabad</div>
+      </div>
+      <div class="channel-strip">
+        <div class="id-block">CH 92</div>
+        <div class="time">18:30</div>
+        <div class="chyron">ANTI-STATE ELEMENTS SEEKING TO DESTABILIZE THE FEDERATION — REPORT</div>
+        <div class="source">Live · Karachi</div>
+      </div>
+      <div class="channel-strip">
+        <div class="id-block">CH 4</div>
+        <div class="time">19:15</div>
+        <div class="chyron">ANTI-STATE ELEMENTS SEEKING TO DESTABILIZE THE FEDERATION</div>
+        <div class="source">Live · Lahore</div>
+      </div>
+      <div class="channel-strip">
+        <div class="id-block">CH 11</div>
+        <div class="time">20:42</div>
+        <div class="chyron">ANTI-STATE ELEMENTS SEEKING TO DESTABILIZE THE FEDERATION — SECURITY</div>
+        <div class="source">Live · Islamabad</div>
+      </div>
+    </div>
+
+    <div class="findings">
+      <div class="finding"><div class="num">Finding 01</div><h3>Six channels, verbatim.</h3><p>The same wording, with no paraphrase or rewrite, on six independent broadcasters.</p></div>
+      <div class="finding"><div class="num">Finding 02</div><h3>Five within four hours.</h3><p>Five of six occurrences clustered between 17:14 and 21:00 — a four-hour window.</p></div>
+      <div class="finding"><div class="num">Finding 03</div><h3>Identical placement.</h3><p>Four of six instances in the lower-third chyron, not anchor read or guest commentary.</p></div>
+    </div>
+
+    <div class="body">
+      <div class="l">From the field</div>
+      <div class="r">
+        <p>The repetition is the finding. Independent newsrooms working separate prime-time slots did not arrive at the same wording, in the same hour, in the same broadcast position, by accident.</p>
+        <p>We do not claim coordination on the basis of a single phrase. We claim that the structural pattern — same words, same hour, same chyron slot — is the kind of artifact that, repeated across cases, draws the architecture of manufactured consent. Civil Witness is keeping the record.</p>
+      </div>
+    </div>
+
+    <div class="footer">
+      <span>Civil Witness · 2026</span>
+      <span>Type 06 — Chyron-Stripe Layout</span>
+      <span>Sijill 04/127</span>
+    </div>
+  </div>
+</body>
+</html>

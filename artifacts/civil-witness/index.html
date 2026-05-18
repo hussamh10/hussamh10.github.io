@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Civil Witness — Palette Index</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Iowan Old Style', 'Palatino', Georgia, serif;
+    background: #EFEAE0;
+    color: #1A1714;
+    padding: 48px 32px;
+    min-height: 100vh;
+  }
+  .wrap { max-width: 1100px; margin: 0 auto; }
+  h1 {
+    font-size: 42px;
+    font-weight: 800;
+    letter-spacing: -1px;
+    margin-bottom: 8px;
+  }
+  .sub {
+    font-family: ui-monospace, monospace;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: #6E6A62;
+    margin-bottom: 40px;
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 24px;
+  }
+  .card {
+    border: 2px solid #1A1714;
+    background: #F4EFE4;
+    box-shadow: 8px 8px 0 #1A1714;
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.08s ease;
+  }
+  .card:hover { transform: translate(-2px, -2px); box-shadow: 10px 10px 0 #1A1714; }
+  .swatches {
+    display: flex;
+    height: 110px;
+    border-bottom: 2px solid #1A1714;
+  }
+  .sw { flex: 1; }
+  .meta {
+    padding: 16px 20px 20px;
+  }
+  .num {
+    font-family: ui-monospace, monospace;
+    font-size: 11px;
+    color: #6E6A62;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-bottom: 4px;
+  }
+  .name {
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: -0.3px;
+    margin-bottom: 8px;
+  }
+  .desc {
+    font-size: 14px;
+    line-height: 1.45;
+    color: #3A3530;
+    font-family: ui-sans-serif, system-ui, sans-serif;
+  }
+  .codes {
+    margin-top: 12px;
+    font-family: ui-monospace, monospace;
+    font-size: 10px;
+    color: #6E6A62;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  .note {
+    margin-top: 48px;
+    font-size: 14px;
+    line-height: 1.6;
+    color: #3A3530;
+    max-width: 640px;
+    font-family: ui-sans-serif, system-ui, sans-serif;
+    border-top: 2px solid #1A1714;
+    padding-top: 24px;
+  }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>Civil Witness</h1>
+    <div class="sub">Palette index · 12 directions to compare</div>
+
+    <div class="grid">
+      <a class="card" href="palette-1-newsprint-saffron.html">
+        <div class="swatches">
+          <div class="sw" style="background:#F4EFE4"></div>
+          <div class="sw" style="background:#1A1714"></div>
+          <div class="sw" style="background:#E8A325"></div>
+        </div>
+        <div class="meta">
+          <div class="num">Palette 01</div>
+          <div class="name">Newsprint / Saffron</div>
+          <div class="desc">Cream + ink-black + saffron-marigold. The "file" register. Editorial, populist warmth, dodges every flag in the region.</div>
+          <div class="codes">#F4EFE4 · #1A1714 · #E8A325</div>
+        </div>
+      </a>
+
+      <a class="card" href="palette-2-newsprint-brick.html">
+        <div class="swatches">
+          <div class="sw" style="background:#F4EFE4"></div>
+          <div class="sw" style="background:#1A1714"></div>
+          <div class="sw" style="background:#8B2A22"></div>
+        </div>
+        <div class="meta">
+          <div class="num">Palette 02</div>
+          <div class="name">Newsprint / Brick</div>
+          <div class="desc">Same skeleton as 01, brick red instead of saffron. More legal-seal / muhar gravity, less populist warmth.</div>
+          <div class="codes">#F4EFE4 · #1A1714 · #8B2A22</div>
+        </div>
+      </a>
+
+      <a class="card" href="palette-3-courtroom-cobalt.html">
+        <div class="swatches">
+          <div class="sw" style="background:#F2F1EC"></div>
+          <div class="sw" style="background:#14171F"></div>
+          <div class="sw" style="background:#1F3A8A"></div>
+        </div>
+        <div class="meta">
+          <div class="num">Palette 03</div>
+          <div class="name">Off-white / Cobalt</div>
+          <div class="desc">Civic blue without going Pew-navy. Cooler, more courtroom-coded, less Pakistani-flag-adjacent than the warm options.</div>
+          <div class="codes">#F2F1EC · #14171F · #1F3A8A</div>
+        </div>
+      </a>
+
+      <a class="card" href="palette-4-dried-blood.html">
+        <div class="swatches">
+          <div class="sw" style="background:#8B2A22"></div>
+          <div class="sw" style="background:#1A1714"></div>
+          <div class="sw" style="background:#F4EFE4"></div>
+        </div>
+        <div class="meta">
+          <div class="num">Palette 04</div>
+          <div class="name">Dried Blood / Agitprop</div>
+          <div class="desc">Your direction, dialed. Desaturated brick as background, not ketchup. Soviet-poster lineage, owned on purpose.</div>
+          <div class="codes">#8B2A22 · #1A1714 · #F4EFE4</div>
+        </div>
+      </a>
+
+      <a class="card" href="palette-5-dark-file.html">
+        <div class="swatches">
+          <div class="sw" style="background:#1A1714"></div>
+          <div class="sw" style="background:#F4EFE4"></div>
+          <div class="sw" style="background:#E8A325"></div>
+        </div>
+        <div class="meta">
+          <div class="num">Palette 05</div>
+          <div class="name">Dark File / Saffron</div>
+          <div class="desc">Inverted 01. Late-night-investigation, file-cabinet-after-hours. Heavier, more terminal/CCTV-coded.</div>
+          <div class="codes">#1A1714 · #F4EFE4 · #E8A325</div>
+        </div>
+      </a>
+
+      <a class="card" href="palette-6-cool-saffron.html">
+        <div class="swatches">
+          <div class="sw" style="background:#F2F1EC"></div>
+          <div class="sw" style="background:#14171F"></div>
+          <div class="sw" style="background:#E8A325"></div>
+        </div>
+        <div class="meta">
+          <div class="num">Palette 06</div>
+          <div class="name">Cool Off-white / Saffron</div>
+          <div class="desc">Your hybrid. Saffron of 01 on the cooler off-white of 03. More modern / design-forward, less locally-warm.</div>
+          <div class="codes">#F2F1EC · #14171F · #E8A325</div>
+        </div>
+      </a>
+
+      <a class="card" href="palette-7-saffron-blood.html">
+        <div class="swatches">
+          <div class="sw" style="background:#F4EFE4"></div>
+          <div class="sw" style="background:#1A1714"></div>
+          <div class="sw" style="background:#E8A325"></div>
+          <div class="sw" style="background:#8B2A22"></div>
+        </div>
+        <div class="meta">
+          <div class="num">Palette 07</div>
+          <div class="name">Saffron / Dried Blood</div>
+          <div class="desc">Two-accent system on warm cream. Saffron carries the everyday alerts; dried blood appears only as a serious mark — hero highlight, retraction stamps, body emphasis. Contained brick.</div>
+          <div class="codes">#F4EFE4 · #1A1714 · #E8A325 · #8B2A22</div>
+        </div>
+      </a>
+
+      <a class="card" href="palette-8-sage-rose.html">
+        <div class="swatches">
+          <div class="sw" style="background:#F4EFE4"></div>
+          <div class="sw" style="background:#1A1714"></div>
+          <div class="sw" style="background:#D89A9E"></div>
+          <div class="sw" style="background:#6B7A4E"></div>
+        </div>
+        <div class="meta">
+          <div class="num">Palette 08</div>
+          <div class="name">Sage / Rose</div>
+          <div class="desc">Green and pink — but not the ones you're avoiding. Dusty rose (not Markup magenta) + olive sage (not flag green). Reads as Karachi printing-house, or feminist quarterly.</div>
+          <div class="codes">#D89A9E · #6B7A4E</div>
+        </div>
+      </a>
+
+      <a class="card" href="palette-9-truck-art.html">
+        <div class="swatches">
+          <div class="sw" style="background:#F4EFE4"></div>
+          <div class="sw" style="background:#E63B7C"></div>
+          <div class="sw" style="background:#1E8A4F"></div>
+          <div class="sw" style="background:#F4A923"></div>
+          <div class="sw" style="background:#1748A7"></div>
+        </div>
+        <div class="meta">
+          <div class="num">Palette 09</div>
+          <div class="name">Truck Art / Maximalist</div>
+          <div class="desc">5-color indigenous Pakistani palette. Truck-art pink (urgent) + green (routine) + marigold (featured) + cobalt (civic). Each color has a job. Loud and unmistakably from this part of the world.</div>
+          <div class="codes">#E63B7C · #1E8A4F · #F4A923 · #1748A7</div>
+        </div>
+      </a>
+
+      <a class="card" href="palette-10-henna-press.html">
+        <div class="swatches">
+          <div class="sw" style="background:#F4EFE4"></div>
+          <div class="sw" style="background:#6E3A26"></div>
+          <div class="sw" style="background:#E8A325"></div>
+          <div class="sw" style="background:#2A3F5F"></div>
+        </div>
+        <div class="meta">
+          <div class="num">Palette 10</div>
+          <div class="name">Henna Press</div>
+          <div class="desc">Naturally-derived South Asian dyes: henna brown + saffron + indigo on cream. Reads as scholarly regional press, archival, rooted. Subaltern-studies aesthetic without the dust.</div>
+          <div class="codes">#6E3A26 · #E8A325 · #2A3F5F</div>
+        </div>
+      </a>
+
+      <a class="card" href="palette-11-risograph.html">
+        <div class="swatches">
+          <div class="sw" style="background:#F4EFE4"></div>
+          <div class="sw" style="background:#FF4F87"></div>
+          <div class="sw" style="background:#2E5BBA"></div>
+          <div class="sw" style="background:#FF7B30"></div>
+        </div>
+        <div class="meta">
+          <div class="num">Palette 11</div>
+          <div class="name">Risograph Press</div>
+          <div class="desc">Indie-zine printing aesthetic. Riso fluorescent pink + ultramarine + orange on paper. Reads design-forward, editorial, credible-hipster. Like a Karachi indie journal that does serious work.</div>
+          <div class="codes">#FF4F87 · #2E5BBA · #FF7B30</div>
+        </div>
+      </a>
+
+      <a class="card" href="palette-12-highlighter.html">
+        <div class="swatches">
+          <div class="sw" style="background:#F4EFE4"></div>
+          <div class="sw" style="background:#F0E550"></div>
+          <div class="sw" style="background:#FF87B0"></div>
+          <div class="sw" style="background:#B6DC60"></div>
+        </div>
+        <div class="meta">
+          <div class="num">Palette 12</div>
+          <div class="name">Highlighter Notebook</div>
+          <div class="desc">Three highlighters used semantically: yellow (evidence), pink (gap / manipulation), green (verified). The brand IS the practice of marking up. Demonstrated live in body prose with a legend.</div>
+          <div class="codes">#F0E550 · #FF87B0 · #B6DC60</div>
+        </div>
+      </a>
+    </div>
+
+    <p class="note">
+      Same content, same layout, same typography across all twelve — only colors change (palette 12 also adds a semantic-highlight legend, since that's the whole point of it). Open them side by side to isolate which palette does what. Tests to run: photocopy in B&W, read at small size, glance for 2 seconds, ask a layperson "what kind of organization is this?"
+    </p>
+  </div>
+</body>
+</html>

@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Civil Witness — FA Field Dispatch</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;700&family=IBM+Plex+Sans:wght@400;500;700&display=swap');
+
+  :root {
+    --bg: #F4EFE4;
+    --ink: #1A1714;
+    --saffron: #E8A325;
+    --muted: #6E6A62;
+    --rule: #1A1714;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: var(--bg); color: var(--ink); }
+  body { font-family: 'IBM Plex Sans', sans-serif; font-size: 15px; line-height: 1.55; padding: 32px 24px; min-height: 100vh; }
+
+  .frame { max-width: 1180px; margin: 0 auto; border: 1px solid var(--rule); }
+
+  .meta-bar { font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; text-transform: uppercase; letter-spacing: 1.5px; color: var(--ink); padding: 10px 28px; border-bottom: 1px solid var(--rule); display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 20px; }
+  .meta-bar .cell { display: flex; flex-direction: column; gap: 3px; }
+  .meta-bar .label { color: var(--muted); font-size: 9px; }
+
+  .wordmark-row { display: flex; justify-content: space-between; align-items: baseline; padding: 22px 28px 18px; border-bottom: 1px solid var(--rule); }
+  .wordmark { font-family: 'IBM Plex Sans', sans-serif; font-size: 22px; font-weight: 700; letter-spacing: -0.4px; }
+  .ref { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 1.2px; }
+
+  .hero { padding: 60px 28px 48px; border-bottom: 1px solid var(--rule); display: grid; grid-template-columns: 1fr 2fr; gap: 60px; }
+  .hero .label-col { font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; text-transform: uppercase; letter-spacing: 1.5px; color: var(--muted); }
+  .hero .label-col .item { display: flex; flex-direction: column; gap: 4px; margin-bottom: 18px; }
+  .hero .label-col .k { color: var(--muted); font-size: 9px; }
+  .hero .label-col .v { color: var(--ink); font-size: 11px; font-weight: 500; }
+  .hero h1 { font-family: 'IBM Plex Sans', sans-serif; font-size: 44px; line-height: 1.08; font-weight: 700; letter-spacing: -1.2px; margin-bottom: 22px; }
+  .hero h1 .accent { background: var(--saffron); padding: 0 5px; }
+  .hero .dek { font-size: 18px; line-height: 1.5; color: var(--ink); max-width: 620px; }
+
+  .findings { padding: 48px 28px; border-bottom: 1px solid var(--rule); display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; }
+  .finding .num { font-family: 'IBM Plex Mono', monospace; font-size: 10px; text-transform: uppercase; letter-spacing: 1.5px; color: var(--muted); margin-bottom: 10px; padding-bottom: 8px; border-bottom: 1px solid var(--rule); }
+  .finding h3 { font-family: 'IBM Plex Sans', sans-serif; font-size: 22px; font-weight: 700; letter-spacing: -0.5px; line-height: 1.2; margin-bottom: 8px; }
+  .finding p { font-size: 13px; color: var(--muted); line-height: 1.5; }
+
+  .evidence { padding: 48px 28px; border-bottom: 1px solid var(--rule); }
+  .evidence .label { font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; text-transform: uppercase; letter-spacing: 1.5px; color: var(--muted); margin-bottom: 22px; }
+  .evidence .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; }
+  .chy { border: 1px solid var(--rule); padding: 14px 16px; }
+  .chy .top { display: flex; justify-content: space-between; font-family: 'IBM Plex Mono', monospace; font-size: 10px; text-transform: uppercase; letter-spacing: 1.2px; color: var(--muted); margin-bottom: 10px; }
+  .chy .text { font-family: 'IBM Plex Sans', sans-serif; font-size: 14px; font-weight: 700; letter-spacing: 0.2px; }
+  .chy.match .text { background: var(--saffron); padding: 2px 4px; display: inline-block; }
+
+  .body { padding: 48px 28px; border-bottom: 1px solid var(--rule); display: grid; grid-template-columns: 1fr 2fr; gap: 60px; }
+  .body .label { font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; text-transform: uppercase; letter-spacing: 1.5px; color: var(--muted); border-top: 1px solid var(--rule); padding-top: 14px; }
+  .body .text { font-size: 16px; line-height: 1.6; max-width: 600px; }
+  .body .text p { margin-bottom: 1em; }
+
+  .footer { font-family: 'IBM Plex Mono', monospace; font-size: 10px; text-transform: uppercase; letter-spacing: 1.2px; color: var(--muted); padding: 14px 28px; display: flex; justify-content: space-between; }
+</style>
+</head>
+<body>
+  <div class="frame">
+    <div class="meta-bar">
+      <div class="cell"><span class="label">PUBLICATION</span><span>Civil Witness</span></div>
+      <div class="cell"><span class="label">SERIES</span><span>Field Note 04</span></div>
+      <div class="cell"><span class="label">DATE</span><span>April 2026</span></div>
+      <div class="cell"><span class="label">REF</span><span>Sijill 04/127</span></div>
+    </div>
+
+    <div class="wordmark-row">
+      <div class="wordmark">Civil Witness</div>
+      <div class="ref">FILE / PK / TV / CHYRON-COORDINATION / 2026-04</div>
+    </div>
+
+    <section class="hero">
+      <div class="label-col">
+        <div class="item"><span class="k">Subject</span><span class="v">Coordinated chyron language</span></div>
+        <div class="item"><span class="k">Period observed</span><span class="v">12 Apr 2026, 16:30 — 13 Apr 2026, 16:30</span></div>
+        <div class="item"><span class="k">Channels</span><span class="v">6 prime-time</span></div>
+        <div class="item"><span class="k">Method</span><span class="v">Public broadcast capture</span></div>
+        <div class="item"><span class="k">Status</span><span class="v">Open</span></div>
+      </div>
+      <div>
+        <h1>The same phrase appeared on six channels in <span class="accent">twenty-four hours.</span></h1>
+        <p class="dek">On April 12 at 16:30, a senior official used the phrase "anti-state elements seeking to destabilize the federation" in a press conference. By April 13 at 16:30, that phrase — verbatim — had appeared in chyrons on six different prime-time news shows.</p>
+      </div>
+    </section>
+
+    <section class="findings">
+      <div class="finding">
+        <div class="num">Finding 01</div>
+        <h3>Six channels, verbatim.</h3>
+        <p>The exact phrase, with no rewriting or paraphrase, ran on six independent broadcasters within the observation window.</p>
+      </div>
+      <div class="finding">
+        <div class="num">Finding 02</div>
+        <h3>Five within four hours.</h3>
+        <p>Five of the six occurrences clustered between 17:14 and 21:00 — a four-hour window beginning roughly 45 minutes after the press conference ended.</p>
+      </div>
+      <div class="finding">
+        <div class="num">Finding 03</div>
+        <h3>Identical placement.</h3>
+        <p>Four of six instances were in the lower-third chyron, not in anchor read or guest commentary. Same position, not just same words.</p>
+      </div>
+    </section>
+
+    <section class="evidence">
+      <div class="label">Evidence — chyron captures</div>
+      <div class="grid">
+        <div class="chy match"><div class="top"><span>CH 7</span><span>17:14</span></div><div class="text">ANTI-STATE ELEMENTS SEEKING TO DESTABILIZE THE FEDERATION — SOURCES</div></div>
+        <div class="chy match"><div class="top"><span>CH 24</span><span>17:42</span></div><div class="text">ANTI-STATE ELEMENTS SEEKING TO DESTABILIZE THE FEDERATION — INTELLIGENCE</div></div>
+        <div class="chy match"><div class="top"><span>CH 13</span><span>18:03</span></div><div class="text">ANTI-STATE ELEMENTS SEEKING TO DESTABILIZE THE FEDERATION — OFFICIAL</div></div>
+        <div class="chy match"><div class="top"><span>CH 92</span><span>18:30</span></div><div class="text">ANTI-STATE ELEMENTS SEEKING TO DESTABILIZE THE FEDERATION — REPORT</div></div>
+        <div class="chy match"><div class="top"><span>CH 4</span><span>19:15</span></div><div class="text">ANTI-STATE ELEMENTS SEEKING TO DESTABILIZE THE FEDERATION</div></div>
+        <div class="chy match"><div class="top"><span>CH 11</span><span>20:42</span></div><div class="text">ANTI-STATE ELEMENTS SEEKING TO DESTABILIZE THE FEDERATION — SECURITY</div></div>
+      </div>
+    </section>
+
+    <section class="body">
+      <div class="label">From the field</div>
+      <div class="text">
+        <p>This is what coordinated talking points look like in the data. The phrase did not emerge organically across newsrooms over a working day; it appeared, verbatim, in clustered time, in the same broadcast position, in six places at once.</p>
+        <p>We do not claim coordination on the basis of one phrase. We claim that the structural pattern — same words, same hour, same chyron slot — is the kind of artifact that, repeated across cases, draws the architecture of manufactured consent.</p>
+        <p>Civil Witness is keeping the record. The full archive of captures, with timestamps, channel IDs, and broadcast metadata, is filed under Sijill 04/127.</p>
+      </div>
+    </section>
+
+    <div class="footer">
+      <span>Civil Witness · 2026 · Pakistan</span>
+      <span>Type 01 — FA Field Dispatch</span>
+      <span>Sijill 04/127 · Open file</span>
+    </div>
+  </div>
+</body>
+</html>
