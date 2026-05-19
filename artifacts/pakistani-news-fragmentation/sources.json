@@ -1,0 +1,5804 @@
+{
+  "metadata": {
+    "project": "Narrative Fragmentation in Pakistani News Media",
+    "compiled": "2026-05-19",
+    "thesis_under_review": [
+      "1. Pakistani news outlets produce divergent narratives about the same events (content fragmentation, not audience).",
+      "2. Convergence vs divergence is conditional on event type: military / religion → converge; partisan / protest → diverge.",
+      "3. Selection bias (what is covered at all) is stronger than framing bias (how it's covered) for Pakistani outlets.",
+      "4. Self-censorship pressure (Bashir 88%) produces convergence on military / security and religion topics.",
+      "5. Medium effects (TV vs print) rival ownership / ideology effects in cross-source similarity.",
+      "6. The study creates the Pakistani empirical baseline — no peer-reviewed computational cross-outlet study exists yet."
+    ],
+    "common_counters": [
+      "audience fragmentation ≠ content fragmentation (Webster & Ksiazek 2012)",
+      "convergence is the modal finding in cross-source studies (Budak/Goel/Rao; Liu & Zhang)",
+      "naive WEAT / static-embedding bias measures are too fragile in 2025 (Antoniak & Mimno; Lucy)",
+      "Pakistani military-coverage convergence reflects coercion not consensus (PECA, ISPR pressure)"
+    ],
+    "total_sources": 222,
+    "schema_version": "1.0",
+    "fields": {
+      "id": "kebab-case identifier (first-author + year + short keywords)",
+      "authors": "array of last-name-first author strings",
+      "title": "source title",
+      "year": "year of publication (null if unknown)",
+      "venue": "publisher / journal / conference",
+      "type": "book | paper | chapter | report | essay | preprint | review | dataset",
+      "url": "best reachable URL (DOI / publisher / arXiv / repository) or null",
+      "doi": "DOI if available, else null",
+      "priority": "1 = must-read, 2 = important methodological/empirical anchor, 3 = supporting, 4 = foundational/contextual",
+      "areas": "array from: conceptual-foundations | measurement-methods | empirical-evidence | pakistan-specific | methods-critiques",
+      "stance": "pro | anti | mixed | neutral (relative to the thesis above)",
+      "method": "historical | book | theoretical | computational | content-analysis | ethnography | survey | interviews | review | essay | mixed-methods | model | case-study | rct | quasi-experiment | observational | linked-panel | audit | benchmark | dataset | topic-model | embedding | network-analysis | discourse-analysis",
+      "clusters": "01-fragmentation-concept | 02-canonical-definitions | 03-hallin-spheres | 04-cross-outlet-empirical | 05-pakistan-landscape | 06-computational-methods | 07-method-critiques | 08-non-western-comparables | 09-named-methods-deepdive",
+      "verified": "true if author/year/title confidently correct, false if reconstructed or uncertain",
+      "note": "one-sentence summary of contribution to the team's thesis"
+    },
+    "stats": {
+      "by_priority": {
+        "1": 34,
+        "2": 66,
+        "3": 79,
+        "4": 43
+      },
+      "by_stance": {
+        "pro": 134,
+        "neutral": 59,
+        "anti": 15,
+        "mixed": 14
+      },
+      "by_area": {
+        "measurement-methods": 128,
+        "empirical-evidence": 64,
+        "pakistan-specific": 52,
+        "methods-critiques": 15,
+        "conceptual-foundations": 62
+      },
+      "by_method": {
+        "computational": 58,
+        "dataset": 20,
+        "observational": 13,
+        "model": 8,
+        "interviews": 5,
+        "content-analysis": 28,
+        "benchmark": 13,
+        "embedding": 7,
+        "survey": 4,
+        "mixed-methods": 3,
+        "review": 16,
+        "theoretical": 17,
+        "historical": 2,
+        "topic-model": 5,
+        "essay": 5,
+        "network-analysis": 8,
+        "case-study": 5,
+        "discourse-analysis": 1,
+        "rct": 4
+      },
+      "by_type": {
+        "paper": 129,
+        "preprint": 30,
+        "report": 18,
+        "book": 19,
+        "review": 6,
+        "dataset": 17,
+        "essay": 3
+      },
+      "by_cluster": {
+        "06-computational-methods": 76,
+        "09-named-methods-deepdive": 68,
+        "04-cross-outlet-empirical": 33,
+        "05-pakistan-landscape": 48,
+        "07-method-critiques": 14,
+        "08-non-western-comparables": 25,
+        "03-hallin-spheres": 4,
+        "01-fragmentation-concept": 29,
+        "02-canonical-definitions": 22
+      },
+      "verified_true": 128,
+      "verified_false": 94,
+      "multi_cluster": 91
+    }
+  },
+  "sources": [
+    {
+      "id": "antoniak-2025-narrative-text-embeddings",
+      "authors": [
+        "Antoniak, M.",
+        "et al.",
+        "Field, A.",
+        "Mun, J.",
+        "Walsh, M.",
+        "Klein, L. F.",
+        "Sap, M."
+      ],
+      "title": "Mapping News Narratives Using LLMs and Narrative-Structured Text Embeddings",
+      "year": 2025,
+      "venue": "arXiv / ACM Web Science 2025",
+      "type": "paper",
+      "url": "https://arxiv.org/abs/2409.06540",
+      "doi": null,
+      "priority": 1,
+      "areas": [
+        "measurement-methods",
+        "empirical-evidence"
+      ],
+      "stance": "pro",
+      "method": "computational",
+      "clusters": [
+        "06-computational-methods",
+        "09-named-methods-deepdive",
+        "04-cross-outlet-empirical"
+      ],
+      "verified": true,
+      "note": "Most directly relevant 2024 implementation of LLM-based narrative mapping with structured embeddings — the modern template for the team's cross-source narrative comparison."
+    },
+    {
+      "id": "arxiv-2509-20419-wartime-pakistan",
+      "authors": [
+        "Anonymous"
+      ],
+      "title": "Wartime Media Dynamics in Emerging Democracies: Case Study of Pakistani Media in May 2025 Indo-Pak Conflict",
+      "year": 2025,
+      "venue": "arXiv 2509.20419",
+      "type": "preprint",
+      "url": "https://arxiv.org/abs/2509.20419",
+      "doi": null,
+      "priority": 1,
+      "areas": [
+        "pakistan-specific",
+        "empirical-evidence",
+        "measurement-methods"
+      ],
+      "stance": "pro",
+      "method": "computational",
+      "clusters": [
+        "05-pakistan-landscape",
+        "04-cross-outlet-empirical"
+      ],
+      "verified": true,
+      "note": "The only directly comparable recent computational cross-outlet Pakistani study (2,639 articles, three English newspapers, GPT-4.1 Nano), showing conflict coverage crowded out dissent and dissent stayed suppressed after the ceasefire; the methodological template against which the larger Urdu+TV study positions itself."
+    },
+    {
+      "id": "mahmoud-2025-entity-roles",
+      "authors": [
+        "Mahmoud, T.",
+        "Piskorski, J.",
+        "Stefanovitch, N.",
+        "Da San Martino, G.",
+        "Nakov, P."
+      ],
+      "title": "Entity Framing and Role Portrayal in the News",
+      "year": 2025,
+      "venue": "ACL 2025 Findings",
+      "type": "paper",
+      "url": "https://arxiv.org/abs/2502.14718",
+      "doi": null,
+      "priority": 1,
+      "areas": [
+        "measurement-methods",
+        "empirical-evidence"
+      ],
+      "stance": "pro",
+      "method": "dataset",
+      "clusters": [
+        "09-named-methods-deepdive",
+        "06-computational-methods"
+      ],
+      "verified": true,
+      "note": "Multilingual hierarchical corpus of 22 archetypal roles (guardian, martyr, tyrant, scapegoat) — the most directly relevant new resource and primary candidate measurement for protagonist/antagonist/victim role assignment across Pakistani outlets."
+    },
+    {
+      "id": "naturesr-2025-cable-network-bias",
+      "authors": [
+        "Anonymous"
+      ],
+      "title": "Unpacking media bias in the growing divide between cable and network news",
+      "year": 2025,
+      "venue": "Nature Scientific Reports",
+      "type": "paper",
+      "url": null,
+      "doi": null,
+      "priority": 1,
+      "areas": [
+        "empirical-evidence",
+        "measurement-methods"
+      ],
+      "stance": "pro",
+      "method": "computational",
+      "clusters": [
+        "04-cross-outlet-empirical",
+        "06-computational-methods"
+      ],
+      "verified": false,
+      "note": "Cleanest US-analog TV-transcript pipeline that decomposes selection-bias from framing-bias, directly portable to Geo/ARY/Dunya prime-time and central to the team's RQ4 selection-versus-framing question."
+    },
+    {
+      "id": "reuters-institute-2025-pakistan-excluded",
+      "authors": [
+        "Reuters Institute for the Study of Journalism"
+      ],
+      "title": "Reuters Institute Digital News Report - Pakistan EXCLUDED 2023-2025",
+      "year": 2025,
+      "venue": "Reuters Institute / University of Oxford",
+      "type": "report",
+      "url": "https://reutersinstitute.politics.ox.ac.uk/digital-news-report",
+      "doi": null,
+      "priority": 1,
+      "areas": [
+        "pakistan-specific",
+        "empirical-evidence"
+      ],
+      "stance": "neutral",
+      "method": "observational",
+      "clusters": [
+        "05-pakistan-landscape"
+      ],
+      "verified": true,
+      "note": "Reuters Institute's three-year exclusion of Pakistan from the Digital News Report is the positioning evidence the synthesis says to cite, justifying the study as filling the Pakistani empirical baseline gap."
+    },
+    {
+      "id": "alonso-del-barrio-2024-llm-framing",
+      "authors": [
+        "Alonso del Barrio, D.",
+        "Gatica-Perez, D."
+      ],
+      "title": "Decoding News Narratives: A Critical Analysis of Large Language Models in Framing Bias Detection",
+      "year": 2024,
+      "venue": "arXiv",
+      "type": "preprint",
+      "url": "https://arxiv.org/abs/2402.11621",
+      "doi": null,
+      "priority": 1,
+      "areas": [
+        "methods-critiques"
+      ],
+      "stance": "anti",
+      "method": "computational",
+      "clusters": [
+        "07-method-critiques",
+        "09-named-methods-deepdive"
+      ],
+      "verified": true,
+      "note": "Demonstrates LLM classifiers introduce their own framing biases; mandates the team validate all GPT-4o frame/stance measures on a held-out human-labeled Urdu set."
+    },
+    {
+      "id": "burnham-2024-semantic-scaling",
+      "authors": [
+        "Burnham, M."
+      ],
+      "title": "Semantic Scaling: Bayesian Ideal Point Estimates with Large Language Models",
+      "year": 2024,
+      "venue": "arXiv",
+      "type": "preprint",
+      "url": "https://arxiv.org/abs/2405.02472",
+      "doi": null,
+      "priority": 1,
+      "areas": [
+        "measurement-methods"
+      ],
+      "stance": "pro",
+      "method": "computational",
+      "clusters": [
+        "06-computational-methods",
+        "09-named-methods-deepdive"
+      ],
+      "verified": true,
+      "note": "The recommended replacement for static-embedding entity bias: prompt-based LLM classification feeding an IRT model on named, interpretable dimensions (pro/anti-establishment) that translates directly to monthly Urdu slices."
+    },
+    {
+      "id": "le-mens-2024-ask-and-average",
+      "authors": [
+        "Le Mens, G.",
+        "Kovacs, B.",
+        "Hannan, M. T.",
+        "Pros, G."
+      ],
+      "title": "Uncovering the Semantics of Concepts Using GPT-4 and Other Recent Large Language Models",
+      "year": 2024,
+      "venue": "arXiv / PNAS Nexus",
+      "type": "preprint",
+      "url": "https://arxiv.org/abs/2309.10551",
+      "doi": null,
+      "priority": 1,
+      "areas": [
+        "measurement-methods"
+      ],
+      "stance": "pro",
+      "method": "model",
+      "clusters": [
+        "09-named-methods-deepdive",
+        "06-computational-methods"
+      ],
+      "verified": false,
+      "note": "Establishes 'ask and average' LLM-as-measurement template that anchors the team's plan to aggregate per-passage GPT-4o scores into stable entity portrayal indices."
+    },
+    {
+      "id": "hanley-durumeric-2023-tata",
+      "authors": [
+        "Hanley, H. W. A.",
+        "Durumeric, Z."
+      ],
+      "title": "TATA: Stance Detection via Topic-Agnostic and Topic-Aware Embeddings",
+      "year": 2023,
+      "venue": "EMNLP 2023",
+      "type": "paper",
+      "url": "https://aclanthology.org/2023.emnlp-main.768/",
+      "doi": "10.18653/v1/2023.emnlp-main.768",
+      "priority": 1,
+      "areas": [
+        "measurement-methods"
+      ],
+      "stance": "pro",
+      "method": "computational",
+      "clusters": [
+        "06-computational-methods",
+        "09-named-methods-deepdive"
+      ],
+      "verified": true,
+      "note": "Best-published supervised stance numbers on VAST/SemEval/EZ-STANCE and the source the synthesis flags the team has mis-attributed; only relevant if they pursue supervised stance and retrain on Urdu."
+    },
+    {
+      "id": "intercept-2023-secret-meeting",
+      "authors": [
+        "The Intercept"
+      ],
+      "title": "Secret Meeting: Pakistani Army Tells Media Owners to Stop Covering Imran Khan",
+      "year": 2023,
+      "venue": "The Intercept",
+      "type": "report",
+      "url": null,
+      "doi": null,
+      "priority": 1,
+      "areas": [
+        "pakistan-specific"
+      ],
+      "stance": "pro",
+      "method": "interviews",
+      "clusters": [
+        "05-pakistan-landscape"
+      ],
+      "verified": true,
+      "note": "Most explicit recent documentation of military-media coordination (the post-May-9 closed-door instruction to stop covering Khan), the primary citable evidence for the convergence-by-coercion mechanism behind H1."
+    },
+    {
+      "id": "khan-2023-minorities-pakistan",
+      "authors": [
+        "Khan, M. A.",
+        "et al."
+      ],
+      "title": "Coverage of Minorities in Pakistani Press under Blasphemy Law",
+      "year": 2023,
+      "venue": "Pakistani communication / Islam and Christian-Muslim Relations",
+      "type": "paper",
+      "url": null,
+      "doi": null,
+      "priority": 1,
+      "areas": [
+        "pakistan-specific",
+        "empirical-evidence"
+      ],
+      "stance": "pro",
+      "method": "content-analysis",
+      "clusters": [
+        "05-pakistan-landscape",
+        "04-cross-outlet-empirical"
+      ],
+      "verified": false,
+      "note": "Pakistani four-outlet study showing selection-bias (what is covered) exceeds framing-bias for minority stories, the canonical empirical anchor for the team's H2 selection-versus-framing hypothesis and the Ahmadi-lynching silence question."
+    },
+    {
+      "id": "mendelsohn-2023-hero-villain-victim",
+      "authors": [
+        "Mendelsohn, J.",
+        "Le Bras, R.",
+        "Choi, Y.",
+        "Sap, M."
+      ],
+      "title": "From Dogwhistles to Bullhorns: Unveiling Coded Rhetoric with Language Models",
+      "year": 2023,
+      "venue": "arXiv / ACL 2023",
+      "type": "paper",
+      "url": "https://aclanthology.org/2023.acl-long.845/",
+      "doi": null,
+      "priority": 1,
+      "areas": [
+        "measurement-methods"
+      ],
+      "stance": "pro",
+      "method": "model",
+      "clusters": [
+        "09-named-methods-deepdive"
+      ],
+      "verified": false,
+      "note": "Hero/villain/victim schema relevant to simpler role-typing than full Greimas; part of the entity-role-portrayal cluster the synthesis identifies as primary."
+    },
+    {
+      "id": "pikuliak-2023-multilingual-claim-retrieval",
+      "authors": [
+        "Pikuliak, M.",
+        "Srba, I.",
+        "Moro, R.",
+        "Hrckova, A.",
+        "Simko, J.",
+        "Bielikova, M."
+      ],
+      "title": "Multilingual Previously Fact-Checked Claim Retrieval",
+      "year": 2023,
+      "venue": "EMNLP 2023",
+      "type": "paper",
+      "url": "https://aclanthology.org/2023.emnlp-main.1027/",
+      "doi": null,
+      "priority": 1,
+      "areas": [
+        "measurement-methods",
+        "empirical-evidence"
+      ],
+      "stance": "pro",
+      "method": "benchmark",
+      "clusters": [
+        "09-named-methods-deepdive",
+        "06-computational-methods"
+      ],
+      "verified": true,
+      "note": "MultiClaim 28-language fact-check retrieval benchmark provides the cross-lingual claim-equivalence template the team needs for matching Urdu vs English claims about the same events."
+    },
+    {
+      "id": "sen-2023-framing-fray-india",
+      "authors": [
+        "Sen, I.",
+        "Quercia, D.",
+        "Constantinides, M."
+      ],
+      "title": "Framing the Fray: Conflict Framing in Indian Election News",
+      "year": 2023,
+      "venue": "ACM Web Science 2025",
+      "type": "paper",
+      "url": null,
+      "doi": null,
+      "priority": 1,
+      "areas": [
+        "empirical-evidence"
+      ],
+      "stance": "pro",
+      "method": "computational",
+      "clusters": [
+        "08-non-western-comparables",
+        "04-cross-outlet-empirical"
+      ],
+      "verified": false,
+      "note": "Indian-election cross-outlet study finding that conflict framing tracks TV-versus-print medium more than ideological lean, the empirical anchor for the team's H3 medium-effects hypothesis."
+    },
+    {
+      "id": "feng-2022-labse",
+      "authors": [
+        "Feng, F.",
+        "Yang, Y.",
+        "Cer, D.",
+        "Arivazhagan, N.",
+        "Wang, W."
+      ],
+      "title": "Language-agnostic BERT Sentence Embedding",
+      "year": 2022,
+      "venue": "ACL 2022",
+      "type": "paper",
+      "url": "https://aclanthology.org/2022.acl-long.62/",
+      "doi": null,
+      "priority": 1,
+      "areas": [
+        "measurement-methods"
+      ],
+      "stance": "pro",
+      "method": "embedding",
+      "clusters": [
+        "09-named-methods-deepdive",
+        "06-computational-methods"
+      ],
+      "verified": true,
+      "note": "LaBSE multilingual encoder (109 languages including Urdu) is the recommended embedding backbone for cross-lingual claim retrieval and HDBSCAN clustering on the Urdu/English Pakistani corpus."
+    },
+    {
+      "id": "hanley-2022-special-operation-ecosystems",
+      "authors": [
+        "Hanley, H. W. A.",
+        "Kumar, D.",
+        "Durumeric, Z."
+      ],
+      "title": "A Special Operation: A Quantitative Approach to Dissecting and Comparing Different Media Ecosystems' Coverage of the Russo-Ukrainian War",
+      "year": 2022,
+      "venue": "arXiv 2210.03016",
+      "type": "preprint",
+      "url": "https://arxiv.org/abs/2210.03016",
+      "doi": null,
+      "priority": 1,
+      "areas": [
+        "empirical-evidence",
+        "measurement-methods"
+      ],
+      "stance": "pro",
+      "method": "computational",
+      "clusters": [
+        "04-cross-outlet-empirical",
+        "06-computational-methods"
+      ],
+      "verified": true,
+      "note": "Strongest recent media-ecosystems comparison template; combines topic modeling, narrative attribution and sentiment to show outlets construct incompatible realities through selection rather than refutation, directly transferable to Pakistani case studies."
+    },
+    {
+      "id": "lucy-2022-name-frequency-bias",
+      "authors": [
+        "Lucy, L.",
+        "Tadimeti, D.",
+        "Bamman, D."
+      ],
+      "title": "Discovering Differences in the Representation of People in Web Corpora through Word Embeddings",
+      "year": 2022,
+      "venue": "Findings of NAACL",
+      "type": "paper",
+      "url": "https://aclanthology.org/2022.findings-naacl.107/",
+      "doi": "10.18653/v1/2022.findings-naacl.107",
+      "priority": 1,
+      "areas": [
+        "methods-critiques",
+        "measurement-methods"
+      ],
+      "stance": "anti",
+      "method": "computational",
+      "clusters": [
+        "07-method-critiques",
+        "09-named-methods-deepdive"
+      ],
+      "verified": true,
+      "note": "Demonstrates that name-frequency confounds embedding bias signals; means any naive entity-portrayal measure of Imran Khan/Munir/Mahrang Baloch must control for mention frequency."
+    },
+    {
+      "id": "sen-2022-media-bias-india",
+      "authors": [
+        "Sen, I.",
+        "Quercia, D.",
+        "Constantinides, M.",
+        "Maxhuni, A.",
+        "Pratt-Hartmann, I."
+      ],
+      "title": "Analysis of Media Bias in Policy Discourse in India",
+      "year": 2022,
+      "venue": "ACM SIGCAS/SIGCHI Conference on Computing and Sustainable Societies (COMPASS)",
+      "type": "paper",
+      "url": null,
+      "doi": null,
+      "priority": 1,
+      "areas": [
+        "empirical-evidence",
+        "measurement-methods",
+        "pakistan-specific"
+      ],
+      "stance": "pro",
+      "method": "computational",
+      "clusters": [
+        "08-non-western-comparables",
+        "04-cross-outlet-empirical"
+      ],
+      "verified": false,
+      "note": "Most directly transferable computational pipeline from South Asia and the closest neighbour for a Pakistani cross-outlet study; provides longitudinal multi-axis bias measurement and a reachable collaborator network at IIT Delhi."
+    },
+    {
+      "id": "stammbach-2022-heroes-villains-victims-gpt3",
+      "authors": [
+        "Stammbach, D.",
+        "Antoniak, M.",
+        "Ash, E."
+      ],
+      "title": "Heroes, Villains, and Victims, and GPT-3: Automated Extraction of Character Roles Without Training Data",
+      "year": 2022,
+      "venue": "WNU 2022 at NAACL",
+      "type": "paper",
+      "url": "https://aclanthology.org/2022.wnu-1.6/",
+      "doi": null,
+      "priority": 1,
+      "areas": [
+        "measurement-methods"
+      ],
+      "stance": "pro",
+      "method": "computational",
+      "clusters": [
+        "06-computational-methods",
+        "09-named-methods-deepdive"
+      ],
+      "verified": true,
+      "note": "Zero-shot GPT-3 hero/villain/victim role extraction without training data; direct template the team can port to Urdu for cross-outlet entity role comparison."
+    },
+    {
+      "id": "antoniak-mimno-2021-bad-seeds",
+      "authors": [
+        "Antoniak, M.",
+        "Mimno, D."
+      ],
+      "title": "Bad Seeds: Evaluating Lexical Methods for Bias Measurement",
+      "year": 2021,
+      "venue": "ACL 2021",
+      "type": "paper",
+      "url": "https://aclanthology.org/2021.acl-long.148/",
+      "doi": "10.18653/v1/2021.acl-long.148",
+      "priority": 1,
+      "areas": [
+        "methods-critiques",
+        "measurement-methods"
+      ],
+      "stance": "anti",
+      "method": "computational",
+      "clusters": [
+        "07-method-critiques",
+        "09-named-methods-deepdive"
+      ],
+      "verified": true,
+      "note": "Foundational WEAT critique showing seed-word dependence flips bias conclusions; motivates the team's pivot from static-embedding entity bias to LLM-based connotation scoring on monthly Pakistani news slices."
+    },
+    {
+      "id": "bashir-2021-self-censorship-pakistan",
+      "authors": [
+        "Bashir, M.",
+        "et al."
+      ],
+      "title": "Self-Censorship by Pakistani Journalists",
+      "year": 2021,
+      "venue": "Pakistan journalism / press-freedom journal",
+      "type": "paper",
+      "url": null,
+      "doi": null,
+      "priority": 1,
+      "areas": [
+        "pakistan-specific",
+        "conceptual-foundations"
+      ],
+      "stance": "pro",
+      "method": "survey",
+      "clusters": [
+        "05-pakistan-landscape"
+      ],
+      "verified": false,
+      "note": "Reports 88% of Pakistani journalists self-censor (64% on military, 62% on religion), the predictive mechanism for the team's H1 convergence-on-military hypothesis and the single most-cited empirical support for the project."
+    },
+    {
+      "id": "akser-2020-turkey-coup",
+      "authors": [
+        "Akser, M.",
+        "Baybars, B."
+      ],
+      "title": "The Sphere of Consensus in a Polarized Media System: Turkey 2016 Coup",
+      "year": 2020,
+      "venue": "European Journal of Communication / Media, Culture & Society",
+      "type": "paper",
+      "url": null,
+      "doi": null,
+      "priority": 1,
+      "areas": [
+        "empirical-evidence",
+        "conceptual-foundations"
+      ],
+      "stance": "pro",
+      "method": "content-analysis",
+      "clusters": [
+        "08-non-western-comparables",
+        "03-hallin-spheres"
+      ],
+      "verified": false,
+      "note": "Empirical demonstration that sharply polarized outlets converge during national-emergency events, directly predicting consensus on Pakistani military-conflict cases (Pak-India war, Khyber Storm) versus divergence on PTI and protest cases."
+    },
+    {
+      "id": "ethayarajh-2019-weat-overestimates",
+      "authors": [
+        "Ethayarajh, K.",
+        "Duvenaud, D.",
+        "Hirst, G."
+      ],
+      "title": "Understanding Undesirable Word Embedding Associations",
+      "year": 2019,
+      "venue": "ACL 2019",
+      "type": "paper",
+      "url": "https://aclanthology.org/P19-1166/",
+      "doi": "10.18653/v1/P19-1166",
+      "priority": 1,
+      "areas": [
+        "methods-critiques",
+        "measurement-methods"
+      ],
+      "stance": "anti",
+      "method": "computational",
+      "clusters": [
+        "07-method-critiques",
+        "09-named-methods-deepdive"
+      ],
+      "verified": true,
+      "note": "Proves WEAT overestimates bias under unequal token frequency; key warning the team must engage when reporting any embedding-bias baseline for Pakistani entities."
+    },
+    {
+      "id": "mom-2019-pakistan-ownership",
+      "authors": [
+        "Media Ownership Monitor Pakistan",
+        "Reporters Without Borders",
+        "Freedom Network"
+      ],
+      "title": "Media Ownership Monitor Pakistan 2019",
+      "year": 2019,
+      "venue": "RSF / Freedom Network",
+      "type": "report",
+      "url": "https://pakistan.mom-rsf.org/",
+      "doi": null,
+      "priority": 1,
+      "areas": [
+        "pakistan-specific"
+      ],
+      "stance": "pro",
+      "method": "observational",
+      "clusters": [
+        "05-pakistan-landscape"
+      ],
+      "verified": true,
+      "note": "Most rigorous structural map of Pakistani media ownership (top-3 TV channels control ~50% of news viewership, all single-family owned); the citable backbone for the team's outlet-selection rationale and ownership-effects analyses."
+    },
+    {
+      "id": "antoniak-mimno-2018-embedding-instability",
+      "authors": [
+        "Antoniak, M.",
+        "Mimno, D."
+      ],
+      "title": "Evaluating the Stability of Embedding-Based Word Similarities",
+      "year": 2018,
+      "venue": "Transactions of the ACL",
+      "type": "paper",
+      "url": "https://aclanthology.org/Q18-1008/",
+      "doi": "10.1162/tacl_a_00008",
+      "priority": 1,
+      "areas": [
+        "methods-critiques",
+        "measurement-methods"
+      ],
+      "stance": "anti",
+      "method": "computational",
+      "clusters": [
+        "07-method-critiques",
+        "09-named-methods-deepdive"
+      ],
+      "verified": true,
+      "note": "Shows SGD word2vec instability on small corpora; directly disqualifies the team's planned per-month static-embedding entity-bias pipeline on Pakistani news slices."
+    },
+    {
+      "id": "benkler-2018-network-propaganda",
+      "authors": [
+        "Benkler, Y.",
+        "Faris, R.",
+        "Roberts, H."
+      ],
+      "title": "Network Propaganda: Manipulation, Disinformation, and Radicalization in American Politics",
+      "year": 2018,
+      "venue": "Oxford University Press",
+      "type": "book",
+      "url": "https://global.oup.com/academic/product/network-propaganda-9780190923631",
+      "doi": "10.1093/oso/9780190923624.001.0001",
+      "priority": 1,
+      "areas": [
+        "empirical-evidence",
+        "conceptual-foundations"
+      ],
+      "stance": "pro",
+      "method": "mixed-methods",
+      "clusters": [
+        "04-cross-outlet-empirical"
+      ],
+      "verified": true,
+      "note": "Gold-standard hybrid design combining network/structural analysis with event-level case studies, the model the Pakistani study should emulate for combining ecosystem mapping with the seven case studies."
+    },
+    {
+      "id": "van-aelst-2017-high-choice-environment",
+      "authors": [
+        "Van Aelst, P.",
+        "Strömbäck, J.",
+        "Aalberg, T.",
+        "Esser, F.",
+        "de Vreese, C.",
+        "Matthes, J.",
+        "Hopmann, D.",
+        "Salgado, S.",
+        "Hubé, N.",
+        "Stępińska, A.",
+        "Papathanassopoulos, S.",
+        "Berganza, R.",
+        "Legnante, G.",
+        "Reinemann, C.",
+        "Sheafer, T.",
+        "Stanyer, J."
+      ],
+      "title": "Political Communication in a High-Choice Media Environment: A Challenge for Democracy?",
+      "year": 2017,
+      "venue": "Annals of the International Communication Association",
+      "type": "paper",
+      "url": "https://www.tandfonline.com/doi/full/10.1080/23808985.2017.1288551",
+      "doi": "10.1080/23808985.2017.1288551",
+      "priority": 1,
+      "areas": [
+        "conceptual-foundations"
+      ],
+      "stance": "pro",
+      "method": "review",
+      "clusters": [
+        "01-fragmentation-concept",
+        "02-canonical-definitions"
+      ],
+      "verified": true,
+      "note": "Top-5 must-read: introduces the 'shared information arena' construct the synthesis identifies as the primary theoretical scaffold for the Pakistani study."
+    },
+    {
+      "id": "budak-2016-fair-balanced",
+      "authors": [
+        "Budak, C.",
+        "Goel, S.",
+        "Rao, J. M."
+      ],
+      "title": "Fair and Balanced? Quantifying Media Bias through Crowdsourced Content Analysis",
+      "year": 2016,
+      "venue": "Public Opinion Quarterly 80(S1)",
+      "type": "paper",
+      "url": "https://doi.org/10.1093/poq/nfw007",
+      "doi": "10.1093/poq/nfw007",
+      "priority": 1,
+      "areas": [
+        "empirical-evidence",
+        "measurement-methods"
+      ],
+      "stance": "mixed",
+      "method": "mixed-methods",
+      "clusters": [
+        "04-cross-outlet-empirical",
+        "09-named-methods-deepdive"
+      ],
+      "verified": true,
+      "note": "Two-stage classify-then-crowdsource pipeline that is the direct methodological spine for the Pakistani design and motivates the pre-registered hypothesis that fragmentation concentrates on a few hot files."
+    },
+    {
+      "id": "card-2015-media-frames-corpus",
+      "authors": [
+        "Card, D.",
+        "Boydstun, A. E.",
+        "Gross, J. H.",
+        "Resnik, P.",
+        "Smith, N. A."
+      ],
+      "title": "The Media Frames Corpus: Annotations of Frames Across Issues",
+      "year": 2015,
+      "venue": "ACL-IJCNLP",
+      "type": "paper",
+      "url": "https://aclanthology.org/P15-2072/",
+      "doi": "10.3115/v1/P15-2072",
+      "priority": 1,
+      "areas": [
+        "measurement-methods",
+        "conceptual-foundations"
+      ],
+      "stance": "pro",
+      "method": "content-analysis",
+      "clusters": [
+        "02-canonical-definitions",
+        "06-computational-methods",
+        "09-named-methods-deepdive"
+      ],
+      "verified": true,
+      "note": "Canonical MFC paper supplying the 15-frame codebook the team will use as the international-comparison baseline before authoring a Pakistan-specific codebook."
+    },
+    {
+      "id": "webster-ksiazek-2012-audience-fragmentation",
+      "authors": [
+        "Webster, J. G.",
+        "Ksiazek, T. B."
+      ],
+      "title": "The Dynamics of Audience Fragmentation: Public Attention in an Age of Digital Media",
+      "year": 2012,
+      "venue": "Journal of Communication",
+      "type": "paper",
+      "url": "https://academic.oup.com/joc/article/62/1/39/4085791",
+      "doi": "10.1111/j.1460-2466.2011.01616.x",
+      "priority": 1,
+      "areas": [
+        "conceptual-foundations"
+      ],
+      "stance": "anti",
+      "method": "observational",
+      "clusters": [
+        "01-fragmentation-concept"
+      ],
+      "verified": true,
+      "note": "Top-5 read: demonstrates audience duplication is the rule, forcing the team to be explicit that this study measures CONTENT fragmentation not audience isolation."
+    },
+    {
+      "id": "bennett-iyengar-2008-minimal-effects",
+      "authors": [
+        "Bennett, W. L.",
+        "Iyengar, S."
+      ],
+      "title": "A New Era of Minimal Effects? The Changing Foundations of Political Communication",
+      "year": 2008,
+      "venue": "Journal of Communication",
+      "type": "paper",
+      "url": "https://academic.oup.com/joc/article/58/4/707/4098377",
+      "doi": "10.1111/j.1460-2466.2008.00410.x",
+      "priority": 1,
+      "areas": [
+        "conceptual-foundations"
+      ],
+      "stance": "mixed",
+      "method": "review",
+      "clusters": [
+        "01-fragmentation-concept"
+      ],
+      "verified": true,
+      "note": "Top-5 read: effects framework that motivates measuring within- vs. cross-outlet variance separately because effects on niche audiences differ from public-at-large effects."
+    },
+    {
+      "id": "scheufele-tewksbury-2007-framing-agenda-priming",
+      "authors": [
+        "Scheufele, D. A.",
+        "Tewksbury, D."
+      ],
+      "title": "Framing, Agenda Setting, and Priming: The Evolution of Three Media Effects Models",
+      "year": 2007,
+      "venue": "Journal of Communication",
+      "type": "paper",
+      "url": "https://academic.oup.com/joc/article-abstract/57/1/9/4102613",
+      "doi": "10.1111/j.0021-9916.2007.00326.x",
+      "priority": 1,
+      "areas": [
+        "conceptual-foundations"
+      ],
+      "stance": "pro",
+      "method": "review",
+      "clusters": [
+        "02-canonical-definitions",
+        "01-fragmentation-concept"
+      ],
+      "verified": true,
+      "note": "Single cleanest piece distinguishing framing, agenda setting, and priming — flagged by the synthesis as must-read for mapping each Pakistani research question to one canonical construct."
+    },
+    {
+      "id": "entman-1993-framing-fractured-paradigm",
+      "authors": [
+        "Entman, R. M."
+      ],
+      "title": "Framing: Toward Clarification of a Fractured Paradigm",
+      "year": 1993,
+      "venue": "Journal of Communication",
+      "type": "paper",
+      "url": "https://academic.oup.com/joc/article-abstract/43/4/51/4160153",
+      "doi": "10.1111/j.1460-2466.1993.tb01304.x",
+      "priority": 1,
+      "areas": [
+        "conceptual-foundations"
+      ],
+      "stance": "neutral",
+      "method": "theoretical",
+      "clusters": [
+        "02-canonical-definitions"
+      ],
+      "verified": true,
+      "note": "Top-5 must-read: the canonical framing definition (problem definition, causal interpretation, moral evaluation, treatment recommendation) the team must respect when operationalizing framing measures."
+    },
+    {
+      "id": "hallin-1986-uncensored-war",
+      "authors": [
+        "Hallin, D. C."
+      ],
+      "title": "The 'Uncensored War': The Media and Vietnam",
+      "year": 1986,
+      "venue": "Oxford University Press",
+      "type": "book",
+      "url": "https://global.oup.com/academic/product/the-uncensored-war-9780520065437",
+      "doi": null,
+      "priority": 1,
+      "areas": [
+        "conceptual-foundations"
+      ],
+      "stance": "pro",
+      "method": "historical",
+      "clusters": [
+        "03-hallin-spheres"
+      ],
+      "verified": true,
+      "note": "Top-5 must-read: introduces the spheres of consensus/legitimate controversy/deviance the team's case-study table relies on; the synthesis recommends operationalizing sphere placement as an output of measurement."
+    },
+    {
+      "id": "chae-davidson-2025-llm-classification",
+      "authors": [
+        "Chae, Y.",
+        "Davidson, T."
+      ],
+      "title": "Large Language Models for Text Classification: From Zero-Shot Learning to Instruction-Tuning",
+      "year": 2025,
+      "venue": "Sociological Methodology",
+      "type": "paper",
+      "url": "https://journals.sagepub.com/doi/10.1177/00811750241286619",
+      "doi": null,
+      "priority": 2,
+      "areas": [
+        "measurement-methods"
+      ],
+      "stance": "pro",
+      "method": "review",
+      "clusters": [
+        "09-named-methods-deepdive",
+        "06-computational-methods"
+      ],
+      "verified": false,
+      "note": "Sociological-methodology review showing GPT-4-class zero-shot models match fine-tuned stance baselines; justifies the team's pivot from TATA fine-tuning to LLM prompting for Urdu."
+    },
+    {
+      "id": "locoman-2025-russian-ukraine",
+      "authors": [
+        "Locoman, E.",
+        "Lau, R."
+      ],
+      "title": "Narratives of conflict: Russian media's treatment of Ukraine, 2013-2022",
+      "year": 2025,
+      "venue": "International Communication Gazette",
+      "type": "paper",
+      "url": null,
+      "doi": null,
+      "priority": 2,
+      "areas": [
+        "empirical-evidence"
+      ],
+      "stance": "pro",
+      "method": "content-analysis",
+      "clusters": [
+        "08-non-western-comparables",
+        "04-cross-outlet-empirical"
+      ],
+      "verified": false,
+      "note": "Best empirical model for longitudinal convergence/divergence in an authoritarian-adjacent press system, directly informing RQ5 on the temporal arc of Pakistani coverage."
+    },
+    {
+      "id": "pakistan-2025-youtube-peca-bans",
+      "authors": [
+        "Government of Pakistan"
+      ],
+      "title": "July 2025 Court Order Blocking 27 Pakistani YouTube Journalists Under PECA",
+      "year": 2025,
+      "venue": "Federal Investigation Agency / Islamabad District and Sessions Court",
+      "type": "report",
+      "url": null,
+      "doi": null,
+      "priority": 2,
+      "areas": [
+        "pakistan-specific"
+      ],
+      "stance": "pro",
+      "method": "observational",
+      "clusters": [
+        "05-pakistan-landscape"
+      ],
+      "verified": false,
+      "note": "Single-entry record of the July 2025 order blocking 27 YouTube journalists (Toor, Jan, Noorani, Shakir, Pirzada, Akram, Imran Riaz Khan and others), naming the 'shadow ecosystem' that motivates including YouTube and exiled outlets in the corpus."
+    },
+    {
+      "id": "peca-2025-amendment",
+      "authors": [
+        "Government of Pakistan"
+      ],
+      "title": "Prevention of Electronic Crimes (Amendment) Act 2025",
+      "year": 2025,
+      "venue": "Gazette of Pakistan",
+      "type": "report",
+      "url": null,
+      "doi": null,
+      "priority": 2,
+      "areas": [
+        "pakistan-specific"
+      ],
+      "stance": "neutral",
+      "method": "observational",
+      "clusters": [
+        "05-pakistan-landscape"
+      ],
+      "verified": true,
+      "note": "Central recent legal development (assented 29 Jan 2025) criminalising content damaging the reputation of armed forces, the legal mechanism behind the team's risk-management plan and an explicit source of self-censorship pressure."
+    },
+    {
+      "id": "quelle-2025-claim-graphs-95-languages",
+      "authors": [
+        "Quelle, D.",
+        "Bovet, A.",
+        "et al."
+      ],
+      "title": "Building Claim Graphs Across Languages for Multilingual Fact-Check Retrieval",
+      "year": 2025,
+      "venue": "EPJ Data Science",
+      "type": "paper",
+      "url": null,
+      "doi": null,
+      "priority": 2,
+      "areas": [
+        "measurement-methods"
+      ],
+      "stance": "pro",
+      "method": "computational",
+      "clusters": [
+        "06-computational-methods"
+      ],
+      "verified": false,
+      "note": "Builds claim graphs across 95 languages using LaBSE embeddings; closest existing template for the team's cross-lingual Urdu-English claim-matching layer."
+    },
+    {
+      "id": "rehmat-freedom-network-reports",
+      "authors": [
+        "Rehmat, A."
+      ],
+      "title": "Freedom Network Annual Pakistan Press Freedom Reports (2005-2025)",
+      "year": 2025,
+      "venue": "Freedom Network Pakistan",
+      "type": "report",
+      "url": "https://www.fnpk.org/",
+      "doi": null,
+      "priority": 2,
+      "areas": [
+        "pakistan-specific"
+      ],
+      "stance": "pro",
+      "method": "observational",
+      "clusters": [
+        "05-pakistan-landscape"
+      ],
+      "verified": false,
+      "note": "Most consistent citable Pakistani press-freedom dataset spanning two decades, the longitudinal context anchor for the team's threat-environment framing."
+    },
+    {
+      "id": "rsf-2025-press-freedom-index",
+      "authors": [
+        "Reporters Without Borders"
+      ],
+      "title": "World Press Freedom Index 2025: Pakistan Ranked 158/180",
+      "year": 2025,
+      "venue": "Reporters Without Borders (RSF)",
+      "type": "report",
+      "url": "https://rsf.org/en/index",
+      "doi": null,
+      "priority": 2,
+      "areas": [
+        "pakistan-specific"
+      ],
+      "stance": "pro",
+      "method": "observational",
+      "clusters": [
+        "05-pakistan-landscape"
+      ],
+      "verified": true,
+      "note": "Pakistan's lowest-ever 158/180 ranking in 2025 (down from 152 in 2024) provides the international comparative anchor for the team's threat-environment context."
+    },
+    {
+      "id": "aljazeera-2024-pti-blackout",
+      "authors": [
+        "Al Jazeera"
+      ],
+      "title": "Pakistan's Press Tells Anchors Never to Name Imran Khan",
+      "year": 2024,
+      "venue": "Al Jazeera",
+      "type": "report",
+      "url": null,
+      "doi": null,
+      "priority": 2,
+      "areas": [
+        "pakistan-specific"
+      ],
+      "stance": "pro",
+      "method": "interviews",
+      "clusters": [
+        "05-pakistan-landscape"
+      ],
+      "verified": true,
+      "note": "Independent corroboration of the Intercept findings with multiple newsroom sources documenting on-air linguistic restrictions ('Qasim ke Abba'), supplying triangulating evidence for the PTI-coverage convergence pattern."
+    },
+    {
+      "id": "ash-gauthier-widmer-2024-relatio",
+      "authors": [
+        "Ash, E.",
+        "Gauthier, G.",
+        "Widmer, P."
+      ],
+      "title": "Relatio: Text Semantics Capture Political and Economic Narratives",
+      "year": 2024,
+      "venue": "Political Analysis",
+      "type": "paper",
+      "url": "https://www.cambridge.org/core/journals/political-analysis/article/relatio-text-semantics-capture-political-and-economic-narratives/",
+      "doi": "10.1017/pan.2023.18",
+      "priority": 2,
+      "areas": [
+        "measurement-methods",
+        "empirical-evidence"
+      ],
+      "stance": "pro",
+      "method": "computational",
+      "clusters": [
+        "06-computational-methods",
+        "09-named-methods-deepdive"
+      ],
+      "verified": true,
+      "note": "Relatio extracts subject-verb-object triples to capture political/economic narratives; methodological model for the LLM SVO + entity-pair aggregation route the team is recommended to take."
+    },
+    {
+      "id": "checkthat-2024-2025",
+      "authors": [
+        "Barrón-Cedeño, A.",
+        "Da San Martino, G.",
+        "Galassi, A.",
+        "Nakov, P."
+      ],
+      "title": "CheckThat! Lab on Check-Worthiness, Subjectivity, and Claim Retrieval",
+      "year": 2024,
+      "venue": "CLEF 2024/2025",
+      "type": "paper",
+      "url": "https://checkthat.gitlab.io/",
+      "doi": null,
+      "priority": 2,
+      "areas": [
+        "measurement-methods",
+        "empirical-evidence"
+      ],
+      "stance": "pro",
+      "method": "benchmark",
+      "clusters": [
+        "09-named-methods-deepdive"
+      ],
+      "verified": false,
+      "note": "Multilingual check-worthiness and claim-retrieval shared task spanning Arabic and Hindi-English; supplies XLM-R/DeBERTa baselines the team should benchmark Urdu pipelines against."
+    },
+    {
+      "id": "habes-aurat-march-coverage",
+      "authors": [
+        "Habes, M.",
+        "Khan, S.",
+        "et al."
+      ],
+      "title": "Coverage of Aurat March 2018-2024 in Pakistani English Newspapers",
+      "year": 2024,
+      "venue": "Women's Studies International Forum",
+      "type": "paper",
+      "url": null,
+      "doi": null,
+      "priority": 2,
+      "areas": [
+        "pakistan-specific",
+        "empirical-evidence"
+      ],
+      "stance": "pro",
+      "method": "content-analysis",
+      "clusters": [
+        "05-pakistan-landscape",
+        "04-cross-outlet-empirical"
+      ],
+      "verified": false,
+      "note": "Most relevant immediate Pakistani precedent (1,408 articles across 8 English newspapers) showing activism/demands dominance and differential framing; adding TV transcripts and Urdu press directly extends this paper."
+    },
+    {
+      "id": "kumar-thussu-2024-russia-ukraine-republic",
+      "authors": [
+        "Kumar, A.",
+        "Thussu, D. K."
+      ],
+      "title": "Primetime Narratives on Russia-Ukraine on India's Republic TV",
+      "year": 2024,
+      "venue": "Global Media and Communication",
+      "type": "paper",
+      "url": null,
+      "doi": null,
+      "priority": 2,
+      "areas": [
+        "empirical-evidence"
+      ],
+      "stance": "pro",
+      "method": "content-analysis",
+      "clusters": [
+        "08-non-western-comparables"
+      ],
+      "verified": false,
+      "note": "Indian primetime narrative analysis of an international conflict that provides a direct methodological neighbour for the team's TV-driven coverage analyses of the Pak-India May 2025 escalation."
+    },
+    {
+      "id": "le-mens-2024-positioning-political-texts-llm",
+      "authors": [
+        "Le Mens, G.",
+        "Gallego, A.",
+        "Pinkse, J.",
+        "et al."
+      ],
+      "title": "Positioning Political Texts with Large Language Models by Asking and Averaging",
+      "year": 2024,
+      "venue": "Political Analysis",
+      "type": "paper",
+      "url": "https://arxiv.org/abs/2311.16639",
+      "doi": null,
+      "priority": 2,
+      "areas": [
+        "measurement-methods"
+      ],
+      "stance": "pro",
+      "method": "computational",
+      "clusters": [
+        "06-computational-methods",
+        "09-named-methods-deepdive"
+      ],
+      "verified": false,
+      "note": "Ask-and-average LLM scaling matching expert coders; recommended by the synthesis as one of the most tractable methods for document-level ideological positioning of Pakistani outlets."
+    },
+    {
+      "id": "niemi-2024-reuters-institute-pakistan",
+      "authors": [
+        "Niemi, M."
+      ],
+      "title": "Reuters Institute Confirms Pakistan Military-Media Coordination Pattern",
+      "year": 2024,
+      "venue": "Reuters Institute for the Study of Journalism, University of Oxford",
+      "type": "report",
+      "url": null,
+      "doi": null,
+      "priority": 2,
+      "areas": [
+        "pakistan-specific"
+      ],
+      "stance": "pro",
+      "method": "interviews",
+      "clusters": [
+        "05-pakistan-landscape"
+      ],
+      "verified": false,
+      "note": "Oxford Reuters Institute confirmation of the army-newsroom coordination pattern reported by The Intercept, strengthening the documentary chain that supports the team's predicted convergence on PTI and military topics."
+    },
+    {
+      "id": "tang-2024-minicheck",
+      "authors": [
+        "Tang, L.",
+        "Laban, P.",
+        "Durrett, G."
+      ],
+      "title": "MiniCheck: Efficient Fact-Checking of LLMs on Grounding Documents",
+      "year": 2024,
+      "venue": "EMNLP 2024",
+      "type": "paper",
+      "url": "https://aclanthology.org/2024.emnlp-main.499/",
+      "doi": null,
+      "priority": 2,
+      "areas": [
+        "measurement-methods"
+      ],
+      "stance": "pro",
+      "method": "computational",
+      "clusters": [
+        "06-computational-methods",
+        "09-named-methods-deepdive"
+      ],
+      "verified": true,
+      "note": "Small fine-tuned entailment model that is markedly cheaper than GPT-4 for Stage 2 verification within claim clusters in the team's cross-source Pakistani claim-coverage matrix."
+    },
+    {
+      "id": "araujo-2023-bolsonaro-tv",
+      "authors": [
+        "Araújo, B.",
+        "Lago, L.",
+        "Magalhães, P. C."
+      ],
+      "title": "Jair Bolsonaro's Populist Communication on Brazilian Television",
+      "year": 2023,
+      "venue": "International Journal of Communication",
+      "type": "paper",
+      "url": null,
+      "doi": null,
+      "priority": 2,
+      "areas": [
+        "empirical-evidence"
+      ],
+      "stance": "pro",
+      "method": "content-analysis",
+      "clusters": [
+        "08-non-western-comparables",
+        "04-cross-outlet-empirical"
+      ],
+      "verified": false,
+      "note": "Two-channel paired TV-vs-TV comparison framework directly applicable to a Geo-versus-ARY or Dawn-News-versus-Bol prime-time design."
+    },
+    {
+      "id": "desouza-2023-bolsonaro-press",
+      "authors": [
+        "de Souza, J.",
+        "Marques, F. P. J."
+      ],
+      "title": "Brazilian Mainstream Press and Bolsonaro: Coverage of Controversies and Scandals",
+      "year": 2023,
+      "venue": "Journalism / Brazilian Journalism Research",
+      "type": "paper",
+      "url": null,
+      "doi": null,
+      "priority": 2,
+      "areas": [
+        "empirical-evidence"
+      ],
+      "stance": "pro",
+      "method": "content-analysis",
+      "clusters": [
+        "08-non-western-comparables",
+        "04-cross-outlet-empirical"
+      ],
+      "verified": false,
+      "note": "Closest non-Western parallel to mainstream-press treatment of a populist whom the establishment opposes; critical-incidents method is borrowable for Pakistani press treatment of Imran Khan post-2022."
+    },
+    {
+      "id": "gilardi-2023-pnas-llm-classification",
+      "authors": [
+        "Gilardi, F.",
+        "Alizadeh, M.",
+        "Kubli, M."
+      ],
+      "title": "ChatGPT Outperforms Crowd Workers for Text-Annotation Tasks",
+      "year": 2023,
+      "venue": "PNAS",
+      "type": "paper",
+      "url": "https://www.pnas.org/doi/10.1073/pnas.2305016120",
+      "doi": "10.1073/pnas.2305016120",
+      "priority": 2,
+      "areas": [
+        "measurement-methods"
+      ],
+      "stance": "pro",
+      "method": "computational",
+      "clusters": [
+        "09-named-methods-deepdive"
+      ],
+      "verified": true,
+      "note": "PNAS precedent that LLMs match or beat crowdworker annotation on framing/stance tasks; primary defense the team can cite for using GPT-4o as a frame classifier on Urdu."
+    },
+    {
+      "id": "gonzalez-bailon-2023-asymmetric-ideological-segregation",
+      "authors": [
+        "González-Bailón, S.",
+        "Lazer, D.",
+        "Barberá, P.",
+        "Zhang, M.",
+        "Allcott, H.",
+        "Brown, T.",
+        "Crespo-Tenorio, A.",
+        "Freelon, D.",
+        "Gentzkow, M.",
+        "Guess, A. M.",
+        "Iyengar, S.",
+        "Kim, Y. M.",
+        "Malhotra, N.",
+        "Moehler, D.",
+        "Nyhan, B.",
+        "Pan, J.",
+        "Rivera, C. V.",
+        "Settle, J.",
+        "Thorson, E.",
+        "Tromble, R.",
+        "Wilkins, A.",
+        "Wojcieszak, M.",
+        "Beauchamp, N.",
+        "Hughes, A. G.",
+        "Pickett, J. T.",
+        "Olabisi-Ojuolape, B.",
+        "Tucker, J. A."
+      ],
+      "title": "Asymmetric Ideological Segregation in Exposure to Political News on Facebook",
+      "year": 2023,
+      "venue": "Science",
+      "type": "paper",
+      "url": "https://www.science.org/doi/10.1126/science.ade7138",
+      "doi": "10.1126/science.ade7138",
+      "priority": 2,
+      "areas": [
+        "conceptual-foundations",
+        "empirical-evidence"
+      ],
+      "stance": "pro",
+      "method": "observational",
+      "clusters": [
+        "01-fragmentation-concept",
+        "04-cross-outlet-empirical"
+      ],
+      "verified": true,
+      "note": "Methodologically rigorous separation of exposure from content fragmentation; provides the conceptual template for keeping the team's claims about content distinct from any audience claims."
+    },
+    {
+      "id": "hanley-durumeric-2023-specious-sites",
+      "authors": [
+        "Hanley, H. W. A.",
+        "Durumeric, Z."
+      ],
+      "title": "Specious Sites: Tracking the Spread and Sway of Spurious News Stories at Scale",
+      "year": 2023,
+      "venue": "arXiv",
+      "type": "preprint",
+      "url": "https://arxiv.org/abs/2308.02068",
+      "doi": null,
+      "priority": 2,
+      "areas": [
+        "empirical-evidence",
+        "measurement-methods"
+      ],
+      "stance": "pro",
+      "method": "computational",
+      "clusters": [
+        "09-named-methods-deepdive",
+        "04-cross-outlet-empirical"
+      ],
+      "verified": true,
+      "note": "Demonstrates LaBSE → HDBSCAN claim clustering at web scale on misinformation; provides an end-to-end implementation template the team can adapt to Pakistani news."
+    },
+    {
+      "id": "kumar-2023-primetime-nationalism",
+      "authors": [
+        "Kumar, A."
+      ],
+      "title": "Primetime Nationalism: Republic TV and Times Now During Indo-China Border Conflict",
+      "year": 2023,
+      "venue": "Journalism Studies",
+      "type": "paper",
+      "url": null,
+      "doi": null,
+      "priority": 2,
+      "areas": [
+        "empirical-evidence"
+      ],
+      "stance": "pro",
+      "method": "content-analysis",
+      "clusters": [
+        "08-non-western-comparables",
+        "04-cross-outlet-empirical"
+      ],
+      "verified": false,
+      "note": "Direct Indian comparator showing primetime TV nationalism on Republic and Times Now, the closest parallel to studying ARY/Geo/Bol prime-time during Pakistani security crises."
+    },
+    {
+      "id": "min-2023-factscore",
+      "authors": [
+        "Min, S.",
+        "Krishna, K.",
+        "Lyu, X.",
+        "Lewis, M.",
+        "Yih, W.",
+        "Koh, P. W.",
+        "Iyyer, M.",
+        "Zettlemoyer, L.",
+        "Hajishirzi, H."
+      ],
+      "title": "FActScore: Fine-grained Atomic Evaluation of Factual Precision in Long Form Text Generation",
+      "year": 2023,
+      "venue": "EMNLP 2023",
+      "type": "paper",
+      "url": "https://aclanthology.org/2023.emnlp-main.741/",
+      "doi": "10.18653/v1/2023.emnlp-main.741",
+      "priority": 2,
+      "areas": [
+        "measurement-methods"
+      ],
+      "stance": "pro",
+      "method": "computational",
+      "clusters": [
+        "06-computational-methods",
+        "09-named-methods-deepdive"
+      ],
+      "verified": true,
+      "note": "Atomic-fact decomposition pipeline portable to the team's claim-extraction stage; cite alongside the Wanner critique to acknowledge prompt sensitivity."
+    },
+    {
+      "id": "norambuena-2023-event-narrative-survey",
+      "authors": [
+        "Norambuena, B.",
+        "Mitra, T.",
+        "Glaisher, A."
+      ],
+      "title": "A Survey on Event-based News Narrative Extraction",
+      "year": 2023,
+      "venue": "ACM Computing Surveys",
+      "type": "review",
+      "url": "https://dl.acm.org/doi/10.1145/3584741",
+      "doi": "10.1145/3584741",
+      "priority": 2,
+      "areas": [
+        "measurement-methods",
+        "conceptual-foundations"
+      ],
+      "stance": "neutral",
+      "method": "review",
+      "clusters": [
+        "09-named-methods-deepdive"
+      ],
+      "verified": true,
+      "note": "Survey of event-based narrative extraction methods that anchors the team's choice among classical pipelines, AMR-based extraction, and LLM-prompted SVO tuples."
+    },
+    {
+      "id": "semeval-2023-task3",
+      "authors": [
+        "Piskorski, J.",
+        "Stefanovitch, N.",
+        "Da San Martino, G.",
+        "Nakov, P."
+      ],
+      "title": "SemEval-2023 Task 3: Detecting the Category, the Framing, and the Persuasion Techniques in Online News in a Multi-lingual Setup",
+      "year": 2023,
+      "venue": "SemEval 2023",
+      "type": "paper",
+      "url": "https://aclanthology.org/2023.semeval-1.317/",
+      "doi": null,
+      "priority": 2,
+      "areas": [
+        "measurement-methods",
+        "empirical-evidence"
+      ],
+      "stance": "pro",
+      "method": "benchmark",
+      "clusters": [
+        "09-named-methods-deepdive"
+      ],
+      "verified": true,
+      "note": "Multilingual framing detection task across 6 languages with XLM-R baselines; provides the multilingual frame-classification benchmark the team will calibrate Urdu pipelines against."
+    },
+    {
+      "id": "whisper-large-v3-asr",
+      "authors": [
+        "Radford, A.",
+        "Kim, J. W.",
+        "Xu, T.",
+        "Brockman, G.",
+        "McLeavey, C.",
+        "Sutskever, I."
+      ],
+      "title": "Robust Speech Recognition via Large-Scale Weak Supervision (Whisper)",
+      "year": 2023,
+      "venue": "ICML",
+      "type": "paper",
+      "url": "https://arxiv.org/abs/2212.04356",
+      "doi": null,
+      "priority": 2,
+      "areas": [
+        "measurement-methods",
+        "pakistan-specific"
+      ],
+      "stance": "pro",
+      "method": "computational",
+      "clusters": [
+        "06-computational-methods",
+        "05-pakistan-landscape"
+      ],
+      "verified": true,
+      "note": "Whisper large-v3 ASR achieves 16-25% WER on broadcast Urdu; the team's primary speech-to-text infrastructure for TV transcripts with planned human-in-the-loop correction."
+    },
+    {
+      "id": "grootendorst-2022-bertopic",
+      "authors": [
+        "Grootendorst, M."
+      ],
+      "title": "BERTopic: Neural Topic Modeling with a Class-Based TF-IDF Procedure",
+      "year": 2022,
+      "venue": "arXiv",
+      "type": "preprint",
+      "url": "https://arxiv.org/abs/2203.05794",
+      "doi": null,
+      "priority": 2,
+      "areas": [
+        "measurement-methods"
+      ],
+      "stance": "pro",
+      "method": "topic-model",
+      "clusters": [
+        "06-computational-methods"
+      ],
+      "verified": true,
+      "note": "BERTopic combines sentence-transformer embeddings with UMAP+HDBSCAN+c-TF-IDF; the synthesis recommends multilingual BERTopic as the lowest-risk highest-interpretability method for the team."
+    },
+    {
+      "id": "labse-multilingual-sentence-embeddings",
+      "authors": [
+        "Feng, F.",
+        "Yang, Y.",
+        "Cer, D.",
+        "Arivazhagan, N.",
+        "Wang, W."
+      ],
+      "title": "Language-Agnostic BERT Sentence Embedding (LaBSE)",
+      "year": 2022,
+      "venue": "ACL",
+      "type": "paper",
+      "url": "https://aclanthology.org/2022.acl-long.62/",
+      "doi": "10.18653/v1/2022.acl-long.62",
+      "priority": 2,
+      "areas": [
+        "measurement-methods"
+      ],
+      "stance": "pro",
+      "method": "computational",
+      "clusters": [
+        "06-computational-methods"
+      ],
+      "verified": true,
+      "note": "Language-agnostic multilingual sentence embeddings the synthesis recommends as the backbone of the team's claim-matching pipeline alongside HDBSCAN and LLM verification."
+    },
+    {
+      "id": "liu-2022-kunming-convergence",
+      "authors": [
+        "Liu, Y.",
+        "Zhang, W."
+      ],
+      "title": "Convergence or Divergence? Newsworthiness Analysis of Coverage of the Kunming Terrorist Attack",
+      "year": 2022,
+      "venue": "Discourse & Communication",
+      "type": "paper",
+      "url": null,
+      "doi": null,
+      "priority": 2,
+      "areas": [
+        "empirical-evidence",
+        "measurement-methods"
+      ],
+      "stance": "mixed",
+      "method": "content-analysis",
+      "clusters": [
+        "08-non-western-comparables",
+        "09-named-methods-deepdive"
+      ],
+      "verified": false,
+      "note": "275-article single-event Chinese cross-outlet study introducing newsworthiness decomposition (Eliteness, Personalization, Positivity/Negativity, Superlatives) that the team can pre-register as predicting convergence on selection but divergence on tone."
+    },
+    {
+      "id": "mohaisen-says-who-tv-news",
+      "authors": [
+        "Mohaisen, D."
+      ],
+      "title": "Says Who? Automatic Text-Based Content Analysis of Television News",
+      "year": 2022,
+      "venue": "ACM/Conference (TV news content analysis)",
+      "type": "paper",
+      "url": null,
+      "doi": null,
+      "priority": 2,
+      "areas": [
+        "measurement-methods",
+        "empirical-evidence"
+      ],
+      "stance": "pro",
+      "method": "computational",
+      "clusters": [
+        "06-computational-methods",
+        "04-cross-outlet-empirical"
+      ],
+      "verified": false,
+      "note": "Closest published methodological template for processing closed-caption TV transcripts at scale across many channels, directly relevant to Pakistani TV pipeline design."
+    },
+    {
+      "id": "rumi-2022-pide-political-economy",
+      "authors": [
+        "Rumi, R."
+      ],
+      "title": "State Control, Corporate Interests, and Media Independence in Pakistan",
+      "year": 2022,
+      "venue": "Pakistan Institute of Development Economics (PIDE)",
+      "type": "report",
+      "url": "https://pide.org.pk/",
+      "doi": null,
+      "priority": 2,
+      "areas": [
+        "pakistan-specific",
+        "conceptual-foundations"
+      ],
+      "stance": "pro",
+      "method": "essay",
+      "clusters": [
+        "05-pakistan-landscape"
+      ],
+      "verified": false,
+      "note": "Critical political-economy treatment of Pakistani media independence by a senior diaspora analyst, the conceptual anchor for the team's ownership-versus-state-pressure decomposition."
+    },
+    {
+      "id": "du-2021-method-disagreement",
+      "authors": [
+        "Du, Y.",
+        "Fang, Q.",
+        "Nguyen, D."
+      ],
+      "title": "Assessing the Reliability of Word Embedding Gender Bias Measures",
+      "year": 2021,
+      "venue": "EMNLP 2021",
+      "type": "paper",
+      "url": "https://aclanthology.org/2021.emnlp-main.785/",
+      "doi": null,
+      "priority": 2,
+      "areas": [
+        "methods-critiques"
+      ],
+      "stance": "anti",
+      "method": "review",
+      "clusters": [
+        "07-method-critiques",
+        "09-named-methods-deepdive"
+      ],
+      "verified": true,
+      "note": "Shows static-embedding bias methods disagree at the document level; argues for triangulated LLM connotation measures over single embedding pipelines in the Pakistani case."
+    },
+    {
+      "id": "goldfarb-tarrant-2021-intrinsic-bias-downstream",
+      "authors": [
+        "Goldfarb-Tarrant, S.",
+        "Marchant, R.",
+        "Sanchez, R. M.",
+        "Pandya, M.",
+        "Lopez, A.",
+        "Munoz Sanchez, R."
+      ],
+      "title": "Intrinsic Bias Metrics Do Not Correlate with Application Bias",
+      "year": 2021,
+      "venue": "ACL 2021",
+      "type": "paper",
+      "url": "https://aclanthology.org/2021.acl-long.150/",
+      "doi": "10.18653/v1/2021.acl-long.150",
+      "priority": 2,
+      "areas": [
+        "methods-critiques",
+        "measurement-methods"
+      ],
+      "stance": "anti",
+      "method": "computational",
+      "clusters": [
+        "07-method-critiques",
+        "09-named-methods-deepdive"
+      ],
+      "verified": true,
+      "note": "Shows intrinsic embedding-bias scores fail to predict downstream behavior; further evidence the team should not lead with static-embedding entity bias as its measurement."
+    },
+    {
+      "id": "mendelsohn-2021-immigration-tweets-frames",
+      "authors": [
+        "Mendelsohn, J.",
+        "Budak, C.",
+        "Jurgens, D."
+      ],
+      "title": "Modeling Framing in Immigration Discourse on Social Media",
+      "year": 2021,
+      "venue": "NAACL 2021",
+      "type": "paper",
+      "url": "https://aclanthology.org/2021.naacl-main.179/",
+      "doi": "10.18653/v1/2021.naacl-main.179",
+      "priority": 2,
+      "areas": [
+        "measurement-methods",
+        "empirical-evidence"
+      ],
+      "stance": "pro",
+      "method": "computational",
+      "clusters": [
+        "06-computational-methods",
+        "09-named-methods-deepdive"
+      ],
+      "verified": true,
+      "note": "Issue-specific framing analysis on US immigration that demonstrates when topic-specific frames beat issue-general ones; informs the team's decision to author Pakistan-specific frames."
+    },
+    {
+      "id": "allaway-mckeown-2020-vast",
+      "authors": [
+        "Allaway, E.",
+        "McKeown, K."
+      ],
+      "title": "Zero-Shot Stance Detection: A Dataset and Model using Generalized Topic Representations",
+      "year": 2020,
+      "venue": "EMNLP 2020",
+      "type": "paper",
+      "url": "https://aclanthology.org/2020.emnlp-main.717/",
+      "doi": "10.18653/v1/2020.emnlp-main.717",
+      "priority": 2,
+      "areas": [
+        "measurement-methods"
+      ],
+      "stance": "pro",
+      "method": "benchmark",
+      "clusters": [
+        "06-computational-methods",
+        "09-named-methods-deepdive"
+      ],
+      "verified": true,
+      "note": "VAST zero-shot stance benchmark the TATA paper is evaluated on; cited as the rotating-topic generalization standard the team needs for evolving Pakistani news targets."
+    },
+    {
+      "id": "rheault-cochrane-2020-party-embeddings",
+      "authors": [
+        "Rheault, L.",
+        "Cochrane, C."
+      ],
+      "title": "Word Embeddings for the Analysis of Ideological Placement in Parliamentary Corpora",
+      "year": 2020,
+      "venue": "Political Analysis",
+      "type": "paper",
+      "url": "https://www.cambridge.org/core/journals/political-analysis/article/word-embeddings-for-the-analysis-of-ideological-placement-in-parliamentary-corpora/",
+      "doi": "10.1017/pan.2019.26",
+      "priority": 2,
+      "areas": [
+        "measurement-methods"
+      ],
+      "stance": "pro",
+      "method": "embedding",
+      "clusters": [
+        "09-named-methods-deepdive"
+      ],
+      "verified": true,
+      "note": "Party-indicator augmented word2vec model that lets parties be projected onto semantic axes — the most likely referent of the draft's 'embed stances' phrase, named explicitly for disambiguation."
+    },
+    {
+      "id": "shaar-2020-previously-fact-checked-claims",
+      "authors": [
+        "Shaar, S.",
+        "Babulkov, N.",
+        "Da San Martino, G.",
+        "Nakov, P."
+      ],
+      "title": "That is a Known Lie: Detecting Previously Fact-Checked Claims",
+      "year": 2020,
+      "venue": "ACL 2020",
+      "type": "paper",
+      "url": "https://aclanthology.org/2020.acl-main.332/",
+      "doi": "10.18653/v1/2020.acl-main.332",
+      "priority": 2,
+      "areas": [
+        "measurement-methods"
+      ],
+      "stance": "pro",
+      "method": "computational",
+      "clusters": [
+        "06-computational-methods",
+        "09-named-methods-deepdive"
+      ],
+      "verified": true,
+      "note": "Previously-fact-checked claim retrieval methods directly inform how the team will match Pakistani claims to prior fact-check records across outlets."
+    },
+    {
+      "id": "tangherlini-2020-actant-graphs-pizzagate",
+      "authors": [
+        "Tangherlini, T. R.",
+        "Shahsavari, S.",
+        "Shahbazi, B.",
+        "Ebrahimzadeh, E.",
+        "Roychowdhury, V."
+      ],
+      "title": "An Automated Pipeline for the Discovery of Conspiracy and Conspiracy Theory Narrative Frameworks: Bridgegate, Pizzagate and Storytelling on the Web",
+      "year": 2020,
+      "venue": "PLOS ONE",
+      "type": "paper",
+      "url": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0233879",
+      "doi": "10.1371/journal.pone.0233879",
+      "priority": 2,
+      "areas": [
+        "measurement-methods",
+        "empirical-evidence"
+      ],
+      "stance": "pro",
+      "method": "network-analysis",
+      "clusters": [
+        "06-computational-methods",
+        "09-named-methods-deepdive"
+      ],
+      "verified": true,
+      "note": "Operational narrative-graph pipeline (NER+SRL → coreference → relation extraction) the team would emulate if pursuing the full Bearman-Stovel route on Pakistani news."
+    },
+    {
+      "id": "xlm-r-conneau-2020",
+      "authors": [
+        "Conneau, A.",
+        "Khandelwal, K.",
+        "Goyal, N.",
+        "Chaudhary, V.",
+        "Wenzek, G.",
+        "Guzmán, F.",
+        "Grave, E.",
+        "Ott, M.",
+        "Zettlemoyer, L.",
+        "Stoyanov, V."
+      ],
+      "title": "Unsupervised Cross-Lingual Representation Learning at Scale",
+      "year": 2020,
+      "venue": "ACL",
+      "type": "paper",
+      "url": "https://aclanthology.org/2020.acl-main.747/",
+      "doi": "10.18653/v1/2020.acl-main.747",
+      "priority": 2,
+      "areas": [
+        "measurement-methods"
+      ],
+      "stance": "pro",
+      "method": "computational",
+      "clusters": [
+        "06-computational-methods"
+      ],
+      "verified": true,
+      "note": "XLM-R contextual multilingual encoder with strong Urdu coverage; the team's recommended backbone for stance and frame classifiers."
+    },
+    {
+      "id": "aasia-bibi-blasphemy-headlines",
+      "authors": [
+        "Anonymous"
+      ],
+      "title": "Headline Treatment of the Aasia Bibi Blasphemy Case in Dawn, The Nation, Daily Jang, and Daily Ummat",
+      "year": 2019,
+      "venue": "Pakistani journalism / discourse-analysis study",
+      "type": "paper",
+      "url": null,
+      "doi": null,
+      "priority": 2,
+      "areas": [
+        "pakistan-specific",
+        "empirical-evidence"
+      ],
+      "stance": "pro",
+      "method": "content-analysis",
+      "clusters": [
+        "05-pakistan-landscape",
+        "04-cross-outlet-empirical"
+      ],
+      "verified": false,
+      "note": "Direct precedent for a religious-political case study where Dawn/Jang were more objective and The Nation/Ummat used inflammatory language; the English-versus-Urdu cross-cut matches the team's design for the Ahmadi case."
+    },
+    {
+      "id": "bruns-2019-filter-bubbles-real",
+      "authors": [
+        "Bruns, A."
+      ],
+      "title": "Are Filter Bubbles Real?",
+      "year": 2019,
+      "venue": "Polity",
+      "type": "book",
+      "url": "https://politybooks.com/bookdetail/?isbn=9781509536443",
+      "doi": null,
+      "priority": 2,
+      "areas": [
+        "conceptual-foundations",
+        "methods-critiques"
+      ],
+      "stance": "anti",
+      "method": "review",
+      "clusters": [
+        "01-fragmentation-concept",
+        "07-method-critiques"
+      ],
+      "verified": true,
+      "note": "Systematic critique required reading before the team invokes any 'filter bubble' framing; supports the synthesis's insistence on terminological discipline."
+    },
+    {
+      "id": "demszky-2019-conflict-on-social-media",
+      "authors": [
+        "Demszky, D.",
+        "Garg, N.",
+        "Voigt, R.",
+        "Zou, J.",
+        "Shapiro, J.",
+        "Gentzkow, M.",
+        "Jurafsky, D."
+      ],
+      "title": "Analyzing Polarization in Social Media: Method and Application to Tweets on 21 Mass Shootings",
+      "year": 2019,
+      "venue": "NAACL",
+      "type": "paper",
+      "url": "https://aclanthology.org/N19-1304/",
+      "doi": "10.18653/v1/N19-1304",
+      "priority": 2,
+      "areas": [
+        "measurement-methods",
+        "empirical-evidence"
+      ],
+      "stance": "pro",
+      "method": "computational",
+      "clusters": [
+        "06-computational-methods",
+        "04-cross-outlet-empirical"
+      ],
+      "verified": true,
+      "note": "Multi-dimensional polarization framework (topic choice, framing, affect, illocutionary force) with leave-out finite-sample correction; methodological template directly portable to the team's Pakistani measurement plan."
+    },
+    {
+      "id": "gentzkow-shapiro-taddy-2019-partisan-language",
+      "authors": [
+        "Gentzkow, M.",
+        "Shapiro, J. M.",
+        "Taddy, M."
+      ],
+      "title": "Measuring Group Differences in High-Dimensional Choices: Method and Application to Congressional Speech",
+      "year": 2019,
+      "venue": "Econometrica",
+      "type": "paper",
+      "url": "https://onlinelibrary.wiley.com/doi/10.3982/ECTA16566",
+      "doi": "10.3982/ECTA16566",
+      "priority": 2,
+      "areas": [
+        "measurement-methods"
+      ],
+      "stance": "pro",
+      "method": "model",
+      "clusters": [
+        "09-named-methods-deepdive"
+      ],
+      "verified": true,
+      "note": "Bias-corrected multinomial inverse regression on bigrams; the standard method for measuring partisan language divergence the team should apply to Pakistani outlets."
+    },
+    {
+      "id": "kozlowski-2019-geometry-of-culture",
+      "authors": [
+        "Kozlowski, A. C.",
+        "Taddy, M.",
+        "Evans, J. A."
+      ],
+      "title": "The Geometry of Culture: Analyzing the Meanings of Class through Word Embeddings",
+      "year": 2019,
+      "venue": "American Sociological Review",
+      "type": "paper",
+      "url": "https://journals.sagepub.com/doi/10.1177/0003122419877135",
+      "doi": "10.1177/0003122419877135",
+      "priority": 2,
+      "areas": [
+        "measurement-methods",
+        "conceptual-foundations"
+      ],
+      "stance": "pro",
+      "method": "embedding",
+      "clusters": [
+        "09-named-methods-deepdive"
+      ],
+      "verified": true,
+      "note": "Antonym-induced axis projection (Geometry of Culture) — the methodological grandparent of the team's planned entity-axis scoring, cited for lineage then critiqued via Antoniak & Mimno."
+    },
+    {
+      "id": "mourao-protesting-paradigm",
+      "authors": [
+        "Mourão, R. R.",
+        "Brown, D. K.",
+        "Harlow, S."
+      ],
+      "title": "Protesting the Paradigm: A Comparative Study of News Coverage of Protests in Brazil, China, and India",
+      "year": 2019,
+      "venue": "International Journal of Press/Politics",
+      "type": "paper",
+      "url": null,
+      "doi": null,
+      "priority": 2,
+      "areas": [
+        "empirical-evidence",
+        "methods-critiques"
+      ],
+      "stance": "anti",
+      "method": "content-analysis",
+      "clusters": [
+        "08-non-western-comparables",
+        "04-cross-outlet-empirical"
+      ],
+      "verified": false,
+      "note": "Comparative protest-paradigm test showing US-derived coding schemes do not transfer cleanly, a methodological warning for the Pakistani team importing Boydstun-style frames and supporting custom Pakistan-specific codebook authoring."
+    },
+    {
+      "id": "ramss-pulwama-balakot-war-peace",
+      "authors": [
+        "RAMSS authors",
+        "et al."
+      ],
+      "title": "War/Peace Journalism Analysis of Pulwama-Balakot Coverage in Dawn and The Hindu",
+      "year": 2019,
+      "venue": "South Asian Journal of Communication / RAMSS series",
+      "type": "paper",
+      "url": null,
+      "doi": null,
+      "priority": 2,
+      "areas": [
+        "pakistan-specific",
+        "empirical-evidence",
+        "measurement-methods"
+      ],
+      "stance": "pro",
+      "method": "content-analysis",
+      "clusters": [
+        "05-pakistan-landscape",
+        "09-named-methods-deepdive"
+      ],
+      "verified": false,
+      "note": "Galtung war/peace coded 162 articles across Dawn and The Hindu and is adoptable as-is for the Pak-India May 2025 case, saving codebook-development time."
+    },
+    {
+      "id": "field-2018-framing-agenda-russian-news",
+      "authors": [
+        "Field, A.",
+        "Kliger, D.",
+        "Wintner, S.",
+        "Pan, J.",
+        "Jurafsky, D.",
+        "Tsvetkov, Y."
+      ],
+      "title": "Framing and Agenda-Setting in Russian News: A Computational Analysis of Intricate Political Strategies",
+      "year": 2018,
+      "venue": "Proceedings of EMNLP 2018",
+      "type": "paper",
+      "url": "https://aclanthology.org/D18-1393/",
+      "doi": "10.18653/v1/D18-1393",
+      "priority": 2,
+      "areas": [
+        "empirical-evidence",
+        "measurement-methods"
+      ],
+      "stance": "pro",
+      "method": "computational",
+      "clusters": [
+        "08-non-western-comparables",
+        "04-cross-outlet-empirical",
+        "06-computational-methods"
+      ],
+      "verified": true,
+      "note": "Strongest non-English computational framing paper; its strategic-timing/distraction hypothesis offers a label-free analytical strategy directly applicable to Pakistani military-civilian coverage dynamics."
+    },
+    {
+      "id": "garg-2018-100-years-stereotypes",
+      "authors": [
+        "Garg, N.",
+        "Schiebinger, L.",
+        "Jurafsky, D.",
+        "Zou, J."
+      ],
+      "title": "Word Embeddings Quantify 100 Years of Gender and Ethnic Stereotypes",
+      "year": 2018,
+      "venue": "PNAS",
+      "type": "paper",
+      "url": "https://www.pnas.org/doi/10.1073/pnas.1720347115",
+      "doi": "10.1073/pnas.1720347115",
+      "priority": 2,
+      "areas": [
+        "measurement-methods",
+        "empirical-evidence"
+      ],
+      "stance": "pro",
+      "method": "embedding",
+      "clusters": [
+        "09-named-methods-deepdive"
+      ],
+      "verified": true,
+      "note": "Influential 100-year stereotype quantification via embeddings; cited as lineage in the team's bias-measurement design but the recommended replacement is LLM connotation scoring."
+    },
+    {
+      "id": "caliskan-2017-weat",
+      "authors": [
+        "Caliskan, A.",
+        "Bryson, J. J.",
+        "Narayanan, A."
+      ],
+      "title": "Semantics Derived Automatically from Language Corpora Contain Human-Like Biases",
+      "year": 2017,
+      "venue": "Science",
+      "type": "paper",
+      "url": "https://www.science.org/doi/10.1126/science.aal4230",
+      "doi": "10.1126/science.aal4230",
+      "priority": 2,
+      "areas": [
+        "measurement-methods",
+        "conceptual-foundations"
+      ],
+      "stance": "pro",
+      "method": "embedding",
+      "clusters": [
+        "09-named-methods-deepdive",
+        "06-computational-methods"
+      ],
+      "verified": true,
+      "note": "Canonical WEAT method that the team cites as lineage for entity-bias measurement, but the synthesis recommends replacing with LLM-based connotation scoring."
+    },
+    {
+      "id": "faris-2017-berkman-partisanship",
+      "authors": [
+        "Faris, R.",
+        "Roberts, H.",
+        "Etling, B.",
+        "Bourassa, N.",
+        "Zuckerman, E.",
+        "Benkler, Y."
+      ],
+      "title": "Partisanship, Propaganda, and Disinformation: Online Media and the 2016 U.S. Presidential Election",
+      "year": 2017,
+      "venue": "Berkman Klein Center for Internet & Society Research Publication",
+      "type": "report",
+      "url": "https://cyber.harvard.edu/publications/2017/08/mediacloud",
+      "doi": null,
+      "priority": 2,
+      "areas": [
+        "empirical-evidence",
+        "conceptual-foundations"
+      ],
+      "stance": "pro",
+      "method": "network-analysis",
+      "clusters": [
+        "04-cross-outlet-empirical"
+      ],
+      "verified": true,
+      "note": "Berkman Klein link/sharing analysis using Media Cloud establishing the asymmetric polarization template that the Pakistani study can adapt to map outlet ecosystems."
+    },
+    {
+      "id": "hassan-2017-claimbuster-toward-automated-fact-checking",
+      "authors": [
+        "Hassan, N.",
+        "Arslan, F.",
+        "Li, C.",
+        "Tremayne, M."
+      ],
+      "title": "Toward Automated Fact-Checking: Detecting Check-Worthy Factual Claims by ClaimBuster",
+      "year": 2017,
+      "venue": "KDD 2017",
+      "type": "paper",
+      "url": "https://dl.acm.org/doi/10.1145/3097983.3098131",
+      "doi": "10.1145/3097983.3098131",
+      "priority": 2,
+      "areas": [
+        "measurement-methods"
+      ],
+      "stance": "mixed",
+      "method": "computational",
+      "clusters": [
+        "06-computational-methods",
+        "09-named-methods-deepdive"
+      ],
+      "verified": true,
+      "note": "Canonical ClaimBuster check-worthiness classifier the team cites for lineage but should not deploy directly — US-journalist labels do not port to Pakistani discourse without re-annotation."
+    },
+    {
+      "id": "sap-2017-power-agency-connotation-frames",
+      "authors": [
+        "Sap, M.",
+        "Prasettio, M. C.",
+        "Holtzman, A.",
+        "Rashkin, H.",
+        "Choi, Y."
+      ],
+      "title": "Connotation Frames of Power and Agency in Modern Films",
+      "year": 2017,
+      "venue": "EMNLP 2017",
+      "type": "paper",
+      "url": "https://aclanthology.org/D17-1247/",
+      "doi": "10.18653/v1/D17-1247",
+      "priority": 2,
+      "areas": [
+        "measurement-methods",
+        "conceptual-foundations"
+      ],
+      "stance": "pro",
+      "method": "computational",
+      "clusters": [
+        "06-computational-methods",
+        "09-named-methods-deepdive"
+      ],
+      "verified": true,
+      "note": "Verb-level power and agency connotation frames that capture who acts on whom; tractable narrative signal for measuring how Pakistani outlets construct entity agency differently."
+    },
+    {
+      "id": "vargo-guo-2017-networks-intermedia-agenda-setting",
+      "authors": [
+        "Vargo, C. J.",
+        "Guo, L."
+      ],
+      "title": "Networks, Big Data, and Intermedia Agenda Setting: An Analysis of Traditional, Partisan, and Emerging Online U.S. News",
+      "year": 2017,
+      "venue": "Journalism & Mass Communication Quarterly 94(4)",
+      "type": "paper",
+      "url": "https://journals.sagepub.com/doi/10.1177/1077699016679976",
+      "doi": "10.1177/1077699016679976",
+      "priority": 2,
+      "areas": [
+        "measurement-methods",
+        "empirical-evidence"
+      ],
+      "stance": "pro",
+      "method": "network-analysis",
+      "clusters": [
+        "04-cross-outlet-empirical",
+        "06-computational-methods"
+      ],
+      "verified": true,
+      "note": "Semantic-network intermedia agenda-setting on millions of US articles, finding partisan outlets lead the agenda; methodological template for the team's outlet-level lead-follow analysis."
+    },
+    {
+      "id": "hamilton-2016-diachronic-embeddings",
+      "authors": [
+        "Hamilton, W. L.",
+        "Leskovec, J.",
+        "Jurafsky, D."
+      ],
+      "title": "Diachronic Word Embeddings Reveal Statistical Laws of Semantic Change",
+      "year": 2016,
+      "venue": "ACL 2016",
+      "type": "paper",
+      "url": "https://aclanthology.org/P16-1141/",
+      "doi": "10.18653/v1/P16-1141",
+      "priority": 2,
+      "areas": [
+        "measurement-methods"
+      ],
+      "stance": "pro",
+      "method": "embedding",
+      "clusters": [
+        "09-named-methods-deepdive"
+      ],
+      "verified": true,
+      "note": "Establishes Procrustes-aligned diachronic embeddings across time slices; lineage for the team's per-month entity portrayal idea that is now superseded by LLM-based connotation scoring."
+    },
+    {
+      "id": "mohammad-2016-semeval-stance-detection",
+      "authors": [
+        "Mohammad, S. M.",
+        "Kiritchenko, S.",
+        "Sobhani, P.",
+        "Zhu, X.",
+        "Cherry, C."
+      ],
+      "title": "SemEval-2016 Task 6: Detecting Stance in Tweets",
+      "year": 2016,
+      "venue": "SemEval",
+      "type": "paper",
+      "url": "https://aclanthology.org/S16-1003/",
+      "doi": "10.18653/v1/S16-1003",
+      "priority": 2,
+      "areas": [
+        "measurement-methods",
+        "conceptual-foundations"
+      ],
+      "stance": "pro",
+      "method": "benchmark",
+      "clusters": [
+        "06-computational-methods",
+        "02-canonical-definitions"
+      ],
+      "verified": true,
+      "note": "Establishes the canonical target-dependent definition of stance the team must respect when distinguishing stance from sentiment."
+    },
+    {
+      "id": "rashkin-2016-connotation-frames",
+      "authors": [
+        "Rashkin, H.",
+        "Singh, S.",
+        "Choi, Y."
+      ],
+      "title": "Connotation Frames: A Data-Driven Investigation",
+      "year": 2016,
+      "venue": "ACL 2016",
+      "type": "paper",
+      "url": "https://aclanthology.org/P16-1030/",
+      "doi": "10.18653/v1/P16-1030",
+      "priority": 2,
+      "areas": [
+        "measurement-methods",
+        "conceptual-foundations"
+      ],
+      "stance": "pro",
+      "method": "computational",
+      "clusters": [
+        "06-computational-methods",
+        "09-named-methods-deepdive"
+      ],
+      "verified": true,
+      "note": "Verb-level connotation frame lexicon directly recommended by the synthesis as a tractable narrative signal; the team can ask 'which verbs do outlets use with PM X as subject vs. object.'"
+    },
+    {
+      "id": "yanardagoglu-gezi-protests",
+      "authors": [
+        "Yanardağoğlu, E."
+      ],
+      "title": "Mainstream Media's Coverage of the Gezi Protests",
+      "year": 2016,
+      "venue": "Turkish Studies / Journalism Studies",
+      "type": "paper",
+      "url": null,
+      "doi": null,
+      "priority": 2,
+      "areas": [
+        "empirical-evidence"
+      ],
+      "stance": "pro",
+      "method": "content-analysis",
+      "clusters": [
+        "08-non-western-comparables",
+        "04-cross-outlet-empirical"
+      ],
+      "verified": false,
+      "note": "Cleanest case study of pro-government versus opposition framing of protest in an authoritarian-adjacent democracy, with a 'foreign influence' frame finding directly portable to PTI D-Chowk coverage."
+    },
+    {
+      "id": "boydstun-pfc",
+      "authors": [
+        "Boydstun, A. E."
+      ],
+      "title": "Policy Frames Codebook",
+      "year": 2014,
+      "venue": "Policy Frames Codebook (ongoing)",
+      "type": "report",
+      "url": "https://www.amberboydstun.com/uploads/1/4/3/9/14399788/policy_frames_codebook.pdf",
+      "doi": null,
+      "priority": 2,
+      "areas": [
+        "conceptual-foundations",
+        "measurement-methods"
+      ],
+      "stance": "pro",
+      "method": "theoretical",
+      "clusters": [
+        "09-named-methods-deepdive"
+      ],
+      "verified": false,
+      "note": "Boydstun's 15-frame Policy Frames Codebook is the lineage anchor for the international-comparability baseline before the team builds Pakistan-specific frames."
+    },
+    {
+      "id": "boydstun-policy-frames-codebook",
+      "authors": [
+        "Boydstun, A. E.",
+        "Gross, J. H.",
+        "Resnik, P.",
+        "Smith, N. A."
+      ],
+      "title": "Identifying Media Frames and Frame Dynamics Within and Across Policy Issues",
+      "year": 2014,
+      "venue": "New Directions in Analyzing Text as Data Workshop",
+      "type": "paper",
+      "url": "https://www.amber-boydstun.com/uploads/1/4/4/3/14439340/boydstun_etal_2014_mfc_summary.pdf",
+      "doi": null,
+      "priority": 2,
+      "areas": [
+        "measurement-methods",
+        "conceptual-foundations"
+      ],
+      "stance": "pro",
+      "method": "content-analysis",
+      "clusters": [
+        "09-named-methods-deepdive",
+        "02-canonical-definitions"
+      ],
+      "verified": false,
+      "note": "Policy Frames Codebook with 15 cross-issue generic frames the team can use as a baseline for international comparison while authoring a Pakistan-specific codebook."
+    },
+    {
+      "id": "roberts-2014-structural-topic-models",
+      "authors": [
+        "Roberts, M. E.",
+        "Stewart, B. M.",
+        "Tingley, D."
+      ],
+      "title": "Structural Topic Models for Open-Ended Survey Responses",
+      "year": 2014,
+      "venue": "American Journal of Political Science",
+      "type": "paper",
+      "url": "https://onlinelibrary.wiley.com/doi/10.1111/ajps.12103",
+      "doi": "10.1111/ajps.12103",
+      "priority": 2,
+      "areas": [
+        "measurement-methods"
+      ],
+      "stance": "pro",
+      "method": "topic-model",
+      "clusters": [
+        "06-computational-methods"
+      ],
+      "verified": true,
+      "note": "Structural topic models with first-class outlet/covariate effects; the standard political-science choice the team should consider for cross-source topic comparison."
+    },
+    {
+      "id": "shoemaker-reese-2014-mediating-the-message",
+      "authors": [
+        "Shoemaker, P. J.",
+        "Reese, S. D."
+      ],
+      "title": "Mediating the Message in the 21st Century: A Media Sociology Perspective",
+      "year": 2014,
+      "venue": "Routledge",
+      "type": "book",
+      "url": "https://www.routledge.com/Mediating-the-Message-in-the-21st-Century-A-Media-Sociology-Perspective/Shoemaker-Reese/p/book/9780415989145",
+      "doi": null,
+      "priority": 2,
+      "areas": [
+        "conceptual-foundations",
+        "pakistan-specific"
+      ],
+      "stance": "pro",
+      "method": "theoretical",
+      "clusters": [
+        "02-canonical-definitions"
+      ],
+      "verified": true,
+      "note": "The Hierarchy of Influences scaffold the synthesis identifies as the right model for jointly analyzing Pakistani ownership, state pressure, and journalistic culture."
+    },
+    {
+      "id": "slapin-proksch-2008-wordfish",
+      "authors": [
+        "Slapin, J. B.",
+        "Proksch, S.-O."
+      ],
+      "title": "A Scaling Model for Estimating Time-Series Party Positions from Texts",
+      "year": 2008,
+      "venue": "American Journal of Political Science",
+      "type": "paper",
+      "url": "https://onlinelibrary.wiley.com/doi/10.1111/j.1540-5907.2008.00338.x",
+      "doi": "10.1111/j.1540-5907.2008.00338.x",
+      "priority": 2,
+      "areas": [
+        "measurement-methods",
+        "conceptual-foundations"
+      ],
+      "stance": "pro",
+      "method": "model",
+      "clusters": [
+        "09-named-methods-deepdive"
+      ],
+      "verified": true,
+      "note": "Canonical Wordfish Poisson scaling model; cited as the transparent baseline against which the team will report Burnham Semantic Scaling results for political-science readers."
+    },
+    {
+      "id": "hallin-mancini-2004-comparing-media-systems",
+      "authors": [
+        "Hallin, D. C.",
+        "Mancini, P."
+      ],
+      "title": "Comparing Media Systems: Three Models of Media and Politics",
+      "year": 2004,
+      "venue": "Cambridge University Press",
+      "type": "book",
+      "url": "https://www.cambridge.org/core/books/comparing-media-systems/3231C42BCA7D5DA8DD64D5C0FBB2A39F",
+      "doi": "10.1017/CBO9780511790867",
+      "priority": 2,
+      "areas": [
+        "conceptual-foundations",
+        "pakistan-specific"
+      ],
+      "stance": "neutral",
+      "method": "case-study",
+      "clusters": [
+        "03-hallin-spheres"
+      ],
+      "verified": true,
+      "note": "Comparative media systems typology useful for situating Pakistan's media system as a polarized-pluralist variant with post-colonial/military overlays."
+    },
+    {
+      "id": "bearman-stovel-2000-becoming-a-nazi",
+      "authors": [
+        "Bearman, P. S.",
+        "Stovel, K."
+      ],
+      "title": "Becoming a Nazi: A Model for Narrative Networks",
+      "year": 2000,
+      "venue": "Poetics",
+      "type": "paper",
+      "url": "https://www.sciencedirect.com/science/article/pii/S0304422X00000034",
+      "doi": "10.1016/S0304-422X(00)00003-4",
+      "priority": 2,
+      "areas": [
+        "measurement-methods",
+        "conceptual-foundations"
+      ],
+      "stance": "pro",
+      "method": "network-analysis",
+      "clusters": [
+        "09-named-methods-deepdive",
+        "02-canonical-definitions",
+        "01-fragmentation-concept"
+      ],
+      "verified": true,
+      "note": "Canonical narrative-as-graph operationalization; the synthesis recommends deferring full narrative networks but cites this as the definitional anchor for 'narrative' in the team's discourse."
+    },
+    {
+      "id": "bennett-1990-press-state-indexing",
+      "authors": [
+        "Bennett, W. L."
+      ],
+      "title": "Toward a Theory of Press-State Relations in the United States",
+      "year": 1990,
+      "venue": "Journal of Communication",
+      "type": "paper",
+      "url": "https://academic.oup.com/joc/article-abstract/40/2/103/4160076",
+      "doi": "10.1111/j.1460-2466.1990.tb02265.x",
+      "priority": 2,
+      "areas": [
+        "conceptual-foundations"
+      ],
+      "stance": "pro",
+      "method": "theoretical",
+      "clusters": [
+        "02-canonical-definitions"
+      ],
+      "verified": true,
+      "note": "Indexing hypothesis directly predicts narrowing of Pakistani debate when civil-military elites agree; this is the canonical mechanism behind the team's predicted convergence on military topics."
+    },
+    {
+      "id": "mccombs-shaw-1972-agenda-setting",
+      "authors": [
+        "McCombs, M. E.",
+        "Shaw, D. L."
+      ],
+      "title": "The Agenda-Setting Function of Mass Media",
+      "year": 1972,
+      "venue": "Public Opinion Quarterly",
+      "type": "paper",
+      "url": "https://academic.oup.com/poq/article-abstract/36/2/176/1851076",
+      "doi": "10.1086/267990",
+      "priority": 2,
+      "areas": [
+        "conceptual-foundations"
+      ],
+      "stance": "neutral",
+      "method": "observational",
+      "clusters": [
+        "02-canonical-definitions"
+      ],
+      "verified": true,
+      "note": "Canonical agenda-setting source the team must cite to keep agenda setting (issue salience) terminologically distinct from framing."
+    },
+    {
+      "id": "shah-2026-republic-tv-opposition",
+      "authors": [
+        "Shah, A. H."
+      ],
+      "title": "How Was the Opposition Portrayed? Republic TV's Prime-Time Debates During India's 2019 Election",
+      "year": 2026,
+      "venue": "Journalism Studies / Journal of South Asian Development",
+      "type": "paper",
+      "url": null,
+      "doi": null,
+      "priority": 3,
+      "areas": [
+        "empirical-evidence"
+      ],
+      "stance": "pro",
+      "method": "content-analysis",
+      "clusters": [
+        "08-non-western-comparables"
+      ],
+      "verified": false,
+      "note": "Indian primetime-debate analysis of opposition portrayal, closely parallel to studying how Pakistani TV channels treat PTI during the post-2022 squeeze."
+    },
+    {
+      "id": "arxiv-2503-14828-claim-normalization",
+      "authors": [
+        "SemEval-2025 Task 7 organizers"
+      ],
+      "title": "Multilingual and Crosslingual Fact-Checked Claim Retrieval",
+      "year": 2025,
+      "venue": "arXiv / SemEval-2025",
+      "type": "preprint",
+      "url": "https://arxiv.org/abs/2503.14828",
+      "doi": null,
+      "priority": 3,
+      "areas": [
+        "measurement-methods"
+      ],
+      "stance": "pro",
+      "method": "benchmark",
+      "clusters": [
+        "09-named-methods-deepdive"
+      ],
+      "verified": false,
+      "note": "Latest CheckThat!-style multilingual claim-retrieval task adding claim normalization; baseline reference for the team's Stage 5 LLM-written canonical claim step."
+    },
+    {
+      "id": "arxiv-2503-20960-multimodal-framing",
+      "authors": [
+        "Multi-Modal Framing Analysis authors"
+      ],
+      "title": "Multi-Modal Framing Analysis of News",
+      "year": 2025,
+      "venue": "arXiv",
+      "type": "preprint",
+      "url": "https://arxiv.org/abs/2503.20960",
+      "doi": null,
+      "priority": 3,
+      "areas": [
+        "measurement-methods"
+      ],
+      "stance": "pro",
+      "method": "computational",
+      "clusters": [
+        "09-named-methods-deepdive"
+      ],
+      "verified": false,
+      "note": "Multi-modal framing analysis combining text and image cues; supports the synthesis recommendation to sample YouTube thumbnails alongside transcripts for Pakistani TV."
+    },
+    {
+      "id": "arxiv-2510-03898-banglabias",
+      "authors": [
+        "Anonymous"
+      ],
+      "title": "BanglaBias: A Benchmark for Bias Detection in Bangla News",
+      "year": 2025,
+      "venue": "arXiv 2510.03898",
+      "type": "preprint",
+      "url": "https://arxiv.org/abs/2510.03898",
+      "doi": null,
+      "priority": 3,
+      "areas": [
+        "measurement-methods",
+        "empirical-evidence"
+      ],
+      "stance": "pro",
+      "method": "benchmark",
+      "clusters": [
+        "08-non-western-comparables",
+        "06-computational-methods"
+      ],
+      "verified": false,
+      "note": "Bangla benchmark of 200 human-annotated articles, a methodologically aligned South Asian dataset analogous to the validation set the Pakistani team should build for Urdu."
+    },
+    {
+      "id": "arxiv-2510-17252-bengali-affective",
+      "authors": [
+        "Anonymous"
+      ],
+      "title": "Affective Bias of 300K Bengali Headlines via Zero-Shot Gemma-3",
+      "year": 2025,
+      "venue": "arXiv 2510.17252",
+      "type": "preprint",
+      "url": "https://arxiv.org/abs/2510.17252",
+      "doi": null,
+      "priority": 3,
+      "areas": [
+        "measurement-methods",
+        "empirical-evidence"
+      ],
+      "stance": "pro",
+      "method": "computational",
+      "clusters": [
+        "08-non-western-comparables",
+        "06-computational-methods"
+      ],
+      "verified": false,
+      "note": "Zero-shot LLM affective-bias measurement on 300K Bengali headlines that informs the team's choice of zero-shot LLM stance/connotation analysis over older static-embedding pipelines."
+    },
+    {
+      "id": "arxiv-2510-20154-stereotypes-llm-stance",
+      "authors": [
+        "Anonymous"
+      ],
+      "title": "Are Stereotypes Leading LLMs' Zero-Shot Stance Detection?",
+      "year": 2025,
+      "venue": "arXiv",
+      "type": "preprint",
+      "url": "https://arxiv.org/abs/2510.20154",
+      "doi": null,
+      "priority": 3,
+      "areas": [
+        "measurement-methods",
+        "methods-critiques"
+      ],
+      "stance": "anti",
+      "method": "computational",
+      "clusters": [
+        "07-method-critiques",
+        "06-computational-methods"
+      ],
+      "verified": false,
+      "note": "Documents fragility of LLM zero-shot stance under stereotype priming; cite as the methodological warning that motivates the team's gold-validation set for stance."
+    },
+    {
+      "id": "bandhakavi-2025-global-news-coverage-events",
+      "authors": [
+        "Bandhakavi, A.",
+        "et al."
+      ],
+      "title": "Identifying Global News Coverage of Critical Events Such as Disasters and Terrorist Attacks",
+      "year": 2025,
+      "venue": "arXiv",
+      "type": "preprint",
+      "url": "https://arxiv.org/abs/2506.12925",
+      "doi": null,
+      "priority": 3,
+      "areas": [
+        "measurement-methods",
+        "empirical-evidence"
+      ],
+      "stance": "pro",
+      "method": "computational",
+      "clusters": [
+        "06-computational-methods",
+        "04-cross-outlet-empirical"
+      ],
+      "verified": false,
+      "note": "Closest-in-spirit recent work on cross-source event-coverage identification; directly comparable methodological template for the team's case-study coverage measurement."
+    },
+    {
+      "id": "drobyshev-2025-llm-frame-agreement",
+      "authors": [
+        "Drobyshev, A.",
+        "et al."
+      ],
+      "title": "LLM Frame Annotation Agreement with Human Coders Across Issues and Languages",
+      "year": 2025,
+      "venue": "arXiv",
+      "type": "preprint",
+      "url": null,
+      "doi": null,
+      "priority": 3,
+      "areas": [
+        "measurement-methods"
+      ],
+      "stance": "mixed",
+      "method": "computational",
+      "clusters": [
+        "06-computational-methods"
+      ],
+      "verified": false,
+      "note": "Shows LLM-human agreement matches inter-coder reliability on familiar US issues but weakens elsewhere; supports the team's plan to hand-validate on Pakistani-specific cases."
+    },
+    {
+      "id": "habes-2025-ethnic-minorities",
+      "authors": [
+        "Habes, M.",
+        "et al."
+      ],
+      "title": "Media Representation of Ethnic Minorities in Pakistani Newspapers",
+      "year": 2025,
+      "venue": "Studies in Ethnicity and Nationalism",
+      "type": "paper",
+      "url": null,
+      "doi": null,
+      "priority": 3,
+      "areas": [
+        "pakistan-specific",
+        "empirical-evidence"
+      ],
+      "stance": "pro",
+      "method": "content-analysis",
+      "clusters": [
+        "05-pakistan-landscape"
+      ],
+      "verified": false,
+      "note": "Recent Pakistani newspaper study of ethnic-minority representation, providing methodological company for the team's Baloch coverage (Jaffar Express / Mahrang Baloch) analyses."
+    },
+    {
+      "id": "hook-and-bait-urdu-2025",
+      "authors": [
+        "Anonymous"
+      ],
+      "title": "Hook and Bait: A 78K Urdu Article Benchmark for Misinformation Detection",
+      "year": 2025,
+      "venue": "Scientific Reports",
+      "type": "dataset",
+      "url": null,
+      "doi": null,
+      "priority": 3,
+      "areas": [
+        "measurement-methods",
+        "pakistan-specific"
+      ],
+      "stance": "pro",
+      "method": "dataset",
+      "clusters": [
+        "06-computational-methods",
+        "05-pakistan-landscape"
+      ],
+      "verified": false,
+      "note": "Large 78K-article Urdu misinformation dataset published in Scientific Reports 2025; one of the largest Urdu-specific corpora the team can draw on."
+    },
+    {
+      "id": "ihsanullah-2025-ispr-media",
+      "authors": [
+        "Ihsan Ullah"
+      ],
+      "title": "ISPR Media Operations and Civil-Military Communication in Pakistan",
+      "year": 2025,
+      "venue": "SSRN working paper",
+      "type": "preprint",
+      "url": null,
+      "doi": null,
+      "priority": 3,
+      "areas": [
+        "pakistan-specific"
+      ],
+      "stance": "pro",
+      "method": "case-study",
+      "clusters": [
+        "05-pakistan-landscape"
+      ],
+      "verified": false,
+      "note": "Recent SSRN treatment of ISPR's media role contributing to the still-thin Pakistani ISPR/military-media research literature."
+    },
+    {
+      "id": "kasneci-2025-fane",
+      "authors": [
+        "Kasneci, E.",
+        "et al."
+      ],
+      "title": "Fane: Hero-Villain-Victim Narrative Role Detection",
+      "year": 2025,
+      "venue": "arXiv",
+      "type": "preprint",
+      "url": "https://arxiv.org/abs/2504.20469",
+      "doi": null,
+      "priority": 3,
+      "areas": [
+        "measurement-methods"
+      ],
+      "stance": "pro",
+      "method": "model",
+      "clusters": [
+        "09-named-methods-deepdive"
+      ],
+      "verified": false,
+      "note": "SemEval-2025 Task 10 (HVV) companion system reference; informs whether the team needs a custom Urdu HVV classifier or zero-shot LLM suffices."
+    },
+    {
+      "id": "lse-2025-pahalgam-youtube",
+      "authors": [
+        "LSE South Asia Centre"
+      ],
+      "title": "Analysing YouTube Comments across South Asia: Pahalgam 2025",
+      "year": 2025,
+      "venue": "LSE South Asia Blog",
+      "type": "essay",
+      "url": null,
+      "doi": null,
+      "priority": 3,
+      "areas": [
+        "empirical-evidence",
+        "measurement-methods"
+      ],
+      "stance": "pro",
+      "method": "network-analysis",
+      "clusters": [
+        "08-non-western-comparables",
+        "06-computational-methods"
+      ],
+      "verified": false,
+      "note": "Demonstrates Louvain community detection on Indian and Pakistani YouTube engagement around a single event, validating the YouTube-as-research-archive approach the Pakistani study will rely on."
+    },
+    {
+      "id": "montalverne-2025-brazilian-exposure",
+      "authors": [
+        "Mont'Alverne, C.",
+        "Ross Arguedas, A.",
+        "Banerjee, S.",
+        "Toff, B.",
+        "Fletcher, R.",
+        "Nielsen, R. K."
+      ],
+      "title": "Exposure to Partisan News during the 2022 Brazilian Elections",
+      "year": 2025,
+      "venue": "International Journal of Press/Politics",
+      "type": "paper",
+      "url": null,
+      "doi": null,
+      "priority": 3,
+      "areas": [
+        "empirical-evidence"
+      ],
+      "stance": "neutral",
+      "method": "mixed-methods",
+      "clusters": [
+        "08-non-western-comparables"
+      ],
+      "verified": false,
+      "note": "Joins content analysis with survey data on partisan-news exposure, useful as a comparator for the team's content-side study even though Reuters Institute data are absent for Pakistan."
+    },
+    {
+      "id": "roman-urdu-stance-corpus-icck-2025",
+      "authors": [
+        "Anonymous"
+      ],
+      "title": "Roman Urdu Political Tweet Stance Corpus",
+      "year": 2025,
+      "venue": "ICCK",
+      "type": "dataset",
+      "url": null,
+      "doi": null,
+      "priority": 3,
+      "areas": [
+        "measurement-methods",
+        "pakistan-specific"
+      ],
+      "stance": "pro",
+      "method": "dataset",
+      "clusters": [
+        "05-pakistan-landscape",
+        "06-computational-methods"
+      ],
+      "verified": false,
+      "note": "Roman-Urdu political-tweet stance dataset; the only available stance corpus on Pakistani political targets the team can use for code-mixed social-media side analyses."
+    },
+    {
+      "id": "semeval-2025-task7",
+      "authors": [
+        "SemEval-2025 Task 7 organizers"
+      ],
+      "title": "SemEval-2025 Task 7: Multilingual and Crosslingual Fact-Checked Claim Retrieval",
+      "year": 2025,
+      "venue": "SemEval 2025",
+      "type": "preprint",
+      "url": "https://arxiv.org/abs/2505.10740",
+      "doi": null,
+      "priority": 3,
+      "areas": [
+        "measurement-methods"
+      ],
+      "stance": "pro",
+      "method": "benchmark",
+      "clusters": [
+        "09-named-methods-deepdive"
+      ],
+      "verified": false,
+      "note": "SemEval-2025 Task 7 extends claim retrieval to low-resource languages and provides accuracy targets the team should expect (~5-10pp lower than English) for Urdu claim matching."
+    },
+    {
+      "id": "sluyterman-2025-amr-narratives",
+      "authors": [
+        "Sluyterman van Loo, M.",
+        "et al."
+      ],
+      "title": "AMR-Based Narrative Extraction for Humanities and Social Sciences",
+      "year": 2025,
+      "venue": "Humanities and Social Sciences Communications",
+      "type": "paper",
+      "url": null,
+      "doi": null,
+      "priority": 3,
+      "areas": [
+        "measurement-methods"
+      ],
+      "stance": "pro",
+      "method": "computational",
+      "clusters": [
+        "09-named-methods-deepdive"
+      ],
+      "verified": false,
+      "note": "AMR-based narrative extraction option that the team should be aware of but is unlikely to deploy given limited Urdu AMR tooling."
+    },
+    {
+      "id": "acm-aspect-level-nli-india",
+      "authors": [
+        "Anonymous"
+      ],
+      "title": "Aspect-Level Bias Quantification with NLI for Indian Government Policies",
+      "year": 2024,
+      "venue": "ACM Journal on Computing and Sustainable Societies",
+      "type": "paper",
+      "url": null,
+      "doi": null,
+      "priority": 3,
+      "areas": [
+        "measurement-methods",
+        "empirical-evidence"
+      ],
+      "stance": "pro",
+      "method": "computational",
+      "clusters": [
+        "08-non-western-comparables",
+        "06-computational-methods"
+      ],
+      "verified": false,
+      "note": "Aspect-level NLI methodology for measuring bias toward Indian government policies that is a strong template for the team's entity-level role-portrayal analyses."
+    },
+    {
+      "id": "akyurek-2024-multilingual-framing",
+      "authors": [
+        "Akyürek, A. F.",
+        "et al."
+      ],
+      "title": "Scaling Up Multilingual Framing Analysis",
+      "year": 2024,
+      "venue": "arXiv / 2025",
+      "type": "preprint",
+      "url": null,
+      "doi": null,
+      "priority": 3,
+      "areas": [
+        "measurement-methods",
+        "methods-critiques"
+      ],
+      "stance": "mixed",
+      "method": "computational",
+      "clusters": [
+        "06-computational-methods",
+        "07-method-critiques",
+        "09-named-methods-deepdive"
+      ],
+      "verified": false,
+      "note": "Documents sharp performance drops for non-Western languages (Bengali, Hindi, Chinese < 30% on MFC frames); critical warning for the team's multilingual frame validation plan."
+    },
+    {
+      "id": "akyurek-2024-scaling-multilingual-framing",
+      "authors": [
+        "Akyürek, A. F."
+      ],
+      "title": "Scaling Up Multilingual News Framing Analysis",
+      "year": 2024,
+      "venue": "arXiv",
+      "type": "preprint",
+      "url": null,
+      "doi": null,
+      "priority": 3,
+      "areas": [
+        "measurement-methods"
+      ],
+      "stance": "neutral",
+      "method": "computational",
+      "clusters": [
+        "06-computational-methods"
+      ],
+      "verified": false,
+      "note": "Twelve-language extension of multilingual frame detection providing a transfer-learning baseline the team can benchmark against on Urdu data."
+    },
+    {
+      "id": "alonso-del-barrio-2024-framing-llm",
+      "authors": [
+        "Alonso del Barrio, D.",
+        "Gatica-Perez, D."
+      ],
+      "title": "Examining the Limitations of LLMs in News Framing Analysis",
+      "year": 2024,
+      "venue": "arXiv",
+      "type": "preprint",
+      "url": "https://arxiv.org/abs/2402.11073",
+      "doi": null,
+      "priority": 3,
+      "areas": [
+        "measurement-methods",
+        "methods-critiques"
+      ],
+      "stance": "mixed",
+      "method": "computational",
+      "clusters": [
+        "06-computational-methods",
+        "07-method-critiques"
+      ],
+      "verified": false,
+      "note": "Tests GPT-3.5/4 and Flan-T5 on framing-bias detection; directly informs the team's choice of validation procedure for LLM-based frame coding."
+    },
+    {
+      "id": "ax-to-grind-urdu-2024",
+      "authors": [
+        "Harris, S.",
+        "Hadi, H. J.",
+        "Ahmad, N.",
+        "Alshara, M. A."
+      ],
+      "title": "Ax-to-Grind Urdu: Benchmark Dataset for Urdu Fake News Detection",
+      "year": 2024,
+      "venue": "arXiv",
+      "type": "dataset",
+      "url": "https://arxiv.org/abs/2403.14062",
+      "doi": null,
+      "priority": 3,
+      "areas": [
+        "measurement-methods",
+        "pakistan-specific"
+      ],
+      "stance": "pro",
+      "method": "dataset",
+      "clusters": [
+        "06-computational-methods",
+        "05-pakistan-landscape"
+      ],
+      "verified": false,
+      "note": "Updated Urdu fake-news benchmark useful for the team's Urdu-side claim pipeline calibration."
+    },
+    {
+      "id": "aya-23-multilingual-model",
+      "authors": [
+        "Aryabumi, V.",
+        "Dang, J.",
+        "Talupuru, D.",
+        "Dash, S.",
+        "Cairuz, D.",
+        "Lin, H.",
+        "Venkitesh, B.",
+        "Smith, M.",
+        "Marchisio, K.",
+        "Ko, S.",
+        "et al."
+      ],
+      "title": "Aya 23: Open Weight Releases to Further Multilingual Progress",
+      "year": 2024,
+      "venue": "arXiv",
+      "type": "preprint",
+      "url": "https://arxiv.org/abs/2405.15032",
+      "doi": null,
+      "priority": 3,
+      "areas": [
+        "measurement-methods",
+        "pakistan-specific"
+      ],
+      "stance": "pro",
+      "method": "computational",
+      "clusters": [
+        "06-computational-methods",
+        "05-pakistan-landscape"
+      ],
+      "verified": true,
+      "note": "Multilingual open-weights LLM with strong South Asian language coverage including Urdu; usable open-source backbone for the team's LLM-based annotation pipeline."
+    },
+    {
+      "id": "bucher-martini-2024-fine-tuned-vs-generative",
+      "authors": [
+        "Bucher, M. J. J.",
+        "Martini, M."
+      ],
+      "title": "Fine-Tuned 'Small' LLMs (Still) Significantly Outperform Zero-Shot Generative AI Models in Text Classification",
+      "year": 2024,
+      "venue": "arXiv",
+      "type": "preprint",
+      "url": "https://arxiv.org/abs/2406.08660",
+      "doi": null,
+      "priority": 3,
+      "areas": [
+        "measurement-methods"
+      ],
+      "stance": "mixed",
+      "method": "benchmark",
+      "clusters": [
+        "09-named-methods-deepdive"
+      ],
+      "verified": true,
+      "note": "Counterpoint to Chae & Davidson: fine-tuned small LLMs still beat zero-shot on many classification tasks; informs the team's cost/accuracy tradeoff for Urdu stance/frame pipelines."
+    },
+    {
+      "id": "checkthat-clef-shared-task",
+      "authors": [
+        "Nakov, P.",
+        "Da San Martino, G.",
+        "Barron-Cedeno, A.",
+        "et al."
+      ],
+      "title": "CheckThat! Lab on Fact-Checking, Check-Worthiness, and Claim Retrieval",
+      "year": 2024,
+      "venue": "CLEF",
+      "type": "dataset",
+      "url": "https://checkthat.gitlab.io/",
+      "doi": null,
+      "priority": 3,
+      "areas": [
+        "measurement-methods"
+      ],
+      "stance": "neutral",
+      "method": "benchmark",
+      "clusters": [
+        "06-computational-methods"
+      ],
+      "verified": false,
+      "note": "CLEF shared-task series whose Arabic track methods are noted as transferring well to Urdu; relevant resource for cross-lingual claim retrieval design choices."
+    },
+    {
+      "id": "cpj-2024-killed-journalists-pakistan",
+      "authors": [
+        "Committee to Protect Journalists"
+      ],
+      "title": "CPJ Pakistan Statistics: Journalists Killed Since 2000",
+      "year": 2024,
+      "venue": "Committee to Protect Journalists",
+      "type": "report",
+      "url": "https://cpj.org/data/killed/asia/pakistan/",
+      "doi": null,
+      "priority": 3,
+      "areas": [
+        "pakistan-specific"
+      ],
+      "stance": "pro",
+      "method": "observational",
+      "clusters": [
+        "05-pakistan-landscape"
+      ],
+      "verified": true,
+      "note": "At least 97 journalists killed in Pakistan since 2000 with 9 in 2024 alone, supplying the violence-context citation for the project's risk and motivation framing."
+    },
+    {
+      "id": "kamoi-2024-wice",
+      "authors": [
+        "Kamoi, R.",
+        "Goyal, T.",
+        "Rodriguez, J. D.",
+        "Durrett, G."
+      ],
+      "title": "WiCE: Real-World Entailment for Claims in Wikipedia",
+      "year": 2024,
+      "venue": "EACL 2024",
+      "type": "paper",
+      "url": "https://aclanthology.org/2024.eacl-long.7/",
+      "doi": null,
+      "priority": 3,
+      "areas": [
+        "measurement-methods"
+      ],
+      "stance": "pro",
+      "method": "dataset",
+      "clusters": [
+        "09-named-methods-deepdive"
+      ],
+      "verified": true,
+      "note": "Wikipedia-citation entailment dataset providing a sentence-level entailment benchmark relevant to verifying claim equivalence in the team's cluster pipeline."
+    },
+    {
+      "id": "marques-2024-bolsonaro-followup",
+      "authors": [
+        "Marques, F. P. J."
+      ],
+      "title": "Brazilian Press Coverage of Bolsonaro (follow-up analysis)",
+      "year": 2024,
+      "venue": "Journalism Studies",
+      "type": "paper",
+      "url": null,
+      "doi": null,
+      "priority": 3,
+      "areas": [
+        "empirical-evidence"
+      ],
+      "stance": "pro",
+      "method": "content-analysis",
+      "clusters": [
+        "08-non-western-comparables"
+      ],
+      "verified": false,
+      "note": "Follow-up Brazilian content + engagement analysis that extends the critical-incidents method, supporting the team's plan to combine content metrics with online engagement signals."
+    },
+    {
+      "id": "panchendrarajan-zubiaga-2024-claim-detection-survey",
+      "authors": [
+        "Panchendrarajan, R.",
+        "Zubiaga, A."
+      ],
+      "title": "Claim Detection for Automated Fact-Checking: A Survey on Monolingual, Multilingual and Cross-Lingual Research",
+      "year": 2024,
+      "venue": "Natural Language Processing Journal",
+      "type": "review",
+      "url": "https://arxiv.org/abs/2401.11969",
+      "doi": null,
+      "priority": 3,
+      "areas": [
+        "measurement-methods"
+      ],
+      "stance": "neutral",
+      "method": "review",
+      "clusters": [
+        "06-computational-methods"
+      ],
+      "verified": false,
+      "note": "Survey of monolingual, multilingual and cross-lingual claim detection; useful map of available approaches for the team's Urdu-English claim pipeline."
+    },
+    {
+      "id": "pemra-2002-2024-actions",
+      "authors": [
+        "Pakistan Electronic Media Regulatory Authority"
+      ],
+      "title": "PEMRA Regulatory Actions and Bans (2002-2024)",
+      "year": 2024,
+      "venue": "PEMRA / Government of Pakistan",
+      "type": "report",
+      "url": "https://pemra.gov.pk/",
+      "doi": null,
+      "priority": 3,
+      "areas": [
+        "pakistan-specific"
+      ],
+      "stance": "neutral",
+      "method": "observational",
+      "clusters": [
+        "05-pakistan-landscape"
+      ],
+      "verified": false,
+      "note": "Catalogues PEMRA actions (October 2023 anchor-opinion ban, March 2023 ARY suspension, November 2024 D-Chowk restrictions) that operationally produce the convergence the team will measure on partisan coverage."
+    },
+    {
+      "id": "roth-2024-ml-eat",
+      "authors": [
+        "Roth, M.",
+        "Stoffel, F.",
+        "Keim, D. A."
+      ],
+      "title": "ML-EAT: A Multilevel Embedding Association Test",
+      "year": 2024,
+      "venue": "arXiv",
+      "type": "preprint",
+      "url": "https://arxiv.org/abs/2408.01966",
+      "doi": null,
+      "priority": 3,
+      "areas": [
+        "measurement-methods",
+        "methods-critiques"
+      ],
+      "stance": "mixed",
+      "method": "computational",
+      "clusters": [
+        "09-named-methods-deepdive"
+      ],
+      "verified": false,
+      "note": "Multilevel EAT improves on WEAT but retains static-embedding limitations; relevant as a 2024 reference that still falls short of the LLM-connotation recommendation."
+    },
+    {
+      "id": "social-media-dynamics-partisan-bias-pakistan-2024",
+      "authors": [
+        "Anonymous"
+      ],
+      "title": "Social Media Dynamics of Partisan Bias in Pakistan",
+      "year": 2024,
+      "venue": "ResearchGate",
+      "type": "paper",
+      "url": null,
+      "doi": null,
+      "priority": 3,
+      "areas": [
+        "pakistan-specific",
+        "empirical-evidence"
+      ],
+      "stance": "mixed",
+      "method": "content-analysis",
+      "clusters": [
+        "05-pakistan-landscape",
+        "04-cross-outlet-empirical"
+      ],
+      "verified": false,
+      "note": "Descriptive 2024 study of Pakistani partisan social-media dynamics; useful as one of the few existing Pakistani computational comparisons even though it lacks methodological rigor."
+    },
+    {
+      "id": "song-2024-veriscore",
+      "authors": [
+        "Song, Y.",
+        "Kim, Y.",
+        "Iyyer, M."
+      ],
+      "title": "VeriScore: Evaluating the Factuality of Verifiable Claims in Long-Form Text Generation",
+      "year": 2024,
+      "venue": "arXiv",
+      "type": "preprint",
+      "url": "https://arxiv.org/abs/2406.19276",
+      "doi": null,
+      "priority": 3,
+      "areas": [
+        "measurement-methods"
+      ],
+      "stance": "pro",
+      "method": "model",
+      "clusters": [
+        "09-named-methods-deepdive"
+      ],
+      "verified": true,
+      "note": "VeriScore moving-window verifiable-claim extraction; improves over FActScore by filtering to truly verifiable claims and is a direct option for Stage 1 of the Pakistani claim pipeline."
+    },
+    {
+      "id": "wanner-2024-closer-look-claim-decomposition",
+      "authors": [
+        "Wanner, M.",
+        "Hou, B."
+      ],
+      "title": "A Closer Look at Claim Decomposition",
+      "year": 2024,
+      "venue": "arXiv",
+      "type": "preprint",
+      "url": "https://arxiv.org/abs/2403.11903",
+      "doi": null,
+      "priority": 3,
+      "areas": [
+        "measurement-methods",
+        "methods-critiques"
+      ],
+      "stance": "anti",
+      "method": "computational",
+      "clusters": [
+        "07-method-critiques"
+      ],
+      "verified": false,
+      "note": "Documents prompt-template sensitivity of atomic-fact decomposition; cite as the critique that motivates careful prompt validation in the team's claim pipeline."
+    },
+    {
+      "id": "wer-we-stand-urdu-asr-benchmark",
+      "authors": [
+        "Anonymous"
+      ],
+      "title": "WER We Stand: Benchmarking Urdu ASR Models",
+      "year": 2024,
+      "venue": "arXiv",
+      "type": "preprint",
+      "url": "https://arxiv.org/abs/2409.11252",
+      "doi": null,
+      "priority": 3,
+      "areas": [
+        "measurement-methods",
+        "pakistan-specific"
+      ],
+      "stance": "anti",
+      "method": "benchmark",
+      "clusters": [
+        "05-pakistan-landscape",
+        "07-method-critiques"
+      ],
+      "verified": false,
+      "note": "Documents Urdu ASR performance ceilings on broadcast and conversational data; the empirical basis for planning human-in-the-loop transcript correction in the team's pipeline."
+    },
+    {
+      "id": "zhang-2024-llm-topic-clustering-gdelt",
+      "authors": [
+        "Zhang, J.",
+        "et al."
+      ],
+      "title": "LLM-Based Topic Clustering on GDELT",
+      "year": 2024,
+      "venue": "arXiv",
+      "type": "preprint",
+      "url": "https://arxiv.org/abs/2406.10552",
+      "doi": null,
+      "priority": 3,
+      "areas": [
+        "measurement-methods"
+      ],
+      "stance": "pro",
+      "method": "computational",
+      "clusters": [
+        "06-computational-methods"
+      ],
+      "verified": false,
+      "note": "LLM keyword extraction plus summarization plus embedding clustering on GDELT; methodologically informs the team's plan for LLM-assisted topic clustering of Pakistani event coverage."
+    },
+    {
+      "id": "pakistani-political-twitter-arxiv-2301-06316",
+      "authors": [
+        "Anonymous"
+      ],
+      "title": "Pakistani Political Twitter Dataset",
+      "year": 2023,
+      "venue": "arXiv",
+      "type": "dataset",
+      "url": "https://arxiv.org/abs/2301.06316",
+      "doi": null,
+      "priority": 3,
+      "areas": [
+        "measurement-methods",
+        "pakistan-specific"
+      ],
+      "stance": "pro",
+      "method": "dataset",
+      "clusters": [
+        "05-pakistan-landscape"
+      ],
+      "verified": false,
+      "note": "Pakistani political Twitter corpus the team can use for complementary social-media side analyses; one of the few existing Pakistani political-text datasets."
+    },
+    {
+      "id": "schlichtkrull-2023-averitec",
+      "authors": [
+        "Schlichtkrull, M.",
+        "Guo, Z.",
+        "Vlachos, A."
+      ],
+      "title": "AVeriTeC: A Dataset for Real-world Claim Verification with Evidence from the Web",
+      "year": 2023,
+      "venue": "NeurIPS 2023 Datasets",
+      "type": "paper",
+      "url": "https://arxiv.org/abs/2305.13117",
+      "doi": null,
+      "priority": 3,
+      "areas": [
+        "measurement-methods"
+      ],
+      "stance": "pro",
+      "method": "dataset",
+      "clusters": [
+        "09-named-methods-deepdive"
+      ],
+      "verified": true,
+      "note": "Full retrieval-and-verification benchmark establishing the evidence-grounded verification template; relevant scaffold if the team extends claim coverage to fact-status not just presence."
+    },
+    {
+      "id": "zhang-2023-hong-kong-stm",
+      "authors": [
+        "Zhang, X.",
+        "Wang, J.",
+        "Hu, Y."
+      ],
+      "title": "Strategic Framing Matters But Varies: China's Hong Kong Protests Propaganda",
+      "year": 2023,
+      "venue": "Social Science Computer Review",
+      "type": "paper",
+      "url": null,
+      "doi": null,
+      "priority": 3,
+      "areas": [
+        "empirical-evidence",
+        "measurement-methods"
+      ],
+      "stance": "pro",
+      "method": "topic-model",
+      "clusters": [
+        "08-non-western-comparables",
+        "06-computational-methods"
+      ],
+      "verified": false,
+      "note": "Structural topic modeling demonstration for detecting frames without pre-specified codebooks, a candidate baseline method for Pakistani frame discovery."
+    },
+    {
+      "id": "ali-hassan-2022-computational-framing-survey",
+      "authors": [
+        "Ali, M.",
+        "Hassan, N."
+      ],
+      "title": "A Survey of Computational Framing Analysis Approaches",
+      "year": 2022,
+      "venue": "EMNLP",
+      "type": "review",
+      "url": "https://aclanthology.org/2022.emnlp-main.633/",
+      "doi": "10.18653/v1/2022.emnlp-main.633",
+      "priority": 3,
+      "areas": [
+        "measurement-methods"
+      ],
+      "stance": "neutral",
+      "method": "review",
+      "clusters": [
+        "02-canonical-definitions",
+        "06-computational-methods"
+      ],
+      "verified": true,
+      "note": "Recent survey of computational framing methods; situates the team's frame-detection choices within the field."
+    },
+    {
+      "id": "card-2022-140-years-political-speeches",
+      "authors": [
+        "Card, D.",
+        "Chang, S.",
+        "Becker, C.",
+        "Mendelsohn, J.",
+        "Voigt, R.",
+        "Boustan, L.",
+        "Abramitzky, R.",
+        "Jurafsky, D."
+      ],
+      "title": "Computational Analysis of 140 Years of US Political Speeches Reveals More Positive but Polarized Framing of Immigration",
+      "year": 2022,
+      "venue": "PNAS",
+      "type": "paper",
+      "url": "https://www.pnas.org/doi/10.1073/pnas.2120510119",
+      "doi": "10.1073/pnas.2120510119",
+      "priority": 3,
+      "areas": [
+        "measurement-methods",
+        "empirical-evidence"
+      ],
+      "stance": "pro",
+      "method": "computational",
+      "clusters": [
+        "09-named-methods-deepdive",
+        "06-computational-methods"
+      ],
+      "verified": true,
+      "note": "Demonstrates large-scale longitudinal framing measurement; methodologically informs the team's plan for temporal-arc analysis across event windows."
+    },
+    {
+      "id": "hardalov-2022-crowdchecked",
+      "authors": [
+        "Hardalov, M.",
+        "Chernyavskiy, A.",
+        "Koychev, I.",
+        "Ilvovsky, D.",
+        "Nakov, P."
+      ],
+      "title": "CrowdChecked: Detecting Previously Fact-Checked Claims in Social Media",
+      "year": 2022,
+      "venue": "arXiv",
+      "type": "preprint",
+      "url": "https://arxiv.org/abs/2210.04447",
+      "doi": null,
+      "priority": 3,
+      "areas": [
+        "measurement-methods"
+      ],
+      "stance": "pro",
+      "method": "computational",
+      "clusters": [
+        "06-computational-methods"
+      ],
+      "verified": false,
+      "note": "Social-media-scale crowdsourced fact-checking retrieval extending Shaar et al.; methodologically informs the team's claim-cluster-against-known-claims design."
+    },
+    {
+      "id": "mukerjee-2022-political-landscape-twitterverse",
+      "authors": [
+        "Mukerjee, S.",
+        "Jaidka, K.",
+        "Lelkes, Y."
+      ],
+      "title": "The Political Landscape of the U.S. Twitterverse",
+      "year": 2022,
+      "venue": "Political Communication",
+      "type": "paper",
+      "url": "https://www.tandfonline.com/doi/full/10.1080/10584609.2022.2074087",
+      "doi": "10.1080/10584609.2022.2074087",
+      "priority": 3,
+      "areas": [
+        "conceptual-foundations",
+        "empirical-evidence"
+      ],
+      "stance": "mixed",
+      "method": "network-analysis",
+      "clusters": [
+        "01-fragmentation-concept",
+        "04-cross-outlet-empirical"
+      ],
+      "verified": true,
+      "note": "Large-scale empirical mapping of partisan online clustering; cite as US comparison case to interpret the Pakistani results against."
+    },
+    {
+      "id": "caciularu-2021-cdlm",
+      "authors": [
+        "Caciularu, A.",
+        "Cohan, A.",
+        "Beltagy, I.",
+        "Peters, M. E.",
+        "Cattan, A.",
+        "Dagan, I."
+      ],
+      "title": "CDLM: Cross-Document Language Modeling",
+      "year": 2021,
+      "venue": "Findings of EMNLP",
+      "type": "paper",
+      "url": "https://aclanthology.org/2021.findings-emnlp.225/",
+      "doi": "10.18653/v1/2021.findings-emnlp.225",
+      "priority": 3,
+      "areas": [
+        "measurement-methods"
+      ],
+      "stance": "pro",
+      "method": "computational",
+      "clusters": [
+        "06-computational-methods"
+      ],
+      "verified": true,
+      "note": "Cross-document language model that is state-of-the-art for cross-document coreference; relevant if the team attempts cross-document event coreference for fine-grained event matching."
+    },
+    {
+      "id": "cinelli-2021-echo-chamber-social-media",
+      "authors": [
+        "Cinelli, M.",
+        "De Francisci Morales, G.",
+        "Galeazzi, A.",
+        "Quattrociocchi, W.",
+        "Starnini, M."
+      ],
+      "title": "The Echo Chamber Effect on Social Media",
+      "year": 2021,
+      "venue": "PNAS",
+      "type": "paper",
+      "url": "https://www.pnas.org/doi/10.1073/pnas.2023301118",
+      "doi": "10.1073/pnas.2023301118",
+      "priority": 3,
+      "areas": [
+        "conceptual-foundations",
+        "empirical-evidence"
+      ],
+      "stance": "mixed",
+      "method": "observational",
+      "clusters": [
+        "01-fragmentation-concept"
+      ],
+      "verified": true,
+      "note": "Cross-platform comparative measurement of echo chambers; useful methodological precedent for measuring fragmentation differentially across platform/medium."
+    },
+    {
+      "id": "godi-media-frame",
+      "authors": [
+        "Kumar, R.",
+        "et al."
+      ],
+      "title": "'Godi Media': A Conceptual Frame for Captured Indian Mainstream Television",
+      "year": 2021,
+      "venue": "Indian journalism commentary and academic discussion (Ravish Kumar lineage)",
+      "type": "essay",
+      "url": null,
+      "doi": null,
+      "priority": 3,
+      "areas": [
+        "conceptual-foundations",
+        "empirical-evidence"
+      ],
+      "stance": "pro",
+      "method": "essay",
+      "clusters": [
+        "08-non-western-comparables",
+        "01-fragmentation-concept"
+      ],
+      "verified": false,
+      "note": "Provides the 'Godi media' conceptual frame the team can adapt for the Pakistani Bol/Samaa/PTV cluster of establishment-aligned outlets."
+    },
+    {
+      "id": "khan-altaf-news-media-pakistan",
+      "authors": [
+        "Khan, A."
+      ],
+      "title": "News Media and Journalism in Pakistan",
+      "year": 2021,
+      "venue": "Forman Christian College / Routledge South Asia",
+      "type": "book",
+      "url": null,
+      "doi": null,
+      "priority": 3,
+      "areas": [
+        "pakistan-specific"
+      ],
+      "stance": "neutral",
+      "method": "review",
+      "clusters": [
+        "05-pakistan-landscape"
+      ],
+      "verified": false,
+      "note": "Survey treatment of Pakistani journalism culture by Altaf Khan that provides background description against which the team's computational baseline can be situated."
+    },
+    {
+      "id": "kwak-2021-frameaxis",
+      "authors": [
+        "Kwak, H.",
+        "An, J.",
+        "Ahn, Y.-Y.",
+        "Jing, E."
+      ],
+      "title": "FrameAxis: Characterizing Microframe Bias and Intensity with Word Embeddings",
+      "year": 2021,
+      "venue": "PeerJ Computer Science",
+      "type": "paper",
+      "url": "https://peerj.com/articles/cs-644/",
+      "doi": "10.7717/peerj-cs.644",
+      "priority": 3,
+      "areas": [
+        "measurement-methods"
+      ],
+      "stance": "pro",
+      "method": "computational",
+      "clusters": [
+        "06-computational-methods",
+        "09-named-methods-deepdive"
+      ],
+      "verified": true,
+      "note": "Unsupervised microframe bias/intensity measurement requiring no labels; tractable methodological add-on if the team wants embedding-based framing on top of LLM-based methods."
+    },
+    {
+      "id": "li-2021-pstance",
+      "authors": [
+        "Li, Y.",
+        "Sosea, T.",
+        "Sawant, A.",
+        "Nair, A. J.",
+        "Inkpen, D.",
+        "Caragea, C."
+      ],
+      "title": "P-Stance: A Large Dataset for Stance Detection in Political Domain",
+      "year": 2021,
+      "venue": "Findings of ACL 2021",
+      "type": "paper",
+      "url": "https://aclanthology.org/2021.findings-acl.208/",
+      "doi": null,
+      "priority": 3,
+      "areas": [
+        "measurement-methods",
+        "empirical-evidence"
+      ],
+      "stance": "pro",
+      "method": "dataset",
+      "clusters": [
+        "09-named-methods-deepdive"
+      ],
+      "verified": true,
+      "note": "Largest stance-toward-named-politician dataset (21,574 tweets, 2020 US candidates); closest analog for the team's per-leader stance measurement on Imran Khan, Sharif, Munir."
+    },
+    {
+      "id": "media-cloud-platform",
+      "authors": [
+        "Roberts, H.",
+        "Etling, B.",
+        "Faris, R.",
+        "Benkler, Y."
+      ],
+      "title": "Media Cloud: Massive Open Source Collection of Global News on the Open Web",
+      "year": 2021,
+      "venue": "MIT Center for Civic Media",
+      "type": "dataset",
+      "url": "https://mediacloud.org/",
+      "doi": null,
+      "priority": 3,
+      "areas": [
+        "measurement-methods"
+      ],
+      "stance": "neutral",
+      "method": "dataset",
+      "clusters": [
+        "06-computational-methods"
+      ],
+      "verified": false,
+      "note": "Open-source 60K-source 2B+-story news collection platform with partial Urdu support; useful infrastructure for the team's online-news side ingestion."
+    },
+    {
+      "id": "muril-2021-google",
+      "authors": [
+        "Khanuja, S.",
+        "Bansal, D.",
+        "Mehtani, S.",
+        "Khosla, S.",
+        "Dey, A.",
+        "Gopalan, B.",
+        "Margam, D. K.",
+        "Aggarwal, P.",
+        "Nagipogu, R. T.",
+        "Dave, S.",
+        "Gupta, S.",
+        "Gali, S. C. B.",
+        "Subramanian, V.",
+        "Talukdar, P."
+      ],
+      "title": "MuRIL: Multilingual Representations for Indian Languages",
+      "year": 2021,
+      "venue": "arXiv",
+      "type": "preprint",
+      "url": "https://arxiv.org/abs/2103.10730",
+      "doi": null,
+      "priority": 3,
+      "areas": [
+        "measurement-methods",
+        "pakistan-specific"
+      ],
+      "stance": "pro",
+      "method": "computational",
+      "clusters": [
+        "06-computational-methods",
+        "05-pakistan-landscape"
+      ],
+      "verified": true,
+      "note": "Indian-languages-focused multilingual encoder including Urdu; useful South-Asian-tuned alternative to mBERT/XLM-R in the team's encoder stack."
+    },
+    {
+      "id": "spinde-2021-babe",
+      "authors": [
+        "Spinde, T.",
+        "Plank, M.",
+        "Krieger, J.-D.",
+        "Ruas, T.",
+        "Gipp, B.",
+        "Aizawa, A."
+      ],
+      "title": "Neural Media Bias Detection Using Distant Supervision With BABE - Bias Annotations By Experts",
+      "year": 2021,
+      "venue": "Findings of EMNLP",
+      "type": "paper",
+      "url": "https://aclanthology.org/2021.findings-emnlp.101/",
+      "doi": "10.18653/v1/2021.findings-emnlp.101",
+      "priority": 3,
+      "areas": [
+        "measurement-methods"
+      ],
+      "stance": "pro",
+      "method": "dataset",
+      "clusters": [
+        "06-computational-methods"
+      ],
+      "verified": true,
+      "note": "BABE expert-annotated English news bias corpus; useful methodological precedent the team can adapt to motivate a Pakistani-specific human-labeled validation set."
+    },
+    {
+      "id": "akyurek-2020-multilingual-framing",
+      "authors": [
+        "Akyürek, A. F.",
+        "Guo, L.",
+        "Elanwar, R.",
+        "Ishwar, P.",
+        "Betke, M.",
+        "Wijaya, D. T."
+      ],
+      "title": "Multi-Label and Multilingual News Framing Analysis",
+      "year": 2020,
+      "venue": "Proceedings of ACL 2020",
+      "type": "paper",
+      "url": "https://aclanthology.org/2020.acl-main.734/",
+      "doi": "10.18653/v1/2020.acl-main.734",
+      "priority": 3,
+      "areas": [
+        "measurement-methods"
+      ],
+      "stance": "neutral",
+      "method": "computational",
+      "clusters": [
+        "06-computational-methods"
+      ],
+      "verified": true,
+      "note": "Off-the-shelf transfer-learning pipeline for multilingual frame detection, a candidate baseline for cross-language Urdu/English Pakistani comparisons."
+    },
+    {
+      "id": "amjad-2020-bend-the-truth-urdu",
+      "authors": [
+        "Amjad, M.",
+        "Sidorov, G.",
+        "Zhila, A.",
+        "Gómez-Adorno, H.",
+        "Voronkov, I.",
+        "Gelbukh, A."
+      ],
+      "title": "'Bend the Truth': Benchmark Dataset for Fake News Detection in Urdu Language and Its Evaluation",
+      "year": 2020,
+      "venue": "Journal of Intelligent & Fuzzy Systems",
+      "type": "dataset",
+      "url": null,
+      "doi": "10.3233/JIFS-179905",
+      "priority": 3,
+      "areas": [
+        "measurement-methods",
+        "pakistan-specific"
+      ],
+      "stance": "pro",
+      "method": "dataset",
+      "clusters": [
+        "06-computational-methods",
+        "05-pakistan-landscape"
+      ],
+      "verified": false,
+      "note": "Earliest sizable Urdu fake-news benchmark; useful Urdu NLP infrastructure even though it only carries claim-level verdict labels rather than the team's measures."
+    },
+    {
+      "id": "conforti-2020-wtwt",
+      "authors": [
+        "Conforti, C.",
+        "Berndt, J.",
+        "Pilehvar, M. T.",
+        "Giannitsarou, C.",
+        "Toxvaerd, F.",
+        "Collier, N."
+      ],
+      "title": "Will-They-Won't-They: A Very Large Dataset for Stance Detection on Twitter",
+      "year": 2020,
+      "venue": "ACL 2020",
+      "type": "paper",
+      "url": "https://aclanthology.org/2020.acl-main.157/",
+      "doi": null,
+      "priority": 3,
+      "areas": [
+        "measurement-methods"
+      ],
+      "stance": "pro",
+      "method": "dataset",
+      "clusters": [
+        "09-named-methods-deepdive"
+      ],
+      "verified": true,
+      "note": "51K expert-annotated M&A tweets; relevant as a domain-specific stance dataset that demonstrates the difficulty of supervised stance at scale outside US politics."
+    },
+    {
+      "id": "guo-vargo-2020-global-intermedia-agenda",
+      "authors": [
+        "Guo, L.",
+        "Vargo, C. J."
+      ],
+      "title": "Global Intermedia Agenda Setting: A Big Data Analysis of International News Flow",
+      "year": 2020,
+      "venue": "Journal of Communication",
+      "type": "paper",
+      "url": "https://academic.oup.com/joc/article/70/4/499/5874255",
+      "doi": "10.1093/joc/jqaa019",
+      "priority": 3,
+      "areas": [
+        "measurement-methods",
+        "empirical-evidence"
+      ],
+      "stance": "pro",
+      "method": "network-analysis",
+      "clusters": [
+        "04-cross-outlet-empirical",
+        "06-computational-methods"
+      ],
+      "verified": true,
+      "note": "Global 67-country intermedia agenda-setting analysis; positions the team's Pakistani study within an international comparative-press tradition."
+    },
+    {
+      "id": "mokhberian-2020-moral-framing",
+      "authors": [
+        "Mokhberian, N.",
+        "Abeliuk, A.",
+        "Cummings, P.",
+        "Lerman, K."
+      ],
+      "title": "Moral Framing and Ideological Bias of News",
+      "year": 2020,
+      "venue": "Social Informatics 2020",
+      "type": "paper",
+      "url": "https://arxiv.org/abs/2009.12979",
+      "doi": "10.1007/978-3-030-60975-7_16",
+      "priority": 3,
+      "areas": [
+        "measurement-methods",
+        "empirical-evidence"
+      ],
+      "stance": "pro",
+      "method": "computational",
+      "clusters": [
+        "06-computational-methods",
+        "09-named-methods-deepdive"
+      ],
+      "verified": true,
+      "note": "Applies FrameAxis to news moral framing across outlets; closest analog to the team's cross-outlet framing comparison in the embedding-based tradition."
+    },
+    {
+      "id": "mourao-chen-2020-covering-protests-twitter",
+      "authors": [
+        "Mourão, R. R.",
+        "Chen, W."
+      ],
+      "title": "Covering Protests on Twitter: The Influences on Journalists' Social Media Portrayals of Left- and Right-Leaning Demonstrations in Brazil",
+      "year": 2020,
+      "venue": "International Journal of Press/Politics",
+      "type": "paper",
+      "url": "https://journals.sagepub.com/doi/10.1177/1940161219882653",
+      "doi": "10.1177/1940161219882653",
+      "priority": 3,
+      "areas": [
+        "empirical-evidence"
+      ],
+      "stance": "pro",
+      "method": "content-analysis",
+      "clusters": [
+        "08-non-western-comparables",
+        "04-cross-outlet-empirical"
+      ],
+      "verified": true,
+      "note": "Cross-source protest coverage comparison in Brazil; directly transferable design template for the team's PTI D-Chowk and Mahrang Baloch case studies."
+    },
+    {
+      "id": "roy-goldwasser-2020-immigration-subframes",
+      "authors": [
+        "Roy, S.",
+        "Goldwasser, D."
+      ],
+      "title": "Weakly Supervised Learning of Nuanced Frames for Analyzing Polarization in News Media",
+      "year": 2020,
+      "venue": "EMNLP 2020",
+      "type": "paper",
+      "url": "https://aclanthology.org/2020.emnlp-main.620/",
+      "doi": "10.18653/v1/2020.emnlp-main.620",
+      "priority": 3,
+      "areas": [
+        "measurement-methods",
+        "empirical-evidence"
+      ],
+      "stance": "pro",
+      "method": "computational",
+      "clusters": [
+        "06-computational-methods",
+        "09-named-methods-deepdive"
+      ],
+      "verified": true,
+      "note": "Weakly supervised subframe detection for polarization analysis; relevant alternative if Boydstun's frames are too coarse for Pakistani partisan-civil-religious cleavages."
+    },
+    {
+      "id": "shahin-2020-hindustan-dawn",
+      "authors": [
+        "Shahin, S.",
+        "Zheng, P."
+      ],
+      "title": "Hindustan Times and Dawn Over 60 Years Post-Partition",
+      "year": 2020,
+      "venue": "Journalism / Asian Journal of Communication",
+      "type": "paper",
+      "url": null,
+      "doi": null,
+      "priority": 3,
+      "areas": [
+        "pakistan-specific",
+        "empirical-evidence"
+      ],
+      "stance": "neutral",
+      "method": "discourse-analysis",
+      "clusters": [
+        "05-pakistan-landscape",
+        "08-non-western-comparables"
+      ],
+      "verified": false,
+      "note": "Qualitative deconstructive method providing a long historical baseline for India-Pakistan cross-paper comparison that the team's computational approach extends."
+    },
+    {
+      "id": "yusuf-pakistan-media-wilson",
+      "authors": [
+        "Yusuf, H."
+      ],
+      "title": "Pakistani Media and Civil-Military Relations (Wilson Center analyses)",
+      "year": 2020,
+      "venue": "Wilson Center",
+      "type": "essay",
+      "url": "https://www.wilsoncenter.org/",
+      "doi": null,
+      "priority": 3,
+      "areas": [
+        "pakistan-specific"
+      ],
+      "stance": "pro",
+      "method": "essay",
+      "clusters": [
+        "05-pakistan-landscape"
+      ],
+      "verified": false,
+      "note": "Wilson Center policy writing on Pakistani civil-military media dynamics that supplies contextual framing complementary to MOM and Bashir et al."
+    },
+    {
+      "id": "iyengar-2019-affective-polarization",
+      "authors": [
+        "Iyengar, S.",
+        "Lelkes, Y.",
+        "Levendusky, M.",
+        "Malhotra, N.",
+        "Westwood, S. J."
+      ],
+      "title": "The Origins and Consequences of Affective Polarization in the United States",
+      "year": 2019,
+      "venue": "Annual Review of Political Science",
+      "type": "review",
+      "url": "https://www.annualreviews.org/doi/10.1146/annurev-polisci-051117-073034",
+      "doi": "10.1146/annurev-polisci-051117-073034",
+      "priority": 3,
+      "areas": [
+        "conceptual-foundations"
+      ],
+      "stance": "neutral",
+      "method": "review",
+      "clusters": [
+        "01-fragmentation-concept"
+      ],
+      "verified": true,
+      "note": "Synthesis of affective polarization literature distinguishing partisan affect from issue polarization, useful background for what content fragmentation might propagate to."
+    },
+    {
+      "id": "mbert-multilingual-bert",
+      "authors": [
+        "Devlin, J.",
+        "Chang, M.-W.",
+        "Lee, K.",
+        "Toutanova, K."
+      ],
+      "title": "BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding (multilingual BERT)",
+      "year": 2019,
+      "venue": "NAACL",
+      "type": "paper",
+      "url": "https://aclanthology.org/N19-1423/",
+      "doi": "10.18653/v1/N19-1423",
+      "priority": 3,
+      "areas": [
+        "measurement-methods"
+      ],
+      "stance": "neutral",
+      "method": "computational",
+      "clusters": [
+        "06-computational-methods"
+      ],
+      "verified": true,
+      "note": "mBERT is the baseline contextual multilingual encoder usable on Urdu; foundational infrastructure for any contextual-embedding component of the team's pipeline."
+    },
+    {
+      "id": "shahin-comparative-aid-coverage",
+      "authors": [
+        "Shahin, S."
+      ],
+      "title": "Comparative Coverage of Aid in South Asian Press",
+      "year": 2019,
+      "venue": "International Communication Gazette",
+      "type": "paper",
+      "url": null,
+      "doi": null,
+      "priority": 3,
+      "areas": [
+        "pakistan-specific",
+        "empirical-evidence"
+      ],
+      "stance": "neutral",
+      "method": "content-analysis",
+      "clusters": [
+        "05-pakistan-landscape"
+      ],
+      "verified": false,
+      "note": "Tilburg-based Saif Shahin's comparative aid-coverage work providing methodological transferability and a South Asian comparative reference for the project."
+    },
+    {
+      "id": "an-2018-semaxis",
+      "authors": [
+        "An, J.",
+        "Kwak, H.",
+        "Ahn, Y.-Y."
+      ],
+      "title": "SemAxis: A Lightweight Framework to Characterize Domain-Specific Word Semantics Beyond Sentiment",
+      "year": 2018,
+      "venue": "ACL 2018",
+      "type": "paper",
+      "url": "https://aclanthology.org/P18-1228/",
+      "doi": "10.18653/v1/P18-1228",
+      "priority": 3,
+      "areas": [
+        "measurement-methods"
+      ],
+      "stance": "pro",
+      "method": "embedding",
+      "clusters": [
+        "09-named-methods-deepdive"
+      ],
+      "verified": true,
+      "note": "SemAxis projection onto antonym-axis poles; lineage anchor for the Garg/Kozlowski/Burnham family of named-dimension scoring methods used in the entity-portrayal pipeline."
+    },
+    {
+      "id": "bennett-pfetsch-2018-disrupted-public-spheres",
+      "authors": [
+        "Bennett, W. L.",
+        "Pfetsch, B."
+      ],
+      "title": "Rethinking Political Communication in a Time of Disrupted Public Spheres",
+      "year": 2018,
+      "venue": "Journal of Communication",
+      "type": "paper",
+      "url": "https://academic.oup.com/joc/article/68/2/243/4958957",
+      "doi": "10.1093/joc/jqx017",
+      "priority": 3,
+      "areas": [
+        "conceptual-foundations"
+      ],
+      "stance": "pro",
+      "method": "review",
+      "clusters": [
+        "01-fragmentation-concept"
+      ],
+      "verified": true,
+      "note": "Reframes political communication around disrupted public spheres; directly relevant to the Pakistani case where state pressure layers atop platform disruption."
+    },
+    {
+      "id": "vargo-2018-agenda-setting-fake-news",
+      "authors": [
+        "Vargo, C. J.",
+        "Guo, L.",
+        "Amazeen, M. A."
+      ],
+      "title": "The agenda-setting power of fake news: A big data analysis of the online media landscape from 2014 to 2016",
+      "year": 2018,
+      "venue": "New Media & Society 20(5)",
+      "type": "paper",
+      "url": "https://doi.org/10.1177/1461444817712086",
+      "doi": "10.1177/1461444817712086",
+      "priority": 3,
+      "areas": [
+        "empirical-evidence"
+      ],
+      "stance": "neutral",
+      "method": "network-analysis",
+      "clusters": [
+        "04-cross-outlet-empirical"
+      ],
+      "verified": true,
+      "note": "GDELT-based intermedia agenda-setting evidence demonstrating reciprocal influence between fake-news and partisan outlets, supporting the team's network framing of cross-outlet dynamics."
+    },
+    {
+      "id": "hallin-mancini-2017-ten-years-after",
+      "authors": [
+        "Hallin, D. C.",
+        "Mancini, P."
+      ],
+      "title": "Ten Years After Comparing Media Systems: What Have We Learned?",
+      "year": 2017,
+      "venue": "Political Communication",
+      "type": "paper",
+      "url": "https://www.tandfonline.com/doi/full/10.1080/10584609.2016.1233158",
+      "doi": "10.1080/10584609.2016.1233158",
+      "priority": 3,
+      "areas": [
+        "conceptual-foundations",
+        "pakistan-specific"
+      ],
+      "stance": "anti",
+      "method": "review",
+      "clusters": [
+        "03-hallin-spheres"
+      ],
+      "verified": true,
+      "note": "Self-critical retrospective warning against mechanical application of the typology to non-Western contexts; supports the team's careful adaptation rather than direct import."
+    },
+    {
+      "id": "lauderdale-herzog-2016-wordshoal",
+      "authors": [
+        "Lauderdale, B. E.",
+        "Herzog, A."
+      ],
+      "title": "Measuring Political Positions from Legislative Speech",
+      "year": 2016,
+      "venue": "Political Analysis",
+      "type": "paper",
+      "url": "https://www.cambridge.org/core/journals/political-analysis/article/measuring-political-positions-from-legislative-speech/",
+      "doi": "10.1093/pan/mpw017",
+      "priority": 3,
+      "areas": [
+        "measurement-methods"
+      ],
+      "stance": "pro",
+      "method": "model",
+      "clusters": [
+        "09-named-methods-deepdive"
+      ],
+      "verified": true,
+      "note": "Wordshoal extends Wordfish with debate-level fixed effects and Bayesian factor analysis — solves Wordfish's topic-confounding limitation the team would otherwise face on rotating Pakistani topics."
+    },
+    {
+      "id": "riaz-malala-editorials",
+      "authors": [
+        "Riaz, S.",
+        "Pasha, S. A."
+      ],
+      "title": "Editorial Treatment of Malala Yousafzai in Pakistani English Newspapers",
+      "year": 2014,
+      "venue": "Pakistani journalism studies (English-language press analysis)",
+      "type": "paper",
+      "url": null,
+      "doi": null,
+      "priority": 3,
+      "areas": [
+        "pakistan-specific",
+        "empirical-evidence"
+      ],
+      "stance": "neutral",
+      "method": "content-analysis",
+      "clusters": [
+        "05-pakistan-landscape",
+        "04-cross-outlet-empirical"
+      ],
+      "verified": false,
+      "note": "Rare single-event multi-outlet Pakistani design that demonstrates the kind of editorial-comparison the new study scales up with computation across seven cases."
+    },
+    {
+      "id": "boczkowski-mitchelstein-2013-news-gap",
+      "authors": [
+        "Boczkowski, P. J.",
+        "Mitchelstein, E."
+      ],
+      "title": "The News Gap: When the Information Preferences of the Media and the Public Diverge",
+      "year": 2013,
+      "venue": "MIT Press",
+      "type": "book",
+      "url": "https://mitpress.mit.edu/9780262019836/the-news-gap/",
+      "doi": null,
+      "priority": 3,
+      "areas": [
+        "conceptual-foundations",
+        "empirical-evidence"
+      ],
+      "stance": "neutral",
+      "method": "content-analysis",
+      "clusters": [
+        "04-cross-outlet-empirical"
+      ],
+      "verified": true,
+      "note": "Documents the gap between editor and audience choice; relevant precedent for the team's selection-bias hypothesis where outlets diverge on what they choose to cover."
+    },
+    {
+      "id": "gdelt-project",
+      "authors": [
+        "Leetaru, K.",
+        "Schrodt, P. A."
+      ],
+      "title": "GDELT: Global Database of Events, Language, and Tone",
+      "year": 2013,
+      "venue": "International Studies Association",
+      "type": "dataset",
+      "url": "https://www.gdeltproject.org/",
+      "doi": null,
+      "priority": 3,
+      "areas": [
+        "measurement-methods"
+      ],
+      "stance": "neutral",
+      "method": "dataset",
+      "clusters": [
+        "06-computational-methods"
+      ],
+      "verified": true,
+      "note": "PETRARCH-coded actor-event-actor tuple database in 65+ languages with uneven Pakistani Urdu coverage; useful infrastructure benchmark for the team's actor-event extraction pipeline."
+    },
+    {
+      "id": "robertson-arab-spring-visual",
+      "authors": [
+        "Robertson, A."
+      ],
+      "title": "Arab, Arabic Media and the Arab Spring: Visual Framing Across Five Transnational Arab News Channels",
+      "year": 2013,
+      "venue": "International Journal of Communication / Media, War & Conflict",
+      "type": "paper",
+      "url": null,
+      "doi": null,
+      "priority": 3,
+      "areas": [
+        "empirical-evidence",
+        "measurement-methods"
+      ],
+      "stance": "pro",
+      "method": "content-analysis",
+      "clusters": [
+        "08-non-western-comparables",
+        "04-cross-outlet-empirical"
+      ],
+      "verified": false,
+      "note": "Reminder that South Asian/Arab TV is heavily image-driven; supports the synthesis recommendation to add a YouTube-thumbnail visual-framing component to the Pakistani study."
+    },
+    {
+      "id": "guo-mccombs-2011-network-agenda-setting",
+      "authors": [
+        "Guo, L.",
+        "McCombs, M."
+      ],
+      "title": "Network Agenda Setting: A Third Level of Media Effects",
+      "year": 2011,
+      "venue": "Journalism & Mass Communication Quarterly",
+      "type": "paper",
+      "url": null,
+      "doi": null,
+      "priority": 3,
+      "areas": [
+        "conceptual-foundations",
+        "measurement-methods"
+      ],
+      "stance": "pro",
+      "method": "content-analysis",
+      "clusters": [
+        "02-canonical-definitions"
+      ],
+      "verified": false,
+      "note": "Third-level network agenda setting where attribute associations transfer to audiences; conceptual extension informing the team's cross-attribute analyses."
+    },
+    {
+      "id": "stroud-2011-niche-news",
+      "authors": [
+        "Stroud, N. J."
+      ],
+      "title": "Niche News: The Politics of News Choice",
+      "year": 2011,
+      "venue": "Oxford University Press",
+      "type": "book",
+      "url": "https://global.oup.com/academic/product/niche-news-9780199755509",
+      "doi": "10.1093/acprof:oso/9780199755509.001.0001",
+      "priority": 3,
+      "areas": [
+        "conceptual-foundations"
+      ],
+      "stance": "pro",
+      "method": "survey",
+      "clusters": [
+        "01-fragmentation-concept"
+      ],
+      "verified": true,
+      "note": "Empirical demonstration of partisan selective exposure across sources; supports the assumption that audiences could exploit any cross-outlet narrative divergence the team measures."
+    },
+    {
+      "id": "matthes-2009-whats-in-a-frame",
+      "authors": [
+        "Matthes, J."
+      ],
+      "title": "What's in a Frame? A Content Analysis of Media Framing Studies in the World's Leading Communication Journals, 1990-2005",
+      "year": 2009,
+      "venue": "Journalism & Mass Communication Quarterly",
+      "type": "paper",
+      "url": "https://journals.sagepub.com/doi/10.1177/107769900908600206",
+      "doi": "10.1177/107769900908600206",
+      "priority": 3,
+      "areas": [
+        "conceptual-foundations",
+        "methods-critiques"
+      ],
+      "stance": "anti",
+      "method": "content-analysis",
+      "clusters": [
+        "02-canonical-definitions",
+        "07-method-critiques"
+      ],
+      "verified": true,
+      "note": "Documents how loosely 'framing' is used in published research; cite to defend the team's operational rigor against the same critique."
+    },
+    {
+      "id": "prior-2007-post-broadcast-democracy",
+      "authors": [
+        "Prior, M."
+      ],
+      "title": "Post-Broadcast Democracy: How Media Choice Increases Inequality in Political Involvement and Polarizes Elections",
+      "year": 2007,
+      "venue": "Cambridge University Press",
+      "type": "book",
+      "url": "https://www.cambridge.org/core/books/postbroadcast-democracy/F1ED96DAB6E929F4ABC8D826AA8EAC50",
+      "doi": "10.1017/CBO9781139878425",
+      "priority": 3,
+      "areas": [
+        "conceptual-foundations"
+      ],
+      "stance": "neutral",
+      "method": "observational",
+      "clusters": [
+        "01-fragmentation-concept"
+      ],
+      "verified": true,
+      "note": "Mechanism-level account of how choice expansion widens knowledge/turnout gaps; relevant background for why a Pakistani high-choice TV environment might already be fragmented prior to digital effects."
+    },
+    {
+      "id": "blei-2003-lda",
+      "authors": [
+        "Blei, D. M.",
+        "Ng, A. Y.",
+        "Jordan, M. I."
+      ],
+      "title": "Latent Dirichlet Allocation",
+      "year": 2003,
+      "venue": "Journal of Machine Learning Research",
+      "type": "paper",
+      "url": "https://www.jmlr.org/papers/v3/blei03a.html",
+      "doi": null,
+      "priority": 3,
+      "areas": [
+        "measurement-methods"
+      ],
+      "stance": "pro",
+      "method": "topic-model",
+      "clusters": [
+        "06-computational-methods"
+      ],
+      "verified": true,
+      "note": "Canonical LDA topic-model reference; baseline method the team can compare against BERTopic for cross-source topic comparison."
+    },
+    {
+      "id": "chwe-2001-rational-ritual",
+      "authors": [
+        "Chwe, M. S.-Y."
+      ],
+      "title": "Rational Ritual: Culture, Coordination, and Common Knowledge",
+      "year": 2001,
+      "venue": "Princeton University Press",
+      "type": "book",
+      "url": "https://press.princeton.edu/books/paperback/9780691158280/rational-ritual",
+      "doi": null,
+      "priority": 3,
+      "areas": [
+        "conceptual-foundations"
+      ],
+      "stance": "neutral",
+      "method": "theoretical",
+      "clusters": [
+        "01-fragmentation-concept"
+      ],
+      "verified": true,
+      "note": "Formal common-knowledge argument the synthesis recommends for game-theoretic grounding of why mass media coordination matters."
+    },
+    {
+      "id": "adnan-2025-mobile-media-pakistan",
+      "authors": [
+        "Adnan, M."
+      ],
+      "title": "Mobile Media and News Consumption in Pakistan",
+      "year": 2025,
+      "venue": "SAGE / Taylor & Francis",
+      "type": "paper",
+      "url": null,
+      "doi": null,
+      "priority": 4,
+      "areas": [
+        "pakistan-specific"
+      ],
+      "stance": "neutral",
+      "method": "survey",
+      "clusters": [
+        "05-pakistan-landscape"
+      ],
+      "verified": false,
+      "note": "Recent Pakistani research on mobile media consumption supplying audience-side context for the team's content-focused study."
+    },
+    {
+      "id": "chipsal-2025-urdu-benchmark",
+      "authors": [
+        "CHIPSAL 2025 organizers"
+      ],
+      "title": "CHIPSAL 2025 Shared Tasks on South Asian Languages including Urdu",
+      "year": 2025,
+      "venue": "CHIPSAL workshop",
+      "type": "dataset",
+      "url": null,
+      "doi": null,
+      "priority": 4,
+      "areas": [
+        "measurement-methods",
+        "pakistan-specific"
+      ],
+      "stance": "neutral",
+      "method": "benchmark",
+      "clusters": [
+        "05-pakistan-landscape"
+      ],
+      "verified": false,
+      "note": "Recent CHIPSAL shared task covering South Asian languages including Urdu; useful as up-to-date benchmark context for the team's Urdu ASR/NLP planning."
+    },
+    {
+      "id": "ispr-2025-anti-khan-ttp",
+      "authors": [
+        "Inter-Services Public Relations"
+      ],
+      "title": "ISPR December 5 2025 Statement on Imran Khan's TTP Position",
+      "year": 2025,
+      "venue": "ISPR Press Release",
+      "type": "report",
+      "url": null,
+      "doi": null,
+      "priority": 4,
+      "areas": [
+        "pakistan-specific"
+      ],
+      "stance": "pro",
+      "method": "case-study",
+      "clusters": [
+        "05-pakistan-landscape"
+      ],
+      "verified": false,
+      "note": "ISPR's explicit December 2025 statement weaponising Khan's TTP-dialogue stance is a citable incident behind the Khyber Storm case study and confirms the convergence-on-military prediction."
+    },
+    {
+      "id": "balanced-news-india-tracker",
+      "authors": [
+        "The Balanced News"
+      ],
+      "title": "The Balanced News and Commercial Indian Bias Trackers",
+      "year": 2024,
+      "venue": "The Balanced News / commercial trackers",
+      "type": "dataset",
+      "url": null,
+      "doi": null,
+      "priority": 4,
+      "areas": [
+        "empirical-evidence"
+      ],
+      "stance": "neutral",
+      "method": "dataset",
+      "clusters": [
+        "08-non-western-comparables"
+      ],
+      "verified": false,
+      "note": "Commercial Indian bias-tracker example informing the synthesis recommendation that the team could build a small Pakistani publication-level ideological-tilt index as a side deliverable."
+    },
+    {
+      "id": "hrcp-2024-dchowk-factfinding",
+      "authors": [
+        "Human Rights Commission of Pakistan"
+      ],
+      "title": "HRCP Fact-Finding Report on PTI D-Chowk November 2024",
+      "year": 2024,
+      "venue": "Human Rights Commission of Pakistan",
+      "type": "report",
+      "url": "https://hrcp-web.org/",
+      "doi": null,
+      "priority": 4,
+      "areas": [
+        "pakistan-specific"
+      ],
+      "stance": "pro",
+      "method": "interviews",
+      "clusters": [
+        "05-pakistan-landscape"
+      ],
+      "verified": false,
+      "note": "HRCP's November 2024 fact-finding report on PTI D-Chowk casualties provides an independent ground-truth reference against which to measure cross-outlet selection and framing divergence on Case Study 1."
+    },
+    {
+      "id": "mcpt-multilingual-cpt",
+      "authors": [
+        "mCPT authors"
+      ],
+      "title": "mCPT: Multilingual Continuous Prompt Tuning for Framing Detection",
+      "year": 2023,
+      "venue": "SemEval-2023 Task 3 winning system",
+      "type": "paper",
+      "url": null,
+      "doi": null,
+      "priority": 4,
+      "areas": [
+        "measurement-methods"
+      ],
+      "stance": "pro",
+      "method": "model",
+      "clusters": [
+        "09-named-methods-deepdive"
+      ],
+      "verified": false,
+      "note": "Top-performing SemEval-2023 Task 3 system using multilingual continuous prompt tuning; reference if the team chooses fine-tuning over zero-shot LLM framing."
+    },
+    {
+      "id": "allsides-bias-ratings",
+      "authors": [
+        "AllSides editors"
+      ],
+      "title": "AllSides Media Bias Ratings",
+      "year": 2022,
+      "venue": "AllSides",
+      "type": "dataset",
+      "url": "https://www.allsides.com/media-bias",
+      "doi": null,
+      "priority": 4,
+      "areas": [
+        "measurement-methods"
+      ],
+      "stance": "neutral",
+      "method": "dataset",
+      "clusters": [
+        "06-computational-methods"
+      ],
+      "verified": false,
+      "note": "Crowd/editorial-curated US outlet ideological labels; the synthesis notes no Pakistani equivalent exists, motivating the team's possible publication-level tilt-index side deliverable."
+    },
+    {
+      "id": "habermas-2022-further-structural-transformation",
+      "authors": [
+        "Habermas, J."
+      ],
+      "title": "Reflections and Hypotheses on a Further Structural Transformation of the Political Public Sphere",
+      "year": 2022,
+      "venue": "Theory, Culture & Society",
+      "type": "paper",
+      "url": "https://journals.sagepub.com/doi/10.1177/02632764221112341",
+      "doi": "10.1177/02632764221112341",
+      "priority": 4,
+      "areas": [
+        "conceptual-foundations"
+      ],
+      "stance": "neutral",
+      "method": "theoretical",
+      "clusters": [
+        "01-fragmentation-concept"
+      ],
+      "verified": true,
+      "note": "Recent intervention on platform-era fragmentation; supports the team's positioning of the study against contemporary fragmentation debates."
+    },
+    {
+      "id": "idsa-ispr-paper",
+      "authors": [
+        "Institute for Defence Studies and Analyses"
+      ],
+      "title": "ISPR and Pakistani Media Coordination (IDSA paper)",
+      "year": 2022,
+      "venue": "Institute for Defence Studies and Analyses (IDSA)",
+      "type": "report",
+      "url": "https://www.idsa.in/",
+      "doi": null,
+      "priority": 4,
+      "areas": [
+        "pakistan-specific"
+      ],
+      "stance": "neutral",
+      "method": "essay",
+      "clusters": [
+        "05-pakistan-landscape"
+      ],
+      "verified": false,
+      "note": "Indian think-tank analysis of ISPR's media coordination role, providing an external comparative perspective on the same military-media question the team's project tests empirically."
+    },
+    {
+      "id": "fire-2021-urdu-hate-speech",
+      "authors": [
+        "FIRE 2021 organizers"
+      ],
+      "title": "FIRE 2021 Urdu Fake News and Hate Speech Detection Shared Task",
+      "year": 2021,
+      "venue": "FIRE",
+      "type": "dataset",
+      "url": null,
+      "doi": null,
+      "priority": 4,
+      "areas": [
+        "measurement-methods",
+        "pakistan-specific"
+      ],
+      "stance": "neutral",
+      "method": "benchmark",
+      "clusters": [
+        "05-pakistan-landscape"
+      ],
+      "verified": false,
+      "note": "FIRE shared-task Urdu hate-speech benchmark; useful Urdu NLP infrastructure even though not directly aligned with the team's stance/frame targets."
+    },
+    {
+      "id": "tyagi-2021-partisan-topic-embeddings",
+      "authors": [
+        "Tyagi, A.",
+        "et al."
+      ],
+      "title": "Partisanship-Aware Contextualized Topic Embeddings",
+      "year": 2021,
+      "venue": "arXiv",
+      "type": "preprint",
+      "url": null,
+      "doi": null,
+      "priority": 4,
+      "areas": [
+        "measurement-methods"
+      ],
+      "stance": "pro",
+      "method": "computational",
+      "clusters": [
+        "06-computational-methods"
+      ],
+      "verified": false,
+      "note": "Adds partisan signal to topic embeddings; relevant as a comparison point for the team's outlet-conditioned topic representations."
+    },
+    {
+      "id": "polusa-corpus",
+      "authors": [
+        "Gebhard, L.",
+        "Hamborg, F."
+      ],
+      "title": "POLUSA: A Dataset of Political News Articles from Online US News Outlets",
+      "year": 2020,
+      "venue": "JCDL",
+      "type": "dataset",
+      "url": "https://arxiv.org/abs/2005.14024",
+      "doi": null,
+      "priority": 4,
+      "areas": [
+        "measurement-methods"
+      ],
+      "stance": "neutral",
+      "method": "dataset",
+      "clusters": [
+        "06-computational-methods"
+      ],
+      "verified": false,
+      "note": "Large US partisan-news corpus used as standard infrastructure for US comparative-press work; the synthesis flags absence of any Pakistani equivalent."
+    },
+    {
+      "id": "urduhack-awesome-urdu-resource",
+      "authors": [
+        "UrduHack contributors"
+      ],
+      "title": "UrduHack / awesome-urdu Urdu NLP Resources",
+      "year": 2020,
+      "venue": "GitHub",
+      "type": "dataset",
+      "url": "https://github.com/urduhack/awesome-urdu",
+      "doi": null,
+      "priority": 4,
+      "areas": [
+        "measurement-methods",
+        "pakistan-specific"
+      ],
+      "stance": "neutral",
+      "method": "dataset",
+      "clusters": [
+        "05-pakistan-landscape"
+      ],
+      "verified": false,
+      "note": "Community catalog of Urdu NLP tools and baselines; practical infrastructure pointer for the team's Urdu engineering setup."
+    },
+    {
+      "id": "garrett-2019-partisan-media-misperception",
+      "authors": [
+        "Garrett, R. K.",
+        "Long, J. A.",
+        "Jeong, M. S."
+      ],
+      "title": "From Partisan Media to Misperception: Affective Polarization as Mediating Mechanism",
+      "year": 2019,
+      "venue": "Journal of Communication",
+      "type": "paper",
+      "url": "https://academic.oup.com/joc/article/69/5/490/5554645",
+      "doi": "10.1093/joc/jqz028",
+      "priority": 4,
+      "areas": [
+        "conceptual-foundations"
+      ],
+      "stance": "neutral",
+      "method": "survey",
+      "clusters": [
+        "01-fragmentation-concept"
+      ],
+      "verified": true,
+      "note": "Connects partisan media diet to misperception via affective polarization; useful framing for the downstream relevance of the team's content divergence measures."
+    },
+    {
+      "id": "hyperpartisan-news-corpus",
+      "authors": [
+        "Kiesel, J.",
+        "Mestre, M.",
+        "Shukla, R.",
+        "Vincent, E.",
+        "Adineh, P.",
+        "Corney, D.",
+        "Stein, B.",
+        "Potthast, M."
+      ],
+      "title": "SemEval-2019 Task 4: Hyperpartisan News Detection",
+      "year": 2019,
+      "venue": "SemEval",
+      "type": "dataset",
+      "url": "https://aclanthology.org/S19-2145/",
+      "doi": "10.18653/v1/S19-2145",
+      "priority": 4,
+      "areas": [
+        "measurement-methods"
+      ],
+      "stance": "neutral",
+      "method": "dataset",
+      "clusters": [
+        "06-computational-methods"
+      ],
+      "verified": true,
+      "note": "Hyperpartisan news detection corpus from SemEval-2019; standard partisan-news benchmark with no Pakistani analog."
+    },
+    {
+      "id": "mukhtar-khan-2019-urdu-sentiment-review",
+      "authors": [
+        "Mukhtar, N.",
+        "Khan, M. A."
+      ],
+      "title": "Urdu Sentiment Analysis Using Supervised Machine Learning Approach",
+      "year": 2019,
+      "venue": "Artificial Intelligence Review",
+      "type": "review",
+      "url": null,
+      "doi": null,
+      "priority": 4,
+      "areas": [
+        "measurement-methods",
+        "pakistan-specific"
+      ],
+      "stance": "neutral",
+      "method": "review",
+      "clusters": [
+        "05-pakistan-landscape"
+      ],
+      "verified": false,
+      "note": "Survey of supervised Urdu sentiment analysis; useful resource map for the team's Urdu-side sentiment baselines."
+    },
+    {
+      "id": "nela-gt-corpus",
+      "authors": [
+        "Norregaard, J.",
+        "Horne, B. D.",
+        "Adali, S."
+      ],
+      "title": "NELA-GT: A Large Multi-Labelled News Dataset for the Study of Misinformation in News Articles",
+      "year": 2019,
+      "venue": "ICWSM",
+      "type": "dataset",
+      "url": "https://ojs.aaai.org/index.php/ICWSM/article/view/3261",
+      "doi": null,
+      "priority": 4,
+      "areas": [
+        "measurement-methods"
+      ],
+      "stance": "neutral",
+      "method": "dataset",
+      "clusters": [
+        "06-computational-methods"
+      ],
+      "verified": false,
+      "note": "Large multi-labeled news dataset used as US misinformation infrastructure; the synthesis explicitly cites it as a Pakistani-absent benchmark."
+    },
+    {
+      "id": "wallace-2018-contemporary-gatekeeping",
+      "authors": [
+        "Wallace, J."
+      ],
+      "title": "Modelling Contemporary Gatekeeping",
+      "year": 2018,
+      "venue": "Digital Journalism",
+      "type": "paper",
+      "url": "https://www.tandfonline.com/doi/full/10.1080/21670811.2017.1343648",
+      "doi": "10.1080/21670811.2017.1343648",
+      "priority": 4,
+      "areas": [
+        "conceptual-foundations"
+      ],
+      "stance": "neutral",
+      "method": "theoretical",
+      "clusters": [
+        "02-canonical-definitions"
+      ],
+      "verified": true,
+      "note": "Updates gatekeeping theory for digital and platform contexts, relevant to the team's choice of how to scope what counts as a 'selection' decision."
+    },
+    {
+      "id": "panama-papers-framing-pakistan",
+      "authors": [
+        "Anonymous"
+      ],
+      "title": "Panama Papers Framing in Pakistani Press",
+      "year": 2017,
+      "venue": "Pakistan Journal of Social Sciences",
+      "type": "paper",
+      "url": null,
+      "doi": null,
+      "priority": 4,
+      "areas": [
+        "pakistan-specific"
+      ],
+      "stance": "neutral",
+      "method": "content-analysis",
+      "clusters": [
+        "05-pakistan-landscape"
+      ],
+      "verified": false,
+      "note": "Existing Panama leaks framing studies establish the Pakistani precedent for cross-paper political-scandal framing analysis that this project scales across seven cases."
+    },
+    {
+      "id": "sunstein-2017-republic-divided-democracy",
+      "authors": [
+        "Sunstein, C. R."
+      ],
+      "title": "#Republic: Divided Democracy in the Age of Social Media",
+      "year": 2017,
+      "venue": "Princeton University Press",
+      "type": "book",
+      "url": "https://press.princeton.edu/books/hardcover/9780691175515/republic",
+      "doi": null,
+      "priority": 4,
+      "areas": [
+        "conceptual-foundations"
+      ],
+      "stance": "mixed",
+      "method": "theoretical",
+      "clusters": [
+        "01-fragmentation-concept"
+      ],
+      "verified": true,
+      "note": "Foundational coinage of 'echo chambers'; cite as theoretical motivation for fragmentation construct but flag as the strong-form claim later empirical work has problematized."
+    },
+    {
+      "id": "claimreview-schemaorg-structured-data",
+      "authors": [
+        "Schema.org contributors"
+      ],
+      "title": "ClaimReview Schema Markup",
+      "year": 2016,
+      "venue": "Schema.org",
+      "type": "dataset",
+      "url": "https://schema.org/ClaimReview",
+      "doi": null,
+      "priority": 4,
+      "areas": [
+        "measurement-methods"
+      ],
+      "stance": "neutral",
+      "method": "dataset",
+      "clusters": [
+        "06-computational-methods"
+      ],
+      "verified": false,
+      "note": "Schema.org markup used by fact-checking organizations and underlying multilingual fact-check retrieval shared tasks; useful substrate if the team wants to cross-reference fact-checked claims."
+    },
+    {
+      "id": "dawn-leaks-2016-2018",
+      "authors": [
+        "Almeida, C."
+      ],
+      "title": "Dawn Leaks: Civilian Government's Confrontation with the Military",
+      "year": 2016,
+      "venue": "Dawn newspaper / investigative reporting",
+      "type": "report",
+      "url": null,
+      "doi": null,
+      "priority": 4,
+      "areas": [
+        "pakistan-specific"
+      ],
+      "stance": "pro",
+      "method": "interviews",
+      "clusters": [
+        "05-pakistan-landscape"
+      ],
+      "verified": false,
+      "note": "Cyril Almeida's Dawn Leaks reporting (2016, 2018) is the historical antecedent of the team's military-media coordination evidence and explains Dawn's editorial caution captured by H1."
+    },
+    {
+      "id": "khan-yusuf-2014-dharna",
+      "authors": [
+        "Khan, S.",
+        "Yusuf, H."
+      ],
+      "title": "Coverage of the 2014 PTI/PAT Dharna in Pakistani Media",
+      "year": 2016,
+      "venue": "Pakistani journalism studies",
+      "type": "paper",
+      "url": null,
+      "doi": null,
+      "priority": 4,
+      "areas": [
+        "pakistan-specific"
+      ],
+      "stance": "neutral",
+      "method": "case-study",
+      "clusters": [
+        "05-pakistan-landscape"
+      ],
+      "verified": false,
+      "note": "Earlier-protest study (2014 dharna) supplying a direct precedent for the team's PTI D-Chowk November 2024 case study."
+    },
+    {
+      "id": "levendusky-malhotra-2016-media-coverage-partisan-polarization",
+      "authors": [
+        "Levendusky, M.",
+        "Malhotra, N."
+      ],
+      "title": "Does Media Coverage of Partisan Polarization Affect Political Attitudes?",
+      "year": 2016,
+      "venue": "Political Communication",
+      "type": "paper",
+      "url": "https://www.tandfonline.com/doi/full/10.1080/10584609.2015.1038455",
+      "doi": "10.1080/10584609.2015.1038455",
+      "priority": 4,
+      "areas": [
+        "conceptual-foundations"
+      ],
+      "stance": "neutral",
+      "method": "rct",
+      "clusters": [
+        "01-fragmentation-concept"
+      ],
+      "verified": true,
+      "note": "Shows perceived polarization can exceed actual polarization; cite to caveat any inferences from the team's content measures to audience polarization."
+    },
+    {
+      "id": "perloff-2015-hostile-media-retrospective",
+      "authors": [
+        "Perloff, R. M."
+      ],
+      "title": "A Three-Decade Retrospective on the Hostile Media Effect",
+      "year": 2015,
+      "venue": "Mass Communication and Society",
+      "type": "review",
+      "url": "https://www.tandfonline.com/doi/full/10.1080/15205436.2015.1051234",
+      "doi": "10.1080/15205436.2015.1051234",
+      "priority": 4,
+      "areas": [
+        "conceptual-foundations"
+      ],
+      "stance": "neutral",
+      "method": "review",
+      "clusters": [
+        "01-fragmentation-concept"
+      ],
+      "verified": true,
+      "note": "Synthesis of hostile-media-effect literature; useful as background for distinguishing perceived from measured cross-outlet bias."
+    },
+    {
+      "id": "mccombs-2014-setting-the-agenda",
+      "authors": [
+        "McCombs, M."
+      ],
+      "title": "Setting the Agenda: Mass Media and Public Opinion",
+      "year": 2014,
+      "venue": "Polity",
+      "type": "book",
+      "url": "https://politybooks.com/bookdetail/?isbn=9780745645599",
+      "doi": null,
+      "priority": 4,
+      "areas": [
+        "conceptual-foundations"
+      ],
+      "stance": "neutral",
+      "method": "theoretical",
+      "clusters": [
+        "02-canonical-definitions"
+      ],
+      "verified": true,
+      "note": "Second-edition synthesis that introduces second-level (attribute) agenda setting; relevant for distinguishing where the team's framing analysis overlaps with attribute salience."
+    },
+    {
+      "id": "guo-vu-mccombs-2012-network-agenda-setting",
+      "authors": [
+        "Guo, L.",
+        "Vu, H. T.",
+        "McCombs, M."
+      ],
+      "title": "An Expanded Perspective on Agenda-Setting Effects: Exploring the Third Level of Agenda Setting",
+      "year": 2012,
+      "venue": "Revista de Comunicación",
+      "type": "paper",
+      "url": null,
+      "doi": null,
+      "priority": 4,
+      "areas": [
+        "conceptual-foundations",
+        "measurement-methods"
+      ],
+      "stance": "pro",
+      "method": "content-analysis",
+      "clusters": [
+        "02-canonical-definitions"
+      ],
+      "verified": false,
+      "note": "Extended treatment of third-level network agenda setting; relevant for the team's case where attribute-association transfer can be observed across outlets."
+    },
+    {
+      "id": "hansen-kim-2011-media-biased-meta-analysis",
+      "authors": [
+        "Hansen, G. J.",
+        "Kim, H."
+      ],
+      "title": "Is the Media Biased Against Me? A Meta-Analysis of the Hostile Media Effect",
+      "year": 2011,
+      "venue": "Communication Research Reports",
+      "type": "paper",
+      "url": "https://www.tandfonline.com/doi/abs/10.1080/08824096.2011.565280",
+      "doi": "10.1080/08824096.2011.565280",
+      "priority": 4,
+      "areas": [
+        "conceptual-foundations"
+      ],
+      "stance": "neutral",
+      "method": "review",
+      "clusters": [
+        "01-fragmentation-concept"
+      ],
+      "verified": true,
+      "note": "Meta-analytic synthesis of hostile-media-effect strength across studies; provides effect-size context for any audience-perception extensions of the team's work."
+    },
+    {
+      "id": "pariser-2011-filter-bubble",
+      "authors": [
+        "Pariser, E."
+      ],
+      "title": "The Filter Bubble: What the Internet Is Hiding from You",
+      "year": 2011,
+      "venue": "Penguin",
+      "type": "book",
+      "url": "https://www.penguinrandomhouse.com/books/305827/the-filter-bubble-by-eli-pariser/",
+      "doi": null,
+      "priority": 4,
+      "areas": [
+        "conceptual-foundations"
+      ],
+      "stance": "mixed",
+      "method": "essay",
+      "clusters": [
+        "01-fragmentation-concept"
+      ],
+      "verified": true,
+      "note": "Coined 'filter bubble'; cite as origin of a concept the team should explicitly NOT claim to measure (audience-level exposure rather than content fragmentation)."
+    },
+    {
+      "id": "syed-2010-sentiunits-urdu",
+      "authors": [
+        "Syed, A. Z.",
+        "Aslam, M.",
+        "Martinez-Enriquez, A. M."
+      ],
+      "title": "Lexicon Based Sentiment Analysis of Urdu Text Using SentiUnits",
+      "year": 2010,
+      "venue": "MICAI",
+      "type": "paper",
+      "url": null,
+      "doi": "10.1007/978-3-642-16761-4_4",
+      "priority": 4,
+      "areas": [
+        "measurement-methods",
+        "pakistan-specific"
+      ],
+      "stance": "neutral",
+      "method": "computational",
+      "clusters": [
+        "05-pakistan-landscape"
+      ],
+      "verified": true,
+      "note": "Early Urdu sentiment lexicon work providing baseline infrastructure for any sentiment component of the team's measurement stack."
+    },
+    {
+      "id": "tignol-2010-emergency-2007",
+      "authors": [
+        "Tignol, E.",
+        "et al."
+      ],
+      "title": "Pakistan's 2007 Emergency and the Press",
+      "year": 2010,
+      "venue": "Contemporary South Asia",
+      "type": "paper",
+      "url": null,
+      "doi": null,
+      "priority": 4,
+      "areas": [
+        "pakistan-specific"
+      ],
+      "stance": "neutral",
+      "method": "historical",
+      "clusters": [
+        "05-pakistan-landscape"
+      ],
+      "verified": false,
+      "note": "Historical case study of Musharraf's 2007 emergency providing baseline context for the team's longer-term arc of regulatory-pressure events."
+    },
+    {
+      "id": "shoemaker-vos-2009-gatekeeping",
+      "authors": [
+        "Shoemaker, P. J.",
+        "Vos, T. P."
+      ],
+      "title": "Gatekeeping Theory",
+      "year": 2009,
+      "venue": "Routledge",
+      "type": "book",
+      "url": "https://www.routledge.com/Gatekeeping-Theory/Shoemaker-Vos/p/book/9780415981385",
+      "doi": null,
+      "priority": 4,
+      "areas": [
+        "conceptual-foundations"
+      ],
+      "stance": "neutral",
+      "method": "theoretical",
+      "clusters": [
+        "02-canonical-definitions"
+      ],
+      "verified": true,
+      "note": "Canonical gatekeeping framework; cite for selection-bias lineage behind the team's selection-vs-framing decomposition hypothesis."
+    },
+    {
+      "id": "bennett-2007-when-press-fails",
+      "authors": [
+        "Bennett, W. L.",
+        "Lawrence, R. G.",
+        "Livingston, S."
+      ],
+      "title": "When the Press Fails: Political Power and the News Media from Iraq to Katrina",
+      "year": 2007,
+      "venue": "University of Chicago Press",
+      "type": "book",
+      "url": "https://press.uchicago.edu/ucp/books/book/chicago/W/bo5586908.html",
+      "doi": null,
+      "priority": 4,
+      "areas": [
+        "conceptual-foundations"
+      ],
+      "stance": "pro",
+      "method": "case-study",
+      "clusters": [
+        "02-canonical-definitions"
+      ],
+      "verified": true,
+      "note": "Extended elaboration of indexing theory through US case studies; supports the indexing mechanism as predictive for Pakistani military coverage."
+    },
+    {
+      "id": "reese-2007-framing-project",
+      "authors": [
+        "Reese, S. D."
+      ],
+      "title": "The Framing Project: A Bridging Model for Media Research Revisited",
+      "year": 2007,
+      "venue": "Journal of Communication",
+      "type": "paper",
+      "url": "https://academic.oup.com/joc/article-abstract/57/1/148/4102612",
+      "doi": "10.1111/j.1460-2466.2006.00334.x",
+      "priority": 4,
+      "areas": [
+        "conceptual-foundations"
+      ],
+      "stance": "neutral",
+      "method": "theoretical",
+      "clusters": [
+        "02-canonical-definitions"
+      ],
+      "verified": true,
+      "note": "Bridges framing across micro/macro levels and traditions; supports the team's choice of a single canonical definition before measurement."
+    },
+    {
+      "id": "habermas-2006-political-communication-media-society",
+      "authors": [
+        "Habermas, J."
+      ],
+      "title": "Political Communication in Media Society: Does Democracy Still Enjoy an Epistemic Dimension?",
+      "year": 2006,
+      "venue": "Communication Theory",
+      "type": "paper",
+      "url": "https://academic.oup.com/ct/article/16/4/411/4110931",
+      "doi": "10.1111/j.1468-2885.2006.00280.x",
+      "priority": 4,
+      "areas": [
+        "conceptual-foundations"
+      ],
+      "stance": "neutral",
+      "method": "theoretical",
+      "clusters": [
+        "01-fragmentation-concept"
+      ],
+      "verified": true,
+      "note": "Updates the public-sphere argument with attention to mediated political communication, useful for situating the team's democracy framing."
+    },
+    {
+      "id": "dahlgren-2005-internet-public-spheres",
+      "authors": [
+        "Dahlgren, P."
+      ],
+      "title": "The Internet, Public Spheres, and Political Communication: Dispersion and Deliberation",
+      "year": 2005,
+      "venue": "Political Communication",
+      "type": "paper",
+      "url": "https://www.tandfonline.com/doi/abs/10.1080/10584600590933160",
+      "doi": "10.1080/10584600590933160",
+      "priority": 4,
+      "areas": [
+        "conceptual-foundations"
+      ],
+      "stance": "neutral",
+      "method": "theoretical",
+      "clusters": [
+        "01-fragmentation-concept"
+      ],
+      "verified": true,
+      "note": "Theoretical extension of public-sphere arguments to internet dispersion; supports the team's framing of fragmentation as a normative problem."
+    },
+    {
+      "id": "stromback-2005-four-models-democracy",
+      "authors": [
+        "Strömbäck, J."
+      ],
+      "title": "In Search of a Standard: Four Models of Democracy and Their Normative Implications for Journalism",
+      "year": 2005,
+      "venue": "Journalism Studies",
+      "type": "paper",
+      "url": "https://www.tandfonline.com/doi/abs/10.1080/14616700500131950",
+      "doi": "10.1080/14616700500131950",
+      "priority": 4,
+      "areas": [
+        "conceptual-foundations"
+      ],
+      "stance": "neutral",
+      "method": "theoretical",
+      "clusters": [
+        "01-fragmentation-concept"
+      ],
+      "verified": true,
+      "note": "Provides the normative scaffold that the meaning of 'fragmentation' depends on which democratic model is invoked; useful to defend the team's normative choices."
+    },
+    {
+      "id": "gunther-schmitt-2004-hostile-media-boundaries",
+      "authors": [
+        "Gunther, A. C.",
+        "Schmitt, K."
+      ],
+      "title": "Mapping Boundaries of the Hostile Media Effect",
+      "year": 2004,
+      "venue": "Journal of Communication",
+      "type": "paper",
+      "url": "https://academic.oup.com/joc/article-abstract/54/1/55/4101822",
+      "doi": "10.1111/j.1460-2466.2004.tb02613.x",
+      "priority": 4,
+      "areas": [
+        "conceptual-foundations"
+      ],
+      "stance": "neutral",
+      "method": "rct",
+      "clusters": [
+        "01-fragmentation-concept"
+      ],
+      "verified": true,
+      "note": "Identifies boundary conditions on hostile-media perceptions; useful caveat when interpreting Pakistani audience reactions to measured divergence."
+    },
+    {
+      "id": "habermas-1989-structural-transformation",
+      "authors": [
+        "Habermas, J."
+      ],
+      "title": "The Structural Transformation of the Public Sphere: An Inquiry into a Category of Bourgeois Society",
+      "year": 1989,
+      "venue": "MIT Press",
+      "type": "book",
+      "url": "https://mitpress.mit.edu/9780262581080/the-structural-transformation-of-the-public-sphere/",
+      "doi": null,
+      "priority": 4,
+      "areas": [
+        "conceptual-foundations"
+      ],
+      "stance": "neutral",
+      "method": "theoretical",
+      "clusters": [
+        "01-fragmentation-concept"
+      ],
+      "verified": true,
+      "note": "Canonical public-sphere reference; provides the normative grounding for why narrative fragmentation matters democratically."
+    },
+    {
+      "id": "iyengar-kinder-1987-news-that-matters",
+      "authors": [
+        "Iyengar, S.",
+        "Kinder, D. R."
+      ],
+      "title": "News That Matters: Television and American Opinion",
+      "year": 1987,
+      "venue": "University of Chicago Press",
+      "type": "book",
+      "url": "https://press.uchicago.edu/ucp/books/book/chicago/N/bo9554082.html",
+      "doi": null,
+      "priority": 4,
+      "areas": [
+        "conceptual-foundations"
+      ],
+      "stance": "neutral",
+      "method": "rct",
+      "clusters": [
+        "02-canonical-definitions"
+      ],
+      "verified": true,
+      "note": "Original priming demonstration; cite to keep priming terminologically distinct from framing in the team's RQ mapping."
+    },
+    {
+      "id": "vallone-1985-hostile-media-phenomenon",
+      "authors": [
+        "Vallone, R. P.",
+        "Ross, L.",
+        "Lepper, M. R."
+      ],
+      "title": "The Hostile Media Phenomenon: Biased Perception and Perceptions of Media Bias in Coverage of the Beirut Massacre",
+      "year": 1985,
+      "venue": "Journal of Personality and Social Psychology",
+      "type": "paper",
+      "url": "https://psycnet.apa.org/doi/10.1037/0022-3514.49.3.577",
+      "doi": "10.1037/0022-3514.49.3.577",
+      "priority": 4,
+      "areas": [
+        "conceptual-foundations"
+      ],
+      "stance": "neutral",
+      "method": "rct",
+      "clusters": [
+        "01-fragmentation-concept"
+      ],
+      "verified": true,
+      "note": "Original hostile-media-effect demonstration; relevant for the team's interpretation of why measured divergence may be smaller than perceived divergence."
+    },
+    {
+      "id": "greimas-1966-actantial",
+      "authors": [
+        "Greimas, A. J."
+      ],
+      "title": "Structural Semantics: An Attempt at a Method",
+      "year": 1983,
+      "venue": "University of Nebraska Press",
+      "type": "book",
+      "url": null,
+      "doi": null,
+      "priority": 4,
+      "areas": [
+        "conceptual-foundations",
+        "measurement-methods"
+      ],
+      "stance": "neutral",
+      "method": "theoretical",
+      "clusters": [
+        "02-canonical-definitions",
+        "09-named-methods-deepdive",
+        "01-fragmentation-concept"
+      ],
+      "verified": true,
+      "note": "Source of the actantial model (Subject/Object/Sender/Receiver/Helper/Opponent); foundational lineage for the team's narrative-graph option but treated as theoretical not implementational."
+    },
+    {
+      "id": "goffman-1974-frame-analysis",
+      "authors": [
+        "Goffman, E."
+      ],
+      "title": "Frame Analysis: An Essay on the Organization of Experience",
+      "year": 1974,
+      "venue": "Harper & Row",
+      "type": "book",
+      "url": "https://www.worldcat.org/title/frame-analysis-an-essay-on-the-organization-of-experience/oclc/863561",
+      "doi": null,
+      "priority": 4,
+      "areas": [
+        "conceptual-foundations"
+      ],
+      "stance": "neutral",
+      "method": "theoretical",
+      "clusters": [
+        "02-canonical-definitions"
+      ],
+      "verified": true,
+      "note": "Sociological origin of frame analysis; cite for lineage when defining how the team's computational frame measures relate to canonical theory."
+    },
+    {
+      "id": "roberts-2014-stm",
+      "authors": [
+        "Roberts, M. E.",
+        "Stewart, B. M.",
+        "Tingley, D."
+      ],
+      "title": "stm: An R Package for Structural Topic Models",
+      "year": 2014,
+      "venue": "American Journal of Political Science / Journal of Statistical Software",
+      "type": "paper",
+      "url": "https://www.structuraltopicmodel.com/",
+      "doi": null,
+      "priority": 2,
+      "areas": [
+        "measurement-methods"
+      ],
+      "stance": "pro",
+      "method": "topic-model",
+      "clusters": [
+        "06-computational-methods"
+      ],
+      "verified": true,
+      "note": "Structural Topic Model is the standard political-science cross-source topic-comparison method because outlet/source effects are first-class — adoptable as a baseline alongside multilingual BERTopic for Pakistani outlet-level topic shares."
+    }
+  ]
+}
