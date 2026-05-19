@@ -37,9 +37,9 @@
     },
     "stats": {
       "by_priority": {
-        "1": 34,
+        "1": 35,
         "2": 66,
-        "3": 79,
+        "3": 78,
         "4": 43
       },
       "by_stance": {
@@ -2380,7 +2380,7 @@
       "type": "paper",
       "url": "https://journals.sagepub.com/doi/10.1177/1077699016679976",
       "doi": "10.1177/1077699016679976",
-      "priority": 2,
+      "priority": 1,
       "areas": [
         "measurement-methods",
         "empirical-evidence"
@@ -2392,7 +2392,7 @@
         "06-computational-methods"
       ],
       "verified": true,
-      "note": "Semantic-network intermedia agenda-setting on millions of US articles, finding partisan outlets lead the agenda; methodological template for the team's outlet-level lead-follow analysis."
+      "note": "Closest empirical comparator: network-based intermedia agenda-setting analysis showing partisan online outlets lead the broader US agenda — directly portable as the design template for measuring lead-follow dynamics between Pakistani TV, online, and print outlets."
     },
     {
       "id": "hamilton-2016-diachronic-embeddings",
@@ -3712,7 +3712,7 @@
       "type": "review",
       "url": "https://aclanthology.org/2022.emnlp-main.633/",
       "doi": "10.18653/v1/2022.emnlp-main.633",
-      "priority": 3,
+      "priority": 2,
       "areas": [
         "measurement-methods"
       ],
@@ -3723,7 +3723,7 @@
         "06-computational-methods"
       ],
       "verified": true,
-      "note": "Recent survey of computational framing methods; situates the team's frame-detection choices within the field."
+      "note": "EMNLP 2022 survey of computational framing analysis approaches — the single review to cite when committing to a framing-detection method for Pakistani outlets; covers MFC, frame-axis, LLM frame classification, and cross-lingual transfer."
     },
     {
       "id": "card-2022-140-years-political-speeches",

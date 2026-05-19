@@ -65,6 +65,14 @@
   .strategy-section .phase-num { display: inline-block; background: #047857; color: #fff; padding: 2px 6px; border-radius: 3px; font-size: 10px; margin-right: 6px; }
   .strategy-section .phase-blurb { display: block; margin-top: 4px; color: #4b5563; font-size: 11px; font-weight: 400; text-transform: none; letter-spacing: 0; line-height: 1.4; }
 
+  /* Fundamentals tab — per-source rationale shown inline */
+  .fundamentals-intro { padding: 12px 16px; font-size: 12px; color: #4b5563; background: #fef3c7; border-bottom: 1px solid #fde68a; line-height: 1.5; }
+  .fundamentals-intro strong { color: #92400e; }
+  .rationale { padding: 6px 16px 12px 42px; font-size: 12px; color: #4b5563; background: #fffbeb; border-bottom: 1px solid #f0f0f0; line-height: 1.5; font-style: italic; }
+  .rationale strong { font-style: normal; color: #92400e; font-weight: 600; }
+  .alt-row { padding: 4px 16px 4px 42px; font-size: 11px; color: #6b7280; background: #fffbeb; border-bottom: 1px solid #f0f0f0; }
+  .alt-row em { color: #92400e; }
+
   /* Badges */
   .badge { display: inline-block; padding: 1px 6px; border-radius: 3px; font-size: 10px; font-weight: 500; white-space: nowrap; }
   .badge-priority-1 { background: #fef2f2; color: #dc2626; border: 1px solid #fecaca; }
@@ -140,6 +148,7 @@
   <div class="sidebar">
     <div class="tabs">
       <div class="tab active" data-tab="all">All Sources</div>
+      <div class="tab" data-tab="fundamentals">Fundamentals</div>
       <div class="tab" data-tab="strategy">Reading Strategy</div>
     </div>
     <div class="sidebar-header">
@@ -385,6 +394,44 @@ const STRATEGY = [
 const strategyIds = new Set(STRATEGY.flatMap(s => s.ids));
 const priorityLabel = { 1: 'must-read', 2: 'important', 3: 'supporting', 4: 'context' };
 
+// "Fundamentals" — the eight-paper bare-minimum read list with per-source rationale.
+// Order matters: theory first, then mechanism, then methodological template, then comparator, then position-against.
+const FUNDAMENTALS = [
+  {
+    id: 'entman-1993-framing-fractured-paradigm',
+    rationale: '<strong>8 pages. Read it.</strong> You\'re going to be talking about framing — you can\'t fake this one. Memorize the four functions: problem definition, causal interpretation, moral evaluation, treatment recommendation.'
+  },
+  {
+    id: 'hallin-1986-uncensored-war',
+    rationale: '<strong>~30 pages, chapter 5 only.</strong> Read this only if you operationalize the spheres (consensus / legitimate controversy / deviance) — which the synthesis pushes for. Skip the rest of the book.'
+  },
+  {
+    id: 'van-aelst-2017-high-choice-environment',
+    rationale: '<strong>~30 pages. Read fully.</strong> The recent synthesis your motivation actually leans on. Introduces the "shared information arena" — the normative baseline that fragmentation threatens.'
+  },
+  {
+    id: 'bashir-2021-self-censorship-pakistan',
+    rationale: '<strong>Short empirical piece.</strong> Read it; cite it as your predicted mechanism. 88% of Pakistani journalists self-censor — 64% on military, 62% on religion. This is what makes H1 (convergence-on-military) predictable in advance.'
+  },
+  {
+    id: 'budak-2016-fair-balanced',
+    rationale: '<strong>Read it.</strong> Your closest methodological template: classify the political subset, then crowdsource framing on the relevant ones. Adopt as the spine of the design.'
+  },
+  {
+    id: 'vargo-guo-2017-networks-intermedia-agenda-setting',
+    rationale: '<strong>Read it.</strong> Your closest empirical comparator: network-based intermedia agenda-setting on millions of US articles, partisan online outlets leading the agenda. The lead-follow analysis directly transfers to Pakistani TV / online / print.'
+  },
+  {
+    id: 'arxiv-2509-20419-wartime-pakistan',
+    rationale: '<strong>Read it to position against it.</strong> The only directly comparable Pakistani CS study (2,639 articles, 3 English newspapers, GPT-4.1 Nano). Methodologically thin — single classifier, English-only, three outlets — which is exactly the gap you fill.'
+  },
+  {
+    id: 'ali-hassan-2022-computational-framing-survey',
+    rationale: '<strong>One review of computational framing.</strong> Read Ali &amp; Hassan\'s EMNLP 2022 survey, or Mendelsohn et al. (2021 immigration / 2023 hero-villain-victim) — depending on what method you actually commit to in Phase 7.',
+    alternates: ['mendelsohn-2021-immigration-tweets-frames', 'mendelsohn-2023-hero-villain-victim']
+  }
+];
+
 fetch('sources.json')
   .then(r => r.json())
   .then(payload => {
@@ -401,7 +448,7 @@ function setTab(tab) {
   document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t.dataset.tab === tab));
   const fp = document.getElementById('filters-panel');
   const sb = document.getElementById('sort-bar');
-  if (tab === 'strategy') {
+  if (tab === 'strategy' || tab === 'fundamentals') {
     fp.style.display = 'none';
     sb.style.display = 'none';
   } else {
@@ -415,7 +462,44 @@ document.querySelectorAll('.tab').forEach(t => t.addEventListener('click', () =>
 
 function render() {
   if (currentTab === 'strategy') return renderStrategy();
+  if (currentTab === 'fundamentals') return renderFundamentals();
   renderAll();
+}
+
+function renderFundamentals() {
+  const q = document.getElementById('search').value.toLowerCase().trim();
+  let html = '';
+
+  html += `<div class="fundamentals-intro">
+    <strong>The minimum read list.</strong> If you read nothing else, read these eight. Each is the canonical anchor in its slot &mdash; theory, mechanism, methodological template, empirical comparator, position-against. Total: roughly 150 pages.
+  </div>`;
+
+  let totalCount = 0;
+  let readCount = 0;
+  for (const f of FUNDAMENTALS) {
+    const d = DATA.find(x => x.id === f.id);
+    if (!d) continue;
+    if (q && !matchesFilters(d, q)) continue;
+    totalCount += 1;
+    if (readState[d.id]) readCount += 1;
+    html += docItemHTML(d);
+    html += `<div class="rationale">${f.rationale}</div>`;
+    if (f.alternates) {
+      const alts = f.alternates
+        .map(id => DATA.find(x => x.id === id))
+        .filter(Boolean);
+      if (alts.length) {
+        html += `<div class="alt-row"><em>Or, alternatively:</em></div>`;
+        for (const alt of alts) {
+          html += docItemHTML(alt);
+        }
+      }
+    }
+  }
+
+  document.getElementById('doc-count').textContent = `${totalCount} fundamentals (${readCount} read)`;
+  document.getElementById('doc-list').innerHTML = html;
+  bindDocItems();
 }
 
 function matchesFilters(d, q) {
