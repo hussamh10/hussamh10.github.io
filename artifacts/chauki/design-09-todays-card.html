@@ -1,0 +1,313 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Chowki — Today's Card</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Noto+Nastaliq+Urdu&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&display=swap" rel="stylesheet">
+<style>
+  :root{--newsprint:#F1ECDE;--ink:#1A1612;--pitch:#1F4D2C;--ball:#9B2118;--white:#FBFBF8;--lbw:#D9A21A;--rule:#8B8478;}
+  *{box-sizing:border-box;margin:0;padding:0;border-radius:0 !important;}
+  html,body{background:var(--newsprint);color:var(--ink);font-family:'JetBrains Mono',monospace;font-size:13px;line-height:1.5;-webkit-font-smoothing:antialiased;}
+  body{background-image:radial-gradient(rgba(26,22,18,0.025) 1px, transparent 1px);background-size:3px 3px;}
+  .page{max-width:1120px;margin:0 auto;padding:40px 48px 64px;}
+  .mono{font-family:'JetBrains Mono',monospace;font-variant-numeric:tabular-nums;}
+  .strip{display:flex;justify-content:space-between;align-items:baseline;border-top:2px solid var(--ink);border-bottom:1px solid var(--ink);padding:8px 0;font-size:11px;text-transform:uppercase;letter-spacing:0.12em;}
+  .strip .mid{letter-spacing:0.2em;} .strip .right{color:var(--ball);font-weight:700;}
+  .matchup{display:grid;grid-template-columns:1fr auto 1fr;align-items:end;padding:18px 0 14px;border-bottom:1px solid var(--rule);}
+  .team{font-family:'Playfair Display',serif;}
+  .team .label{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.22em;color:var(--rule);text-transform:uppercase;margin-bottom:6px;}
+  .team .name{font-size:30px;font-weight:700;font-style:italic;line-height:1;}
+  .team.right{text-align:right;} .team.right .name{color:var(--pitch);}
+  .urdu{font-family:'Noto Nastaliq Urdu',serif;font-size:18px;color:var(--ink);margin-top:6px;}
+  .vs{font-family:'Playfair Display',serif;font-style:italic;font-size:22px;color:var(--rule);padding:0 18px 4px;}
+  .place{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.18em;color:var(--rule);margin-top:8px;text-transform:uppercase;}
+  .headline-wrap{padding:36px 0 18px;border-bottom:3px solid var(--pitch);}
+  .role-label{font-size:10px;letter-spacing:0.32em;text-transform:uppercase;color:var(--ball);font-weight:700;margin-bottom:14px;font-family:'JetBrains Mono',monospace;}
+  .headline{font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:54px;line-height:1.02;letter-spacing:-0.01em;color:var(--ink);max-width:880px;}
+  .subhead{margin-top:14px;font-size:11px;letter-spacing:0.22em;text-transform:uppercase;color:var(--ink);font-family:'JetBrains Mono',monospace;}
+  .subhead span{color:var(--rule);margin:0 8px;}
+  .infoblock{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--rule);}
+  .infoblock .cell{padding:12px 0;font-size:11px;border-right:1px dashed var(--rule);padding-right:14px;font-family:'JetBrains Mono',monospace;}
+  .infoblock .cell:last-child{border-right:none;}
+  .infoblock .k{font-size:9.5px;letter-spacing:0.22em;text-transform:uppercase;color:var(--rule);display:block;margin-bottom:4px;}
+  .infoblock .v{font-size:13px;color:var(--ink);}
+  .innings{display:flex;justify-content:space-between;align-items:center;background:var(--pitch);color:var(--newsprint);padding:10px 14px;font-family:'JetBrains Mono',monospace;}
+  .innings .l{font-size:11px;letter-spacing:0.24em;text-transform:uppercase;font-weight:700;}
+  .innings .r{font-size:13px;font-weight:500;letter-spacing:0.1em;}
+  .innings .r b{font-weight:700;font-size:15px;}
+  .grid{display:grid;grid-template-columns:1fr 268px;gap:0;}
+  .scorecard{border-right:1px solid var(--ink);}
+  table.bat{width:100%;border-collapse:collapse;font-family:'JetBrains Mono',monospace;font-variant-numeric:tabular-nums;}
+  table.bat thead th{text-align:left;font-size:9.5px;letter-spacing:0.18em;text-transform:uppercase;color:var(--ink);padding:10px 8px;border-bottom:2px solid var(--ink);font-weight:700;background:var(--newsprint);}
+  table.bat thead th.num{text-align:right;}
+  table.bat td{padding:14px 8px;border-bottom:1px solid var(--rule);vertical-align:top;font-size:12.5px;}
+  table.bat td.num{text-align:right;font-variant-numeric:tabular-nums;}
+  table.bat td.player{padding-left:0;}
+  .pname{display:flex;gap:12px;align-items:flex-start;}
+  .thumb{width:74px;height:54px;flex-shrink:0;background:var(--ink);position:relative;overflow:hidden;border:1px solid var(--ink);}
+  .pname b{font-family:'Playfair Display',serif;font-size:16px;font-weight:700;display:block;line-height:1.05;}
+  .pname .src{font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:var(--rule);margin-top:4px;display:block;}
+  .pname .pos{display:inline-block;font-size:9.5px;letter-spacing:0.2em;text-transform:uppercase;color:var(--ball);font-weight:700;margin-top:6px;}
+  .dismiss{font-size:12px;color:var(--ink);line-height:1.45;}
+  .dismiss .dtag{display:inline-block;font-size:9.5px;letter-spacing:0.22em;text-transform:uppercase;color:var(--ball);font-weight:700;margin-right:4px;}
+  .dismiss .how{font-style:italic;font-family:'Playfair Display',serif;font-size:13px;display:block;margin-top:3px;color:var(--ink);}
+  .bowler{font-size:11.5px;color:var(--ink);}
+  .thumb.tv{background:#0A0A0C;}
+  .thumb.tv .ch{position:absolute;top:3px;right:4px;font-size:7px;color:#E2E2E0;letter-spacing:0.12em;font-weight:700;}
+  .thumb.tv .ts{position:absolute;top:3px;left:4px;font-size:7px;color:#E2E2E0;letter-spacing:0.08em;}
+  .thumb.tv .chyron{position:absolute;left:0;right:0;bottom:0;background:var(--ball);color:#FBFBF8;font-size:5.2px;line-height:1.25;letter-spacing:0.04em;padding:3px 4px;font-weight:500;}
+  .thumb.tv .anchor{position:absolute;left:6px;bottom:14px;width:18px;height:18px;background:#3A3530;}
+  .thumb.tv .anchor::after{content:"";position:absolute;left:5px;top:3px;width:8px;height:8px;background:#5A4A3A;}
+  .thumb.tv .desk{position:absolute;left:0;right:0;bottom:11px;height:4px;background:#2A2520;}
+  .thumb.yt{background:#161412;}
+  .thumb.yt .frame{position:absolute;inset:4px 4px 16px;background:#2A211A;border:1px solid #3A2E22;}
+  .thumb.yt .play{position:absolute;left:50%;top:42%;transform:translate(-50%,-50%);width:0;height:0;border-left:8px solid #FBFBF8;border-top:5px solid transparent;border-bottom:5px solid transparent;}
+  .thumb.yt .stamp{position:absolute;top:3px;left:3px;background:var(--ball);color:#FBFBF8;font-size:5.5px;letter-spacing:0.06em;padding:1px 3px;font-weight:700;text-transform:uppercase;}
+  .thumb.yt .ttl{position:absolute;left:4px;right:4px;bottom:2px;font-size:5.2px;color:#E2E2E0;line-height:1.2;letter-spacing:0.02em;}
+  .thumb.wa{background:#0F1410;}
+  .thumb.wa .b1,.thumb.wa .b3{position:absolute;left:3px;background:#1F4D2C;color:#FBFBF8;font-size:4.6px;line-height:1.2;padding:2px 3px;max-width:54px;letter-spacing:0.02em;}
+  .thumb.wa .b1{top:5px;} .thumb.wa .b3{bottom:3px;}
+  .thumb.wa .b2{position:absolute;right:3px;top:22px;background:#2A2520;color:#E2E2E0;font-size:4.6px;line-height:1.2;padding:2px 3px;max-width:42px;letter-spacing:0.02em;}
+  .thumb.wa .fwd{position:absolute;top:1px;right:3px;font-size:4.5px;color:#8B8478;letter-spacing:0.06em;}
+  .totals{display:grid;grid-template-columns:repeat(6,1fr);border-bottom:2px solid var(--ink);background:var(--white);}
+  .totals .cell{padding:12px 10px;border-right:1px solid var(--rule);font-family:'JetBrains Mono',monospace;}
+  .totals .cell:last-child{border-right:none;}
+  .totals .k{font-size:9px;letter-spacing:0.22em;text-transform:uppercase;color:var(--rule);display:block;margin-bottom:4px;}
+  .totals .v{font-size:18px;font-weight:700;color:var(--ink);}
+  .totals .v.red{color:var(--ball);} .totals .v.green{color:var(--pitch);}
+  .meta-rows{padding:14px 0;border-bottom:1px solid var(--rule);}
+  .meta-row{display:grid;grid-template-columns:140px 1fr;padding:6px 0;font-size:12px;align-items:baseline;font-family:'JetBrains Mono',monospace;}
+  .meta-row .k{font-size:9.5px;letter-spacing:0.22em;text-transform:uppercase;color:var(--rule);font-weight:700;}
+  .meta-row .v{font-variant-numeric:tabular-nums;color:var(--ink);}
+  .meta-row .v b{color:var(--ball);}
+  .dnb{padding:12px 0;font-size:11.5px;color:var(--ink);font-family:'JetBrains Mono',monospace;}
+  .dnb .k{font-size:9.5px;letter-spacing:0.22em;text-transform:uppercase;color:var(--rule);font-weight:700;margin-right:10px;}
+  .dnb em{font-family:'Playfair Display',serif;font-style:italic;color:var(--ink);}
+  .side{padding:0 0 0 22px;}
+  .drs{border:2px solid var(--ink);background:var(--white);padding:16px 16px 18px;}
+  .drs .hdr{font-size:9.5px;letter-spacing:0.26em;text-transform:uppercase;font-weight:700;color:var(--ball);border-bottom:1px solid var(--ink);padding-bottom:8px;margin-bottom:12px;font-family:'JetBrains Mono',monospace;}
+  .drs-row{display:flex;justify-content:space-between;align-items:baseline;padding:6px 0;border-bottom:1px dashed var(--rule);font-size:11px;}
+  .drs-row:last-of-type{border-bottom:none;}
+  .drs-row .k{font-size:9.5px;letter-spacing:0.22em;text-transform:uppercase;color:var(--rule);font-family:'JetBrains Mono',monospace;}
+  .drs-row .v{font-family:'JetBrains Mono',monospace;font-weight:700;color:var(--ink);text-transform:uppercase;letter-spacing:0.08em;}
+  .drs-row .v.believed{color:var(--ball);}
+  .drs-row .v.q{font-family:'Playfair Display',serif;font-style:italic;font-size:42px;font-weight:900;color:var(--pitch);line-height:0.8;text-transform:none;letter-spacing:0;}
+  .drs-foot{margin-top:14px;padding-top:12px;border-top:1px solid var(--ink);font-size:10px;color:var(--ink);line-height:1.5;font-family:'JetBrains Mono',monospace;}
+  .drs-foot em{font-family:'Playfair Display',serif;font-style:italic;font-size:11.5px;}
+  .sidemeta{margin-top:18px;font-size:10px;line-height:1.6;color:var(--ink);font-family:'JetBrains Mono',monospace;}
+  .sidemeta .label{font-size:9px;letter-spacing:0.22em;text-transform:uppercase;color:var(--ink);font-weight:700;display:block;margin-bottom:6px;border-bottom:1px solid var(--ink);padding-bottom:4px;}
+  .sidemeta p{margin-bottom:10px;}
+  .rr-strip{display:flex;justify-content:space-between;align-items:center;border-top:2px solid var(--ink);border-bottom:1px solid var(--ink);padding:10px 0;margin-top:18px;font-size:11px;letter-spacing:0.16em;text-transform:uppercase;font-family:'JetBrains Mono',monospace;}
+  .rr-strip b{font-size:14px;font-weight:700;letter-spacing:0.08em;color:var(--pitch);}
+  .foot{display:flex;justify-content:space-between;align-items:baseline;padding-top:22px;font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:var(--rule);font-family:'JetBrains Mono',monospace;}
+  .foot .mark{font-family:'Playfair Display',serif;font-style:italic;font-size:18px;color:var(--ink);letter-spacing:0;text-transform:none;}
+  .foot .mark span{font-family:'Noto Nastaliq Urdu',serif;font-size:14px;margin-left:10px;color:var(--pitch);}
+  @media (max-width:900px){
+    .page{padding:20px 18px 40px;}
+    .headline{font-size:36px;}
+    .grid{grid-template-columns:1fr;} .scorecard{border-right:none;} .side{padding:18px 0 0;}
+    .infoblock{grid-template-columns:repeat(2,1fr);} .infoblock .cell:nth-child(2){border-right:none;}
+    .totals{grid-template-columns:repeat(3,1fr);}
+    .matchup{grid-template-columns:1fr;gap:14px;} .team.right{text-align:left;} .vs{padding:0;}
+    .pname{flex-direction:column;} table.bat td{font-size:11.5px;}
+  }
+</style>
+</head>
+<body>
+<main class="page">
+
+  <div class="strip">
+    <span class="mono">ODI #04127</span>
+    <span class="mid mono">Chowki Information Series · 2026</span>
+    <span class="right mono">LIVE · 24.0 overs</span>
+  </div>
+
+  <div class="matchup">
+    <div class="team">
+      <div class="label">Visiting</div>
+      <div class="name">Today's Reader</div>
+      <div class="place">Karachi · 20 May 2026</div>
+    </div>
+    <div class="vs">vs.</div>
+    <div class="team right">
+      <div class="label">Home</div>
+      <div class="name">Chowki</div>
+      <div class="urdu">چوکی</div>
+    </div>
+  </div>
+
+  <section class="headline-wrap">
+    <div class="role-label">Today's Card · Match Report</div>
+    <h1 class="headline">How do you believe<br/>what you see?</h1>
+    <div class="subhead">Today's Card <span>·</span> 20 May 2026 <span>·</span> Innings in progress</div>
+  </section>
+
+  <section class="infoblock">
+    <div class="cell"><span class="k">Toss</span><span class="v">Lost — by you</span></div>
+    <div class="cell"><span class="k">Venue</span><span class="v">Your phone, Karachi</span></div>
+    <div class="cell"><span class="k">Innings</span><span class="v">Information, 1st</span></div>
+    <div class="cell"><span class="k">Match referee</span><span class="v">Chowki</span></div>
+  </section>
+
+  <div class="innings">
+    <div class="l">Information Innings — Today's Reader, batting</div>
+    <div class="r">Total: <b>? / 3</b> &nbsp; · &nbsp; 24.0 overs &nbsp; · &nbsp; RR <b>4.20</b></div>
+  </div>
+
+  <div class="grid">
+    <div class="scorecard">
+      <table class="bat">
+        <thead>
+          <tr>
+            <th style="width:38%">Batter</th>
+            <th>How dismissed</th>
+            <th class="num">B</th><th class="num">R</th><th class="num">4s</th><th class="num">6s</th><th class="num">SR</th>
+          </tr>
+        </thead>
+        <tbody>
+
+          <tr>
+            <td class="player">
+              <div class="pname">
+                <div class="thumb tv" aria-hidden="true">
+                  <span class="ts">20:04</span><span class="ch">CH 7</span>
+                  <span class="anchor"></span><span class="desk"></span>
+                  <span class="chyron">BREAKING — anti-state elements seeking to destabilize the federation</span>
+                </div>
+                <div>
+                  <b>Television</b>
+                  <span class="src">CH 7 · Broadcast</span>
+                  <span class="pos">Opener · #1</span>
+                </div>
+              </div>
+            </td>
+            <td>
+              <div class="dismiss">
+                <span class="dtag">Dismissed</span><span class="bowler">c. credulity, b. forwarded</span>
+                <span class="how">"breaking — anti-state elements"</span>
+              </div>
+            </td>
+            <td class="num">74</td><td class="num">47</td><td class="num">6</td><td class="num">1</td><td class="num">63.51</td>
+          </tr>
+
+          <tr>
+            <td class="player">
+              <div class="pname">
+                <div class="thumb yt" aria-hidden="true">
+                  <span class="stamp">FWD · UNVERIFIED</span>
+                  <span class="frame"></span><span class="play"></span>
+                  <span class="ttl">why everyone is talking — must watch</span>
+                </div>
+                <div>
+                  <b>YouTube</b>
+                  <span class="src">Verified Channel · 2.4M</span>
+                  <span class="pos">No. 3</span>
+                </div>
+              </div>
+            </td>
+            <td>
+              <div class="dismiss">
+                <span class="dtag">Dismissed</span><span class="bowler">lbw, b. source unknown</span>
+                <span class="how">"verified channel · 2.4M views · 3 days ago"</span>
+              </div>
+            </td>
+            <td class="num">32</td><td class="num">42</td><td class="num">3</td><td class="num">2</td><td class="num">131.25</td>
+          </tr>
+
+          <tr>
+            <td class="player">
+              <div class="pname">
+                <div class="thumb wa" aria-hidden="true">
+                  <span class="fwd">forwarded ↗</span>
+                  <span class="b1">forwarded as received: real story</span>
+                  <span class="b2">where did you get this</span>
+                  <span class="b3">someone in the family group sent it</span>
+                </div>
+                <div>
+                  <b>WhatsApp</b>
+                  <span class="src">Family Group · Thread</span>
+                  <span class="pos">No. 4</span>
+                </div>
+              </div>
+            </td>
+            <td>
+              <div class="dismiss">
+                <span class="dtag">Dismissed</span><span class="bowler">st. provenance, b. forward ↗</span>
+                <span class="how">"someone in the family group sent it"</span>
+              </div>
+            </td>
+            <td class="num">38</td><td class="num">12</td><td class="num">1</td><td class="num">0</td><td class="num">31.57</td>
+          </tr>
+
+        </tbody>
+      </table>
+
+      <div class="totals">
+        <div class="cell"><span class="k">Total runs</span><span class="v">101</span></div>
+        <div class="cell"><span class="k">Wickets</span><span class="v red">3</span></div>
+        <div class="cell"><span class="k">Overs</span><span class="v">24.0</span></div>
+        <div class="cell"><span class="k">Run rate</span><span class="v">4.20</span></div>
+        <div class="cell"><span class="k">Extras</span><span class="v">b 0, lb 0, w 4, nb 0</span></div>
+        <div class="cell"><span class="k">Status</span><span class="v green">at the crease</span></div>
+      </div>
+
+      <div class="meta-rows">
+        <div class="meta-row">
+          <span class="k">Fall of wickets</span>
+          <span class="v">1–47 (<b>Television</b>, 12.3) &nbsp; · &nbsp; 2–89 (<b>YouTube</b>, 18.1) &nbsp; · &nbsp; 3–101 (<b>WhatsApp</b>, 22.4)</span>
+        </div>
+        <div class="meta-row">
+          <span class="k">Partnerships</span>
+          <span class="v">TV–YouTube <b>42</b> (8.2 ov) &nbsp; · &nbsp; YouTube–WhatsApp <b>12</b> (4.1 ov)</span>
+        </div>
+        <div class="meta-row">
+          <span class="k">Bowling figures</span>
+          <span class="v">Forwarded 8–1–37–2 &nbsp; · &nbsp; Source Unknown 6–0–28–1 &nbsp; · &nbsp; Algorithm 10–2–36–0</span>
+        </div>
+      </div>
+
+      <div class="dnb">
+        <span class="k">Did not bat</span>
+        <em>silence</em>, <em>skepticism</em>, <em>second-source</em> — yet to take the field
+      </div>
+
+      <div class="rr-strip">
+        <span>Current run rate: <b>4.20 claims / over</b></span>
+        <span>Required: <b>0.00 — not a chase</b></span>
+        <span>Light: <b>fading</b></span>
+      </div>
+    </div>
+
+    <aside class="side">
+      <div class="drs">
+        <div class="hdr">Decision Review System</div>
+        <div class="drs-row"><span class="k">On-field call</span><span class="v believed">Believed</span></div>
+        <div class="drs-row"><span class="k">Third umpire</span><span class="v q">?</span></div>
+        <div class="drs-row"><span class="k">Snicko</span><span class="v">Inconclusive</span></div>
+        <div class="drs-row"><span class="k">Hot spot</span><span class="v">No mark</span></div>
+        <div class="drs-row"><span class="k">Reviews remaining</span><span class="v">2 / 2</span></div>
+        <div class="drs-foot"><em>"The on-field umpire's call stands until reviewed."</em><br/>Chowki is the third umpire that wasn't called.</div>
+      </div>
+
+      <div class="sidemeta">
+        <span class="label">Match notes</span>
+        <p>Floodlights came on at over 6. Pitch took spin from over 14 — claims turning sharply off the seam of the day's narrative.</p>
+        <span class="label">Umpires</span>
+        <p>Habit (square leg) · Attention (TV) · Match referee: Chowki</p>
+        <span class="label">Reserve day</span>
+        <p>Tomorrow. Same fixture. Same opening pair.</p>
+      </div>
+    </aside>
+  </div>
+
+  <div class="foot">
+    <span>Filed from Karachi · Press Box, Chowki Information Series · ODI #04127</span>
+    <span class="mark">Chowki <span>چوکی</span></span>
+  </div>
+
+</main>
+</body>
+</html>

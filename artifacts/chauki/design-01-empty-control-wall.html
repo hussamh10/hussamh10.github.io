@@ -1,0 +1,795 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Chowki — How do you believe what you see?</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Inter:wght@400;500;700&family=Noto+Nastaliq+Urdu&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg-wall:#2C2D30;
+    --bg-deep:#0A0B0C;
+    --monitor:#1E3A5F;
+    --amber:#C8A55B;
+    --text:#B8B5AC;
+    --text-dim:#6E6A60;
+    --accent:#C8A55B;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:var(--bg-deep);color:var(--text);font-family:'Space Mono',monospace;min-height:100vh;overflow-x:hidden}
+  body{
+    position:relative;
+    /* breeze-block wall: subtle horizontal mortar lines + cool grey base + faint patches of older paint */
+    background:
+      radial-gradient(ellipse 60% 40% at 22% 12%, rgba(184,181,172,0.04), transparent 60%),
+      radial-gradient(ellipse 50% 35% at 78% 18%, rgba(184,181,172,0.025), transparent 65%),
+      radial-gradient(ellipse 70% 50% at 50% 90%, var(--bg-deep), transparent 60%),
+      repeating-linear-gradient(0deg, rgba(0,0,0,0.18) 0px, rgba(0,0,0,0.18) 1px, transparent 1px, transparent 78px),
+      repeating-linear-gradient(90deg, rgba(0,0,0,0.10) 0px, rgba(0,0,0,0.10) 1px, transparent 1px, transparent 156px),
+      linear-gradient(180deg, #34353a 0%, var(--bg-wall) 45%, #1c1d20 100%);
+    background-blend-mode:normal;
+    padding:0 56px 0 56px;
+  }
+
+  /* single flickering fluorescent overlay */
+  body::before{
+    content:"";
+    position:fixed;inset:0;
+    background:
+      radial-gradient(ellipse 70% 35% at 50% -5%, rgba(232,224,196,0.10), transparent 70%),
+      radial-gradient(circle 280px at 50% 0%, rgba(232,224,196,0.18), transparent 70%);
+    mix-blend-mode:screen;
+    pointer-events:none;
+    animation:flicker 7.5s infinite steps(1,end);
+    z-index:1;
+  }
+  /* scanline grain over everything */
+  body::after{
+    content:"";
+    position:fixed;inset:0;
+    background:
+      repeating-linear-gradient(0deg, rgba(0,0,0,0.10) 0px, rgba(0,0,0,0.10) 1px, transparent 1px, transparent 3px);
+    pointer-events:none;
+    opacity:.35;
+    z-index:2;
+  }
+  @keyframes flicker{
+    0%,100%{opacity:1}
+    49%{opacity:1}
+    50%{opacity:0.96}
+    51%{opacity:0.8}
+    52%{opacity:1}
+    72%{opacity:1}
+    72.4%{opacity:0.7}
+    72.8%{opacity:1}
+  }
+
+  .room{
+    position:relative;
+    z-index:3;
+    max-width:1280px;
+    margin:0 auto;
+    padding:64px 0 96px 0;
+    min-height:100vh;
+  }
+
+  /* top corner ambient labels */
+  .room-tag{
+    position:absolute;top:28px;right:0;
+    font-size:10px;letter-spacing:2px;text-transform:uppercase;
+    color:var(--text-dim);
+    display:flex;gap:18px;
+  }
+  .room-tag span{display:inline-block}
+  .room-tag .live-dot{
+    display:inline-block;width:6px;height:6px;background:var(--amber);
+    box-shadow:0 0 8px var(--amber);
+    margin-right:6px;vertical-align:middle;
+    animation:slowpulse 2.6s infinite ease-in-out;
+  }
+  @keyframes slowpulse{
+    0%,100%{opacity:1}
+    50%{opacity:0.45}
+  }
+
+  /* the painted question on the wall */
+  .question{
+    margin:0 0 38px 0;
+    transform:rotate(-1.2deg);
+    transform-origin:left center;
+    font-family:'Space Mono',monospace;
+    font-weight:400;
+    font-size:44px;
+    line-height:1.15;
+    color:#cfc9ba;
+    letter-spacing:-0.5px;
+    max-width:780px;
+    /* paint roughness: blurred + double shadow + slight smear */
+    text-shadow:
+      0 0 1px rgba(207,201,186,0.6),
+      0 0 6px rgba(207,201,186,0.10),
+      1px 0 0 rgba(207,201,186,0.45),
+      -1px 1px 0 rgba(80,76,68,0.5),
+      2px 2px 8px rgba(0,0,0,0.45);
+    opacity:.86;
+    padding:0 6px;
+  }
+  .question .stroke{position:relative;display:inline-block}
+  .question .stroke::after{
+    content:"";position:absolute;left:-2%;right:-2%;bottom:-6px;height:6px;
+    background:
+      radial-gradient(ellipse 60% 100% at 20% 50%, rgba(207,201,186,0.0), transparent 70%);
+  }
+  .question .urdu{
+    display:inline-block;
+    font-family:'Noto Nastaliq Urdu',serif;
+    font-size:22px;
+    color:var(--text-dim);
+    margin-left:14px;
+    transform:rotate(1.2deg);
+    opacity:.7;
+    vertical-align:middle;
+  }
+
+  /* MONITOR WALL — 3x3 grid */
+  .wall{
+    position:relative;
+    display:grid;
+    grid-template-columns:repeat(3, 1fr);
+    grid-template-rows:repeat(3, 158px);
+    gap:14px;
+    width:100%;
+    max-width:920px;
+    margin:0 auto;
+    padding:18px;
+    background:linear-gradient(180deg, #1a1b1d 0%, #0f1011 100%);
+    border:1px solid #0a0b0c;
+    box-shadow:
+      inset 0 0 0 1px #2a2b2e,
+      0 30px 60px rgba(0,0,0,0.5);
+  }
+  /* the mounting rack panel behind monitors */
+  .wall::before{
+    content:"RACK 03 / STUDIO B";
+    position:absolute;left:14px;top:-18px;
+    font-size:9px;letter-spacing:3px;color:var(--text-dim);text-transform:uppercase;
+  }
+  .wall::after{
+    content:"PKT 03:04:21";
+    position:absolute;right:14px;top:-18px;
+    font-size:9px;letter-spacing:3px;color:var(--text-dim);text-transform:uppercase;
+  }
+
+  .mon{
+    position:relative;
+    background:#06070a;
+    border:1px solid #232427;
+    box-shadow:inset 0 0 12px rgba(0,0,0,0.85), 0 0 0 2px #0a0b0c;
+    overflow:hidden;
+  }
+  /* slight CRT curvature shadow */
+  .mon::after{
+    content:"";position:absolute;inset:0;
+    background:
+      radial-gradient(ellipse 90% 70% at 50% 50%, transparent 60%, rgba(0,0,0,0.55) 100%),
+      linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0) 30%);
+    pointer-events:none;
+  }
+  .mon .live{
+    position:absolute;top:6px;right:6px;
+    width:6px;height:6px;background:var(--amber);
+    box-shadow:0 0 6px var(--amber);
+    animation:slowpulse 2.6s infinite ease-in-out;
+    z-index:3;
+  }
+  .mon .label{
+    position:absolute;bottom:4px;left:6px;
+    font-size:8px;letter-spacing:2px;color:rgba(184,181,172,0.55);
+    text-transform:uppercase;z-index:3;
+    text-shadow:0 0 4px rgba(0,0,0,0.6);
+  }
+
+  /* monitor content variants */
+  .mon-1{background:
+    repeating-linear-gradient(90deg,#7a7367 0 14%,#9b8e6b 14% 28%,#c89a4d 28% 42%,#9a6d35 42% 56%,#5d4a3a 56% 70%,#3b3a3a 70% 84%,#1c1c1c 84% 100%);
+    filter:saturate(.45) brightness(.55);
+  }
+  .mon-2{
+    background:linear-gradient(180deg, #1a2434 0%, #0c1626 100%);
+  }
+  .mon-2 .ticker{
+    position:absolute;left:0;right:0;bottom:14px;
+    height:14px;background:#2a2a2a;color:#b8b5ac;
+    font-family:'Inter',sans-serif;font-weight:700;font-size:9px;
+    letter-spacing:1px;display:flex;align-items:center;padding:0 6px;
+  }
+  .mon-2 .biglogo{
+    position:absolute;top:18px;left:50%;transform:translateX(-50%);
+    font-family:'Inter',sans-serif;font-weight:700;color:rgba(184,181,172,0.25);
+    font-size:22px;letter-spacing:4px;
+  }
+  .mon-3{
+    background:#0a0a0a;
+  }
+  .mon-3::before{
+    content:"NO SIGNAL";
+    position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+    font-family:'Space Mono',monospace;font-size:11px;letter-spacing:3px;color:#3c3c3c;
+  }
+  .mon-4{
+    background:
+      repeating-linear-gradient(0deg, rgba(255,255,255,0.04) 0 1px, transparent 1px 4px),
+      linear-gradient(180deg, #0d1726 0%, #07101c 100%);
+  }
+  .mon-4 .news{
+    position:absolute;left:8px;top:14px;right:8px;
+    font-family:'Inter',sans-serif;font-weight:700;font-size:9px;color:#9ab0c8;letter-spacing:1px;
+    line-height:1.4;
+  }
+  .mon-4 .pres{
+    position:absolute;left:10px;bottom:30px;width:34px;height:48px;
+    background:linear-gradient(180deg,#3a4a60,#1a2438);
+    box-shadow:inset 0 4px 0 #4a5870;
+  }
+  /* MONITOR 5 — THE TV (LOCKED CONTENT) */
+  .mon-5{
+    grid-column:2;grid-row:2;
+    background:#020203;
+    box-shadow:inset 0 0 12px rgba(0,0,0,0.85), 0 0 0 2px var(--amber), 0 0 24px rgba(200,165,91,0.15);
+  }
+  .tv{
+    position:absolute;inset:0;
+    background:
+      radial-gradient(ellipse 90% 70% at 50% 35%, #112540 0%, #0a1626 60%, #050a14 100%);
+    display:flex;flex-direction:column;justify-content:space-between;
+    padding:8px 10px;
+    z-index:2;
+  }
+  .tv .station{
+    display:flex;justify-content:space-between;align-items:flex-start;
+    font-family:'Inter',sans-serif;font-weight:700;font-size:9px;color:#e8e2d0;letter-spacing:1.5px;
+  }
+  .tv .station .ch{
+    background:var(--amber);color:#0a0b0c;padding:2px 5px;font-size:9px;
+  }
+  .tv .timestamp{
+    font-family:'Space Mono',monospace;font-size:9px;color:#cfc9ba;letter-spacing:1px;
+  }
+  .tv .silhouette{
+    position:absolute;left:50%;top:48%;transform:translate(-50%,-50%);
+    width:46px;height:34px;
+    background:radial-gradient(ellipse 60% 80% at 50% 35%, #2a3a52, #14223a 70%, transparent 100%);
+  }
+  .tv .silhouette::before{
+    content:"";position:absolute;left:50%;top:-10px;width:18px;height:18px;
+    background:radial-gradient(circle, #2a3a52, #14223a 80%, transparent 100%);
+    transform:translateX(-50%);
+  }
+  .tv .chyron{
+    background:#7a1a1a;color:#fff;
+    font-family:'Inter',sans-serif;font-weight:700;font-size:8.5px;letter-spacing:0.4px;
+    padding:4px 6px;line-height:1.25;
+    border-top:2px solid var(--amber);
+    text-transform:uppercase;
+  }
+  .tv .chyron .flag{
+    background:var(--amber);color:#0a0b0c;padding:1px 3px;margin-right:5px;font-size:8px;
+  }
+
+  .mon-6{
+    background:linear-gradient(180deg,#1a1a1a 0%, #0a0a0a 100%);
+  }
+  .mon-6::before{
+    content:"";position:absolute;inset:8px;
+    background:
+      repeating-linear-gradient(180deg, rgba(184,181,172,0.06) 0 2px, transparent 2px 6px);
+  }
+  .mon-6 .talk{
+    position:absolute;left:8px;right:8px;top:50%;transform:translateY(-50%);
+    font-family:'Space Mono',monospace;font-size:8px;letter-spacing:1px;
+    color:rgba(184,181,172,0.4);text-align:center;line-height:1.5;
+  }
+  .mon-7{
+    background:
+      repeating-linear-gradient(0deg,#a2a2a2 0 25%,#000 25% 50%,#a2a2a2 50% 75%,#000 75% 100%);
+    filter:saturate(0) brightness(.3) contrast(1.3);
+  }
+  .mon-8{
+    background:#040404;
+  }
+  .mon-8 .carrier{
+    position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+    width:80%;height:1px;background:#1a3a5a;
+    box-shadow:0 0 12px #1a3a5a;
+  }
+  .mon-8 .carrier::before{
+    content:"CARRIER";position:absolute;left:50%;top:-18px;transform:translateX(-50%);
+    font-family:'Space Mono',monospace;font-size:8px;letter-spacing:2px;color:#1a3a5a;
+  }
+  .mon-9{
+    background:linear-gradient(180deg, #1a2434 0%, #0a1422 100%);
+  }
+  .mon-9 .weather{
+    position:absolute;inset:8px;
+    font-family:'Inter',sans-serif;font-weight:700;color:rgba(184,181,172,0.35);
+    display:flex;flex-direction:column;justify-content:space-between;
+  }
+  .mon-9 .weather .city{font-size:8px;letter-spacing:2px;text-transform:uppercase}
+  .mon-9 .weather .temp{font-size:28px;line-height:1;color:rgba(184,181,172,0.55)}
+
+  /* CLOCKS column */
+  .clocks{
+    position:absolute;
+    left:8px;top:90px;
+    display:flex;flex-direction:column;gap:14px;
+    z-index:4;
+  }
+  .clock{
+    width:48px;text-align:center;
+  }
+  .clock .face{
+    width:42px;height:42px;background:#0e0f12;
+    border:1px solid #2a2b2e;
+    position:relative;margin:0 auto;
+    box-shadow:inset 0 0 4px #000;
+  }
+  .clock .face::before{
+    content:"";position:absolute;left:50%;top:50%;width:2px;height:14px;background:var(--text);
+    transform-origin:50% 100%;transform:translate(-50%,-100%) rotate(var(--h,90deg));
+  }
+  .clock .face::after{
+    content:"";position:absolute;left:50%;top:50%;width:1px;height:18px;background:var(--text-dim);
+    transform-origin:50% 100%;transform:translate(-50%,-100%) rotate(var(--m,180deg));
+  }
+  .clock .dot{
+    position:absolute;left:50%;top:50%;width:3px;height:3px;background:var(--amber);
+    transform:translate(-50%,-50%);
+  }
+  .clock .name{
+    margin-top:6px;font-size:8px;letter-spacing:2px;color:var(--text-dim);text-transform:uppercase;
+  }
+
+  /* RUNDOWN SHEET — YouTube card pinned with bulldog clip */
+  .rundown{
+    position:absolute;
+    right:-8px;top:60px;
+    width:230px;
+    transform:rotate(2.2deg);
+    z-index:5;
+  }
+  .clip{
+    position:absolute;left:50%;top:-14px;transform:translateX(-50%);
+    width:64px;height:22px;
+    background:linear-gradient(180deg,#9a9a9a 0%,#5a5a5a 60%,#3a3a3a 100%);
+    box-shadow:0 2px 4px rgba(0,0,0,0.6);
+  }
+  .clip::before{
+    content:"";position:absolute;left:50%;top:6px;width:36px;height:10px;
+    background:#1a1a1a;transform:translateX(-50%);
+  }
+  .clip::after{
+    content:"";position:absolute;left:50%;top:18px;width:2px;height:8px;
+    background:#3a3a3a;transform:translateX(-50%);
+  }
+  .sheet{
+    background:#d9d4c6;color:#0a0b0c;
+    padding:10px;
+    box-shadow:0 16px 24px rgba(0,0,0,0.55), 0 0 0 1px rgba(0,0,0,0.2);
+    font-family:'Inter',sans-serif;
+  }
+  .sheet .sheet-tag{
+    font-family:'Space Mono',monospace;
+    font-size:8px;letter-spacing:2px;text-transform:uppercase;
+    color:#6E6A60;margin-bottom:6px;
+    display:flex;justify-content:space-between;
+  }
+  .sheet .thumb{
+    position:relative;height:118px;background:#1a1a1a;
+    background-image:
+      radial-gradient(ellipse 60% 70% at 35% 45%, #2a2a2a 0%, #0a0a0a 70%),
+      linear-gradient(180deg,#222 0%, #0a0a0a 100%);
+    overflow:hidden;
+  }
+  .sheet .thumb .play{
+    position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+    width:38px;height:38px;background:rgba(0,0,0,0.6);
+    display:flex;align-items:center;justify-content:center;
+    color:#fff;font-size:18px;
+    border:1px solid rgba(255,255,255,0.25);
+  }
+  .sheet .thumb .duration{
+    position:absolute;right:5px;bottom:5px;
+    background:#000;color:#fff;font-family:'Inter',sans-serif;font-size:9px;font-weight:700;
+    padding:1px 4px;letter-spacing:1px;
+  }
+  .sheet .stamp{
+    position:absolute;left:-6px;top:8px;
+    transform:rotate(-8deg);
+    background:transparent;
+    border:2px solid #8a2a2a;color:#8a2a2a;
+    font-family:'Space Mono',monospace;font-weight:700;
+    font-size:9px;letter-spacing:2px;padding:3px 6px;text-transform:uppercase;
+    opacity:.85;
+  }
+  .sheet .title{
+    font-family:'Inter',sans-serif;font-weight:700;font-size:12px;line-height:1.3;
+    color:#0a0b0c;margin-top:8px;
+  }
+  .sheet .meta{
+    margin-top:5px;
+    font-family:'Inter',sans-serif;font-size:9px;color:#3a3a3a;letter-spacing:0.2px;
+  }
+  .sheet .scribble{
+    margin-top:8px;font-family:'Space Mono',monospace;font-size:9px;color:#7a1a1a;
+    transform:rotate(-1deg);transform-origin:left;
+  }
+
+  /* DESK — lower portion */
+  .desk{
+    position:relative;
+    margin-top:80px;
+    height:280px;
+    background:
+      linear-gradient(180deg, transparent 0%, rgba(10,11,12,0.7) 30%, var(--bg-deep) 100%);
+  }
+  .desk-surface{
+    position:absolute;left:0;right:0;top:80px;height:200px;
+    background:
+      linear-gradient(180deg, #1a1816 0%, #0d0c0b 80%);
+    box-shadow:inset 0 1px 0 #2a2826;
+  }
+  .desk-surface::before{
+    content:"";position:absolute;left:0;right:0;top:0;height:1px;background:rgba(184,181,172,0.08);
+  }
+
+  /* EMPTY CHAIR — wireframe silhouette */
+  .chair{
+    position:absolute;
+    left:140px;bottom:0;
+    width:180px;height:240px;
+    z-index:4;
+  }
+  .chair svg{display:block;width:100%;height:100%}
+
+  /* PHONE on desk */
+  .phone{
+    position:absolute;
+    right:160px;top:108px;
+    width:160px;height:248px;
+    background:#0a0b0c;
+    box-shadow:0 12px 22px rgba(0,0,0,0.7), inset 0 0 0 2px #1a1b1d, inset 0 0 0 4px #050606;
+    transform:rotate(-4deg) skewY(-1.5deg);
+    z-index:5;
+    padding:18px 10px;
+  }
+  .phone::before{
+    content:"";position:absolute;left:50%;top:6px;transform:translateX(-50%);
+    width:42px;height:3px;background:#2a2b2e;
+  }
+  .phone .screen{
+    position:absolute;inset:18px 8px 24px 8px;
+    background:#0d1410;
+    padding:8px 6px;
+    display:flex;flex-direction:column;gap:6px;
+    box-shadow:inset 0 0 18px rgba(120,170,140,0.10);
+    overflow:hidden;
+  }
+  .phone .wa-header{
+    display:flex;align-items:center;justify-content:space-between;
+    font-family:'Inter',sans-serif;font-size:8px;color:#7a9886;letter-spacing:1px;
+    padding-bottom:5px;border-bottom:1px solid #1a2620;
+  }
+  .phone .wa-header .name{font-weight:700;color:#9eb8a8;font-size:9px}
+  .phone .wa-header .time{font-family:'Space Mono',monospace;font-size:8px;color:#5a7868}
+  .msg{
+    font-family:'Inter',sans-serif;font-size:8.5px;line-height:1.35;
+    padding:5px 6px;
+    max-width:78%;
+    color:#cad8d0;
+    background:#152620;
+    box-shadow:0 1px 0 rgba(0,0,0,0.4);
+  }
+  .msg.them{align-self:flex-start;background:#1a2a24}
+  .msg.you{align-self:flex-end;background:#1f3329;color:#dceee2}
+  .msg .fwd{
+    display:block;font-family:'Space Mono',monospace;font-size:7px;letter-spacing:1.5px;
+    color:#7a9886;text-transform:uppercase;margin-bottom:3px;
+  }
+  .msg .ts{
+    display:block;font-family:'Space Mono',monospace;font-size:7px;color:#5a7868;
+    text-align:right;margin-top:2px;letter-spacing:1px;
+  }
+  .phone::after{
+    content:"";position:absolute;left:50%;bottom:6px;transform:translateX(-50%);
+    width:24px;height:3px;background:#1a1b1d;
+  }
+  /* phone screen glow on desk */
+  .phone-glow{
+    position:absolute;right:140px;top:200px;width:240px;height:120px;
+    background:radial-gradient(ellipse 60% 80% at 50% 0%, rgba(120,170,140,0.10), transparent 70%);
+    z-index:4;pointer-events:none;
+  }
+
+  /* COLD CHAI cup */
+  .chai{
+    position:absolute;
+    right:60px;top:160px;
+    width:54px;height:64px;
+    z-index:5;
+  }
+  .chai .cup{
+    position:absolute;left:0;right:0;bottom:0;height:54px;
+    background:linear-gradient(180deg, #d9d3c2 0%, #b8b1a0 60%, #8a8474 100%);
+    clip-path:polygon(8% 0,92% 0,82% 100%,18% 100%);
+    box-shadow:inset -4px -4px 8px rgba(0,0,0,0.25);
+  }
+  .chai .lip{
+    position:absolute;left:0;right:0;top:0;height:4px;
+    background:#a8a190;clip-path:polygon(8% 0,92% 0,90% 100%,10% 100%);
+  }
+  .chai .surface{
+    position:absolute;left:14%;right:14%;top:6px;height:6px;
+    background:radial-gradient(ellipse, #4a3220 0%, #2a1c10 100%);
+  }
+  .chai-shadow{
+    position:absolute;right:48px;top:218px;width:80px;height:14px;
+    background:radial-gradient(ellipse 50% 100% at 50% 50%, rgba(0,0,0,0.6), transparent 70%);
+    z-index:4;
+  }
+  .chai-label{
+    position:absolute;right:0;top:228px;width:120px;
+    font-size:8px;letter-spacing:2px;color:var(--text-dim);text-transform:uppercase;
+    z-index:6;
+  }
+
+  /* WORDMARK — operator badge bottom-left */
+  .wordmark{
+    position:fixed;left:32px;bottom:24px;z-index:10;
+    font-family:'Space Mono',monospace;font-size:14px;
+    color:var(--text);
+    letter-spacing:1px;
+    display:flex;align-items:baseline;gap:10px;
+  }
+  .wordmark .dot{
+    width:6px;height:6px;background:var(--amber);
+    box-shadow:0 0 6px var(--amber);
+    display:inline-block;
+    animation:slowpulse 2.6s infinite ease-in-out;
+  }
+  .wordmark .urdu{font-family:'Noto Nastaliq Urdu',serif;font-size:14px;color:var(--text-dim)}
+  .wordmark .role{
+    font-size:9px;letter-spacing:3px;color:var(--text-dim);text-transform:uppercase;
+    margin-left:6px;
+  }
+
+  /* bottom status strip */
+  .footer-strip{
+    position:fixed;right:24px;bottom:24px;z-index:10;
+    font-family:'Space Mono',monospace;font-size:9px;letter-spacing:2px;color:var(--text-dim);
+    text-transform:uppercase;display:flex;gap:24px;align-items:center;
+  }
+  .footer-strip .sep{width:6px;height:6px;background:var(--text-dim)}
+  .footer-strip .live{color:var(--amber)}
+
+  /* HUD invitation — quiet line */
+  .invitation{
+    position:relative;z-index:4;
+    margin:60px auto 0 auto;max-width:920px;
+    display:flex;justify-content:space-between;align-items:flex-end;
+    font-size:10px;letter-spacing:2px;color:var(--text-dim);text-transform:uppercase;
+    padding:0 4px;
+  }
+  .invitation .left{max-width:420px;line-height:1.6}
+  .invitation .right{text-align:right;line-height:1.6}
+  .invitation a{
+    color:var(--text);text-decoration:none;border-bottom:1px solid var(--text-dim);
+    padding-bottom:2px;
+  }
+
+  @media (max-width:900px){
+    body{padding:0 20px}
+    .question{font-size:30px}
+    .wall{grid-template-rows:repeat(3,128px);max-width:520px}
+    .clocks{display:none}
+    .rundown{position:relative;right:auto;top:auto;width:auto;margin:24px auto 0 auto;max-width:320px;transform:none}
+    .desk{height:auto;padding-bottom:140px}
+    .chair{position:relative;left:auto;bottom:auto;margin:24px auto 0 auto}
+    .phone{position:relative;right:auto;top:auto;margin:24px auto;transform:none}
+    .chai,.chai-shadow,.chai-label,.phone-glow{display:none}
+    .invitation{flex-direction:column;gap:18px;align-items:flex-start}
+    .footer-strip{position:static;justify-content:center;margin-top:24px}
+  }
+</style>
+</head>
+<body>
+
+<div class="room">
+
+  <div class="room-tag">
+    <span><i class="live-dot"></i>STUDIO B / MASTER CONTROL</span>
+    <span>OPERATOR: —</span>
+    <span>03:04 PKT</span>
+  </div>
+
+  <h1 class="question">
+    <span class="stroke">How do you believe what you see?</span>
+    <span class="urdu">آپ جو دیکھتے ہیں اُس پر یقین کیسے کرتے ہیں؟</span>
+  </h1>
+
+  <!-- CLOCKS along left side -->
+  <div class="clocks">
+    <div class="clock"><div class="face" style="--h:60deg;--m:200deg"><span class="dot"></span></div><div class="name">KHI</div></div>
+    <div class="clock"><div class="face" style="--h:200deg;--m:80deg"><span class="dot"></span></div><div class="name">LHE</div></div>
+    <div class="clock"><div class="face" style="--h:330deg;--m:140deg"><span class="dot"></span></div><div class="name">ISB</div></div>
+    <div class="clock"><div class="face" style="--h:110deg;--m:300deg"><span class="dot"></span></div><div class="name">PSH</div></div>
+    <div class="clock"><div class="face" style="--h:250deg;--m:40deg"><span class="dot"></span></div><div class="name">UET</div></div>
+    <div class="clock"><div class="face" style="--h:20deg;--m:240deg"><span class="dot"></span></div><div class="name">MUX</div></div>
+  </div>
+
+  <!-- MONITOR WALL 3x3 -->
+  <div class="wall">
+    <div class="mon mon-1"><span class="live"></span><span class="label">CH 03 · COLORBARS</span></div>
+    <div class="mon mon-2">
+      <div class="biglogo">PTV</div>
+      <div class="ticker">PARLIAMENT IN SESSION · BUDGET DEBATE CONTINUES · IMF DELEGATION ARRIVES</div>
+      <span class="live"></span><span class="label">CH 01 · LIVE</span>
+    </div>
+    <div class="mon mon-3"><span class="live"></span><span class="label">CH 12 · OFFLINE</span></div>
+    <div class="mon mon-4">
+      <div class="news">FLOODS · S. PUNJAB<br/>3,200 DISPLACED<br/>RELIEF DELAYED</div>
+      <div class="pres"></div>
+      <span class="live"></span><span class="label">CH 04 · NEWS</span>
+    </div>
+
+    <!-- THE TV — monitor 5 -->
+    <div class="mon mon-5">
+      <div class="tv">
+        <div class="station">
+          <span class="ch">CH 7</span>
+          <span class="timestamp">20:04</span>
+        </div>
+        <div class="silhouette"></div>
+        <div class="chyron"><span class="flag">BREAKING</span>ANTI-STATE ELEMENTS SEEKING TO DESTABILIZE THE FEDERATION</div>
+      </div>
+      <span class="live"></span><span class="label">CH 07 · BREAKING</span>
+    </div>
+
+    <div class="mon mon-6">
+      <div class="talk">TALK SHOW<br/>—<br/>4 PANELISTS<br/>NO AUDIO</div>
+      <span class="live"></span><span class="label">CH 09 · LIVE</span>
+    </div>
+    <div class="mon mon-7"><span class="live"></span><span class="label">CH 22 · STATIC</span></div>
+    <div class="mon mon-8">
+      <div class="carrier"></div>
+      <span class="live"></span><span class="label">CH 31 · CARRIER ONLY</span>
+    </div>
+    <div class="mon mon-9">
+      <div class="weather">
+        <div class="city">KHI · 03:04</div>
+        <div class="temp">34°</div>
+        <div class="city">CLEAR</div>
+      </div>
+      <span class="live"></span><span class="label">CH 15 · WEATHER</span>
+    </div>
+  </div>
+
+  <!-- RUNDOWN SHEET pinned to the wall edge -->
+  <div class="rundown">
+    <div class="clip"></div>
+    <div class="sheet">
+      <div class="sheet-tag"><span>RUNDOWN · SHEET 14</span><span>03:01</span></div>
+      <div class="thumb">
+        <div class="stamp">Forwarded · Unverified</div>
+        <div class="play">&#9654;</div>
+        <div class="duration">11:42</div>
+      </div>
+      <div class="title">Why everyone is talking about this — must watch</div>
+      <div class="meta">Verified Channel · 2.4M views · 3 days ago</div>
+      <div class="scribble">— source?  who pushed it?</div>
+    </div>
+  </div>
+
+  <!-- DESK section -->
+  <div class="desk">
+    <div class="desk-surface"></div>
+
+    <!-- EMPTY CHAIR -->
+    <div class="chair" aria-hidden="true">
+      <svg viewBox="0 0 180 240" fill="none" stroke="#6E6A60" stroke-width="1.4">
+        <!-- backrest -->
+        <path d="M40 30 L40 130 L130 130 L130 30 Q130 18 118 18 L52 18 Q40 18 40 30 Z"/>
+        <!-- seat -->
+        <path d="M30 130 L140 130 L150 160 L20 160 Z"/>
+        <!-- center column -->
+        <line x1="85" y1="160" x2="85" y2="195"/>
+        <!-- base 5-star -->
+        <line x1="85" y1="195" x2="20" y2="220"/>
+        <line x1="85" y1="195" x2="55" y2="232"/>
+        <line x1="85" y1="195" x2="85" y2="236"/>
+        <line x1="85" y1="195" x2="118" y2="232"/>
+        <line x1="85" y1="195" x2="150" y2="220"/>
+        <!-- casters -->
+        <circle cx="20" cy="220" r="3"/>
+        <circle cx="55" cy="232" r="3"/>
+        <circle cx="85" cy="236" r="3"/>
+        <circle cx="118" cy="232" r="3"/>
+        <circle cx="150" cy="220" r="3"/>
+        <!-- armrests -->
+        <path d="M30 130 L25 100 L30 70"/>
+        <path d="M140 130 L145 100 L140 70"/>
+      </svg>
+    </div>
+
+    <!-- glow from phone -->
+    <div class="phone-glow"></div>
+
+    <!-- PHONE with WhatsApp -->
+    <div class="phone">
+      <div class="screen">
+        <div class="wa-header">
+          <span class="name">family group</span>
+          <span class="time">02:51</span>
+        </div>
+        <div class="msg them">
+          <span class="fwd">Forwarded many times</span>
+          Forwarded as received: this is the real story they don't want you to see
+          <span class="ts">02:38</span>
+        </div>
+        <div class="msg you">
+          where did you get this
+          <span class="ts">02:44</span>
+        </div>
+        <div class="msg them">
+          someone in the family group sent it
+          <span class="ts">02:51</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- COLD CHAI -->
+    <div class="chai-shadow"></div>
+    <div class="chai">
+      <div class="cup">
+        <div class="lip"></div>
+        <div class="surface"></div>
+      </div>
+    </div>
+    <div class="chai-label">CHAI · COLD · 02:14 PKT</div>
+  </div>
+
+  <!-- QUIET INVITATION -->
+  <div class="invitation">
+    <div class="left">
+      A research collective documenting Pakistan's information ecosystem.<br/>
+      What broadcasts. What forwards. What gets believed.<br/>
+      The room is unattended. The signal continues.
+    </div>
+    <div class="right">
+      Archive in preparation<br/>
+      <a href="#enter">Enter the watchpost &rarr;</a>
+    </div>
+  </div>
+
+</div>
+
+<!-- OPERATOR BADGE (wordmark) -->
+<div class="wordmark">
+  <span class="dot"></span>
+  chowki
+  <span class="urdu">چوکی</span>
+  <span class="role">Operator Badge · Studio B</span>
+</div>
+
+<!-- BOTTOM STATUS STRIP -->
+<div class="footer-strip">
+  <span>SIGNAL <span class="live">LIVE</span></span>
+  <span class="sep"></span>
+  <span>OPERATORS 0 / 4</span>
+  <span class="sep"></span>
+  <span>03:04 PKT</span>
+</div>
+
+</body>
+</html>

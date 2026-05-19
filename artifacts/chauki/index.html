@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chowki — Design Comparison · 12 candidates</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;700&family=IBM+Plex+Sans:wght@400;500;700&family=IBM+Plex+Serif:wght@400;500;600;700&family=Caveat:wght@400;700&family=Noto+Nastaliq+Urdu:wght@500;700&display=swap" rel="stylesheet">
+<style>
+:root { --bg:#F4EFE4; --ink:#1A1714; --saf:#E8A325; --brk:#8B2A22; --mut:#6E6A62; }
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--bg);color:var(--ink)}
+body{font-family:'IBM Plex Sans',sans-serif;font-size:14px;line-height:1.55;padding:32px 24px;min-height:100vh}
+.page{max-width:1480px;margin:0 auto;background:var(--bg);border:2px solid var(--ink);position:relative}
+.corner-stamp{position:absolute;top:18px;right:24px;border:2px solid var(--brk);color:var(--brk);font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:700;letter-spacing:2px;padding:5px 11px;transform:rotate(3deg);text-transform:uppercase;z-index:2;background:var(--bg)}
+.top{display:flex;align-items:baseline;justify-content:space-between;padding:24px 32px 18px;border-bottom:2px solid var(--ink);gap:24px}
+.wordmark{font-family:'IBM Plex Serif',serif;font-size:28px;font-weight:700;letter-spacing:-0.5px;display:flex;align-items:baseline;gap:14px}
+.wordmark .urdu{font-family:'Noto Nastaliq Urdu',serif;font-size:22px;font-weight:500;color:var(--mut);transform:translateY(2px)}
+.meta{font-family:'IBM Plex Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:1.8px;color:var(--mut);text-align:right}
+.dateline{background:var(--saf);color:var(--ink);font-family:'IBM Plex Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:1.5px;padding:8px 32px;display:flex;justify-content:space-between;border-bottom:2px solid var(--ink);font-weight:600;gap:16px;flex-wrap:wrap}
+.intro{padding:48px 32px;border-bottom:2px solid var(--ink);text-align:center}
+.intro-label{font-family:'IBM Plex Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:2.5px;color:var(--mut);margin-bottom:18px}
+.intro h1{font-family:'IBM Plex Serif',serif;font-size:48px;line-height:1.1;font-weight:600;letter-spacing:-1.2px;max-width:840px;margin:0 auto 16px}
+.intro h1 .em{background:var(--saf);padding:0 8px}
+.intro p{font-size:15px;color:var(--mut);max-width:680px;margin:0 auto;line-height:1.6}
+.intro p .marginalia{font-family:'Caveat',cursive;font-size:18px;color:var(--brk);display:block;margin-top:18px;transform:rotate(-1deg)}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:28px;padding:36px 32px}
+.card{border:2px solid var(--ink);background:var(--bg);box-shadow:6px 6px 0 var(--ink);display:flex;flex-direction:column;overflow:hidden;position:relative;transition:transform 0.12s ease}
+.card:hover{transform:translate(-2px,-2px);box-shadow:8px 8px 0 var(--ink)}
+.card-header{display:flex;justify-content:space-between;align-items:baseline;padding:14px 18px;border-bottom:2px solid var(--ink);background:var(--bg);gap:12px}
+.card-num{font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:700;letter-spacing:2px;color:var(--brk);background:var(--bg);padding:3px 8px;border:2px solid var(--brk);white-space:nowrap}
+.card-name{font-family:'IBM Plex Serif',serif;font-size:18px;font-weight:600;letter-spacing:-0.3px;flex:1;margin:0 6px}
+.card-open{font-family:'IBM Plex Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:1.8px;color:var(--ink);text-decoration:none;padding:4px 9px;border:2px solid var(--ink);background:var(--saf);font-weight:600;white-space:nowrap}
+.card-open:hover{background:var(--ink);color:var(--saf)}
+.card-strategy{padding:12px 18px;font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--mut);text-transform:uppercase;letter-spacing:1.3px;border-bottom:2px solid var(--ink);background:var(--bg);line-height:1.5}
+.preview-wrap{position:relative;height:500px;overflow:hidden;background:#ddd;border-bottom:2px solid var(--ink)}
+.preview-wrap iframe{position:absolute;top:0;left:0;width:200%;height:200%;transform:scale(0.5);transform-origin:0 0;border:0;pointer-events:none}
+.preview-link{position:absolute;inset:0;z-index:2}
+.card-meta{padding:10px 18px;font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--mut);text-transform:uppercase;letter-spacing:1.5px;display:flex;justify-content:space-between;background:var(--bg);gap:12px}
+.card-meta .universe{color:var(--ink);font-weight:600}
+.footer{padding:18px 32px;border-top:2px solid var(--ink);display:flex;justify-content:space-between;font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--mut);text-transform:uppercase;letter-spacing:1px;background:var(--bg);gap:16px;flex-wrap:wrap}
+@media (max-width:980px){.grid{grid-template-columns:1fr}.preview-wrap{height:420px}.intro h1{font-size:36px}}
+</style>
+</head>
+<body>
+  <div class="page">
+    <div class="corner-stamp">COMPARISON SET · CANDIDATES 01—12</div>
+    <div class="top">
+      <div class="wordmark">Chowki<span class="urdu">چوکی</span></div>
+      <div class="meta">Design Review · Holding Page Candidates · 2026</div>
+    </div>
+    <div class="dateline">
+      <span>Comparison set · 12 alternates</span>
+      <span>Same locked content · different visual universe</span>
+      <span>Click any preview to open full</span>
+    </div>
+    <section class="intro">
+      <div class="intro-label">For internal review</div>
+      <h1>Twelve ways to <span class="em">stage</span> the same question.</h1>
+      <p>The locked content is identical across all twelve: the wordmark <em>Chowki</em>, the question <em>"How do you believe what you see?"</em>, and the TV / YouTube / WhatsApp triptych. What varies is the aesthetic universe each candidate borrows from — TV control room, paan-shop chalkboard, hospital case slip, cricket scorecard, dark newsroom — so you can compare instant look, not concept.<span class="marginalia">pick the survivor → refine → ship.</span></p>
+    </section>
+    <div class="grid">
+      <div class="card">
+        <div class="card-header">
+          <span class="card-num">01</span>
+          <span class="card-name">The Empty Control Wall</span>
+          <a class="card-open" href="design-01-empty-control-wall.html" target="_blank">Open ↗</a>
+        </div>
+        <div class="card-strategy">Nine broadcast monitors live · every chair empty · infrastructure without operators</div>
+        <div class="preview-wrap">
+          <iframe src="design-01-empty-control-wall.html" loading="lazy"></iframe>
+          <a class="preview-link" href="design-01-empty-control-wall.html" target="_blank" aria-label="Open design 01"></a>
+        </div>
+        <div class="card-meta"><span class="universe">Pakistani TV master-control room</span><span>3am · monitors on · absent</span></div>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <span class="card-num">02</span>
+          <span class="card-name">The Question Board</span>
+          <a class="card-open" href="design-02-question-board.html" target="_blank">Open ↗</a>
+        </div>
+        <div class="card-strategy">Chalk questions overlaid by digital fact-check data · hand against machine</div>
+        <div class="preview-wrap">
+          <iframe src="design-02-question-board.html" loading="lazy"></iframe>
+          <a class="preview-link" href="design-02-question-board.html" target="_blank" aria-label="Open design 02"></a>
+        </div>
+        <div class="card-meta"><span class="universe">Karachi paan-shop chalkboard</span><span>Chalk · grain · annotation</span></div>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <span class="card-num">03</span>
+          <span class="card-name">Ye Safhe Bhi Dekhain</span>
+          <a class="card-open" href="design-03-ye-safhe.html" target="_blank">Open ↗</a>
+        </div>
+        <div class="card-strategy">The website looks like the thing it studies · channel promo bumper as homepage</div>
+        <div class="preview-wrap">
+          <iframe src="design-03-ye-safhe.html" loading="lazy"></iframe>
+          <a class="preview-link" href="design-03-ye-safhe.html" target="_blank" aria-label="Open design 03"></a>
+        </div>
+        <div class="card-meta"><span class="universe">Pakistani TV channel promo</span><span>Bumper · chyron · safe-area</span></div>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <span class="card-num">04</span>
+          <span class="card-name">Aapka Taqdeer-e-Information</span>
+          <a class="card-open" href="design-04-aapka-taqdeer.html" target="_blank">Open ↗</a>
+        </div>
+        <div class="card-strategy">Critical media analysis dressed as daily fortune · horoscope column gravity</div>
+        <div class="preview-wrap">
+          <iframe src="design-04-aapka-taqdeer.html" loading="lazy"></iframe>
+          <a class="preview-link" href="design-04-aapka-taqdeer.html" target="_blank" aria-label="Open design 04"></a>
+        </div>
+        <div class="card-meta"><span class="universe">Urdu newspaper horoscope column</span><span>Daily · prophetic · familiar</span></div>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <span class="card-num">05</span>
+          <span class="card-name">The Reading Rug</span>
+          <a class="card-open" href="design-05-reading-rug.html" target="_blank">Open ↗</a>
+        </div>
+        <div class="card-strategy">Page laid out like a woven rug · data as ornament · pattern, not chart</div>
+        <div class="preview-wrap">
+          <iframe src="design-05-reading-rug.html" loading="lazy"></iframe>
+          <a class="preview-link" href="design-05-reading-rug.html" target="_blank" aria-label="Open design 05"></a>
+        </div>
+        <div class="card-meta"><span class="universe">Sindhi rilli / kilim textile</span><span>Bands · borders · domestic</span></div>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <span class="card-num">06</span>
+          <span class="card-name">Case Sheet, Outpatients</span>
+          <a class="card-open" href="design-06-case-sheet.html" target="_blank">Open ↗</a>
+        </div>
+        <div class="card-strategy">Doctor's hand diagnoses the visitor's credulity · form-red printed, pen-blue written</div>
+        <div class="preview-wrap">
+          <iframe src="design-06-case-sheet.html" loading="lazy"></iframe>
+          <a class="preview-link" href="design-06-case-sheet.html" target="_blank" aria-label="Open design 06"></a>
+        </div>
+        <div class="card-meta"><span class="universe">Pakistani public-hospital slip</span><span>Carbon · perforated · clinical</span></div>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <span class="card-num">07</span>
+          <span class="card-name">The Kitchen Door</span>
+          <a class="card-open" href="design-07-kitchen-door.html" target="_blank">Open ↗</a>
+        </div>
+        <div class="card-strategy">Triptych taped up among bills and magnets · domestic, not editorial</div>
+        <div class="preview-wrap">
+          <iframe src="design-07-kitchen-door.html" loading="lazy"></iframe>
+          <a class="preview-link" href="design-07-kitchen-door.html" target="_blank" aria-label="Open design 07"></a>
+        </div>
+        <div class="card-meta"><span class="universe">Karachi kitchen fridge photo</span><span>K-Electric bill · magnets · hand</span></div>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <span class="card-num">08</span>
+          <span class="card-name">Urdu Awwal</span>
+          <a class="card-open" href="design-08-urdu-awwal.html" target="_blank">Open ↗</a>
+        </div>
+        <div class="card-strategy">Urdu primary · English subordinated · RTL flow · the primer that taught you to read</div>
+        <div class="preview-wrap">
+          <iframe src="design-08-urdu-awwal.html" loading="lazy"></iframe>
+          <a class="preview-link" href="design-08-urdu-awwal.html" target="_blank" aria-label="Open design 08"></a>
+        </div>
+        <div class="card-meta"><span class="universe">Pakistani primer (qaida)</span><span>RTL · nastaliq · pedagogical</span></div>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <span class="card-num">09</span>
+          <span class="card-name">Today's Card</span>
+          <a class="card-open" href="design-09-todays-card.html" target="_blank">Open ↗</a>
+        </div>
+        <div class="card-strategy">Daily media diet as a played innings · three artifacts batting at the top of the order</div>
+        <div class="preview-wrap">
+          <iframe src="design-09-todays-card.html" loading="lazy"></iframe>
+          <a class="preview-link" href="design-09-todays-card.html" target="_blank" aria-label="Open design 09"></a>
+        </div>
+        <div class="card-meta"><span class="universe">Cricket scorecard</span><span>Tabular · pitch-green · DRS</span></div>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <span class="card-num">10</span>
+          <span class="card-name">Aankh Khulney Tak</span>
+          <a class="card-open" href="design-10-aankh-khulney.html" target="_blank">Open ↗</a>
+        </div>
+        <div class="card-strategy">Triptych hidden in darkness · scroll-effort to reveal · phenomenological reduction</div>
+        <div class="preview-wrap">
+          <iframe src="design-10-aankh-khulney.html" loading="lazy"></iframe>
+          <a class="preview-link" href="design-10-aankh-khulney.html" target="_blank" aria-label="Open design 10"></a>
+        </div>
+        <div class="card-meta"><span class="universe">Near-black phenomenology</span><span>Dark · slow · earned</span></div>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <span class="card-num">11</span>
+          <span class="card-name">Newsprint Masthead</span>
+          <a class="card-open" href="design-11-newsprint-masthead.html" target="_blank">Open ↗</a>
+        </div>
+        <div class="card-strategy">Authoritative Dawn-front-page register · the survivor, refined and renamed</div>
+        <div class="preview-wrap">
+          <iframe src="design-11-newsprint-masthead.html" loading="lazy"></iframe>
+          <a class="preview-link" href="design-11-newsprint-masthead.html" target="_blank" aria-label="Open design 11"></a>
+        </div>
+        <div class="card-meta"><span class="universe">Traditional newspaper front page</span><span>Masthead · rules · columns</span></div>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <span class="card-num">12</span>
+          <span class="card-name">Dark Newsroom</span>
+          <a class="card-open" href="design-12-dark-newsroom.html" target="_blank">Open ↗</a>
+        </div>
+        <div class="card-strategy">Asymmetric split · question left, triptych right · TV glows on dark · CRT scanlines</div>
+        <div class="preview-wrap">
+          <iframe src="design-12-dark-newsroom.html" loading="lazy"></iframe>
+          <a class="preview-link" href="design-12-dark-newsroom.html" target="_blank" aria-label="Open design 12"></a>
+        </div>
+        <div class="card-meta"><span class="universe">After-hours newsroom (carried from v1)</span><span>Dark file · saffron pop · live dot</span></div>
+      </div>
+    </div>
+    <div class="footer">
+      <span>Chowki · چوکی · 2026</span>
+      <span>12 of 12 candidates · holding page · ready for review</span>
+      <span>artifacts/chauki/index.html</span>
+    </div>
+  </div>
+</body>
+</html>

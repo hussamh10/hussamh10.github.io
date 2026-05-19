@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chowki — Aapka Taqdeer-e-Information</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,400;0,500;0,700;1,400;1,500&family=Noto+Nastaliq+Urdu&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --newsprint:   #F0E6CD;
+    --ink:         #1A1612;
+    --magenta:     #8B1A4D;
+    --column-blue: #2C5070;
+    --accent-rust: #B83B2A;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: var(--newsprint); color: var(--ink); }
+  body {
+    font-family: 'Crimson Pro', Georgia, serif;
+    line-height: 1.55;
+    min-height: 100vh;
+    background-color: var(--newsprint);
+    background-image:
+      radial-gradient(circle at 1px 1px, rgba(26,22,18,0.10) 0.6px, transparent 1px),
+      radial-gradient(circle at 6px 7px, rgba(26,22,18,0.06) 0.4px, transparent 1px);
+    background-size: 4px 4px, 11px 11px;
+    padding: 56px 24px 80px;
+  }
+  .urdu { font-family: 'Noto Nastaliq Urdu', serif; direction: rtl; line-height: 2.2; }
+  .column { max-width: 720px; margin: 0 auto; position: relative; }
+  .dateline { display: flex; justify-content: space-between; align-items: flex-end; font-size: 11px; color: var(--column-blue); letter-spacing: 0.08em; text-transform: uppercase; padding-bottom: 14px; border-bottom: 1px solid var(--ink); }
+  .dateline .right { text-align: right; }
+  .dateline .urdu-d { font-size: 18px; line-height: 1.4; color: var(--ink); text-transform: none; letter-spacing: 0; }
+  .dateline .en-d { font-style: italic; font-size: 11px; color: var(--column-blue); margin-top: 2px; }
+  .dateline .issue { font-style: italic; font-size: 11px; color: var(--column-blue); }
+  .wordmark { text-align: center; padding: 36px 0 8px; }
+  .wordmark .mark { font-family: 'Noto Nastaliq Urdu', serif; font-size: 96px; line-height: 1.05; color: var(--ink); direction: rtl; }
+  .wordmark .latin { font-family: 'Crimson Pro', serif; font-style: italic; font-size: 13px; color: var(--column-blue); letter-spacing: 0.18em; text-transform: uppercase; margin-top: 6px; }
+  .ornament { display: flex; align-items: center; justify-content: center; gap: 10px; color: var(--column-blue); margin: 18px 0 22px; }
+  .ornament .rule { flex: 1; height: 1px; background: var(--column-blue); position: relative; }
+  .ornament .rule::before, .ornament .rule::after { content: ''; position: absolute; top: -2px; width: 5px; height: 5px; background: var(--column-blue); }
+  .ornament .rule::before { left: 22%; }
+  .ornament .rule::after { right: 22%; }
+  .ornament .dot { width: 6px; height: 6px; background: var(--column-blue); transform: rotate(45deg); }
+  .section-head { text-align: center; margin: 4px 0 8px; }
+  .section-head .urdu-h { font-family: 'Noto Nastaliq Urdu', serif; font-size: 30px; color: var(--magenta); direction: rtl; line-height: 1.8; }
+  .section-head .latin-h { font-family: 'Crimson Pro', serif; font-style: italic; font-size: 13px; color: var(--magenta); letter-spacing: 0.22em; text-transform: uppercase; margin-top: 4px; }
+  .sign-block { text-align: center; padding: 16px 0 6px; }
+  .sign-block .u { font-family: 'Noto Nastaliq Urdu', serif; font-size: 22px; color: var(--ink); direction: rtl; line-height: 1.9; }
+  .sign-block .e { font-family: 'Crimson Pro', serif; font-style: italic; font-size: 13px; color: var(--ink); opacity: 0.75; margin-top: 2px; }
+  .question { text-align: center; padding: 14px 0 18px; }
+  .question .u { font-family: 'Noto Nastaliq Urdu', serif; font-size: 40px; color: var(--ink); direction: rtl; line-height: 2; padding: 0 8px; }
+  .question .e { font-family: 'Crimson Pro', serif; font-style: italic; font-size: 14px; color: var(--magenta); margin-top: 10px; letter-spacing: 0.02em; }
+  .reading { padding: 22px 0 12px; }
+  .reading-label { font-family: 'Crimson Pro', serif; font-style: italic; font-size: 11px; letter-spacing: 0.28em; text-transform: uppercase; color: var(--magenta); text-align: center; margin-bottom: 10px; }
+  .reading-head { text-align: center; margin-bottom: 14px; }
+  .reading-head .u { font-family: 'Noto Nastaliq Urdu', serif; font-size: 24px; color: var(--ink); direction: rtl; line-height: 1.9; }
+  .reading-head .e { font-family: 'Crimson Pro', serif; font-style: italic; font-size: 12px; color: var(--column-blue); letter-spacing: 0.14em; text-transform: uppercase; margin-top: 2px; }
+  .reading-body { display: grid; grid-template-columns: 78px 1fr; gap: 18px; align-items: start; }
+  .illus { width: 78px; height: 78px; display: flex; align-items: center; justify-content: center; color: var(--ink); }
+  .artifact { border: 1px solid var(--ink); padding: 10px; background: rgba(26,22,18,0.02); position: relative; overflow: hidden; }
+  .halftone { position: absolute; inset: 0; background-image: radial-gradient(circle at 1px 1px, rgba(26,22,18,0.45) 0.7px, transparent 1px); background-size: 3px 3px; mix-blend-mode: multiply; pointer-events: none; opacity: 0.55; }
+  .tv { background: #1A1612; color: #F0E6CD; padding: 0; border: 1px solid var(--ink); position: relative; }
+  .tv-frame { padding: 14px 12px 8px; position: relative; min-height: 96px; display: flex; flex-direction: column; justify-content: space-between; }
+  .tv-top { display: flex; justify-content: space-between; font-family: 'Crimson Pro', serif; font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; opacity: 0.78; }
+  .tv-chyron { background: var(--accent-rust); color: var(--newsprint); padding: 6px 8px; font-family: 'Crimson Pro', serif; font-size: 11px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; margin-top: 28px; }
+  .tv-time { position: absolute; bottom: 6px; right: 10px; font-family: 'Crimson Pro', serif; font-size: 10px; opacity: 0.85; letter-spacing: 0.1em; }
+  .yt { background: #1A1612; color: #F0E6CD; padding: 0; border: 1px solid var(--ink); position: relative; min-height: 110px; }
+  .yt-frame { padding: 10px 12px; position: relative; min-height: 110px; }
+  .yt-stamp { position: absolute; top: 8px; right: 8px; border: 1px solid var(--accent-rust); color: var(--accent-rust); font-family: 'Crimson Pro', serif; font-style: italic; font-size: 10px; padding: 2px 6px; letter-spacing: 0.08em; text-transform: uppercase; background: rgba(26,22,18,0.6); }
+  .yt-play { position: absolute; top: 36px; left: 14px; font-size: 22px; color: rgba(240,230,205,0.78); line-height: 1; }
+  .yt-title { font-family: 'Crimson Pro', serif; font-size: 13px; font-weight: 500; font-style: italic; max-width: 78%; margin-top: 50px; line-height: 1.3; }
+  .yt-meta { font-family: 'Crimson Pro', serif; font-size: 10px; opacity: 0.75; margin-top: 4px; letter-spacing: 0.04em; }
+  .wa { background: var(--newsprint); border: 1px solid var(--ink); padding: 10px 10px 10px; position: relative; }
+  .wa-msg { font-family: 'Crimson Pro', serif; font-size: 11px; line-height: 1.4; padding: 6px 8px; border: 1px solid var(--ink); margin-bottom: 6px; position: relative; }
+  .wa-msg.in { background: rgba(44,80,112,0.06); }
+  .wa-msg.out { background: rgba(139,26,77,0.06); margin-left: 36px; }
+  .wa-meta { font-family: 'Crimson Pro', serif; font-style: italic; font-size: 9px; color: var(--column-blue); letter-spacing: 0.06em; text-transform: uppercase; }
+  .reading-text { font-family: 'Crimson Pro', serif; font-size: 14px; line-height: 1.65; color: var(--ink); margin-top: 12px; }
+  .reading-text .urdu-inline { font-family: 'Noto Nastaliq Urdu', serif; direction: rtl; display: inline-block; line-height: 1.4; color: var(--magenta); padding: 0 3px; vertical-align: -2px; }
+  .reading-text em { color: var(--accent-rust); font-style: italic; }
+  .footer-ornaments { margin-top: 30px; padding-top: 18px; border-top: 1px solid var(--ink); display: flex; justify-content: space-between; align-items: flex-end; gap: 24px; font-family: 'Crimson Pro', serif; }
+  .lucky { font-size: 12px; color: var(--ink); letter-spacing: 0.04em; }
+  .lucky .num { font-size: 32px; color: var(--magenta); font-weight: 500; letter-spacing: 0.02em; display: block; line-height: 1; margin-top: 4px; }
+  .lucky .urdu-l { font-family: 'Noto Nastaliq Urdu', serif; font-size: 14px; direction: rtl; color: var(--ink); display: block; margin-bottom: 6px; line-height: 1.8; }
+  .lucky em { font-style: italic; color: var(--column-blue); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; display: block; margin-top: 4px; }
+  .next-reading { text-align: right; font-size: 11px; color: var(--column-blue); font-style: italic; letter-spacing: 0.1em; max-width: 220px; }
+  .next-reading .urdu-n { font-family: 'Noto Nastaliq Urdu', serif; direction: rtl; font-size: 16px; color: var(--ink); font-style: normal; letter-spacing: 0; display: block; line-height: 1.8; margin-bottom: 4px; }
+  .colophon { text-align: center; margin-top: 36px; padding-top: 16px; font-family: 'Crimson Pro', serif; font-style: italic; font-size: 11px; color: var(--column-blue); letter-spacing: 0.18em; text-transform: uppercase; }
+  .colophon::before, .colophon::after { content: "  \2022  "; color: var(--column-blue); }
+  @media (max-width: 640px) {
+    body { padding: 32px 14px 60px; }
+    .wordmark .mark { font-size: 68px; }
+    .question .u { font-size: 30px; }
+    .reading-body { grid-template-columns: 56px 1fr; gap: 12px; }
+    .illus { width: 56px; height: 56px; }
+    .illus svg { width: 100%; height: 100%; }
+    .wa-msg.out { margin-left: 18px; }
+    .footer-ornaments { flex-direction: column; align-items: flex-start; }
+    .next-reading { text-align: left; }
+  }
+</style>
+</head>
+<body>
+  <main class="column">
+
+    <div class="dateline">
+      <div class="left">Vol. I · Issue 01<br><span class="issue">A holding page</span></div>
+      <div class="right">
+        <div class="urdu-d">آج: 20 مئی 2026</div>
+        <div class="en-d">Today · 20 May 2026</div>
+      </div>
+    </div>
+
+    <header class="wordmark">
+      <div class="mark">چوکی</div>
+      <div class="latin">(Chowki) · watchpost · checkpoint</div>
+    </header>
+
+    <div class="ornament"><div class="rule"></div><div class="dot"></div><div class="rule"></div></div>
+
+    <div class="section-head">
+      <div class="urdu-h">آج کا تقدیر</div>
+      <div class="latin-h">Aap ka Taqdeer-e-Information &nbsp;·&nbsp; Your Fortune Today</div>
+    </div>
+
+    <div class="ornament"><div class="rule"></div><div class="dot"></div><div class="rule"></div></div>
+
+    <div class="sign-block">
+      <div class="u">آپ کا برج: پاکستانی</div>
+      <div class="e">Your sign: Pakistani &nbsp;·&nbsp; born into the federation</div>
+    </div>
+
+    <section class="question">
+      <div class="u">آپ جو دیکھتے ہیں اس پر یقین کیسے کرتے ہیں؟</div>
+      <div class="e">How do you believe what you see?</div>
+    </section>
+
+    <div class="ornament"><div class="rule"></div><div class="dot"></div><div class="rule"></div></div>
+
+    <!-- READING 1 — TELEVISION -->
+    <section class="reading">
+      <div class="reading-label">Reading I · Television</div>
+      <div class="reading-head">
+        <div class="u">آپ کا براہ راست نظارہ</div>
+        <div class="e">Aap ka baraah-e-raast nazaara &nbsp;·&nbsp; Your live broadcast reading</div>
+      </div>
+      <div class="reading-body">
+        <div class="illus" aria-hidden="true">
+          <svg viewBox="0 0 78 78" width="78" height="78" fill="none" stroke="#1A1612" stroke-width="1.4">
+            <rect x="8" y="14" width="54" height="38"/>
+            <rect x="14" y="20" width="42" height="26"/>
+            <line x1="62" y1="22" x2="70" y2="14"/>
+            <line x1="62" y1="28" x2="70" y2="22"/>
+            <circle cx="66" cy="36" r="1.5" fill="#1A1612"/>
+            <circle cx="66" cy="42" r="1.5" fill="#1A1612"/>
+            <rect x="22" y="56" width="26" height="3"/>
+            <line x1="14" y1="63" x2="56" y2="63"/>
+            <line x1="20" y1="68" x2="50" y2="68"/>
+          </svg>
+        </div>
+        <div>
+          <div class="artifact tv">
+            <div class="tv-frame">
+              <div class="tv-top"><span>CH 7</span><span>LIVE</span></div>
+              <div class="tv-chyron">BREAKING — anti-state elements seeking to destabilize the federation</div>
+              <div class="tv-time">20:04</div>
+            </div>
+            <div class="halftone"></div>
+          </div>
+          <p class="reading-text">At <em>20:04 PKT</em> you will encounter a phrase about <span class="urdu-inline">ریاست مخالف عناصر</span>&mdash; <em>anti-state elements seeking to destabilize the federation</em>. The phrase will appear six more times before midnight, each time in slightly different words. You will not remember when you first heard it. It will feel as though you have always known.</p>
+        </div>
+      </div>
+    </section>
+
+    <div class="ornament"><div class="rule"></div><div class="dot"></div><div class="rule"></div></div>
+
+    <!-- READING 2 — YOUTUBE -->
+    <section class="reading">
+      <div class="reading-label">Reading II · Video</div>
+      <div class="reading-head">
+        <div class="u">آپ کا ویڈیو نسیب</div>
+        <div class="e">Aap ka video naseeb &nbsp;·&nbsp; Your video fortune</div>
+      </div>
+      <div class="reading-body">
+        <div class="illus" aria-hidden="true">
+          <svg viewBox="0 0 78 78" width="78" height="78" fill="none" stroke="#1A1612" stroke-width="1.4">
+            <rect x="24" y="6" width="30" height="60"/>
+            <rect x="28" y="12" width="22" height="40"/>
+            <circle cx="39" cy="60" r="2.4"/>
+            <line x1="34" y1="9" x2="44" y2="9"/>
+            <path d="M36 26 L36 38 L46 32 Z" fill="#1A1612" stroke="none"/>
+            <line x1="14" y1="72" x2="64" y2="72"/>
+          </svg>
+        </div>
+        <div>
+          <div class="artifact yt">
+            <div class="yt-frame">
+              <div class="yt-play">&#9654;</div>
+              <div class="yt-stamp">Forwarded · Unverified</div>
+              <div class="yt-title">"Why everyone is talking about this &mdash; must watch"</div>
+              <div class="yt-meta">Verified Channel · 2.4M views · 3 days ago</div>
+            </div>
+            <div class="halftone"></div>
+          </div>
+          <p class="reading-text">A video labeled <em>Verified Channel · 2.4M views</em> will reach you today. You will hesitate, then watch twenty-three seconds. You will not check the source. You will forward it before the day is out, to <span class="urdu-inline">دو لوگوں</span> &mdash; <em>two people</em> &mdash; one of whom you trust, one of whom you barely know.</p>
+        </div>
+      </div>
+    </section>
+
+    <div class="ornament"><div class="rule"></div><div class="dot"></div><div class="rule"></div></div>
+
+    <!-- READING 3 — WHATSAPP -->
+    <section class="reading">
+      <div class="reading-label">Reading III · Message</div>
+      <div class="reading-head">
+        <div class="u">آپ کا پیغام نسیب</div>
+        <div class="e">Aap ka paighaam naseeb &nbsp;·&nbsp; Your message fortune</div>
+      </div>
+      <div class="reading-body">
+        <div class="illus" aria-hidden="true">
+          <svg viewBox="0 0 78 78" width="78" height="78" fill="none" stroke="#1A1612" stroke-width="1.4">
+            <rect x="10" y="22" width="58" height="38"/>
+            <polyline points="10,22 39,46 68,22"/>
+            <line x1="10" y1="60" x2="32" y2="42"/>
+            <line x1="68" y1="60" x2="46" y2="42"/>
+            <circle cx="62" cy="20" r="6" fill="#F0E6CD"/>
+            <text x="62" y="23" font-family="Crimson Pro" font-size="9" text-anchor="middle" fill="#1A1612" font-style="italic">F</text>
+          </svg>
+        </div>
+        <div>
+          <div class="artifact wa">
+            <div class="wa-meta">FAMILY GROUP &nbsp;·&nbsp; 22 members &nbsp;·&nbsp; 10:42 PM</div>
+            <div class="wa-msg in" style="margin-top:8px;"><em>Forwarded as received:</em> this is the real story they don't want you to see</div>
+            <div class="wa-msg out">where did you get this</div>
+            <div class="wa-msg in">someone in the family group sent it</div>
+            <div class="halftone"></div>
+          </div>
+          <p class="reading-text">At <em>10:42 PM</em> a forwarded message will arrive from the family group. You will ask <span class="urdu-inline">"کہاں سے ملا؟"</span> &mdash; <em>where did you get this</em>. The reply will satisfy you. <em>It should not have.</em> The message will travel onward through you, unaltered, before you sleep.</p>
+        </div>
+      </div>
+    </section>
+
+    <div class="ornament"><div class="rule"></div><div class="dot"></div><div class="rule"></div></div>
+
+    <footer class="footer-ornaments">
+      <div class="lucky">
+        <span class="urdu-l">آج کا خوش قسمت عدد</span>
+        Lucky number
+        <span class="num">96%</span>
+        <em>Pakistani smartphone penetration, 2024</em>
+      </div>
+      <div class="next-reading">
+        <span class="urdu-n">اگلا تقدیر: کل</span>
+        Next reading: tomorrow.<br>
+        The archive is still being kept.
+      </div>
+    </footer>
+
+    <div class="colophon">A holding page from Chowki &nbsp;&middot;&nbsp; چوکی</div>
+
+  </main>
+</body>
+</html>

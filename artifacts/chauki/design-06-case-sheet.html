@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Chowki — Case Sheet, Outpatients</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Courier+Prime:ital,wght@0,400;0,700;1,400&family=Homemade+Apple&family=Noto+Nastaliq+Urdu&display=swap" rel="stylesheet">
+<style>
+  :root{--paper:#ECE6D8;--paper-shadow:#D8D1C0;--pen-blue:#5A6B8C;--ink-dark:#1A1612;--stamp-purple:#4B1E5C;--form-red:#7A1818;--perforation:#B8B0A0;}
+  *{margin:0;padding:0;box-sizing:border-box;border-radius:0!important}
+  html,body{background:#9C9382;min-height:100vh;font-family:'Courier Prime',monospace;color:var(--ink-dark)}
+  body{background:repeating-linear-gradient(91deg, rgba(0,0,0,0.018) 0 1px, transparent 1px 7px),repeating-linear-gradient(0deg, rgba(0,0,0,0.022) 0 1px, transparent 1px 4px),radial-gradient(ellipse at 30% 20%, #A89E8A 0%, #8C8473 60%, #6E6753 100%);padding:50px 20px 80px;display:flex;justify-content:center;align-items:flex-start;}
+  .desk{position:relative;width:640px;max-width:100%}
+  /* triplicate carbon ghost behind the slip */
+  .ghost{position:absolute;top:14px;left:14px;right:-14px;bottom:-14px;background:var(--paper-shadow);box-shadow:0 4px 14px rgba(0,0,0,0.35), inset 0 0 60px rgba(0,0,0,0.06);z-index:1;}
+  .ghost::after{content:"DUPLICATE";position:absolute;right:18px;top:24px;font-family:'Bebas Neue',sans-serif;font-size:13px;letter-spacing:3px;color:rgba(75,30,92,0.35);transform:rotate(-4deg);}
+  /* main slip body */
+  .slip{position:relative;z-index:2;background:var(--paper);padding:28px 32px 26px 46px;box-shadow:0 2px 6px rgba(0,0,0,0.25), 0 14px 32px rgba(0,0,0,0.35);background-image:repeating-linear-gradient(0deg, rgba(0,0,0,0.012) 0 1px, transparent 1px 3px),radial-gradient(ellipse at 80% 90%, rgba(122,24,24,0.04), transparent 60%),radial-gradient(ellipse at 12% 70%, rgba(0,0,0,0.05), transparent 50%);}
+  /* perforated left edge */
+  .slip::before{content:"";position:absolute;left:0;top:0;bottom:0;width:18px;background:radial-gradient(circle at 9px 7px, transparent 3px, var(--paper) 3.5px),repeating-linear-gradient(0deg, var(--paper) 0 10px, transparent 10px 14px);background-size:18px 14px;border-right:1px dashed rgba(0,0,0,0.18);}
+  /* paper speckles */
+  .slip::after{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(circle at 22% 14%, rgba(122,24,24,0.07) 0 1px, transparent 1.5px),radial-gradient(circle at 71% 38%, rgba(0,0,0,0.06) 0 1px, transparent 1.5px),radial-gradient(circle at 44% 76%, rgba(90,107,140,0.08) 0 1.2px, transparent 1.8px),radial-gradient(circle at 86% 62%, rgba(0,0,0,0.05) 0 1px, transparent 1.5px),radial-gradient(circle at 9% 52%, rgba(0,0,0,0.04) 0 1px, transparent 1.5px);}
+
+  /* header / letterhead */
+  .header{display:flex;justify-content:space-between;align-items:flex-start;border-bottom:2px solid var(--ink-dark);padding-bottom:8px;position:relative;z-index:3}
+  .letterhead{flex:1}
+  .letterhead .gov{font-family:'Courier Prime',monospace;font-size:9.5px;letter-spacing:2px;color:var(--ink-dark)}
+  .letterhead h1{font-family:'Courier Prime',monospace;font-weight:700;font-size:15px;letter-spacing:3.5px;color:var(--form-red);margin-top:3px;text-transform:uppercase}
+  .letterhead .sub{font-family:'Courier Prime',monospace;font-style:italic;font-size:10px;color:var(--ink-dark);margin-top:3px;letter-spacing:1px}
+  .serial{font-family:'Courier Prime',monospace;font-size:10px;color:var(--form-red);text-align:right;line-height:1.7;text-transform:uppercase;letter-spacing:1.5px;padding-top:4px}
+  .serial .num{color:var(--ink-dark)}
+  .serial .hand{font-family:'Homemade Apple',cursive;color:var(--pen-blue);font-size:14px;letter-spacing:0;text-transform:none}
+
+  /* circular rubber-stamp wordmark */
+  .stamp{position:absolute;top:-12px;right:-6px;width:120px;height:120px;z-index:4;transform:rotate(-7deg);filter:contrast(1.05);}
+  .stamp-ring{position:absolute;inset:0;border:2.5px solid var(--stamp-purple);opacity:0.78;}
+  .stamp-ring.inner{inset:8px;border-width:1px;opacity:0.65}
+  .stamp svg{position:absolute;inset:0;width:100%;height:100%}
+  .stamp text{font-family:'Bebas Neue',sans-serif;font-size:11px;letter-spacing:2.5px;fill:var(--stamp-purple);opacity:0.82}
+  .stamp .urdu{font-family:'Noto Nastaliq Urdu',serif;font-size:13px;fill:var(--stamp-purple);opacity:0.78}
+  .stamp .center{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;color:var(--stamp-purple);opacity:0.85}
+  .stamp .center .mark{font-size:26px;letter-spacing:2px;line-height:1}
+  .stamp .center .yr{font-size:9px;letter-spacing:2.5px;margin-top:2px;font-family:'Courier Prime',monospace;font-weight:700}
+  .stamp .smudge{position:absolute;inset:0;background:radial-gradient(ellipse at 35% 60%, rgba(75,30,92,0.18), transparent 55%);mix-blend-mode:multiply;pointer-events:none}
+
+  /* pre-printed form fields */
+  .row{display:flex;gap:18px;margin-top:14px;position:relative;z-index:3}
+  .field{flex:1;border-bottom:1px solid rgba(26,22,18,0.45);padding-bottom:3px;position:relative;min-height:30px}
+  .field .label{font-family:'Courier Prime',monospace;font-size:10.5px;color:var(--form-red);letter-spacing:1.8px;text-transform:uppercase}
+  .field .entry{font-family:'Homemade Apple',cursive;color:var(--pen-blue);font-size:17px;line-height:1.1;padding-top:4px;letter-spacing:0.3px}
+  .field.w2{flex:2}
+  .field.w08{flex:0.8}
+
+  /* presenting complaint = the question */
+  .complaint{margin-top:18px;padding:10px 0 6px;border-top:1px dashed rgba(26,22,18,0.35);border-bottom:1px dashed rgba(26,22,18,0.35);position:relative;z-index:3}
+  .complaint .label{font-family:'Courier Prime',monospace;font-weight:700;font-size:11px;color:var(--form-red);letter-spacing:2.2px;text-transform:uppercase;display:block;margin-bottom:8px}
+  .complaint .q{font-family:'Homemade Apple',cursive;color:var(--pen-blue);font-size:26px;line-height:1.2;letter-spacing:0.3px}
+  .complaint .note{font-family:'Homemade Apple',cursive;color:var(--pen-blue);font-size:14px;margin-top:6px;opacity:0.85}
+
+  /* examination = stapled supporting documents */
+  .examination{margin-top:14px;position:relative;z-index:3}
+  .examination .label{font-family:'Courier Prime',monospace;font-weight:700;font-size:11px;color:var(--form-red);letter-spacing:2.2px;text-transform:uppercase;display:block;margin-bottom:10px}
+  .attachments{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;position:relative}
+  .att{position:relative;background:#F2EDDF;padding:8px 9px 10px;box-shadow:0 1px 2px rgba(0,0,0,0.12), 0 5px 10px rgba(0,0,0,0.16)}
+  .att.tilt-l{transform:rotate(-2deg)}
+  .att.tilt-c{transform:rotate(1deg);margin-top:6px}
+  .att.tilt-r{transform:rotate(-1deg);margin-top:-2px}
+  .att .hlabel{position:absolute;top:-22px;left:6px;font-family:'Homemade Apple',cursive;color:var(--pen-blue);font-size:13px;line-height:1;white-space:nowrap}
+  .staple{position:absolute;top:-3px;left:50%;transform:translateX(-50%);width:18px;height:6px;background:linear-gradient(180deg,#C8C8CC 0%, #8E8E94 50%, #6B6B70 100%);box-shadow:0 1px 1px rgba(0,0,0,0.4);z-index:4}
+  .staple::before, .staple::after{content:"";position:absolute;top:0;width:3px;height:8px;background:linear-gradient(180deg,#8E8E94,#5B5B60)}
+  .staple::before{left:-1px;transform:skewX(-12deg)}
+  .staple::after{right:-1px;transform:skewX(12deg)}
+
+  /* TV broadcast attachment */
+  .tv{background:#0a0a0c;padding:6px;color:#d8d8d8;font-family:'Courier Prime',monospace;height:118px;display:flex;flex-direction:column;justify-content:space-between;position:relative;overflow:hidden}
+  .tv::after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(0deg, rgba(255,255,255,0.04) 0 1px, transparent 1px 3px);pointer-events:none}
+  .tv .top{display:flex;justify-content:space-between;font-size:8px;letter-spacing:2px;color:#aaa}
+  .tv .stid{background:#7A1818;color:#fff;padding:1px 4px;font-weight:700}
+  .tv .chyron{background:#7A1818;color:#fff;padding:3px 4px;font-size:7.5px;letter-spacing:1px;line-height:1.25;text-transform:uppercase;font-weight:700}
+  .tv .ts{font-size:8px;color:#bdbdbd;text-align:right;letter-spacing:1.5px}
+
+  /* YouTube card attachment */
+  .yt{background:#0c0c0c;padding:6px;color:#d8d8d8;font-family:'Courier Prime',monospace;height:118px;display:flex;flex-direction:column;justify-content:space-between;position:relative}
+  .yt .thumb{background:#181820;height:54px;position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden}
+  .yt .thumb::before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at 50% 60%, #2a2438 0%, #0c0c0c 80%)}
+  .yt .play{position:relative;width:0;height:0;border-left:11px solid #d8d8d8;border-top:7px solid transparent;border-bottom:7px solid transparent;z-index:2;opacity:0.9}
+  .yt .fwd{position:absolute;top:4px;right:4px;font-family:'Bebas Neue',sans-serif;font-size:8px;letter-spacing:1px;color:var(--stamp-purple);border:1px solid var(--stamp-purple);padding:1px 3px;transform:rotate(-6deg);background:rgba(236,230,216,0.92);z-index:3;opacity:0.92}
+  .yt .ttl{font-size:8px;line-height:1.25;color:#e8e8e8;letter-spacing:0.3px}
+  .yt .meta{font-size:7px;color:#9a9a9a;letter-spacing:1px;text-transform:uppercase}
+
+  /* WhatsApp thread attachment */
+  .wa{background:#0d100f;padding:6px;color:#d8d8d8;font-family:'Courier Prime',monospace;height:118px;display:flex;flex-direction:column;gap:3px;justify-content:center;position:relative}
+  .wa .msg{padding:3px 5px;font-size:7.5px;line-height:1.3;max-width:88%;color:#e6e6e6;letter-spacing:0.2px}
+  .wa .in{background:#1a2622;align-self:flex-start;border-left:2px solid #4a6b5a}
+  .wa .out{background:#2a3530;align-self:flex-end;border-right:2px solid #6a8a78}
+  .wa .fwd{font-size:6.5px;color:#9a9a9a;font-style:italic;letter-spacing:0.5px;margin-bottom:1px}
+
+  /* diagnosis — left INTENTIONALLY BLANK */
+  .diagnosis{margin-top:18px;position:relative;z-index:3;padding-top:6px}
+  .diagnosis .label{font-family:'Courier Prime',monospace;font-weight:700;font-size:11px;color:var(--form-red);letter-spacing:2.2px;text-transform:uppercase;display:block}
+  .diagnosis .lines{margin-top:10px}
+  .diagnosis .line{border-bottom:1px solid rgba(26,22,18,0.35);height:24px;margin-bottom:6px}
+  .diagnosis .marginote{position:absolute;right:0;top:-2px;font-family:'Homemade Apple',cursive;color:var(--pen-blue);font-size:11px;opacity:0.7;transform:rotate(-2deg)}
+
+  /* prescription */
+  .prescription{margin-top:16px;position:relative;z-index:3}
+  .prescription .label{font-family:'Courier Prime',monospace;font-weight:700;font-size:11px;color:var(--form-red);letter-spacing:2.2px;text-transform:uppercase;display:block;margin-bottom:6px}
+  .prescription .rx{font-family:'Courier Prime',monospace;font-weight:700;color:var(--form-red);font-size:18px;letter-spacing:2px;float:left;margin-right:8px;line-height:1}
+  .prescription .entry{font-family:'Homemade Apple',cursive;color:var(--pen-blue);font-size:17px;line-height:1.35;padding-top:2px}
+
+  /* signature row + received stamp */
+  .footer-row{display:flex;justify-content:space-between;align-items:flex-end;margin-top:32px;position:relative;z-index:3;min-height:80px}
+  .received{position:relative;width:148px;height:62px;border:2px solid var(--stamp-purple);display:flex;flex-direction:column;align-items:center;justify-content:center;transform:rotate(-9deg);opacity:0.78;box-shadow:inset 0 0 18px rgba(75,30,92,0.12);}
+  .received .label{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:4px;color:var(--stamp-purple);line-height:1}
+  .received .sub{font-family:'Courier Prime',monospace;font-size:8px;letter-spacing:2px;color:var(--stamp-purple);margin-top:3px}
+  .received::after{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at 30% 50%, rgba(75,30,92,0.14), transparent 60%);pointer-events:none}
+  .sig{text-align:right;min-width:200px}
+  .sig .scrawl{font-family:'Homemade Apple',cursive;color:var(--pen-blue);font-size:30px;line-height:1;transform:rotate(-3deg);display:inline-block;letter-spacing:1px;border-bottom:1px solid var(--ink-dark);padding:0 12px 4px}
+  .sig .role{font-family:'Courier Prime',monospace;font-size:9.5px;color:var(--form-red);letter-spacing:2px;text-transform:uppercase;margin-top:6px}
+
+  /* footer */
+  .footnote{margin-top:22px;padding-top:8px;border-top:1px solid rgba(26,22,18,0.4);font-family:'Courier Prime',monospace;font-size:8.5px;color:var(--ink-dark);letter-spacing:2.8px;text-transform:uppercase;text-align:center;position:relative;z-index:3;opacity:0.78}
+
+  @media (max-width: 700px){
+    body{padding:24px 10px 60px}
+    .desk{width:100%}
+    .slip{padding:22px 18px 22px 32px}
+    .attachments{grid-template-columns:1fr;gap:30px}
+    .att.tilt-c, .att.tilt-r{margin-top:0}
+    .stamp{width:96px;height:96px;top:-6px;right:-4px}
+    .complaint .q{font-size:21px}
+    .footer-row{flex-direction:column;align-items:flex-start;gap:24px}
+    .sig{text-align:left;width:100%}
+    .serial{font-size:9px}
+  }
+</style>
+</head>
+<body>
+  <main class="desk">
+    <div class="ghost"></div>
+    <article class="slip">
+      <!-- circular rubber-stamp wordmark: Chowki -->
+      <div class="stamp" aria-label="Chowki Office of Public Record stamp">
+        <div class="stamp-ring"></div>
+        <div class="stamp-ring inner"></div>
+        <svg viewBox="0 0 120 120">
+          <defs>
+            <path id="top" d="M 18,60 A 42,42 0 0 1 102,60" />
+            <path id="bot" d="M 18,62 A 42,42 0 0 0 102,62" />
+          </defs>
+          <text><textPath href="#top" startOffset="50%" text-anchor="middle">CHOWKI · OFFICE OF PUBLIC RECORD</textPath></text>
+          <text class="urdu"><textPath href="#bot" startOffset="50%" text-anchor="middle">چوکی  ·  محکمہ ریکارڈ</textPath></text>
+        </svg>
+        <div class="center"><div class="mark">No. 04</div><div class="yr">EST · MMXXVI</div></div>
+        <div class="smudge"></div>
+      </div>
+
+      <header class="header">
+        <div class="letterhead">
+          <div class="gov">GOVT. OF PAKISTAN — DEPT. OF PUBLIC RECORD</div>
+          <h1>Outpatient Department — Case Slip</h1>
+          <div class="sub">Information Ecosystem Clinic · Ward IV</div>
+        </div>
+        <div class="serial">
+          OPD No. <span class="num">04 / 127</span><br/>
+          Date <span class="hand">20</span> / <span class="hand">05</span> / 2026<br/>
+          Token <span class="num">— B-19</span>
+        </div>
+      </header>
+
+      <div class="row">
+        <div class="field w2"><div class="label">Name of Patient</div><div class="entry">The Visitor</div></div>
+        <div class="field w08"><div class="label">Age</div><div class="entry">—</div></div>
+        <div class="field"><div class="label">Sex</div><div class="entry">—</div></div>
+      </div>
+      <div class="row">
+        <div class="field w2"><div class="label">Address / Constituency</div><div class="entry">Reading this in a browser</div></div>
+        <div class="field"><div class="label">Referred By</div><div class="entry">a forwarded link</div></div>
+      </div>
+
+      <section class="complaint">
+        <span class="label">Presenting Complaint / Reason for Visit</span>
+        <div class="q">How do you believe what you see?</div>
+        <div class="note">(patient could not say.)</div>
+      </section>
+
+      <section class="examination">
+        <span class="label">Examination — Supporting Documents Attached</span>
+        <div class="attachments">
+          <div class="att tilt-l">
+            <div class="hlabel">Patient saw this:</div>
+            <div class="staple"></div>
+            <div class="tv" aria-label="Television broadcast">
+              <div class="top"><span class="stid">CH 7</span><span>LIVE</span></div>
+              <div class="chyron">BREAKING — anti-state elements seeking to destabilize the federation</div>
+              <div class="ts">20:04</div>
+            </div>
+          </div>
+          <div class="att tilt-c">
+            <div class="hlabel">Patient was sent this:</div>
+            <div class="staple"></div>
+            <div class="yt" aria-label="YouTube card">
+              <div class="thumb"><span class="play"></span><span class="fwd">Forwarded · Unverified</span></div>
+              <div class="ttl">Why everyone is talking about this — must watch</div>
+              <div class="meta">Verified Channel · 2.4M views · 3d ago</div>
+            </div>
+          </div>
+          <div class="att tilt-r">
+            <div class="hlabel">Patient forwarded this:</div>
+            <div class="staple"></div>
+            <div class="wa" aria-label="WhatsApp thread">
+              <div class="msg in"><span class="fwd">Forwarded</span>Forwarded as received: this is the real story they don't want you to see</div>
+              <div class="msg out">where did you get this</div>
+              <div class="msg in">someone in the family group sent it</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="diagnosis">
+        <span class="label">Diagnosis / Provisional Impression</span>
+        <div class="marginote">— pending further enquiry</div>
+        <div class="lines"><div class="line"></div><div class="line"></div><div class="line"></div></div>
+      </section>
+
+      <section class="prescription">
+        <span class="label">Prescription / Advice</span>
+        <span class="rx">℞</span>
+        <div class="entry">Return for follow-up. Bring this slip.</div>
+      </section>
+
+      <div class="footer-row">
+        <div class="received">
+          <div class="label">RECEIVED</div>
+          <div class="sub">20 · 05 · 2026</div>
+        </div>
+        <div class="sig">
+          <div class="scrawl">Ch.</div>
+          <div class="role">Attending — On Duty</div>
+        </div>
+      </div>
+
+      <div class="footnote">Property of Govt. of Pakistan · Misuse Punishable · Do Not Fold · Do Not Detach</div>
+    </article>
+  </main>
+</body>
+</html>

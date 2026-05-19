@@ -1,0 +1,547 @@
+<!doctype html>
+<html lang="ur" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>چوکی — Chowki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Nastaliq+Urdu:wght@400;500;700&family=Source+Serif+Pro:ital,wght@0,400;0,600;0,700;1,400;1,600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F4ECD8;
+    --paper-deep:#EBE1C5;
+    --ink:#0F0F1A;
+    --ink-soft:#2B2B36;
+    --teal:#3F7B82;
+    --teal-faded:#3F7B8255;
+    --red:#B83B2A;
+    --shadow:#6B6258;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;border-radius:0!important}
+  html,body{background:var(--paper);color:var(--ink)}
+  body{
+    font-family:"Source Serif Pro",Georgia,serif;
+    direction:rtl;
+    line-height:1.55;
+    padding:48px 56px 96px;
+    max-width:1280px;
+    margin:0 auto;
+    background-image:
+      radial-gradient(circle at 12% 22%, #00000008 0 1px, transparent 1px),
+      radial-gradient(circle at 78% 64%, #00000007 0 1px, transparent 1px);
+    background-size:7px 7px, 11px 11px;
+  }
+  .urdu{font-family:"Noto Nastaliq Urdu",serif;font-weight:500;line-height:1.9}
+  .eng{font-family:"Source Serif Pro",serif;font-style:italic;color:var(--shadow);direction:ltr;text-align:left}
+  /* TOP STRIP */
+  .strip{
+    display:grid;
+    grid-template-columns:1fr auto;
+    align-items:end;
+    padding-bottom:20px;
+    border-bottom:1px solid var(--ink);
+    gap:24px;
+  }
+  .wordmark{text-align:right}
+  .wordmark .mark{font-family:"Noto Nastaliq Urdu",serif;font-size:64px;color:var(--ink);line-height:1.1}
+  .wordmark .lat{font-family:"Source Serif Pro",serif;font-style:italic;font-size:13px;color:var(--shadow);direction:ltr;text-align:right;margin-top:6px}
+  .scripts{
+    display:grid;
+    grid-template-columns:repeat(4,minmax(96px,1fr));
+    border:1px solid var(--ink);
+    background:var(--paper-deep);
+  }
+  .scripts .cell{
+    padding:10px 14px;
+    border-left:1px solid var(--ink);
+    text-align:center;
+  }
+  .scripts .cell:last-child{border-left:none}
+  .scripts .label{font-family:"Source Serif Pro",serif;font-style:italic;font-size:10px;color:var(--shadow);letter-spacing:.08em;text-transform:uppercase;direction:ltr}
+  .scripts .glyph{font-size:22px;margin-top:4px;color:var(--ink)}
+  .scripts .glyph.nast{font-family:"Noto Nastaliq Urdu",serif;font-size:24px;line-height:1.4}
+  .scripts .glyph.naskh{font-family:"Noto Naskh Arabic",serif;font-size:22px}
+  .scripts .glyph.lat{font-family:"Source Serif Pro",serif;font-weight:600;direction:ltr}
+  .scripts .glyph.deva{font-family:serif;direction:ltr}
+
+  /* SABAQ HEADING */
+  .sabaq-head{
+    margin-top:56px;
+    text-align:center;
+    position:relative;
+  }
+  .sabaq-tag{
+    display:inline-block;
+    border:1px solid var(--ink);
+    padding:6px 14px;
+    font-family:"Noto Nastaliq Urdu",serif;
+    font-size:18px;
+    background:var(--paper);
+  }
+  .sabaq-tag .e{font-family:"Source Serif Pro",serif;font-style:italic;font-size:11px;color:var(--shadow);margin-right:10px;direction:ltr;display:inline-block;transform:translateY(-3px)}
+  .sabaq-head h1{
+    font-family:"Noto Nastaliq Urdu",serif;
+    font-size:42px;
+    font-weight:500;
+    margin-top:18px;
+    color:var(--ink);
+    line-height:1.7;
+  }
+  .sabaq-head .sub{
+    font-family:"Source Serif Pro",serif;
+    font-style:italic;
+    font-size:15px;
+    color:var(--shadow);
+    direction:ltr;
+    margin-top:6px;
+  }
+
+  /* QUESTION PANEL */
+  .question{
+    margin:56px auto 0;
+    max-width:980px;
+    padding:48px 56px;
+    position:relative;
+    border:1px solid var(--teal);
+  }
+  .question::before,.question::after{
+    content:"";
+    position:absolute;
+    width:8px;height:8px;
+    background:var(--teal);
+  }
+  .question::before{top:-4px;right:-4px}
+  .question::after{bottom:-4px;left:-4px}
+  .question .corner{position:absolute;width:8px;height:8px;background:var(--teal)}
+  .question .corner.tl{top:-4px;left:-4px}
+  .question .corner.br{bottom:-4px;right:-4px}
+  .question .q-urdu{
+    font-family:"Noto Nastaliq Urdu",serif;
+    font-size:54px;
+    line-height:1.85;
+    text-align:center;
+    color:var(--ink);
+  }
+  .question .q-eng{
+    font-family:"Source Serif Pro",serif;
+    font-style:italic;
+    font-size:18px;
+    text-align:center;
+    color:var(--shadow);
+    margin-top:18px;
+    direction:ltr;
+  }
+  /* red marker correction on question */
+  .marker-circle{
+    position:absolute;
+    top:36%;
+    left:14%;
+    width:88px;height:46px;
+    pointer-events:none;
+  }
+  .margin-note{
+    position:absolute;
+    left:-12px;
+    bottom:-44px;
+    font-family:"Source Serif Pro",serif;
+    font-style:italic;
+    font-size:12px;
+    color:var(--red);
+    direction:ltr;
+    transform:rotate(-3deg);
+    max-width:200px;
+  }
+
+  /* LESSONS GRID */
+  .lessons{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:28px;
+    margin-top:72px;
+  }
+  .lesson{
+    border:1px solid var(--teal-faded);
+    background:var(--paper);
+    padding:22px 22px 26px;
+    position:relative;
+  }
+  .lesson .l-tag{
+    display:flex;
+    justify-content:space-between;
+    align-items:baseline;
+    border-bottom:1px solid var(--ink);
+    padding-bottom:8px;
+    margin-bottom:14px;
+  }
+  .lesson .l-tag .u{font-family:"Noto Nastaliq Urdu",serif;font-size:20px}
+  .lesson .l-tag .e{font-family:"Source Serif Pro",serif;font-style:italic;font-size:11px;color:var(--shadow);direction:ltr;letter-spacing:.06em}
+  .illus{
+    height:120px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    margin-bottom:12px;
+  }
+  .illus svg{width:130px;height:110px}
+  .l-cap-u{font-family:"Noto Nastaliq Urdu",serif;font-size:18px;line-height:1.9;color:var(--ink)}
+  .l-cap-e{font-family:"Source Serif Pro",serif;font-style:italic;font-size:12px;color:var(--shadow);direction:ltr;margin-top:4px}
+
+  /* TV chyron block */
+  .tv-screen{
+    background:var(--ink);
+    color:var(--paper);
+    padding:14px 14px 16px;
+    margin-top:10px;
+    position:relative;
+  }
+  .tv-screen .row{display:flex;justify-content:space-between;font-family:"Source Serif Pro",serif;font-size:10px;color:#9B9B9B;letter-spacing:.1em;direction:ltr;text-transform:uppercase}
+  .tv-screen .chyron{
+    border-top:1px solid #3a3a44;
+    margin-top:10px;
+    padding-top:10px;
+  }
+  .tv-screen .chyron .u{font-family:"Noto Nastaliq Urdu",serif;font-size:14px;line-height:1.8;color:#F4ECD8}
+  .tv-screen .chyron .e{font-family:"Source Serif Pro",serif;font-style:italic;font-size:10px;color:#A9A9B0;margin-top:6px;direction:ltr;letter-spacing:.04em}
+  .tv-screen .ts{position:absolute;left:14px;bottom:10px;font-family:"Source Serif Pro",serif;font-size:9px;color:#7A7A83;direction:ltr;letter-spacing:.1em}
+
+  /* YouTube card */
+  .yt{
+    background:var(--ink);
+    color:var(--paper);
+    margin-top:10px;
+    padding:0;
+  }
+  .yt .thumb{
+    position:relative;
+    height:88px;
+    background:
+      repeating-linear-gradient(45deg, #1A1A24 0 6px, #14141E 6px 12px),
+      var(--ink);
+    border-bottom:1px solid #2B2B36;
+  }
+  .yt .stamp{
+    position:absolute;
+    top:8px;left:8px;
+    background:#0F0F1A;
+    border:1px solid var(--red);
+    padding:4px 7px;
+    direction:rtl;
+  }
+  .yt .stamp .u{font-family:"Noto Nastaliq Urdu",serif;font-size:10px;color:var(--red);line-height:1.4}
+  .yt .stamp .e{font-family:"Source Serif Pro",serif;font-style:italic;font-size:8px;color:#D9967E;direction:ltr;letter-spacing:.06em;margin-top:1px}
+  .yt .play{
+    position:absolute;top:50%;right:50%;
+    transform:translate(50%,-50%);
+    width:0;height:0;
+    border-top:11px solid transparent;
+    border-bottom:11px solid transparent;
+    border-right:18px solid #F4ECD8;
+  }
+  .yt .meta{padding:10px 12px 12px}
+  .yt .ttl-u{font-family:"Noto Nastaliq Urdu",serif;font-size:14px;line-height:1.7;color:#F4ECD8}
+  .yt .ttl-e{font-family:"Source Serif Pro",serif;font-style:italic;font-size:10px;color:#A9A9B0;direction:ltr;margin-top:4px}
+  .yt .chan{font-family:"Source Serif Pro",serif;font-size:9px;color:#8A8A94;direction:ltr;letter-spacing:.06em;margin-top:8px;border-top:1px solid #2B2B36;padding-top:7px}
+
+  /* WhatsApp messages */
+  .wa{margin-top:10px;display:flex;flex-direction:column;gap:8px}
+  .msg{
+    border:1px solid var(--ink);
+    padding:9px 11px;
+    background:var(--paper);
+  }
+  .msg.fwd{border-left:3px solid var(--teal)}
+  .msg .fwd-tag{
+    font-family:"Source Serif Pro",serif;
+    font-style:italic;
+    font-size:9px;
+    color:var(--shadow);
+    letter-spacing:.08em;
+    direction:ltr;
+    margin-bottom:4px;
+    text-align:right;
+  }
+  .msg .u{font-family:"Noto Nastaliq Urdu",serif;font-size:13px;line-height:1.85;color:var(--ink)}
+  .msg .e{font-family:"Source Serif Pro",serif;font-style:italic;font-size:10px;color:var(--shadow);direction:ltr;margin-top:3px}
+
+  /* CONCLUSION */
+  .conclusion{
+    margin-top:76px;
+    text-align:center;
+    padding-top:42px;
+    border-top:1px solid var(--ink);
+    position:relative;
+  }
+  .conclusion .line{
+    font-family:"Noto Nastaliq Urdu",serif;
+    font-style:normal;
+    font-size:22px;
+    color:var(--ink);
+    line-height:1.9;
+    display:inline-block;
+    padding-bottom:6px;
+    border-bottom:2px solid var(--teal);
+  }
+  .conclusion .line-e{
+    font-family:"Source Serif Pro",serif;
+    font-style:italic;
+    font-size:13px;
+    color:var(--shadow);
+    direction:ltr;
+    margin-top:10px;
+  }
+
+  /* FOOTER */
+  footer{
+    margin-top:64px;
+    display:grid;
+    grid-template-columns:1fr auto 1fr;
+    align-items:center;
+    gap:18px;
+  }
+  footer .rule{height:1px;background:var(--ink)}
+  footer .next{
+    font-family:"Noto Nastaliq Urdu",serif;
+    font-size:18px;
+    text-align:center;
+    padding:0 18px;
+  }
+  footer .next .e{display:block;font-family:"Source Serif Pro",serif;font-style:italic;font-size:11px;color:var(--shadow);direction:ltr;letter-spacing:.06em;margin-top:4px;text-transform:uppercase}
+  .colophon{
+    margin-top:34px;
+    text-align:center;
+    font-family:"Source Serif Pro",serif;
+    font-style:italic;
+    font-size:11px;
+    color:var(--shadow);
+    direction:ltr;
+    letter-spacing:.04em;
+  }
+
+  /* RED MARGINAL CORRECTION on lesson 2 */
+  .lesson .correct{
+    position:absolute;
+    top:-10px;
+    left:-10px;
+    font-family:"Source Serif Pro",serif;
+    font-style:italic;
+    font-size:11px;
+    color:var(--red);
+    background:var(--paper);
+    padding:2px 6px;
+    border:1px solid var(--red);
+    direction:ltr;
+    transform:rotate(-2deg);
+  }
+
+  @media (max-width: 860px){
+    body{padding:28px 20px 64px}
+    .strip{grid-template-columns:1fr;gap:18px}
+    .scripts{grid-template-columns:repeat(2,1fr)}
+    .scripts .cell:nth-child(2){border-left:none}
+    .scripts .cell:nth-child(3),.scripts .cell:nth-child(4){border-top:1px solid var(--ink)}
+    .wordmark .mark{font-size:48px}
+    .sabaq-head h1{font-size:30px}
+    .question{padding:28px 22px}
+    .question .q-urdu{font-size:32px}
+    .lessons{grid-template-columns:1fr;gap:22px}
+    .margin-note{position:static;transform:none;margin-top:14px;display:block}
+  }
+</style>
+</head>
+<body>
+
+<!-- TOP STRIP : wordmark + four-script key -->
+<header class="strip">
+  <div class="wordmark">
+    <div class="mark">چوکی</div>
+    <div class="lat">(Chowki &middot; chowki &middot; watchpost &middot; checkpoint)</div>
+  </div>
+  <div class="scripts" aria-label="the same word in four writing systems">
+    <div class="cell">
+      <div class="label">Nastaliq</div>
+      <div class="glyph nast">چوکی</div>
+    </div>
+    <div class="cell">
+      <div class="label">Naskh</div>
+      <div class="glyph naskh">چَوکی</div>
+    </div>
+    <div class="cell">
+      <div class="label">Latin</div>
+      <div class="glyph lat">Chowki</div>
+    </div>
+    <div class="cell">
+      <div class="label">Devanagari</div>
+      <div class="glyph deva">चौकी</div>
+    </div>
+  </div>
+</header>
+
+<!-- SABAQ 1 HEADING -->
+<section class="sabaq-head">
+  <span class="sabaq-tag">سبق ۱ <span class="e">&middot; Sabaq 1 &middot; Lesson 1</span></span>
+  <h1>کیا آپ یقین کرتے ہیں؟</h1>
+  <div class="sub">Lesson 1 &middot; Do you believe?</div>
+</section>
+
+<!-- QUESTION PANEL -->
+<section class="question">
+  <span class="corner tl"></span><span class="corner br"></span>
+  <div class="q-urdu">آپ جو دیکھتے ہیں اس پر یقین کیسے کرتے ہیں؟</div>
+  <div class="q-eng">How do you believe what you see?</div>
+
+  <!-- red marker correction: a hand-drawn circle around "یقین" -->
+  <svg class="marker-circle" viewBox="0 0 200 90" aria-hidden="true">
+    <path d="M188 46 C 188 18, 150 8, 100 8 C 36 8, 8 28, 12 50 C 16 76, 70 86, 120 82 C 170 78, 188 64, 186 46"
+          fill="none" stroke="#B83B2A" stroke-width="2.2" stroke-linecap="round"/>
+  </svg>
+  <div class="margin-note">&mdash; tr. note: verify in revision</div>
+</section>
+
+<!-- THREE LESSON PANELS -->
+<section class="lessons">
+
+  <!-- LESSON: TELEVISION -->
+  <article class="lesson">
+    <div class="l-tag">
+      <div class="u">سبق: ٹیلیویژن</div>
+      <div class="e">Lesson &middot; Television</div>
+    </div>
+    <div class="illus">
+      <!-- Primer-style TV line illustration -->
+      <svg viewBox="0 0 130 110" aria-hidden="true">
+        <g fill="none" stroke="#3F7B82" stroke-width="1.6" stroke-linecap="square">
+          <rect x="14" y="20" width="102" height="64"/>
+          <rect x="22" y="28" width="86" height="48"/>
+          <line x1="40" y1="14" x2="58" y2="22"/>
+          <line x1="90" y1="14" x2="72" y2="22"/>
+          <line x1="65" y1="84" x2="65" y2="96"/>
+          <line x1="44" y1="96" x2="86" y2="96"/>
+          <circle cx="108" cy="44" r="2" fill="#3F7B82"/>
+          <circle cx="108" cy="56" r="2" fill="#3F7B82"/>
+          <line x1="30" y1="50" x2="60" y2="50" stroke-dasharray="3 3"/>
+          <line x1="30" y1="58" x2="54" y2="58" stroke-dasharray="3 3"/>
+          <line x1="30" y1="66" x2="62" y2="66" stroke-dasharray="3 3"/>
+        </g>
+      </svg>
+    </div>
+    <div class="l-cap-u">ٹی وی نشریات</div>
+    <div class="l-cap-e">TV broadcast &middot; ek nasher</div>
+
+    <div class="tv-screen">
+      <div class="row">
+        <span>CH 7</span><span>LIVE</span>
+      </div>
+      <div class="chyron">
+        <div class="u">ٹوٹتی ہوئی خبر &mdash; ریاست مخالف عناصر فیڈریشن کو غیر مستحکم کرنے کے درپے</div>
+        <div class="e">BREAKING &mdash; anti-state elements seeking to destabilize the federation</div>
+      </div>
+      <div class="ts">20:04</div>
+    </div>
+  </article>
+
+  <!-- LESSON: VIDEO -->
+  <article class="lesson">
+    <span class="correct">tr. note &mdash; "verified" requires footnote</span>
+    <div class="l-tag">
+      <div class="u">سبق: ویڈیو</div>
+      <div class="e">Lesson &middot; Video</div>
+    </div>
+    <div class="illus">
+      <!-- Primer-style phone-with-video illustration -->
+      <svg viewBox="0 0 130 110" aria-hidden="true">
+        <g fill="none" stroke="#3F7B82" stroke-width="1.6" stroke-linecap="square">
+          <rect x="38" y="10" width="54" height="92"/>
+          <rect x="44" y="22" width="42" height="62"/>
+          <circle cx="65" cy="93" r="2.6"/>
+          <line x1="58" y1="16" x2="72" y2="16"/>
+          <!-- play triangle -->
+          <polygon points="60,42 60,64 78,53" fill="#3F7B82"/>
+          <!-- play wave -->
+          <path d="M30 53 q -6 -10 0 -20" stroke-dasharray="2 3"/>
+          <path d="M100 53 q 6 -10 0 -20" stroke-dasharray="2 3"/>
+          <path d="M30 53 q -6 10 0 20" stroke-dasharray="2 3"/>
+          <path d="M100 53 q 6 10 0 20" stroke-dasharray="2 3"/>
+        </g>
+      </svg>
+    </div>
+    <div class="l-cap-u">سوشل ویڈیو</div>
+    <div class="l-cap-e">social video &middot; YouTube</div>
+
+    <div class="yt">
+      <div class="thumb">
+        <div class="stamp">
+          <div class="u">آگے بھیجا گیا &middot; غیر تصدیق شدہ</div>
+          <div class="e">Forwarded &middot; Unverified</div>
+        </div>
+        <div class="play"></div>
+      </div>
+      <div class="meta">
+        <div class="ttl-u">یہ ویڈیو ضرور دیکھیں &mdash; سب اسی پر بات کر رہے ہیں</div>
+        <div class="ttl-e">Why everyone is talking about this &mdash; must watch</div>
+        <div class="chan">Verified Channel &middot; 2.4M views &middot; 3 days ago</div>
+      </div>
+    </div>
+  </article>
+
+  <!-- LESSON: MESSAGE -->
+  <article class="lesson">
+    <div class="l-tag">
+      <div class="u">سبق: پیغام</div>
+      <div class="e">Lesson &middot; Message</div>
+    </div>
+    <div class="illus">
+      <!-- Primer-style envelope illustration -->
+      <svg viewBox="0 0 130 110" aria-hidden="true">
+        <g fill="none" stroke="#3F7B82" stroke-width="1.6" stroke-linecap="square">
+          <rect x="16" y="28" width="98" height="62"/>
+          <polyline points="16,28 65,66 114,28"/>
+          <line x1="16" y1="90" x2="50" y2="58"/>
+          <line x1="114" y1="90" x2="80" y2="58"/>
+          <!-- forward arrow corner -->
+          <path d="M96 14 l 14 0 l 0 14" />
+          <line x1="110" y1="14" x2="92" y2="32"/>
+        </g>
+      </svg>
+    </div>
+    <div class="l-cap-u">پیغام رسانی</div>
+    <div class="l-cap-e">peer-to-peer message &middot; WhatsApp</div>
+
+    <div class="wa">
+      <div class="msg fwd">
+        <div class="fwd-tag">&laquo; FORWARDED MANY TIMES</div>
+        <div class="u">آگے بھیجا گیا: یہ اصل کہانی ہے جو وہ آپ کو دکھانا نہیں چاہتے</div>
+        <div class="e">Forwarded as received: this is the real story they don't want you to see</div>
+      </div>
+      <div class="msg">
+        <div class="u">یہ آپ کو کہاں سے ملا</div>
+        <div class="e">where did you get this</div>
+      </div>
+      <div class="msg">
+        <div class="u">فیملی گروپ میں کسی نے بھیجا</div>
+        <div class="e">someone in the family group sent it</div>
+      </div>
+    </div>
+  </article>
+
+</section>
+
+<!-- LESSON CONCLUSION -->
+<section class="conclusion">
+  <div class="line">اب آپ نے دیکھ لیا &mdash; تینوں ایک ہی روز کی کہانی ہیں۔</div>
+  <div class="line-e">Now you have seen &mdash; the three are one day's story.</div>
+</section>
+
+<!-- FOOTER : sabaq 2 / agla din -->
+<footer>
+  <div class="rule"></div>
+  <div class="next">سبق ۲: اگلا دن<span class="e">Sabaq 2 &middot; Lesson 2 &middot; tomorrow</span></div>
+  <div class="rule"></div>
+</footer>
+
+<div class="colophon">
+  Chowki &middot; چوکی &middot; a research collective documenting Pakistan's information ecosystem &middot; holding page in revision
+</div>
+
+</body>
+</html>

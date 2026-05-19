@@ -1,0 +1,332 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Chowki — The Kitchen Door</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Courier+Prime&family=Indie+Flower&family=Noto+Nastaliq+Urdu&family=Permanent+Marker&display=swap" rel="stylesheet">
+<style>
+:root{
+  --fridge:#E8E6E0; --fridge-shadow:#C8C5BB; --scratch:#D8D5CD;
+  --magnet-red:#C8302C; --magnet-blue:#2E4A8C; --magnet-green:#2E7D3A; --magnet-yellow:#E8B82C;
+  --pen-blue:#1A2F5C; --tape-brown:#8B6E50; --receipt:#F8F2E0; --note-yellow:#F4E5A0;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{
+  font-family:'Indie Flower',cursive; color:var(--pen-blue); background:var(--fridge);
+  background-image:
+    radial-gradient(900px 700px at 18% 22%, rgba(255,255,255,.45), transparent 60%),
+    radial-gradient(700px 600px at 78% 78%, rgba(200,197,187,.45), transparent 60%),
+    radial-gradient(2px 2px at 11% 9%, rgba(120,115,105,.18), transparent 60%),
+    radial-gradient(2px 2px at 71% 13%, rgba(120,115,105,.15), transparent 60%),
+    radial-gradient(2px 2px at 33% 41%, rgba(120,115,105,.12), transparent 60%),
+    radial-gradient(2px 2px at 88% 51%, rgba(120,115,105,.14), transparent 60%),
+    radial-gradient(2px 2px at 21% 78%, rgba(120,115,105,.16), transparent 60%),
+    radial-gradient(2px 2px at 56% 92%, rgba(120,115,105,.14), transparent 60%),
+    linear-gradient(180deg,#ECEAE4 0%,#E8E6E0 38%,#DEDCD4 100%);
+  min-height:100vh; overflow-x:hidden;
+}
+.fridge{position:relative; width:100%; min-height:100vh; overflow:hidden}
+.scratch{position:absolute; height:1px; background:var(--scratch); opacity:.55}
+.s1{top:12%;left:6%;width:240px;transform:rotate(-1.2deg)}
+.s2{top:34%;left:42%;width:180px;transform:rotate(.6deg)}
+.s3{top:58%;left:8%;width:320px;transform:rotate(-.4deg)}
+.s4{top:73%;left:60%;width:140px;transform:rotate(1.1deg)}
+.s5{top:86%;left:22%;width:200px;transform:rotate(-.8deg)}
+.s6{top:21%;left:78%;width:120px;transform:rotate(.3deg)}
+.tape{
+  position:absolute; width:64px; height:18px;
+  background:linear-gradient(180deg, rgba(139,110,80,.78), rgba(123,96,68,.78));
+  border-top:1px solid rgba(255,255,255,.18); border-bottom:1px solid rgba(0,0,0,.18);
+  box-shadow:0 1px 2px rgba(0,0,0,.15); opacity:.92;
+}
+.tape::before,.tape::after{content:""; position:absolute; top:0; bottom:0; width:4px;
+  background:repeating-linear-gradient(135deg, transparent 0 2px, rgba(255,255,255,.12) 2px 3px)}
+.tape::before{left:0}.tape::after{right:0}
+.magnet{position:absolute; width:34px; height:24px;
+  box-shadow:0 2px 3px rgba(0,0,0,.28), inset 0 1px 0 rgba(255,255,255,.35), inset 0 -2px 0 rgba(0,0,0,.18)}
+.magnet.red{background:var(--magnet-red)} .magnet.blue{background:var(--magnet-blue)}
+.magnet.green{background:var(--magnet-green)} .magnet.yellow{background:var(--magnet-yellow)}
+.magnet.lg{width:90px;height:28px;display:flex;align-items:center;justify-content:center;
+  font-family:'Courier Prime',monospace;font-size:9px;color:#fff;letter-spacing:.12em}
+.paper{position:absolute; background:#FBF9F2; box-shadow:0 6px 10px rgba(0,0,0,.18), 0 1px 0 rgba(0,0,0,.08)}
+
+.wordmark{position:absolute; top:38px; left:46px; width:170px; height:140px;
+  background:var(--note-yellow); transform:rotate(-3deg);
+  box-shadow:0 6px 10px rgba(0,0,0,.18), inset 0 -8px 12px rgba(0,0,0,.06);
+  padding:18px 14px 14px 16px; z-index:7}
+.wordmark::before{content:""; position:absolute; top:0; right:0; width:22px; height:22px;
+  background:linear-gradient(225deg,#DCCB7C 0%, var(--note-yellow) 60%);
+  box-shadow:-1px 1px 1px rgba(0,0,0,.08); clip-path:polygon(100% 0, 0 0, 100% 100%)}
+.wordmark .name{font-family:'Permanent Marker',cursive; font-size:30px; color:#1B1B1B; letter-spacing:.02em; line-height:1}
+.wordmark .urdu{font-family:'Noto Nastaliq Urdu',serif; font-size:20px; color:#1B1B1B; margin-top:8px; direction:rtl; line-height:1.2}
+.wordmark .num{font-family:'Indie Flower',cursive; font-size:13px; color:var(--pen-blue); margin-top:18px; line-height:1.1}
+
+.question{position:absolute; top:120px; left:50%; transform:translateX(-50%) rotate(-1deg);
+  width:440px; height:230px; background:#FDFCF6;
+  box-shadow:0 8px 14px rgba(0,0,0,.18), 0 1px 0 rgba(0,0,0,.06);
+  padding:46px 38px 30px; z-index:6;
+  clip-path: polygon(1% 4%,6% 1%,12% 5%,22% 2%,33% 6%,44% 1%,55% 4%,67% 0,78% 4%,89% 1%,100% 5%,
+    100% 96%,92% 100%,80% 96%,68% 100%,56% 96%,44% 100%,32% 96%,20% 100%,8% 96%,0 100%,0 6%)}
+.question .q{font-family:'Indie Flower',cursive; color:var(--pen-blue); font-size:32px; line-height:1.25}
+.question .q em{font-style:normal; text-decoration:underline; text-decoration-thickness:1px; text-underline-offset:6px}
+.question .qmag{top:-12px; left:50%; transform:translateX(-50%) rotate(2deg)}
+
+.tv{position:absolute; top:380px; left:60px; width:330px; height:210px;
+  background:#0B0F1A; color:#E8E6E0; box-shadow:0 10px 16px rgba(0,0,0,.22);
+  transform:rotate(-2deg); z-index:5;
+  background-image:repeating-linear-gradient(0deg, rgba(46,74,140,.05) 0 2px, transparent 2px 4px),
+    linear-gradient(180deg,#0E1424 0%,#0A0F1A 50%,#0D1426 100%);
+  filter:contrast(.96) saturate(.85)}
+.tv .stationid{position:absolute; top:10px; right:12px; font-family:'Courier Prime',monospace;
+  font-size:11px; color:#C8302C; letter-spacing:.12em; border:1px solid #C8302C; padding:3px 6px}
+.tv .timestamp{position:absolute; top:10px; left:12px; font-family:'Courier Prime',monospace;
+  font-size:11px; color:#E8E6E0; letter-spacing:.08em; opacity:.82}
+.tv .frame{position:absolute; left:14px; right:14px; top:38px; bottom:74px;
+  background:radial-gradient(160px 90px at 50% 55%, rgba(120,140,180,.18), transparent 70%),
+    linear-gradient(180deg,#11182A 0%,#0A0E1B 100%); outline:1px solid rgba(255,255,255,.04)}
+.tv .ghost{position:absolute; left:38%; top:30%; width:24%; height:55%;
+  background:linear-gradient(180deg, rgba(180,190,210,.12), rgba(180,190,210,.04))}
+.tv .chyron-bar{position:absolute; left:0; right:0; bottom:30px; height:34px;
+  background:linear-gradient(180deg,#B7261F 0%,#8C1A14 100%);
+  display:flex; align-items:center; border-top:2px solid #E8B82C}
+.tv .chyron-tag{font-family:'Courier Prime',monospace; font-size:10px; color:#0B0F1A;
+  background:#E8B82C; padding:6px 8px; letter-spacing:.14em; margin-right:10px}
+.tv .chyron-text{font-family:'Courier Prime',monospace; font-size:11px; color:#FFF; letter-spacing:.04em}
+.tv .ticker{position:absolute; left:0; right:0; bottom:0; height:24px; background:#000;
+  display:flex; align-items:center; padding:0 10px; border-top:1px solid #E8B82C}
+.tv .ticker span{font-family:'Courier Prime',monospace; font-size:9px; color:#E8B82C; letter-spacing:.18em; opacity:.85}
+.tape-tv-l{top:374px; left:74px; transform:rotate(-22deg)}
+.tape-tv-r{top:374px; left:330px; transform:rotate(20deg)}
+
+.yt{position:absolute; top:380px; left:455px; width:340px; height:240px;
+  background:#FBF9F2; box-shadow:0 10px 16px rgba(0,0,0,.22);
+  transform:rotate(1.4deg); z-index:5; padding:18px 14px 14px;
+  clip-path: polygon(2% 5%,14% 2%,28% 6%,42% 1%,56% 5%,70% 2%,84% 6%,96% 2%,100% 7%,
+    100% 90%,100% 100%,92% 96%,80% 100%,68% 96%,56% 100%,44% 96%,32% 100%,20% 96%,10% 100%,0 96%,0 8%)}
+.yt .thumb{position:relative; width:100%; height:140px;
+  background:radial-gradient(120px 80px at 30% 40%, rgba(200,48,44,.22), transparent 70%),
+    linear-gradient(135deg,#1A1A1A 0%,#2A2A2A 100%); outline:1px solid #1A1A1A}
+.yt .thumb .play{position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);
+  width:48px; height:34px; background:#C8302C; display:flex; align-items:center; justify-content:center}
+.yt .thumb .play::after{content:""; width:0; height:0;
+  border-left:14px solid #FFF; border-top:9px solid transparent; border-bottom:9px solid transparent; margin-left:3px}
+.yt .stamp{position:absolute; top:14px; right:-8px; transform:rotate(-8deg);
+  font-family:'Courier Prime',monospace; font-size:10px; color:#C8302C;
+  border:2px solid #C8302C; padding:3px 6px; letter-spacing:.12em;
+  background:rgba(248,242,224,.85); text-transform:uppercase}
+.yt .ttl{font-family:'Courier Prime',monospace; font-size:11px; color:#1B1B1B; margin-top:10px; line-height:1.35}
+.yt .meta{font-family:'Courier Prime',monospace; font-size:9px; color:#5A5A5A; margin-top:6px; letter-spacing:.06em}
+.yt .check{display:inline-block; width:8px; height:8px; background:#5A5A5A; margin-right:4px; transform:translateY(1px)}
+.yt-magnet{position:absolute; top:362px; left:585px; z-index:7;
+  background:var(--magnet-red); color:#fff;
+  box-shadow:0 2px 3px rgba(0,0,0,.28), inset 0 1px 0 rgba(255,255,255,.3), inset 0 -2px 0 rgba(0,0,0,.22)}
+
+.wa{position:absolute; top:360px; left:860px; width:170px; height:360px;
+  background:var(--receipt); box-shadow:0 10px 16px rgba(0,0,0,.22);
+  transform:rotate(-1.6deg); z-index:5; padding:18px 12px 0;
+  background-image:repeating-linear-gradient(0deg, rgba(0,0,0,.025) 0 1px, transparent 1px 4px),
+    linear-gradient(180deg, var(--receipt) 0%, #F4EDD6 100%)}
+.wa::after{content:""; position:absolute; left:0; right:0; bottom:-6px; height:36px;
+  background:linear-gradient(180deg, rgba(0,0,0,.18) 0%, transparent 35%),
+             linear-gradient(180deg,#EDE4C2 0%,#DCCFA0 100%);
+  transform:perspective(80px) rotateX(-22deg); transform-origin:top center;
+  box-shadow:0 4px 6px rgba(0,0,0,.18)}
+.wa .hd{font-family:'Courier Prime',monospace; font-size:9px; color:#2A2A2A;
+  letter-spacing:.18em; text-align:center; border-bottom:1px dashed #B5A977; padding-bottom:6px; margin-bottom:10px}
+.wa .msg{font-family:'Courier Prime',monospace; font-size:9.5px; color:#1B1B1B;
+  line-height:1.45; margin-bottom:10px; padding-bottom:10px; border-bottom:1px dashed #C5B888}
+.wa .who{color:#5A5A5A; font-size:8px; letter-spacing:.1em; display:block; margin-bottom:3px; text-transform:uppercase}
+.wa .ts{font-family:'Courier Prime',monospace; font-size:8px; color:#7A6F45; text-align:center; margin-top:14px; letter-spacing:.12em}
+.wa-magnet{position:absolute; top:344px; left:925px; width:40px; height:22px; z-index:7;
+  background:var(--magnet-blue);
+  box-shadow:0 2px 3px rgba(0,0,0,.28), inset 0 1px 0 rgba(255,255,255,.35), inset 0 -2px 0 rgba(0,0,0,.22)}
+
+.kbill{position:absolute; top:344px; left:34px; width:280px; height:170px;
+  background:#F4F2E8; box-shadow:0 4px 6px rgba(0,0,0,.16); transform:rotate(-3deg);
+  z-index:4; padding:10px 14px; font-family:'Courier Prime',monospace; color:#1B1B1B}
+.kbill .kh{font-size:13px; letter-spacing:.18em; color:#1A2F5C; border-bottom:1px solid #1A2F5C; padding-bottom:3px}
+.kbill .ksub{font-size:8px; letter-spacing:.16em; color:#5A5A5A; margin-top:3px}
+.kbill .krow{display:flex; justify-content:space-between; font-size:9px; margin-top:6px; border-bottom:1px dotted #B5B0A0; padding-bottom:2px}
+.kbill .krow.tot{margin-top:8px; border-top:1px solid #1B1B1B; border-bottom:double 3px #1B1B1B; padding:3px 0}
+
+.hijri{position:absolute; top:48px; right:46px; width:140px; height:140px;
+  background:var(--magnet-green); color:#FFF;
+  box-shadow:0 3px 4px rgba(0,0,0,.28), inset 0 1px 0 rgba(255,255,255,.18), inset 0 -2px 0 rgba(0,0,0,.22);
+  transform:rotate(2deg); padding:10px 12px; z-index:6}
+.hijri .hh{font-family:'Courier Prime',monospace; font-size:9px; letter-spacing:.16em; opacity:.85}
+.hijri .hdate{font-family:'Noto Nastaliq Urdu',serif; font-size:22px; line-height:1.1; margin-top:6px; direction:rtl}
+.hijri .hnum{font-family:'Permanent Marker',cursive; font-size:38px; line-height:1; margin-top:6px}
+.hijri .greg{font-family:'Courier Prime',monospace; font-size:9px; letter-spacing:.14em; opacity:.78; margin-top:6px; border-top:1px solid rgba(255,255,255,.3); padding-top:4px}
+
+.kid{position:absolute; bottom:48px; right:60px; width:180px; height:170px;
+  background:#FCFAF0; box-shadow:0 6px 10px rgba(0,0,0,.16);
+  transform:rotate(3.5deg); z-index:5; padding:8px}
+.kid-tape-l{bottom:208px; right:200px; transform:rotate(-18deg)}
+.kid-tape-r{bottom:208px; right:78px; transform:rotate(18deg)}
+.kid svg{display:block; width:100%; height:100%}
+
+.ghostphoto{position:absolute; top:84px; left:340px; width:96px; height:120px;
+  border:1px dashed rgba(120,115,105,.55); transform:rotate(-4deg); z-index:3;
+  background:linear-gradient(180deg, rgba(255,255,255,.18), transparent)}
+.ghostphoto::after{content:""; position:absolute; inset:8px; border:1px dotted rgba(120,115,105,.32)}
+.ghostphoto-magnet{top:74px; left:378px; transform:rotate(-4deg); z-index:7}
+
+.grocery{position:absolute; bottom:60px; left:90px; width:200px;
+  background:#FAF6E6; box-shadow:0 6px 10px rgba(0,0,0,.16);
+  transform:rotate(-2.4deg); z-index:5; padding:14px 16px 18px;
+  clip-path: polygon(0 0,100% 0,100% 100%,92% 96%,82% 100%,72% 96%,62% 100%,52% 96%,42% 100%,
+    32% 96%,22% 100%,12% 96%,4% 100%,0 96%)}
+.grocery .gh{font-family:'Permanent Marker',cursive; font-size:14px; color:var(--pen-blue); margin-bottom:6px}
+.grocery ul{list-style:none; font-family:'Indie Flower',cursive; font-size:17px; color:var(--pen-blue); line-height:1.45}
+.grocery li{position:relative; padding-left:18px}
+.grocery li::before{content:""; position:absolute; left:0; top:10px; width:10px; height:1px; background:var(--pen-blue); opacity:.7}
+.grocery li.q{margin-top:6px; font-style:italic}
+.grocery-magnet{bottom:212px; left:170px; transform:rotate(-6deg); z-index:7}
+
+.m1{top:24px;left:300px;transform:rotate(8deg)}
+.m2{top:42px;left:540px;transform:rotate(-6deg)}
+.m3{top:340px;right:260px;transform:rotate(4deg)}
+.m4{top:640px;left:330px;transform:rotate(-10deg)}
+.m5{bottom:80px;left:330px;transform:rotate(6deg)}
+.m6{bottom:240px;left:760px;transform:rotate(-3deg)}
+.m7{top:200px;right:230px;transform:rotate(10deg)}
+.m8{bottom:38px;right:280px;transform:rotate(-7deg)}
+
+.fnote{position:absolute; left:46px; bottom:18px;
+  font-family:'Indie Flower',cursive; font-size:14px; color:rgba(26,47,92,.65);
+  transform:rotate(-1deg); z-index:6}
+
+@media (max-width: 900px){
+  .wordmark{top:24px; left:18px; transform:rotate(-3deg) scale(.85); transform-origin:top left}
+  .question{top:200px; width:90%; left:5%; transform:rotate(-1deg); padding:36px 22px}
+  .question .q{font-size:24px}
+  .tv{position:relative; top:auto; left:auto; margin:540px 5% 24px; width:90%}
+  .yt{position:relative; top:auto; left:auto; margin:0 5% 24px; width:90%}
+  .wa{position:relative; top:auto; left:auto; margin:0 5% 24px; width:80%; height:auto; padding-bottom:60px}
+  .wa::after{display:none}
+  .kbill,.hijri,.kid,.ghostphoto,.grocery,
+  .tape-tv-l,.tape-tv-r,.yt-magnet,.wa-magnet,.ghostphoto-magnet,.grocery-magnet,
+  .kid-tape-l,.kid-tape-r, .m1,.m2,.m3,.m4,.m5,.m6,.m7,.m8, .scratch{display:none}
+  .fnote{position:relative; left:auto; bottom:auto; margin:24px 5% 32px; display:block}
+}
+</style>
+</head>
+<body>
+<main class="fridge" aria-label="A Karachi kitchen fridge surface">
+  <div class="scratch s1"></div><div class="scratch s2"></div><div class="scratch s3"></div>
+  <div class="scratch s4"></div><div class="scratch s5"></div><div class="scratch s6"></div>
+
+  <div class="wordmark" role="banner">
+    <div class="name">Chowki</div>
+    <div class="urdu">چوکی</div>
+    <div class="num">ammi: 0345&#8209;2&#8209;7&#8209;1&#8209;</div>
+  </div>
+
+  <div class="ghostphoto" aria-hidden="true"></div>
+  <div class="magnet yellow ghostphoto-magnet"></div>
+
+  <div class="hijri" aria-label="Hijri calendar magnet">
+    <div class="hh">HIJRI · ذُو الْقَعْدَة</div>
+    <div class="hdate">ذو القعدہ</div>
+    <div class="hnum">12</div>
+    <div class="greg">20 / 05 / 2026</div>
+  </div>
+
+  <div class="question" role="heading" aria-level="1">
+    <div class="magnet blue qmag"></div>
+    <div class="q">How do you believe<br>what you <em>see</em>?</div>
+  </div>
+
+  <div class="kbill" aria-hidden="true">
+    <div class="kh">K&#8209;ELECTRIC</div>
+    <div class="ksub">CONSUMER BILL · APR 2026 · KHI&#8209;072&#8209;14&#8209;C</div>
+    <div class="krow"><span>UNITS CONSUMED</span><span>318</span></div>
+    <div class="krow"><span>FUEL ADJ.</span><span>1,842.00</span></div>
+    <div class="krow"><span>FIXED CHARGE</span><span>460.00</span></div>
+    <div class="krow"><span>TAX (GST)</span><span>1,196.30</span></div>
+    <div class="krow tot"><span>TOTAL DUE</span><span>14,820.30</span></div>
+  </div>
+
+  <div class="tape tape-tv-l"></div>
+  <div class="tape tape-tv-r"></div>
+  <div class="tv" aria-label="Printed TV broadcast">
+    <div class="timestamp">20:04</div>
+    <div class="stationid">CH 7</div>
+    <div class="frame"><div class="ghost"></div></div>
+    <div class="chyron-bar">
+      <div class="chyron-tag">BREAKING</div>
+      <div class="chyron-text">anti&#8209;state elements seeking to destabilize the federation</div>
+    </div>
+    <div class="ticker"><span>· LIVE · KARACHI · ISLAMABAD · LIVE · KARACHI · ISLAMABAD ·</span></div>
+  </div>
+
+  <div class="magnet lg yt-magnet">KARACHI HALWA</div>
+  <div class="yt" aria-label="Printed YouTube card">
+    <div class="thumb"><div class="play"></div></div>
+    <div class="stamp">Forwarded · Unverified</div>
+    <div class="ttl">Why everyone is talking about this — must watch</div>
+    <div class="meta"><span class="check"></span>Verified Channel · 2.4M views · 3 days ago</div>
+  </div>
+
+  <div class="magnet wa-magnet" aria-hidden="true"></div>
+  <div class="wa" aria-label="Printed WhatsApp thread on thermal receipt">
+    <div class="hd">FAMILY GROUP · 03:41</div>
+    <div class="msg"><span class="who">UNCLE</span>Forwarded as received: this is the real story they don't want you to see</div>
+    <div class="msg"><span class="who">ME</span>where did you get this</div>
+    <div class="msg"><span class="who">UNCLE</span>someone in the family group sent it</div>
+    <div class="ts">· · · END OF THREAD · · ·</div>
+  </div>
+
+  <div class="tape kid-tape-l"></div>
+  <div class="tape kid-tape-r"></div>
+  <div class="kid" aria-label="Child's crayon drawing">
+    <svg viewBox="0 0 180 170" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="148" cy="28" r="14" fill="#E8B82C" stroke="#A8851D" stroke-width="1.5"/>
+      <g stroke="#E8B82C" stroke-width="2" stroke-linecap="round">
+        <line x1="148" y1="6" x2="148" y2="14"/><line x1="148" y1="42" x2="148" y2="50"/>
+        <line x1="126" y1="28" x2="134" y2="28"/><line x1="162" y1="28" x2="170" y2="28"/>
+        <line x1="133" y1="13" x2="139" y2="19"/><line x1="157" y1="37" x2="163" y2="43"/>
+        <line x1="163" y1="13" x2="157" y2="19"/><line x1="139" y1="37" x2="133" y2="43"/>
+      </g>
+      <line x1="6" y1="140" x2="174" y2="140" stroke="#2E7D3A" stroke-width="3"/>
+      <rect x="22" y="78" width="60" height="62" fill="#F4E5A0" stroke="#1A2F5C" stroke-width="2"/>
+      <polygon points="22,78 52,52 82,78" fill="#C8302C" stroke="#1A2F5C" stroke-width="2"/>
+      <rect x="42" y="104" width="18" height="36" fill="#8B6E50" stroke="#1A2F5C" stroke-width="1.5"/>
+      <rect x="28" y="88" width="10" height="10" fill="#2E4A8C" stroke="#1A2F5C" stroke-width="1"/>
+      <rect x="66" y="88" width="10" height="10" fill="#2E4A8C" stroke="#1A2F5C" stroke-width="1"/>
+      <g stroke="#1A2F5C" stroke-width="2" fill="none" stroke-linecap="round">
+        <circle cx="110" cy="100" r="7" fill="#FBF9F2"/>
+        <line x1="110" y1="107" x2="110" y2="128"/>
+        <line x1="110" y1="114" x2="100" y2="124"/><line x1="110" y1="114" x2="120" y2="124"/>
+        <line x1="110" y1="128" x2="104" y2="140"/><line x1="110" y1="128" x2="116" y2="140"/>
+        <circle cx="138" cy="106" r="5" fill="#FBF9F2"/>
+        <line x1="138" y1="111" x2="138" y2="126"/>
+        <line x1="138" y1="116" x2="131" y2="122"/><line x1="138" y1="116" x2="145" y2="122"/>
+        <line x1="138" y1="126" x2="133" y2="140"/><line x1="138" y1="126" x2="143" y2="140"/>
+      </g>
+      <text x="8" y="160" font-family="Indie Flower, cursive" font-size="11" fill="#1A2F5C">ZAINAB · 6</text>
+    </svg>
+  </div>
+
+  <div class="magnet red grocery-magnet"></div>
+  <div class="grocery" aria-label="Grocery list">
+    <div class="gh">groceries</div>
+    <ul>
+      <li>atta</li><li>dahi</li><li>mirchi</li>
+      <li class="q">kya yeh sach hai?</li>
+    </ul>
+  </div>
+
+  <div class="magnet red m1"></div><div class="magnet blue m2"></div>
+  <div class="magnet yellow m3"></div><div class="magnet green m4"></div>
+  <div class="magnet blue m5"></div><div class="magnet red m6"></div>
+  <div class="magnet green m7"></div><div class="magnet yellow m8"></div>
+
+  <div class="fnote">a public archive of pakistan's information ecosystem — still being assembled</div>
+</main>
+</body>
+</html>

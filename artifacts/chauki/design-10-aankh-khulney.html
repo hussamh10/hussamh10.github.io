@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chowki — How do you believe what you see?</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Noto+Nastaliq+Urdu&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --void:#07080B; --ink-deep:#0F1115;
+    --bone:#C8C2B4; --bone-dim:#6E695E;
+    --saffron-glow:#E8A325;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;border-radius:0!important;}
+  html,body{background:var(--void);color:var(--bone);font-family:'EB Garamond',serif;font-weight:400;-webkit-font-smoothing:antialiased;line-height:1.5;}
+  body{
+    cursor:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='10'><circle cx='5' cy='5' r='2' fill='%236E695E'/></svg>") 5 5, auto;
+  }
+  ::selection{background:var(--bone-dim);color:var(--void);}
+
+  /* Hairline scroll indicator on right edge */
+  .rail{position:fixed;top:0;right:18px;width:1px;height:100vh;z-index:5;pointer-events:none;}
+  .rail::before{content:"";position:absolute;top:0;left:0;width:1px;background:var(--bone-dim);height:0;animation:railGrow linear;animation-timeline:scroll(root block);}
+  @keyframes railGrow{from{height:0;}to{height:100vh;}}
+
+  /* Top — wordmark and question, strict typographic equality */
+  .topfix{position:fixed;top:0;left:0;right:0;padding-top:42px;text-align:center;z-index:4;pointer-events:none;}
+  .wordmark,.question{font-family:'EB Garamond',serif;font-weight:400;font-size:18px;color:var(--bone);letter-spacing:0.01em;}
+  .wordmark .urdu{font-family:'Noto Nastaliq Urdu',serif;margin:0 6px;}
+  .question{margin-top:34vh;}
+
+  /* Gap blocks of darkness */
+  .void-gap{height:100vh;}
+  .void-gap.tall{height:120vh;}
+  .void-gap.short{height:60vh;}
+
+  /* Waystation — each artifact sticks at center; view-timeline fades it in then out */
+  .waystation{position:relative;height:200vh;}
+  .stage{position:sticky;top:0;height:100vh;display:flex;align-items:center;justify-content:center;}
+  .artifact{opacity:0.06;animation:reveal linear both;animation-timeline:view();animation-range:cover 8% cover 92%;will-change:opacity;}
+  @keyframes reveal{0%{opacity:0.02;}25%{opacity:0.95;}75%{opacity:0.95;}100%{opacity:0.02;}}
+
+  /* TV */
+  .tv{width:560px;max-width:88vw;background:var(--ink-deep);}
+  .tv-screen{background:var(--ink-deep);height:300px;position:relative;overflow:hidden;}
+  .tv-screen::before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(to bottom,rgba(200,194,180,0.018) 0,rgba(200,194,180,0.018) 1px,transparent 1px,transparent 3px);pointer-events:none;}
+  .tv-stationid{position:absolute;top:18px;left:20px;font-size:11px;letter-spacing:0.22em;color:var(--bone-dim);text-transform:uppercase;}
+  .tv-timestamp{position:absolute;top:18px;right:20px;font-variant-numeric:tabular-nums;font-size:11px;letter-spacing:0.18em;color:var(--bone-dim);}
+  .tv-chyron{position:absolute;left:0;right:0;bottom:0;background:var(--void);color:var(--bone);padding:12px 20px;font-size:13px;letter-spacing:0.06em;text-transform:uppercase;border-top:1px solid var(--ink-deep);}
+  .tv-chyron .label{color:var(--bone-dim);margin-right:10px;font-weight:500;}
+
+  /* YouTube */
+  .yt{width:520px;max-width:88vw;}
+  .yt-thumb{background:var(--ink-deep);height:280px;position:relative;overflow:hidden;}
+  .yt-thumb::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 50% 45%,rgba(200,194,180,0.04),transparent 60%);}
+  .yt-play{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:34px;color:var(--bone-dim);opacity:0.55;line-height:1;}
+  .yt-stamp{position:absolute;left:18px;bottom:18px;background:var(--void);color:var(--bone);padding:6px 12px;font-size:11px;letter-spacing:0.18em;text-transform:uppercase;}
+  .yt-meta-block{padding:18px 4px 0;}
+  .yt-title{font-weight:500;font-size:18px;line-height:1.35;color:var(--bone);}
+  .yt-meta{margin-top:8px;font-size:13px;color:var(--bone-dim);letter-spacing:0.02em;}
+  .yt-meta .verified{color:var(--bone);}
+
+  /* WhatsApp — no green branding */
+  .wa{width:460px;max-width:88vw;padding:6px 8px;}
+  .wa-bubble{max-width:78%;padding:12px 14px;font-size:15px;line-height:1.45;color:var(--bone);background:var(--void);border:1px solid var(--ink-deep);margin:14px 0;}
+  .wa-bubble .time{display:block;margin-top:8px;font-size:11px;color:var(--bone-dim);letter-spacing:0.12em;text-transform:uppercase;font-variant-numeric:tabular-nums;}
+  .wa-bubble .fwd{display:block;font-size:11px;color:var(--bone-dim);letter-spacing:0.18em;text-transform:uppercase;margin-bottom:6px;font-style:italic;}
+  .wa-left{margin-right:auto;}
+  .wa-right{margin-left:auto;background:var(--ink-deep);}
+
+  /* Final saffron line — the only color on the page */
+  .final{min-height:80vh;display:flex;align-items:center;justify-content:center;padding:0 24px;text-align:center;}
+  .final p{font-style:italic;font-size:21px;line-height:1.5;color:var(--saffron-glow);letter-spacing:0.01em;max-width:640px;opacity:0;animation:reveal linear both;animation-timeline:view();animation-range:cover 12% cover 60%;}
+
+  .breath{height:30vh;}
+
+  @media (max-width:720px){
+    .topfix{padding-top:28px;}
+    .question{margin-top:38vh;}
+    .tv-screen{height:220px;}
+    .yt-thumb{height:200px;}
+    .rail{display:none;}
+  }
+
+  /* Browsers without view-timeline: artifacts stay readable */
+  @supports not (animation-timeline:view()){
+    .artifact{opacity:0.85;animation:none;}
+    .final p{opacity:1;animation:none;}
+    .rail::before{height:0;animation:none;}
+  }
+</style>
+</head>
+<body>
+
+<div class="rail" aria-hidden="true"></div>
+
+<header class="topfix">
+  <div class="wordmark">Chowki <span class="urdu">چوکی</span></div>
+  <p class="question">How do you believe what you see?</p>
+</header>
+
+<main>
+
+  <section class="void-gap tall" aria-hidden="true"></section>
+
+  <section class="waystation" aria-label="Television broadcast">
+    <div class="stage">
+      <article class="artifact tv" role="figure" aria-label="Channel CH 7 broadcast">
+        <div class="tv-screen">
+          <span class="tv-stationid">CH 7</span>
+          <span class="tv-timestamp">20:04</span>
+          <div class="tv-chyron"><span class="label">Breaking</span>anti-state elements seeking to destabilize the federation</div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section class="void-gap" aria-hidden="true"></section>
+
+  <section class="waystation" aria-label="YouTube clip">
+    <div class="stage">
+      <article class="artifact yt" role="figure" aria-label="YouTube thumbnail and metadata">
+        <div class="yt-thumb">
+          <span class="yt-play" aria-hidden="true">&#9654;</span>
+          <span class="yt-stamp">Forwarded &middot; Unverified</span>
+        </div>
+        <div class="yt-meta-block">
+          <h2 class="yt-title">Why everyone is talking about this — must watch</h2>
+          <p class="yt-meta"><span class="verified">Verified Channel</span> &middot; 2.4M views &middot; 3 days ago</p>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section class="void-gap" aria-hidden="true"></section>
+
+  <section class="waystation" aria-label="WhatsApp thread">
+    <div class="stage">
+      <article class="artifact wa" role="figure" aria-label="WhatsApp message thread">
+        <div class="wa-bubble wa-left">
+          <span class="fwd">Forwarded many times</span>
+          Forwarded as received: this is the real story they don&rsquo;t want you to see
+          <span class="time">19:42</span>
+        </div>
+        <div class="wa-bubble wa-right">
+          where did you get this
+          <span class="time">19:48</span>
+        </div>
+        <div class="wa-bubble wa-left">
+          someone in the family group sent it
+          <span class="time">19:51</span>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section class="void-gap short" aria-hidden="true"></section>
+
+  <section class="final" aria-label="Closing line">
+    <p><em>You scrolled three minutes to see what you already saw today.</em></p>
+  </section>
+
+  <section class="breath" aria-hidden="true"></section>
+
+</main>
+
+</body>
+</html>

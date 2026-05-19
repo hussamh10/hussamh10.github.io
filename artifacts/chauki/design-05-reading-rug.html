@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Chowki — The Reading Rug</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Major+Mono+Display&family=Noto+Nastaliq+Urdu&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --wool:     #EDE5D0;
+    --madder:   #8E2E20;
+    --indigo:   #1B2F5C;
+    --turmeric: #C8932E;
+    --thread:   #0A0A0A;
+    --shadow:   #6B5B45;
+    --floor:    #D6CBB0;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    background: var(--floor);
+    color: var(--thread);
+    font-family: 'Cormorant Garamond', serif;
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* The floor — slightly darker than the rug, with a soft woven repeat */
+  body {
+    background-color: var(--floor);
+    background-image:
+      repeating-linear-gradient(90deg,
+        rgba(107,91,69,0.06) 0,
+        rgba(107,91,69,0.06) 1px,
+        transparent 1px,
+        transparent 3px),
+      repeating-linear-gradient(0deg,
+        rgba(107,91,69,0.05) 0,
+        rgba(107,91,69,0.05) 1px,
+        transparent 1px,
+        transparent 3px);
+    padding: 60px 40px 80px;
+  }
+
+  /* ============== THE RUG ============== */
+  .rug-wrap {
+    position: relative;
+    max-width: 1180px;
+    margin: 0 auto;
+  }
+
+  /* Shadow under the rug to suggest it sits on a floor */
+  .rug-wrap::before {
+    content: "";
+    position: absolute;
+    inset: 16px -10px -22px -10px;
+    background: rgba(20,16,10,0.22);
+    filter: blur(18px);
+    z-index: 0;
+  }
+
+  .rug {
+    position: relative;
+    background: var(--wool);
+    border: 1px solid var(--thread);
+    padding: 78px;
+    z-index: 1;
+    /* warp & weft micro-texture */
+    background-image:
+      repeating-linear-gradient(90deg,
+        rgba(10,10,10,0.04) 0,
+        rgba(10,10,10,0.04) 1px,
+        transparent 1px,
+        transparent 2px),
+      repeating-linear-gradient(0deg,
+        rgba(10,10,10,0.035) 0,
+        rgba(10,10,10,0.035) 1px,
+        transparent 1px,
+        transparent 2px);
+  }
+
+  /* ============== BORDER PATTERNS ============== */
+  /* Top + bottom: running zigzag */
+  .border-zigzag {
+    position: absolute;
+    left: 0; right: 0;
+    height: 56px;
+    background-color: var(--madder);
+    background-image:
+      linear-gradient(135deg, var(--turmeric) 25%, transparent 25%) 0 0 / 28px 28px,
+      linear-gradient(225deg, var(--turmeric) 25%, transparent 25%) 0 0 / 28px 28px,
+      linear-gradient(135deg, transparent 75%, var(--turmeric) 75%) 14px 14px / 28px 28px,
+      linear-gradient(225deg, transparent 75%, var(--turmeric) 75%) 14px 14px / 28px 28px,
+      repeating-linear-gradient(90deg,
+        var(--thread) 0, var(--thread) 1px,
+        transparent 1px, transparent 28px);
+    border-top: 1px solid var(--thread);
+    border-bottom: 1px solid var(--thread);
+  }
+  .border-zigzag.top { top: 10px; }
+  .border-zigzag.bot { bottom: 10px; }
+
+  /* Left + right: stepped lozenge */
+  .border-lozenge {
+    position: absolute;
+    top: 10px; bottom: 10px;
+    width: 56px;
+    background-color: var(--indigo);
+    background-image:
+      repeating-linear-gradient(0deg,
+        var(--turmeric) 0, var(--turmeric) 2px,
+        transparent 2px, transparent 30px),
+      repeating-linear-gradient(0deg,
+        transparent 0, transparent 14px,
+        var(--wool) 14px, var(--wool) 16px,
+        transparent 16px, transparent 30px),
+      radial-gradient(circle at 50% 15px, var(--madder) 6px, transparent 7px),
+      radial-gradient(circle at 50% 45px, var(--madder) 6px, transparent 7px);
+    background-size: 100% 30px, 100% 30px, 100% 60px, 100% 60px;
+    border-left: 1px solid var(--thread);
+    border-right: 1px solid var(--thread);
+  }
+  .border-lozenge.left { left: 10px; }
+  .border-lozenge.right { right: 10px; }
+
+  /* Inner thin band */
+  .inner-band {
+    position: absolute;
+    border: 1px solid var(--thread);
+  }
+  .inner-band.top    { top: 68px;    left: 68px; right: 68px; height: 8px; background: var(--turmeric); }
+  .inner-band.bot    { bottom: 68px; left: 68px; right: 68px; height: 8px; background: var(--turmeric); }
+  .inner-band.left   { top: 68px; bottom: 68px; left: 68px;  width: 8px;  background: var(--turmeric); }
+  .inner-band.right  { top: 68px; bottom: 68px; right: 68px; width: 8px;  background: var(--turmeric); }
+
+  /* ============== DATA-AS-ORNAMENT BAND ============== */
+  /* A horizontal band INSIDE the rug field, just above the field, that is woven from data */
+  .data-band {
+    position: absolute;
+    left: 90px; right: 90px;
+    height: 24px;
+    display: grid;
+    grid-template-columns: repeat(24, 1fr);
+    border: 1px solid var(--thread);
+    background: var(--wool);
+  }
+  .data-band.top { top: 92px; }
+  .data-band.bot { bottom: 92px; }
+
+  .data-band span {
+    display: block;
+    border-right: 1px solid var(--thread);
+  }
+  .data-band span:last-child { border-right: 0; }
+
+  /* Six channels, repeating; same phrase across them — color encodes which channel */
+  .data-band .c1 { background: var(--madder); }
+  .data-band .c2 { background: var(--indigo); }
+  .data-band .c3 { background: var(--turmeric); }
+  .data-band .c4 { background: var(--shadow); }
+  .data-band .c5 { background: var(--madder); position: relative; }
+  .data-band .c5::after {
+    content: "";
+    position: absolute; inset: 4px;
+    background: repeating-linear-gradient(45deg,
+      var(--wool) 0, var(--wool) 2px,
+      transparent 2px, transparent 4px);
+  }
+  .data-band .c6 { background: var(--indigo); position: relative; }
+  .data-band .c6::after {
+    content: "";
+    position: absolute; inset: 4px;
+    background: repeating-linear-gradient(-45deg,
+      var(--turmeric) 0, var(--turmeric) 2px,
+      transparent 2px, transparent 4px);
+  }
+
+  .data-band-label {
+    position: absolute;
+    left: 90px;
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 12px;
+    color: var(--thread);
+    letter-spacing: 0.02em;
+  }
+  .data-band-label.top { top: 122px; }
+  .data-band-label.bot { bottom: 122px; }
+
+  /* ============== INNER FIELD ============== */
+  .field {
+    position: relative;
+    margin: 70px 70px 70px 70px;
+    background:
+      repeating-linear-gradient(0deg,
+        rgba(27,47,92,0.04) 0,
+        rgba(27,47,92,0.04) 1px,
+        transparent 1px, transparent 4px),
+      repeating-linear-gradient(90deg,
+        rgba(142,46,32,0.04) 0,
+        rgba(142,46,32,0.04) 1px,
+        transparent 1px, transparent 4px);
+    border: 1px solid var(--thread);
+    display: grid;
+    grid-template-columns: 1fr 1.4fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    grid-template-areas:
+      "c1 center c2"
+      "c3 center c4";
+    gap: 0;
+    min-height: 720px;
+  }
+
+  /* ============== CENTRAL MEDALLION ============== */
+  .medallion {
+    grid-area: center;
+    position: relative;
+    border-left: 1px solid var(--thread);
+    border-right: 1px solid var(--thread);
+    background: var(--wool);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 28px;
+    text-align: center;
+    /* halo of woven pattern */
+    background-image:
+      repeating-linear-gradient(45deg,
+        rgba(27,47,92,0.06) 0, rgba(27,47,92,0.06) 2px,
+        transparent 2px, transparent 14px),
+      repeating-linear-gradient(-45deg,
+        rgba(200,147,46,0.06) 0, rgba(200,147,46,0.06) 2px,
+        transparent 2px, transparent 14px);
+  }
+
+  /* medallion frame — concentric diamonds drawn with rotated squares */
+  .medallion::before,
+  .medallion::after {
+    content: "";
+    position: absolute;
+    border: 1px solid var(--thread);
+    pointer-events: none;
+  }
+  .medallion::before {
+    inset: 22px;
+    background:
+      linear-gradient(var(--wool), var(--wool)) padding-box,
+      repeating-linear-gradient(90deg,
+        var(--madder) 0, var(--madder) 6px,
+        var(--indigo) 6px, var(--indigo) 12px,
+        var(--turmeric) 12px, var(--turmeric) 18px) border-box;
+    border: 4px solid transparent;
+  }
+  .medallion::after {
+    inset: 40px;
+    border: 1px dashed var(--shadow);
+  }
+
+  .question {
+    position: relative;
+    font-family: 'Major Mono Display', monospace;
+    color: var(--indigo);
+    font-size: 46px;
+    line-height: 1.18;
+    letter-spacing: 0.02em;
+    max-width: 460px;
+    /* cross-stitch shadow simulation */
+    text-shadow:
+      1px 0 0 rgba(10,10,10,0.06),
+      0 1px 0 rgba(10,10,10,0.06);
+    z-index: 2;
+  }
+
+  .question .ornament {
+    display: block;
+    margin: 26px auto 0;
+    width: 180px;
+    height: 14px;
+    background:
+      linear-gradient(90deg, transparent 0 8px,
+        var(--madder) 8px 14px,
+        transparent 14px 24px,
+        var(--indigo) 24px 30px,
+        transparent 30px 40px,
+        var(--turmeric) 40px 46px,
+        transparent 46px) 0 0 / 60px 14px repeat-x;
+    border-top: 1px solid var(--thread);
+    border-bottom: 1px solid var(--thread);
+  }
+
+  .question-caption {
+    position: relative;
+    margin-top: 22px;
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 14px;
+    color: var(--thread);
+    max-width: 380px;
+    line-height: 1.5;
+    z-index: 2;
+  }
+
+  /* ============== CORNER MEDALLIONS ============== */
+  .corner {
+    position: relative;
+    padding: 22px;
+    border: 1px solid var(--thread);
+    background: var(--wool);
+    overflow: hidden;
+  }
+  .corner.c1 { grid-area: c1; border-right: 0; border-bottom: 0; }
+  .corner.c2 { grid-area: c2; border-left: 0; border-bottom: 0; }
+  .corner.c3 { grid-area: c3; border-right: 0; border-top: 0; }
+  .corner.c4 { grid-area: c4; border-left: 0; border-top: 0; }
+
+  /* each corner has a small inner stepped border */
+  .corner::before {
+    content: "";
+    position: absolute;
+    inset: 8px;
+    border: 1px solid var(--thread);
+    background:
+      linear-gradient(var(--wool), var(--wool)) padding-box,
+      repeating-linear-gradient(90deg,
+        var(--indigo) 0 4px,
+        var(--turmeric) 4px 8px,
+        var(--madder) 8px 12px) border-box;
+    border: 3px solid transparent;
+    pointer-events: none;
+  }
+
+  .corner-inner {
+    position: relative;
+    margin: 8px;
+    padding: 18px 16px;
+    height: calc(100% - 16px);
+    display: flex;
+    flex-direction: column;
+    z-index: 2;
+  }
+
+  .corner-label {
+    font-family: 'Major Mono Display', monospace;
+    font-size: 9px;
+    letter-spacing: 0.22em;
+    color: var(--shadow);
+    margin-bottom: 10px;
+    text-transform: uppercase;
+  }
+
+  /* ============== WORDMARK CORNER (C1) ============== */
+  .wordmark-block {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  .wordmark {
+    font-family: 'Major Mono Display', monospace;
+    font-size: 36px;
+    color: var(--thread);
+    line-height: 1;
+    letter-spacing: 0.04em;
+  }
+  .wordmark .urdu {
+    display: block;
+    font-family: 'Noto Nastaliq Urdu', serif;
+    font-size: 22px;
+    color: var(--madder);
+    margin-top: 12px;
+    line-height: 1.4;
+  }
+  .wordmark-tag {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 13px;
+    color: var(--indigo);
+    line-height: 1.45;
+    margin-top: 4px;
+  }
+  .wordmark-meta {
+    font-family: 'Major Mono Display', monospace;
+    font-size: 9px;
+    letter-spacing: 0.18em;
+    color: var(--shadow);
+    border-top: 1px solid var(--thread);
+    padding-top: 8px;
+    margin-top: auto;
+  }
+
+  /* ============== TV CORNER (C2) ============== */
+  .tv-screen {
+    flex: 1;
+    background: var(--shadow);
+    background-image:
+      repeating-linear-gradient(0deg,
+        rgba(237,229,208,0.08) 0,
+        rgba(237,229,208,0.08) 1px,
+        transparent 1px, transparent 3px),
+      repeating-linear-gradient(90deg,
+        rgba(10,10,10,0.18) 0,
+        rgba(10,10,10,0.18) 1px,
+        transparent 1px, transparent 4px);
+    border: 1px solid var(--thread);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 10px 12px;
+    min-height: 180px;
+  }
+  .tv-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: 'Major Mono Display', monospace;
+    font-size: 10px;
+    color: var(--wool);
+    letter-spacing: 0.16em;
+  }
+  .tv-stationid {
+    background: var(--madder);
+    color: var(--wool);
+    padding: 3px 7px;
+    border: 1px solid var(--thread);
+  }
+  .tv-timestamp {
+    background: var(--wool);
+    color: var(--thread);
+    padding: 3px 7px;
+    border: 1px solid var(--thread);
+  }
+  .tv-center {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgba(237,229,208,0.3);
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+  }
+  .tv-chyron {
+    background: var(--madder);
+    border-top: 1px solid var(--thread);
+    border-bottom: 1px solid var(--thread);
+    color: var(--wool);
+    font-family: 'Major Mono Display', monospace;
+    font-size: 9px;
+    padding: 6px 8px;
+    letter-spacing: 0.08em;
+    line-height: 1.4;
+  }
+
+  /* ============== YOUTUBE CORNER (C3) ============== */
+  .yt-card {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .yt-thumb {
+    position: relative;
+    flex: 1;
+    min-height: 110px;
+    background: var(--shadow);
+    background-image:
+      repeating-linear-gradient(0deg,
+        rgba(237,229,208,0.07) 0,
+        rgba(237,229,208,0.07) 1px,
+        transparent 1px, transparent 3px),
+      repeating-linear-gradient(90deg,
+        rgba(10,10,10,0.18) 0,
+        rgba(10,10,10,0.18) 1px,
+        transparent 1px, transparent 4px);
+    border: 1px solid var(--thread);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .yt-thumb::before {
+    content: "";
+    width: 0;
+    height: 0;
+    border-top: 14px solid transparent;
+    border-bottom: 14px solid transparent;
+    border-left: 22px solid var(--wool);
+    opacity: 0.5;
+  }
+  .yt-stamp {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    background: var(--turmeric);
+    color: var(--thread);
+    padding: 3px 6px;
+    font-family: 'Major Mono Display', monospace;
+    font-size: 9px;
+    letter-spacing: 0.16em;
+    border: 1px solid var(--thread);
+    text-transform: uppercase;
+  }
+  .yt-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 14px;
+    color: var(--thread);
+    line-height: 1.3;
+  }
+  .yt-meta {
+    font-family: 'Major Mono Display', monospace;
+    font-size: 9px;
+    color: var(--shadow);
+    letter-spacing: 0.12em;
+  }
+
+  /* ============== WHATSAPP CORNER (C4) ============== */
+  .wa-thread {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding-top: 2px;
+  }
+  .wa-msg {
+    max-width: 88%;
+    padding: 8px 10px;
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 12.5px;
+    line-height: 1.35;
+    border: 1px solid var(--thread);
+    position: relative;
+  }
+  .wa-msg.in {
+    align-self: flex-start;
+    background: var(--madder);
+    color: var(--wool);
+  }
+  .wa-msg.out {
+    align-self: flex-end;
+    background: var(--indigo);
+    color: var(--wool);
+  }
+  .wa-msg.in2 {
+    align-self: flex-start;
+    background: var(--wool);
+    color: var(--thread);
+    border-color: var(--thread);
+  }
+  .wa-tag {
+    display: block;
+    font-family: 'Major Mono Display', monospace;
+    font-style: normal;
+    font-size: 8px;
+    letter-spacing: 0.18em;
+    opacity: 0.8;
+    margin-bottom: 4px;
+  }
+
+  /* ============== TASSELS ============== */
+  .tassel {
+    position: absolute;
+    width: 22px;
+    height: 30px;
+    z-index: 3;
+    pointer-events: none;
+  }
+  .tassel::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 8px;
+    height: 8px;
+    background: var(--madder);
+    border: 1px solid var(--thread);
+  }
+  .tassel::after {
+    content: "";
+    position: absolute;
+    top: 8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 16px;
+    height: 22px;
+    background:
+      repeating-linear-gradient(90deg,
+        var(--madder) 0, var(--madder) 1px,
+        var(--turmeric) 1px, var(--turmeric) 2px,
+        var(--indigo) 2px, var(--indigo) 3px);
+  }
+  .tassel.tl { top: -28px; left: 30px; }
+  .tassel.tr { top: -28px; right: 30px; }
+  .tassel.bl { bottom: -28px; left: 30px; }
+  .tassel.br { bottom: -28px; right: 30px; }
+
+  /* ============== UNRAVELED THREAD ============== */
+  .unraveled {
+    position: absolute;
+    bottom: -56px;
+    right: 80px;
+    width: 220px;
+    height: 80px;
+    z-index: 4;
+    pointer-events: none;
+  }
+  .unraveled svg { display: block; width: 100%; height: 100%; }
+  .unraveled-label {
+    position: absolute;
+    bottom: -34px;
+    right: 80px;
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 12px;
+    color: var(--shadow);
+    z-index: 5;
+  }
+
+  /* ============== FOOTER LINE ============== */
+  .colophon {
+    max-width: 1180px;
+    margin: 70px auto 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    color: var(--shadow);
+    font-size: 13px;
+    border-top: 1px solid var(--shadow);
+    padding-top: 14px;
+    gap: 32px;
+  }
+  .colophon .mono {
+    font-family: 'Major Mono Display', monospace;
+    font-style: normal;
+    font-size: 10px;
+    letter-spacing: 0.22em;
+    color: var(--thread);
+  }
+  .colophon .right { text-align: right; }
+
+  /* ============== RESPONSIVE ============== */
+  @media (max-width: 880px) {
+    body { padding: 24px 14px 60px; }
+    .rug { padding: 56px 18px; }
+    .border-zigzag { height: 36px; }
+    .border-lozenge { width: 36px; }
+    .inner-band.top    { top: 48px; left: 48px; right: 48px; }
+    .inner-band.bot    { bottom: 48px; left: 48px; right: 48px; }
+    .inner-band.left   { top: 48px; bottom: 48px; left: 48px; }
+    .inner-band.right  { top: 48px; bottom: 48px; right: 48px; }
+    .data-band { left: 60px; right: 60px; }
+    .data-band-label.top { top: 92px; left: 60px; }
+    .data-band-label.bot { bottom: 92px; left: 60px; }
+    .field {
+      margin: 50px 50px;
+      grid-template-columns: 1fr;
+      grid-template-rows: auto auto auto auto auto;
+      grid-template-areas:
+        "c1"
+        "center"
+        "c2"
+        "c3"
+        "c4";
+      min-height: 0;
+    }
+    .corner, .medallion { border: 1px solid var(--thread) !important; }
+    .question { font-size: 30px; }
+    .wordmark { font-size: 28px; }
+    .unraveled { right: 20px; width: 160px; }
+    .unraveled-label { right: 20px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="rug-wrap">
+  <!-- corner tassels -->
+  <div class="tassel tl"></div>
+  <div class="tassel tr"></div>
+  <div class="tassel bl"></div>
+  <div class="tassel br"></div>
+
+  <div class="rug">
+
+    <!-- thick patterned borders -->
+    <div class="border-zigzag top"></div>
+    <div class="border-zigzag bot"></div>
+    <div class="border-lozenge left"></div>
+    <div class="border-lozenge right"></div>
+
+    <!-- inner thin turmeric bands -->
+    <div class="inner-band top"></div>
+    <div class="inner-band bot"></div>
+    <div class="inner-band left"></div>
+    <div class="inner-band right"></div>
+
+    <!-- DATA-AS-ORNAMENT band: each cell = one channel broadcasting the same phrase -->
+    <div class="data-band top" aria-label="border woven from broadcast data">
+      <span class="c1"></span><span class="c2"></span><span class="c3"></span><span class="c4"></span>
+      <span class="c5"></span><span class="c6"></span>
+      <span class="c1"></span><span class="c2"></span><span class="c3"></span><span class="c4"></span>
+      <span class="c5"></span><span class="c6"></span>
+      <span class="c1"></span><span class="c2"></span><span class="c3"></span><span class="c4"></span>
+      <span class="c5"></span><span class="c6"></span>
+      <span class="c1"></span><span class="c2"></span><span class="c3"></span><span class="c4"></span>
+      <span class="c5"></span><span class="c6"></span>
+    </div>
+    <div class="data-band-label top">border woven from: 6 channels, 4 hours, 1 phrase.</div>
+
+    <div class="data-band bot" aria-label="border woven from broadcast data">
+      <span class="c6"></span><span class="c5"></span><span class="c4"></span><span class="c3"></span>
+      <span class="c2"></span><span class="c1"></span>
+      <span class="c6"></span><span class="c5"></span><span class="c4"></span><span class="c3"></span>
+      <span class="c2"></span><span class="c1"></span>
+      <span class="c6"></span><span class="c5"></span><span class="c4"></span><span class="c3"></span>
+      <span class="c2"></span><span class="c1"></span>
+      <span class="c6"></span><span class="c5"></span><span class="c4"></span><span class="c3"></span>
+      <span class="c2"></span><span class="c1"></span>
+    </div>
+    <div class="data-band-label bot">archive — march, week 2.</div>
+
+    <!-- inner field with central medallion + 4 corner medallions -->
+    <div class="field">
+
+      <!-- C1: Chowki wordmark / seal -->
+      <div class="corner c1">
+        <div class="corner-inner">
+          <div class="corner-label">— seal i —</div>
+          <div class="wordmark-block">
+            <div class="wordmark">
+              CHOWKI
+              <span class="urdu">چوکی</span>
+            </div>
+            <div class="wordmark-tag">
+              a research collective<br/>
+              keeping watch over<br/>
+              Pakistan's information ecosystem.
+            </div>
+          </div>
+          <div class="wordmark-meta">est. — holding page — no. 005</div>
+        </div>
+      </div>
+
+      <!-- CENTRAL MEDALLION: the question -->
+      <div class="medallion">
+        <div class="question">
+          How do you<br/>believe what<br/>you see?
+          <span class="ornament" aria-hidden="true"></span>
+        </div>
+        <p class="question-caption">
+          A line of broadcast, a forwarded clip, a message from a cousin.<br/>
+          Three threads pulled from the same loom. The pattern only shows<br/>
+          when you lay them side by side.
+        </p>
+      </div>
+
+      <!-- C2: TV broadcast -->
+      <div class="corner c2">
+        <div class="corner-inner">
+          <div class="corner-label">— seal ii — broadcast —</div>
+          <div class="tv-screen">
+            <div class="tv-top">
+              <span class="tv-stationid">CH 7</span>
+              <span class="tv-timestamp">20:04</span>
+            </div>
+            <div class="tv-center">— live —</div>
+            <div class="tv-chyron">
+              BREAKING — ANTI-STATE ELEMENTS SEEKING TO DESTABILIZE THE FEDERATION
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- C3: YouTube card -->
+      <div class="corner c3">
+        <div class="corner-inner">
+          <div class="corner-label">— seal iii — platform —</div>
+          <div class="yt-card">
+            <div class="yt-thumb">
+              <span class="yt-stamp">Forwarded · Unverified</span>
+            </div>
+            <div class="yt-title">
+              Why everyone is talking about this — must watch
+            </div>
+            <div class="yt-meta">VERIFIED CHANNEL · 2.4M VIEWS · 3 DAYS AGO</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- C4: WhatsApp thread -->
+      <div class="corner c4">
+        <div class="corner-inner">
+          <div class="corner-label">— seal iv — kinship —</div>
+          <div class="wa-thread">
+            <div class="wa-msg in">
+              <span class="wa-tag">— forwarded —</span>
+              Forwarded as received: this is the real story they don't want you to see
+            </div>
+            <div class="wa-msg out">
+              where did you get this
+            </div>
+            <div class="wa-msg in2">
+              someone in the family group sent it
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ONE UNRAVELED THREAD — gestures at "work in progress" -->
+  <div class="unraveled" aria-hidden="true">
+    <svg viewBox="0 0 220 80" preserveAspectRatio="none">
+      <path d="M 0,4 C 40,4 60,40 100,38 C 140,36 150,70 200,62 L 218,72"
+            stroke="#8E2E20" stroke-width="1.4" fill="none" stroke-linecap="round"/>
+      <path d="M 4,10 C 44,10 64,46 104,44 C 144,42 154,76 204,68"
+            stroke="#1B2F5C" stroke-width="0.8" fill="none" stroke-linecap="round" opacity="0.6"/>
+      <circle cx="218" cy="72" r="2" fill="#0A0A0A"/>
+    </svg>
+  </div>
+  <div class="unraveled-label">a thread coming loose — the archive is unfinished.</div>
+
+</div>
+
+<!-- COLOPHON -->
+<div class="colophon">
+  <div>
+    <div class="mono">CHOWKI / READING ROOM / 0.0.5</div>
+    woven by hand, in public, slowly.
+  </div>
+  <div class="right">
+    <div class="mono">HOLDING PAGE — NO OUTPUTS YET</div>
+    if you keep watchposts, write back.
+  </div>
+</div>
+
+</body>
+</html>

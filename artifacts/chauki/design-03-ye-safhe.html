@@ -1,0 +1,573 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Chowki — Ye Safhe Bhi Dekhain</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;700&family=Noto+Nastaliq+Urdu&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --tv-red:#C8202A;
+    --news-yellow:#F5C20E;
+    --broadcast-green:#007D3F;
+    --ink:#0A0A0A;
+    --white:#FFFFFF;
+    --gradient-r:#9A1820;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;border-radius:0 !important;}
+  html,body{background:var(--ink);color:var(--white);font-family:'Inter',sans-serif;overflow-x:hidden;}
+  body{position:relative;}
+  /* Scanlines overlay */
+  body::after{
+    content:"";position:fixed;inset:0;pointer-events:none;z-index:80;
+    background:repeating-linear-gradient(0deg, rgba(255,255,255,0.025) 0 1px, transparent 1px 3px);
+    mix-blend-mode:overlay;
+  }
+  .anton{font-family:'Anton',sans-serif;letter-spacing:-0.01em;text-transform:uppercase;}
+  .nastaliq{font-family:'Noto Nastaliq Urdu',serif;line-height:1.6;}
+
+  /* TOP CHANNEL BAR */
+  .topbar{
+    display:flex;align-items:center;justify-content:space-between;
+    background:var(--ink);border-bottom:1px solid #1c1c1c;
+    padding:10px 22px;font-size:11px;letter-spacing:0.16em;text-transform:uppercase;
+    color:#bdbdbd;font-weight:500;
+  }
+  .topbar .left{display:flex;align-items:center;gap:14px;}
+  .live{display:inline-flex;align-items:center;gap:8px;color:#fff;font-weight:700;}
+  .live .dot{width:9px;height:9px;background:var(--tv-red);display:inline-block;animation:pulse 1.2s steps(2,end) infinite;}
+  @keyframes pulse{50%{opacity:0.25;}}
+  .topbar .right{display:flex;align-items:center;gap:18px;}
+  .sat{color:var(--broadcast-green);font-weight:700;}
+  .clock{color:#fff;}
+
+  /* CHANNEL WATERMARK CORNER — sits inside the TV broadcast canvas, top-right */
+  .watermark{
+    position:absolute;top:18px;right:18px;z-index:30;text-align:right;
+    pointer-events:none;
+  }
+  .watermark .mark{
+    display:inline-flex;align-items:center;gap:9px;justify-content:flex-end;
+  }
+  .watermark .square{
+    width:12px;height:12px;background:var(--tv-red);
+    box-shadow: 3px 3px 0 var(--news-yellow);
+  }
+  .watermark .urdu{
+    font-family:'Noto Nastaliq Urdu',serif;font-size:30px;color:#fff;line-height:1;
+    text-shadow:0 1px 4px rgba(0,0,0,0.7);
+  }
+  .watermark .cap{
+    font-family:'Inter';font-size:9px;letter-spacing:0.3em;color:#cfcfcf;margin-top:4px;
+  }
+
+  /* BREAKING HERO BAR */
+  .hero{
+    position:relative;
+    background:linear-gradient(90deg, var(--gradient-r) 0%, var(--tv-red) 22%, var(--tv-red) 78%, var(--gradient-r) 100%);
+    color:var(--white);
+    display:flex;align-items:stretch;
+    min-height:128px;
+    border-top:3px solid var(--ink);
+    border-bottom:3px solid var(--ink);
+  }
+  .hero .tag{
+    background:var(--ink);color:var(--news-yellow);
+    display:flex;align-items:center;gap:10px;
+    padding:0 22px;border-right:3px solid var(--ink);
+    font-family:'Anton';font-size:22px;letter-spacing:0.05em;
+  }
+  .hero .tag .play{color:var(--tv-red);}
+  .hero .headline{
+    flex:1;display:flex;align-items:center;padding:0 26px;
+    font-family:'Anton';font-size:56px;line-height:0.98;letter-spacing:-0.005em;
+  }
+  .hero .stamp{
+    background:var(--ink);color:#fff;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    padding:0 20px;border-left:3px solid var(--ink);min-width:128px;
+  }
+  .hero .stamp .ts{font-family:'Anton';font-size:34px;}
+  .hero .stamp .lbl{font-size:9px;letter-spacing:0.25em;color:#bdbdbd;margin-top:2px;}
+
+  /* TICKER */
+  .ticker{
+    background:var(--news-yellow);color:var(--ink);
+    overflow:hidden;position:relative;height:34px;display:flex;align-items:center;
+    border-bottom:3px solid var(--ink);
+  }
+  .ticker .label{
+    background:var(--ink);color:var(--news-yellow);
+    font-family:'Anton';font-size:16px;letter-spacing:0.05em;
+    padding:0 14px;height:100%;display:flex;align-items:center;flex-shrink:0;
+    border-right:3px solid var(--news-yellow);
+  }
+  .ticker .track{
+    display:flex;white-space:nowrap;animation:scroll-l 60s linear infinite;
+    font-size:13px;font-weight:500;letter-spacing:0.03em;
+  }
+  .ticker .track span{padding:0 32px;display:inline-block;}
+  .ticker .track span::before{content:"■";color:var(--tv-red);margin-right:14px;font-size:10px;}
+  @keyframes scroll-l{from{transform:translateX(0);}to{transform:translateX(-50%);}}
+
+  .ticker.red{background:var(--tv-red);color:#fff;border-top:3px solid var(--ink);border-bottom:0;}
+  .ticker.red .label{background:var(--ink);color:#fff;border-right-color:var(--tv-red);}
+  .ticker.red .track{animation:scroll-r 70s linear infinite;}
+  .ticker.red .track span::before{content:"▶";color:var(--news-yellow);margin-right:12px;font-size:10px;}
+  @keyframes scroll-r{from{transform:translateX(-50%);}to{transform:translateX(0);}}
+
+  /* MAIN CANVAS */
+  .canvas{
+    background:var(--ink);padding:28px 22px 22px;position:relative;
+    background-image:
+      radial-gradient(circle at 12% 18%, rgba(200,32,42,0.10) 0%, transparent 38%),
+      radial-gradient(circle at 88% 82%, rgba(0,125,63,0.08) 0%, transparent 42%);
+  }
+  .grid{display:grid;grid-template-columns: 1.55fr 1fr;gap:18px;align-items:stretch;}
+
+  /* TV-IN-TV INSERT */
+  .tv{
+    background:#050505;border:3px solid #1a1a1a;position:relative;
+    box-shadow: 0 0 0 1px #2a2a2a inset;
+    display:flex;flex-direction:column;min-height:360px;
+  }
+  .tv .channel-id{
+    position:absolute;top:14px;left:14px;z-index:30;
+    background:rgba(0,0,0,0.55);border:1px solid #2a2a2a;
+    padding:6px 10px;font-family:'Anton';font-size:14px;color:#fff;
+    letter-spacing:0.06em;
+  }
+  .tv .channel-id .num{color:var(--news-yellow);}
+  .tv .feed{
+    flex:1;position:relative;
+    background:
+      linear-gradient(180deg, rgba(255,255,255,0.04) 0%, rgba(0,0,0,0) 25%, rgba(0,0,0,0) 75%, rgba(255,255,255,0.03) 100%),
+      repeating-linear-gradient(90deg, rgba(255,255,255,0.012) 0 2px, transparent 2px 4px),
+      #0b0b0b;
+  }
+  .tv .feed .silhouette{
+    position:absolute;left:0;right:0;bottom:88px;height:160px;
+    background:
+      radial-gradient(ellipse at 50% 100%, #181818 0%, transparent 60%),
+      radial-gradient(circle at 50% 60%, #222 0%, transparent 55%);
+  }
+  .tv .feed .desk{
+    position:absolute;left:0;right:0;bottom:90px;height:34px;
+    background:linear-gradient(180deg,#0e0e0e,#050505);
+    border-top:1px solid #1f1f1f;
+  }
+  .tv .feed .anchor-head{
+    position:absolute;left:50%;bottom:118px;transform:translateX(-50%);
+    width:88px;height:108px;
+    background:radial-gradient(ellipse at 50% 35%, #2a2a2a 0%, #141414 70%, transparent 100%);
+  }
+  .tv .feed .light{
+    position:absolute;top:0;left:50%;transform:translateX(-50%);
+    width:60%;height:140px;
+    background:radial-gradient(ellipse at 50% 0%, rgba(245,194,14,0.07), transparent 70%);
+  }
+  .tv .chyron-wrap{position:absolute;left:0;right:0;bottom:0;}
+  .tv .chy-red{
+    background:linear-gradient(90deg,var(--gradient-r),var(--tv-red));
+    color:#fff;display:flex;align-items:center;border-top:2px solid #000;
+  }
+  .tv .chy-red .pill{
+    background:#fff;color:var(--tv-red);
+    font-family:'Anton';font-size:13px;letter-spacing:0.06em;
+    padding:7px 10px;margin:7px 10px;
+  }
+  .tv .chy-red .text{
+    font-family:'Anton';font-size:18px;letter-spacing:0.02em;
+    padding:9px 8px 9px 0;line-height:1.05;
+  }
+  .tv .chy-yellow{
+    background:var(--news-yellow);color:var(--ink);
+    display:flex;justify-content:space-between;align-items:center;
+    font-family:'Inter';font-size:11px;font-weight:700;
+    letter-spacing:0.14em;text-transform:uppercase;
+    padding:7px 12px;border-top:2px solid #000;
+  }
+  .tv .chy-yellow .urdu-sub{
+    font-family:'Noto Nastaliq Urdu',serif;font-size:14px;font-weight:400;
+    letter-spacing:0;color:#1a1a1a;
+  }
+  .tv .chy-green{
+    background:var(--broadcast-green);color:#fff;
+    display:flex;justify-content:space-between;align-items:center;
+    font-family:'Anton';font-size:13px;letter-spacing:0.08em;
+    padding:6px 12px;border-top:2px solid #000;
+  }
+
+  /* RIGHT COLUMN (NEXT PROMO) */
+  .right-col{display:flex;flex-direction:column;gap:14px;}
+  .next-card{
+    background:#0d0d0d;border:3px solid var(--broadcast-green);position:relative;
+    display:flex;flex-direction:column;flex:1;
+  }
+  .next-card .strip{
+    background:var(--broadcast-green);color:#fff;
+    display:flex;align-items:center;justify-content:space-between;
+    padding:8px 12px;
+    font-family:'Anton';font-size:16px;letter-spacing:0.08em;
+  }
+  .next-card .strip .right{display:flex;align-items:center;gap:8px;font-size:11px;letter-spacing:0.15em;font-family:'Inter';font-weight:700;}
+  .next-card .thumb{
+    flex:1;position:relative;min-height:170px;
+    background:
+      linear-gradient(180deg, rgba(0,0,0,0.0) 0%, rgba(0,0,0,0.55) 100%),
+      repeating-linear-gradient(45deg, #0e0e0e 0 14px, #121212 14px 28px);
+    display:flex;align-items:center;justify-content:center;
+    border-bottom:2px solid #000;
+  }
+  .next-card .thumb .play-big{
+    width:62px;height:62px;background:var(--tv-red);color:#fff;
+    display:flex;align-items:center;justify-content:center;
+    font-size:26px;border:3px solid #fff;
+  }
+  .next-card .thumb .stamp{
+    position:absolute;top:10px;left:10px;
+    background:var(--tv-red);color:#fff;
+    font-family:'Anton';font-size:12px;letter-spacing:0.08em;
+    padding:4px 8px;border:1px solid #fff;
+  }
+  .next-card .thumb .dur{
+    position:absolute;bottom:10px;right:10px;
+    background:#000;color:#fff;font-family:'Anton';font-size:13px;padding:3px 7px;
+  }
+  .next-card .meta{
+    padding:12px 14px 14px;background:#0a0a0a;
+  }
+  .next-card .meta h3{
+    font-family:'Anton';font-size:22px;line-height:1.05;color:#fff;
+    letter-spacing:0.005em;margin-bottom:8px;
+  }
+  .next-card .meta .sub{
+    font-size:11px;letter-spacing:0.08em;color:#a8a8a8;text-transform:uppercase;
+    display:flex;align-items:center;gap:8px;flex-wrap:wrap;
+  }
+  .next-card .meta .sub .check{
+    color:var(--broadcast-green);font-weight:700;
+  }
+  .next-card .meta .sub .dot{width:3px;height:3px;background:#666;display:inline-block;}
+
+  /* LOWER-THIRD SUB STRIP */
+  .lower-third{
+    background:var(--broadcast-green);color:#fff;
+    display:grid;grid-template-columns: 220px 1fr 180px;align-items:stretch;
+    border-top:3px solid #000;border-bottom:3px solid #000;
+  }
+  .lower-third .lt-tag{
+    background:var(--ink);color:var(--news-yellow);
+    font-family:'Anton';font-size:18px;letter-spacing:0.06em;
+    display:flex;align-items:center;padding:14px 18px;
+    border-right:3px solid var(--broadcast-green);
+  }
+  .lower-third .lt-body{
+    padding:14px 18px;font-family:'Anton';font-size:24px;line-height:1.05;
+    letter-spacing:0.005em;display:flex;align-items:center;
+  }
+  .lower-third .lt-side{
+    background:var(--news-yellow);color:var(--ink);
+    font-family:'Anton';font-size:14px;letter-spacing:0.06em;
+    display:flex;flex-direction:column;justify-content:center;align-items:flex-start;
+    padding:10px 16px;border-left:3px solid #000;
+  }
+  .lower-third .lt-side .urdu-line{
+    font-family:'Noto Nastaliq Urdu',serif;font-size:15px;line-height:1.4;
+    color:#1a1a1a;letter-spacing:0;
+  }
+
+  /* VIEWER MESSAGE BAR */
+  .viewer{
+    background:#0d0d0d;display:grid;grid-template-columns: 240px 1fr;
+    border-bottom:3px solid #000;
+  }
+  .viewer .vm-tag{
+    background:var(--tv-red);color:#fff;
+    display:flex;flex-direction:column;justify-content:center;
+    padding:14px 16px;border-right:3px solid #000;
+  }
+  .viewer .vm-tag .anton{font-size:20px;line-height:1;}
+  .viewer .vm-tag .sub{font-size:9.5px;letter-spacing:0.22em;margin-top:6px;color:#fff;opacity:0.85;}
+  .viewer .vm-tag .stamp{
+    margin-top:10px;background:#000;color:var(--news-yellow);
+    font-family:'Anton';font-size:11px;letter-spacing:0.1em;
+    padding:4px 6px;display:inline-block;align-self:flex-start;
+    border:1px solid var(--news-yellow);
+  }
+  .viewer .vm-body{
+    padding:14px 18px;display:flex;flex-direction:column;gap:8px;
+  }
+  .vm-line{
+    display:flex;align-items:flex-start;gap:10px;
+    padding:8px 12px;background:#121212;border-left:3px solid var(--broadcast-green);
+    font-size:13px;color:#e6e6e6;line-height:1.4;
+  }
+  .vm-line.from-us{border-left-color:var(--news-yellow);}
+  .vm-line .who{
+    font-family:'Anton';font-size:11px;color:#9e9e9e;letter-spacing:0.1em;
+    flex-shrink:0;width:80px;padding-top:1px;
+  }
+  .vm-line .msg{flex:1;}
+  .vm-line .msg b{color:#fff;font-weight:700;}
+
+  /* AB KE BAR FOOTER */
+  .abkebar{
+    background:var(--ink);border-top:3px solid #1a1a1a;
+    display:grid;grid-template-columns: 280px 1fr;
+  }
+  .abkebar .ab-tag{
+    background:var(--tv-red);color:#fff;display:flex;flex-direction:column;
+    justify-content:center;padding:18px 20px;border-right:3px solid #000;
+  }
+  .abkebar .ab-tag .small{font-size:10px;letter-spacing:0.25em;color:#fff;opacity:0.85;}
+  .abkebar .ab-tag .big{font-family:'Anton';font-size:34px;line-height:1;margin-top:6px;letter-spacing:0.005em;}
+  .abkebar .ab-tag .urdu{font-family:'Noto Nastaliq Urdu',serif;font-size:18px;margin-top:8px;color:#fff;line-height:1.4;}
+  .abkebar .ab-list{
+    display:grid;grid-template-columns:repeat(4,1fr);
+  }
+  .ab-list .item{
+    padding:18px 20px;border-right:1px solid #1f1f1f;
+    display:flex;flex-direction:column;justify-content:space-between;min-height:130px;
+  }
+  .ab-list .item:last-child{border-right:0;}
+  .ab-list .item .n{
+    font-family:'Anton';font-size:14px;color:var(--news-yellow);letter-spacing:0.06em;
+  }
+  .ab-list .item .t{
+    font-family:'Anton';font-size:22px;color:#fff;line-height:1.05;letter-spacing:0.01em;
+    margin-top:6px;
+  }
+  .ab-list .item .s{
+    font-size:10.5px;color:#9c9c9c;letter-spacing:0.06em;
+    text-transform:uppercase;margin-top:auto;padding-top:14px;
+  }
+
+  /* COLOPHON */
+  .colophon{
+    background:#070707;padding:14px 22px;border-top:3px solid var(--news-yellow);
+    display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;
+    font-size:10.5px;letter-spacing:0.22em;text-transform:uppercase;color:#8a8a8a;
+  }
+  .colophon .left{display:flex;align-items:center;gap:14px;}
+  .colophon .urdu{font-family:'Noto Nastaliq Urdu';font-size:14px;letter-spacing:0;color:#bdbdbd;}
+
+  /* RESPONSIVE */
+  @media (max-width: 880px){
+    .grid{grid-template-columns:1fr;}
+    .hero{flex-direction:column;}
+    .hero .tag,.hero .stamp{border-right:0;border-left:0;border-top:3px solid var(--ink);justify-content:flex-start;}
+    .hero .headline{font-size:36px;padding:14px 18px;}
+    .lower-third{grid-template-columns:1fr;}
+    .lower-third .lt-tag,.lower-third .lt-side{border-right:0;border-left:0;}
+    .viewer{grid-template-columns:1fr;}
+    .viewer .vm-tag{border-right:0;border-bottom:3px solid #000;}
+    .abkebar{grid-template-columns:1fr;}
+    .abkebar .ab-list{grid-template-columns:1fr 1fr;}
+    .watermark .urdu{font-size:28px;}
+  }
+</style>
+</head>
+<body>
+
+  <!-- TOP CHANNEL BAR -->
+  <div class="topbar">
+    <div class="left">
+      <span class="live"><span class="dot"></span>LIVE</span>
+      <span>· On Air · Independent Research Feed</span>
+    </div>
+    <div class="right">
+      <span class="sat">SAT · TRANSPONDER 11A</span>
+      <span>·</span>
+      <span class="clock">20 : 04 : 17 PKT</span>
+    </div>
+  </div>
+
+  <!-- BREAKING HERO BAR -->
+  <section class="hero" aria-label="Breaking question">
+    <div class="tag"><span class="play">▶</span> AB KE BAR</div>
+    <div class="headline">HOW DO YOU BELIEVE WHAT YOU SEE?</div>
+    <div class="stamp">
+      <span class="ts">20:04</span>
+      <span class="lbl">PKT · LIVE</span>
+    </div>
+  </section>
+
+  <!-- YELLOW TICKER -->
+  <div class="ticker" aria-label="Newsroom ticker">
+    <div class="label">▶ BREAKING</div>
+    <div class="track">
+      <span>How do narratives coordinate across channels in a single news cycle</span>
+      <span>96% of Pakistani adults now own a smartphone</span>
+      <span>No public archive of broadcast chyrons exists anywhere</span>
+      <span>Who is keeping the record of what was said and when</span>
+      <span>A forwarded WhatsApp message travels faster than a correction</span>
+      <span>Three viral clips this week — same talking points, four channels</span>
+      <span>How do narratives coordinate across channels in a single news cycle</span>
+      <span>96% of Pakistani adults now own a smartphone</span>
+      <span>No public archive of broadcast chyrons exists anywhere</span>
+      <span>Who is keeping the record of what was said and when</span>
+      <span>A forwarded WhatsApp message travels faster than a correction</span>
+      <span>Three viral clips this week — same talking points, four channels</span>
+    </div>
+  </div>
+
+  <!-- MAIN CANVAS -->
+  <main class="canvas">
+    <div class="grid">
+
+      <!-- TV-IN-TV INSERT -->
+      <div class="tv">
+        <!-- WATERMARK — channel bug in the broadcast corner -->
+        <div class="watermark" aria-hidden="true">
+          <div class="mark">
+            <span class="square"></span>
+            <span class="urdu">چوکی</span>
+          </div>
+          <div class="cap">CHOWKI · CH 07</div>
+        </div>
+        <div class="channel-id"><span class="num">CH</span> 7</div>
+        <div class="feed">
+          <div class="light"></div>
+          <div class="silhouette"></div>
+          <div class="anchor-head"></div>
+          <div class="desk"></div>
+        </div>
+        <div class="chyron-wrap">
+          <div class="chy-red">
+            <span class="pill">BREAKING</span>
+            <span class="text">ANTI-STATE ELEMENTS SEEKING TO DESTABILIZE THE FEDERATION</span>
+          </div>
+          <div class="chy-yellow">
+            <span>EXCLUSIVE · SOURCES · DEVELOPING STORY</span>
+            <span class="urdu-sub">صرف چوکی پر</span>
+          </div>
+          <div class="chy-green">
+            <span>NATIONAL DESK · LIVE</span>
+            <span>20:04 PKT</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- NEXT-ON-THIS-CHANNEL CARD -->
+      <aside class="right-col">
+        <div class="next-card">
+          <div class="strip">
+            <span>▶ NEXT ON THIS CHANNEL</span>
+            <span class="right">YT · 09:47</span>
+          </div>
+          <div class="thumb">
+            <span class="stamp">FORWARDED · UNVERIFIED</span>
+            <span class="play-big">▶</span>
+            <span class="dur">9:47</span>
+          </div>
+          <div class="meta">
+            <h3>Why everyone is talking about this — must watch</h3>
+            <div class="sub">
+              <span class="check">✓ VERIFIED CHANNEL</span>
+              <span class="dot"></span>
+              <span>2.4M VIEWS</span>
+              <span class="dot"></span>
+              <span>3 DAYS AGO</span>
+            </div>
+          </div>
+        </div>
+      </aside>
+
+    </div>
+  </main>
+
+  <!-- LOWER-THIRD STRIP -->
+  <section class="lower-third">
+    <div class="lt-tag">▶ LOWER THIRD</div>
+    <div class="lt-body">A WATCHPOST FOR PAKISTAN'S INFORMATION ECOSYSTEM — BUILDING THE PUBLIC ARCHIVE NOBODY ELSE MAINTAINS</div>
+    <div class="lt-side">
+      <span>EST. 2026 · ISB</span>
+      <span class="urdu-line">چوکی · ایک ادارہ</span>
+    </div>
+  </section>
+
+  <!-- VIEWER WHATSAPP MESSAGE BAR -->
+  <section class="viewer">
+    <div class="vm-tag">
+      <span class="anton">VIEWER MESSAGES</span>
+      <span class="sub">FAMILY GROUP · WHATSAPP · 0345-XXX</span>
+      <span class="stamp">FORWARDED · UNVERIFIED</span>
+    </div>
+    <div class="vm-body">
+      <div class="vm-line">
+        <span class="who">UNCLE</span>
+        <span class="msg"><b>"Forwarded as received:</b> this is the real story they don't want you to see"</span>
+      </div>
+      <div class="vm-line from-us">
+        <span class="who">ME</span>
+        <span class="msg">"where did you get this"</span>
+      </div>
+      <div class="vm-line">
+        <span class="who">UNCLE</span>
+        <span class="msg">"someone in the family group sent it"</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- RED BOTTOM TICKER -->
+  <div class="ticker red" aria-label="Research questions ticker">
+    <div class="label">RESEARCH DESK</div>
+    <div class="track">
+      <span>What is true · what is repeated · what is forwarded · what is remembered</span>
+      <span>Who decides what counts as a story by 20:04 PKT</span>
+      <span>When the chyron changes — does anyone notice</span>
+      <span>How many copies of a clip survive a takedown</span>
+      <span>The family group is a newsroom now — who edits it</span>
+      <span>What is true · what is repeated · what is forwarded · what is remembered</span>
+      <span>Who decides what counts as a story by 20:04 PKT</span>
+      <span>When the chyron changes — does anyone notice</span>
+      <span>How many copies of a clip survive a takedown</span>
+      <span>The family group is a newsroom now — who edits it</span>
+    </div>
+  </div>
+
+  <!-- AB KE BAR FOOTER -->
+  <section class="abkebar">
+    <div class="ab-tag">
+      <span class="small">▶ COMING UP</span>
+      <span class="big">AB KE BAR<br/>CHOWKI PAR</span>
+      <span class="urdu">یہ صفحے بھی دیکھیں</span>
+    </div>
+    <div class="ab-list">
+      <div class="item">
+        <span class="n">01 ·</span>
+        <span class="t">METHODS</span>
+        <span class="s">how we listen, log, cross-check</span>
+      </div>
+      <div class="item">
+        <span class="n">02 ·</span>
+        <span class="t">ARCHIVE</span>
+        <span class="s">chyrons, clips, forwards — dated</span>
+      </div>
+      <div class="item">
+        <span class="n">03 ·</span>
+        <span class="t">DISPATCHES</span>
+        <span class="s">short notes from the watchpost</span>
+      </div>
+      <div class="item">
+        <span class="n">04 ·</span>
+        <span class="t">JOIN THE DESK</span>
+        <span class="s">researchers, journalists, listeners</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- COLOPHON -->
+  <footer class="colophon">
+    <div class="left">
+      <span class="urdu">چوکی</span>
+      <span>· A RESEARCH COLLECTIVE · NOT A CHANNEL ·</span>
+    </div>
+    <div>SOFT LAUNCH · MMXXVI · ISLAMABAD</div>
+  </footer>
+
+</body>
+</html>
