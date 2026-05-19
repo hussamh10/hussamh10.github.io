@@ -32,10 +32,11 @@
   .chip { padding: 3px 8px; border-radius: 4px; font-size: 11px; cursor: pointer; border: 1px solid #ddd; background: #fff; color: #666; transition: all 0.15s; user-select: none; }
   .chip:hover { border-color: #aaa; color: #333; }
   .chip.active { background: #047857; border-color: #047857; color: #fff; }
-  .chip.active.chip-stance-pro { background: #16a34a; border-color: #16a34a; }
-  .chip.active.chip-stance-anti { background: #dc2626; border-color: #dc2626; }
-  .chip.active.chip-stance-mixed { background: #d97706; border-color: #d97706; }
-  .chip.active.chip-stance-neutral { background: #888; border-color: #888; }
+  .chip.active.chip-area-conceptual-foundations { background: #7c3aed; border-color: #7c3aed; }
+  .chip.active.chip-area-measurement-methods    { background: #0891b2; border-color: #0891b2; }
+  .chip.active.chip-area-empirical-evidence     { background: #2563eb; border-color: #2563eb; }
+  .chip.active.chip-area-pakistan-specific      { background: #047857; border-color: #047857; }
+  .chip.active.chip-area-methods-critiques      { background: #ea580c; border-color: #ea580c; }
 
   /* Select dropdown */
   .filters select { flex: 1; padding: 4px 8px; font-size: 11px; border: 1px solid #ddd; border-radius: 4px; background: #fff; color: #444; outline: none; }
@@ -80,10 +81,12 @@
   .badge-priority-3 { background: #ecfeff; color: #0e7490; border: 1px solid #a5f3fc; }
   .badge-priority-4 { background: #f5f5f5; color: #888; border: 1px solid #e5e5e5; }
 
-  .badge-stance-pro { background: #f0fdf4; color: #15803d; border: 1px solid #bbf7d0; }
-  .badge-stance-anti { background: #fef2f2; color: #dc2626; border: 1px solid #fecaca; }
-  .badge-stance-mixed { background: #fffbeb; color: #d97706; border: 1px solid #fde68a; }
-  .badge-stance-neutral { background: #f5f5f5; color: #777; border: 1px solid #e5e5e5; }
+  /* Area badges (replaces stance on doc rows) */
+  .badge-area-conceptual-foundations { background: #f5f3ff; color: #6d28d9; border: 1px solid #ddd6fe; }
+  .badge-area-measurement-methods    { background: #ecfeff; color: #0e7490; border: 1px solid #a5f3fc; }
+  .badge-area-empirical-evidence     { background: #eff6ff; color: #1e40af; border: 1px solid #bfdbfe; }
+  .badge-area-pakistan-specific      { background: #ecfdf5; color: #065f46; border: 1px solid #a7f3d0; }
+  .badge-area-methods-critiques      { background: #fff7ed; color: #c2410c; border: 1px solid #fed7aa; }
 
   .badge-type-book { background: #faf5ff; color: #7c3aed; border: 1px solid #ddd6fe; }
   .badge-type-paper { background: #f0f9ff; color: #0369a1; border: 1px solid #bae6fd; }
@@ -164,19 +167,12 @@
         <span class="chip" data-filter="priority" data-val="4">4 &middot; Context</span>
       </div>
       <div class="filter-row">
-        <label>Stance (toward thesis)</label>
-        <span class="chip chip-stance-pro" data-filter="stance" data-val="pro">Pro</span>
-        <span class="chip chip-stance-anti" data-filter="stance" data-val="anti">Anti</span>
-        <span class="chip chip-stance-mixed" data-filter="stance" data-val="mixed">Mixed</span>
-        <span class="chip chip-stance-neutral" data-filter="stance" data-val="neutral">Neutral</span>
-      </div>
-      <div class="filter-row">
         <label>Area</label>
-        <span class="chip" data-filter="area" data-val="conceptual-foundations" title="Theory of fragmentation, framing, agenda setting, Hallin spheres">Theory</span>
-        <span class="chip" data-filter="area" data-val="measurement-methods" title="Computational methods for cross-source measurement">Methods</span>
-        <span class="chip" data-filter="area" data-val="empirical-evidence" title="Prior cross-outlet comparative studies">Empirical</span>
-        <span class="chip" data-filter="area" data-val="pakistan-specific" title="Pakistan media system, regulation, ownership">Pakistan</span>
-        <span class="chip" data-filter="area" data-val="methods-critiques" title="Warnings against naive methods">Critiques</span>
+        <span class="chip chip-area-conceptual-foundations" data-filter="area" data-val="conceptual-foundations" title="Theory of fragmentation, framing, agenda setting, Hallin spheres">Theory</span>
+        <span class="chip chip-area-measurement-methods"    data-filter="area" data-val="measurement-methods"    title="Computational methods for cross-source measurement">Methods</span>
+        <span class="chip chip-area-empirical-evidence"     data-filter="area" data-val="empirical-evidence"     title="Prior cross-outlet comparative studies">Empirical</span>
+        <span class="chip chip-area-pakistan-specific"      data-filter="area" data-val="pakistan-specific"      title="Pakistan media system, regulation, ownership">Pakistan</span>
+        <span class="chip chip-area-methods-critiques"      data-filter="area" data-val="methods-critiques"      title="Warnings against naive methods">Critiques</span>
       </div>
       <div class="filter-row">
         <label>Cluster</label>
@@ -229,7 +225,7 @@
       </div>
       <div class="hint">
         Pick a source from the list to read its contribution to the thesis. Switch to <b>Reading Strategy</b> for a curated nine-phase path through the 222 sources.
-        Filter by priority, stance, area, or cluster. Read-status and notes are saved locally in your browser.
+        Filter by priority, area, or cluster. Read-status and notes are saved locally in your browser.
       </div>
     </div>
   </div>
@@ -239,7 +235,7 @@
 let DATA = [];
 let selected = null;
 let currentTab = 'all';
-let filters = { priority: null, stance: null, area: null, cluster: null };
+let filters = { priority: null, area: null, cluster: null };
 let readState = JSON.parse(localStorage.getItem('nf-read') || '{}');
 let notesState = JSON.parse(localStorage.getItem('nf-notes') || '{}');
 
@@ -504,7 +500,6 @@ function renderFundamentals() {
 
 function matchesFilters(d, q) {
   if (filters.priority && String(d.priority) !== String(filters.priority)) return false;
-  if (filters.stance && d.stance !== filters.stance) return false;
   if (filters.area && !(d.areas || []).includes(filters.area)) return false;
   if (filters.cluster && !(d.clusters || []).includes(filters.cluster)) return false;
   if (q) {
@@ -576,10 +571,21 @@ function renderStrategy() {
   bindDocItems();
 }
 
+const AREA_SHORT = {
+  'conceptual-foundations': 'theory',
+  'measurement-methods':    'methods',
+  'empirical-evidence':     'empirical',
+  'pakistan-specific':      'pakistan',
+  'methods-critiques':      'critiques'
+};
+
 function docItemHTML(d) {
   const isRead = readState[d.id];
   const firstAuthor = (d.authors && d.authors[0]) || 'Unknown';
   const authorShort = firstAuthor.split(',')[0] + (d.authors && d.authors.length > 1 ? ' et al.' : '');
+  const areaBadges = (d.areas || []).map(a =>
+    `<span class="badge badge-area-${a}">${AREA_SHORT[a] || a}</span>`
+  ).join('');
   return `
     <div class="doc-item ${selected === d.id ? 'selected' : ''} ${isRead ? 'is-read' : ''}" data-id="${d.id}">
       <input type="checkbox" class="read-check" data-id="${d.id}" ${isRead ? 'checked' : ''} title="Mark as read">
@@ -588,7 +594,7 @@ function docItemHTML(d) {
         <div class="doc-item-author">${escapeHTML(authorShort)} &middot; ${d.year || '—'} &middot; ${escapeHTML(d.venue || '')}</div>
         <div class="doc-item-meta">
           <span class="badge badge-priority-${d.priority}">P${d.priority}</span>
-          <span class="badge badge-stance-${d.stance || 'neutral'}">${d.stance || 'neutral'}</span>
+          ${areaBadges}
           <span class="badge badge-type-${d.type || 'paper'}">${d.type || 'paper'}</span>
         </div>
       </div>
@@ -661,7 +667,7 @@ function showDoc(d) {
 
       <div class="status-row">
         <span class="badge badge-priority-${d.priority}">P${d.priority} · ${priorityLabel[d.priority] || ''}</span>
-        <span class="badge badge-stance-${d.stance || 'neutral'}">${(d.stance || 'neutral').toUpperCase()}</span>
+        ${(d.areas || []).map(a => `<span class="badge badge-area-${a}">${AREA_SHORT[a] || a}</span>`).join('')}
         <span class="badge badge-type-${d.type || 'paper'}">${d.type || 'paper'}</span>
         ${d.method ? `<span class="badge" style="background:#fdf2f8;color:#be185d;border:1px solid #fbcfe8">${escapeHTML(d.method)}</span>` : ''}
         <span class="badge badge-verified-${d.verified ? 'true' : 'false'}">${d.verified ? '✓ verified' : '⚠ flagged'}</span>
