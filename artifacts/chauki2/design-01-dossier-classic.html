@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Civil Witness — Dossier Classic</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;700&family=IBM+Plex+Sans:wght@400;500;700&family=IBM+Plex+Serif:wght@400;500;600;700&family=Caveat:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root { --bg:#F4EFE4; --ink:#1A1714; --saf:#E8A325; --brk:#8B2A22; --mut:#6E6A62; --tv:#2A2521; }
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--bg);color:var(--ink)}
+body{font-family:'IBM Plex Sans',sans-serif;font-size:15px;line-height:1.5;padding:32px 24px;min-height:100vh}
+.page{max-width:1200px;margin:0 auto;border:2px solid var(--ink);background:var(--bg);position:relative}
+.corner-stamp{position:absolute;top:18px;right:24px;border:2px solid var(--brk);color:var(--brk);font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:700;letter-spacing:2px;padding:5px 11px;transform:rotate(3deg);text-transform:uppercase;z-index:2;background:var(--bg)}
+.top{display:flex;align-items:baseline;justify-content:space-between;padding:24px 32px 18px;border-bottom:2px solid var(--ink)}
+.wordmark{font-family:'IBM Plex Serif',serif;font-size:28px;font-weight:700;letter-spacing:-0.5px}
+.nav{display:flex;gap:24px;font-family:'IBM Plex Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:1.5px;color:var(--mut)}
+.nav a{color:var(--ink);text-decoration:none;padding:4px 0;border-bottom:2px solid transparent}
+.nav a:hover{border-bottom-color:var(--brk)}
+.dateline{background:var(--saf);color:var(--ink);font-family:'IBM Plex Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:1.5px;padding:8px 32px;display:flex;justify-content:space-between;border-bottom:2px solid var(--ink);font-weight:600}
+.hero{padding:88px 32px 56px;text-align:center;border-bottom:2px solid var(--ink)}
+.filed-stamp{display:inline-block;border:2px solid var(--ink);padding:5px 14px;font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:700;letter-spacing:2px;transform:rotate(-2deg);margin-bottom:32px}
+.filed-stamp .date{color:var(--brk)}
+.question{font-family:'IBM Plex Serif',serif;font-size:64px;line-height:1.06;font-weight:600;letter-spacing:-1.5px;max-width:880px;margin:0 auto}
+.question .em{background:var(--saf);padding:0 10px;box-decoration-break:clone;-webkit-box-decoration-break:clone}
+.triptych-wrap{position:relative;border-bottom:2px solid var(--ink)}
+.triptych{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:32px;padding:56px 32px 72px}
+.tv{border:2px solid var(--ink);background:var(--tv);box-shadow:8px 8px 0 var(--ink);aspect-ratio:16/9;position:relative;display:flex;flex-direction:column;justify-content:flex-end}
+.tv .id{position:absolute;top:12px;right:12px;font-family:'IBM Plex Mono',monospace;font-size:10px;background:var(--saf);color:var(--ink);padding:4px 8px;letter-spacing:1.5px;font-weight:700}
+.tv .chyron{background:var(--saf);color:var(--ink);font-family:'IBM Plex Sans',sans-serif;font-size:13px;font-weight:700;padding:10px 14px;border-top:2px solid var(--ink);display:flex;justify-content:space-between;gap:12px;letter-spacing:0.3px}
+.tv .chyron .time{font-family:'IBM Plex Mono',monospace;flex-shrink:0}
+.yt{border:2px solid var(--ink);background:var(--bg);box-shadow:8px 8px 0 var(--ink);display:flex;flex-direction:column;position:relative}
+.yt .thumb{background:var(--tv);aspect-ratio:16/9;border-bottom:2px solid var(--ink);position:relative}
+.yt .thumb::before{content:"▶";position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:var(--bg);font-size:32px;opacity:0.4}
+.yt .stamp{position:absolute;top:14px;left:14px;background:var(--brk);color:var(--bg);font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;padding:5px 9px;border:2px solid var(--ink);transform:rotate(-3deg);z-index:1}
+.yt .meta{padding:14px}
+.yt .t{font-weight:700;font-size:13px;margin-bottom:5px;line-height:1.3}
+.yt .c{color:var(--mut);font-size:12px}
+.chat{border:2px solid var(--ink);background:var(--bg);box-shadow:8px 8px 0 var(--ink);padding:16px 14px;display:flex;flex-direction:column;gap:10px}
+.bub{padding:9px 12px;border:2px solid var(--ink);max-width:86%;line-height:1.4;font-size:13px}
+.bub.them{align-self:flex-start;background:var(--bg)}
+.bub.you{align-self:flex-end;background:var(--saf);color:var(--ink)}
+.bub .ts{font-family:'IBM Plex Mono',monospace;font-size:10px;opacity:0.65;display:block;margin-top:4px}
+.marginalia{position:absolute;right:42px;bottom:12px;font-family:'Caveat',cursive;font-size:22px;color:var(--brk);transform:rotate(-2deg);max-width:240px;line-height:1.15}
+.marginalia::before{content:"↳ "}
+.footer{display:flex;justify-content:space-between;padding:18px 32px;font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--mut);text-transform:uppercase;letter-spacing:1px}
+@media (max-width:900px){.triptych{grid-template-columns:1fr}.question{font-size:40px}.dateline,.top{flex-wrap:wrap;gap:12px}.marginalia{position:static;transform:none;margin:18px 32px;max-width:none}}
+</style>
+</head>
+<body>
+  <div class="page">
+    <div class="corner-stamp">FIELD NOTE 01 · APR 2026 · SIJILL 01/001</div>
+    <div class="top">
+      <div class="wordmark">Civil Witness</div>
+      <nav class="nav"><a href="#">About</a><a href="#">Contact</a></nav>
+    </div>
+    <div class="dateline">
+      <span>Issue 001 — Q2 2026</span>
+      <span>The civil record on Pakistan's information ecosystem</span>
+      <span>Karachi · Lahore · Islamabad</span>
+    </div>
+    <section class="hero">
+      <div class="filed-stamp">RECEIVED <span class="date">17 APR 2026</span></div>
+      <h1 class="question">How do you believe <span class="em">what you see?</span></h1>
+    </section>
+    <div class="triptych-wrap">
+      <section class="triptych">
+        <div class="tv">
+          <div class="id">CH 7</div>
+          <div class="chyron">
+            <span>BREAKING — anti-state elements seeking to destabilize the federation</span>
+            <span class="time">20:04</span>
+          </div>
+        </div>
+        <div class="yt">
+          <div class="thumb"><span class="stamp">Forwarded · Unverified</span></div>
+          <div class="meta">
+            <div class="t">Why everyone is talking about this — must watch</div>
+            <div class="c">Verified Channel · 2.4M views · 3 days ago</div>
+          </div>
+        </div>
+        <div class="chat">
+          <div class="bub them">Forwarded as received: this is the real story they don't want you to see<span class="ts">10:42 PM</span></div>
+          <div class="bub you">where did you get this<span class="ts">10:43 PM</span></div>
+          <div class="bub them">someone in the family group sent it<span class="ts">10:43 PM</span></div>
+        </div>
+      </section>
+      <div class="marginalia">forwarded across three group chats by 11pm</div>
+    </div>
+    <div class="footer">
+      <span>Civil Witness · 2026</span>
+      <span>Filed under: media · discourse · pakistan</span>
+      <span>Sijill 01/001 · Open</span>
+    </div>
+  </div>
+</body>
+</html>

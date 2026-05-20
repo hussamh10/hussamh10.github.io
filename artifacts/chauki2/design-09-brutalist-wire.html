@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Civil Witness — Brutalist Wire</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;700&family=IBM+Plex+Sans:wght@400;500;700&family=IBM+Plex+Serif:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root { --bg:#F4EFE4; --ink:#1A1714; --saf:#E8A325; --mut:#6E6A62; --tv:#2A2521; }
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--bg);color:var(--ink)}
+body{font-family:'IBM Plex Mono',monospace;font-size:13px;line-height:1.55;min-height:100vh}
+.page{max-width:1180px;margin:0 auto;padding:36px 40px}
+.top{display:flex;justify-content:space-between;align-items:baseline;padding-bottom:14px;border-bottom:4px solid var(--ink)}
+.wordmark{font-family:'IBM Plex Serif',serif;font-size:22px;font-weight:600;letter-spacing:-0.3px}
+.nav{display:flex;gap:24px;font-size:10px;text-transform:uppercase;letter-spacing:2px;color:var(--ink)}
+.nav a{color:var(--ink);text-decoration:none}
+.nav a:hover{text-decoration:underline}
+.head-meta{padding:8px 0 0;display:flex;justify-content:space-between;font-size:10px;text-transform:uppercase;letter-spacing:2px;color:var(--mut);border-bottom:1px solid var(--ink);padding-bottom:8px}
+.head-meta .src{color:var(--ink);font-weight:600}
+.saffron-rule{height:6px;background:var(--saf);margin:0}
+.main{display:grid;grid-template-columns:5fr 7fr;gap:48px;padding:64px 0;border-bottom:4px solid var(--ink)}
+.col-l{padding-right:24px;border-right:1px solid var(--ink)}
+.kicker{font-size:10px;text-transform:uppercase;letter-spacing:2.5px;color:var(--ink);margin-bottom:24px;padding-bottom:8px;border-bottom:1px solid var(--ink)}
+.question{font-family:'IBM Plex Serif',serif;font-size:52px;line-height:1.04;font-weight:500;letter-spacing:-1.2px;color:var(--ink);margin-bottom:28px}
+.sub{font-size:12px;color:var(--mut);line-height:1.7;max-width:340px;text-transform:none;letter-spacing:0}
+.col-r{display:flex;flex-direction:column;gap:32px}
+.col-r-label{font-size:10px;text-transform:uppercase;letter-spacing:2.5px;color:var(--ink);padding-bottom:8px;border-bottom:1px solid var(--ink);display:flex;justify-content:space-between}
+.tv{background:var(--tv);border:1px solid var(--ink);aspect-ratio:16/9;position:relative;display:flex;flex-direction:column;justify-content:flex-end}
+.tv .id{position:absolute;top:10px;right:10px;font-size:10px;background:var(--bg);color:var(--ink);padding:3px 7px;letter-spacing:1.5px;font-weight:700;border:1px solid var(--ink)}
+.tv .chyron{background:var(--bg);color:var(--ink);font-family:'IBM Plex Sans',sans-serif;font-size:12px;font-weight:600;padding:9px 12px;border-top:1px solid var(--ink);display:flex;justify-content:space-between;gap:10px}
+.tv .chyron .t{font-family:'IBM Plex Mono',monospace}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:32px}
+.yt{background:var(--bg);border:1px solid var(--ink);display:flex;flex-direction:column;position:relative}
+.yt .thumb{background:var(--tv);aspect-ratio:16/9;position:relative;border-bottom:1px solid var(--ink)}
+.yt .thumb::before{content:"▶";position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:var(--bg);font-size:28px;opacity:0.4}
+.yt .stamp{position:absolute;top:10px;left:10px;background:var(--bg);color:var(--ink);font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:4px 8px;border:1px solid var(--ink)}
+.yt .body{padding:12px}
+.yt .t{font-weight:600;font-size:12.5px;margin-bottom:4px;line-height:1.3;font-family:'IBM Plex Sans',sans-serif}
+.yt .c{color:var(--mut);font-size:10.5px}
+.chat{background:var(--bg);border:1px solid var(--ink);padding:12px 10px;display:flex;flex-direction:column;gap:6px}
+.bub{padding:7px 10px;border:1px solid var(--ink);max-width:92%;line-height:1.4;font-size:11.5px;font-family:'IBM Plex Sans',sans-serif}
+.bub.them{align-self:flex-start;background:var(--bg)}
+.bub.you{align-self:flex-end;background:var(--bg);border-color:var(--ink)}
+.bub .ts{font-family:'IBM Plex Mono',monospace;font-size:9px;opacity:0.7;display:block;margin-top:3px}
+.foot{padding:14px 0;display:flex;justify-content:space-between;font-size:10px;color:var(--mut);text-transform:uppercase;letter-spacing:1.8px}
+.foot .s{color:var(--ink)}
+@media (max-width:900px){.main{grid-template-columns:1fr}.col-l{border-right:none;border-bottom:1px solid var(--ink);padding-bottom:24px}.row{grid-template-columns:1fr}.question{font-size:36px}}
+</style>
+</head>
+<body>
+  <div class="page">
+    <div class="top">
+      <div class="wordmark">Civil Witness</div>
+      <nav class="nav"><a href="#">About</a><a href="#">Contact</a></nav>
+    </div>
+    <div class="head-meta">
+      <span class="src">CW–2026–001</span>
+      <span>Holding edition</span>
+      <span>17 April 2026 · 14:22 PKT</span>
+    </div>
+    <div class="saffron-rule"></div>
+    <section class="main">
+      <div class="col-l">
+        <div class="kicker">Notice</div>
+        <h1 class="question">How do you believe what you see?</h1>
+        <p class="sub">Civil Witness is a research collective documenting Pakistan's information ecosystem. The archive is in construction. This page is a marker.</p>
+      </div>
+      <div class="col-r">
+        <div>
+          <div class="col-r-label"><span>Television</span><span>20:04 PKT</span></div>
+          <div class="tv">
+            <div class="id">CH 7</div>
+            <div class="chyron"><span>BREAKING — anti-state elements seeking to destabilize the federation</span><span class="t">20:04</span></div>
+          </div>
+        </div>
+        <div class="row">
+          <div>
+            <div class="col-r-label"><span>YouTube</span><span>2.4M</span></div>
+            <div class="yt">
+              <div class="thumb"><span class="stamp">Forwarded · Unverified</span></div>
+              <div class="body">
+                <div class="t">Why everyone is talking about this — must watch</div>
+                <div class="c">Verified Channel · 3d</div>
+              </div>
+            </div>
+          </div>
+          <div>
+            <div class="col-r-label"><span>WhatsApp</span><span>10:42 PM</span></div>
+            <div class="chat">
+              <div class="bub them">Forwarded as received: this is the real story they don't want you to see<span class="ts">10:42 PM</span></div>
+              <div class="bub you">where did you get this<span class="ts">10:43 PM</span></div>
+              <div class="bub them">someone in the family group sent it<span class="ts">10:43 PM</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <div class="foot">
+      <span class="s">Civil Witness · 2026</span>
+      <span>The civil record on Pakistan's information ecosystem</span>
+      <span>CW–2026–001</span>
+    </div>
+  </div>
+</body>
+</html>

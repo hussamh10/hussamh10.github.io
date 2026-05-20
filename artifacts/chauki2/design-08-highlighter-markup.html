@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Civil Witness — Highlighter Markup</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;700&family=IBM+Plex+Sans:wght@400;500;700&family=IBM+Plex+Serif:wght@400;500;600;700&family=Caveat:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root { --bg:#F4EFE4; --ink:#1A1714; --yel:#FFE45C; --pink:#FF8FB8; --grn:#9FE89E; --mut:#6E6A62; --tv:#2A2521; }
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--bg);color:var(--ink)}
+body{font-family:'IBM Plex Sans',sans-serif;font-size:15px;line-height:1.55;padding:36px 28px;min-height:100vh}
+.page{max-width:1140px;margin:0 auto;background:var(--bg);border:1px solid var(--ink);position:relative;padding:36px 44px 56px}
+.top{display:flex;justify-content:space-between;align-items:baseline;padding-bottom:14px;border-bottom:1px solid var(--ink);margin-bottom:32px;position:relative}
+.wordmark{font-family:'IBM Plex Serif',serif;font-size:26px;font-weight:700;letter-spacing:-0.5px}
+.meta{font-family:'IBM Plex Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:1.8px;color:var(--mut)}
+.legend{position:absolute;top:36px;right:50px;display:flex;gap:14px;font-family:'Caveat',cursive;font-size:14px;color:var(--ink)}
+.legend .pill{display:inline-block;padding:1px 8px;margin-right:4px}
+.legend .y{background:var(--yel)}
+.legend .p{background:var(--pink)}
+.legend .g{background:var(--grn)}
+.hero{padding:48px 0 56px}
+.dateline-scribble{font-family:'Caveat',cursive;font-size:18px;color:var(--ink);margin-bottom:18px;transform:rotate(-1deg);display:inline-block}
+.dateline-scribble::before{content:"› "}
+.question{font-family:'IBM Plex Serif',serif;font-size:80px;line-height:1.04;font-weight:600;letter-spacing:-2.2px;max-width:1000px;position:relative}
+.question .hi{background:var(--yel);padding:0 12px;box-decoration-break:clone;-webkit-box-decoration-break:clone}
+.question-note{font-family:'Caveat',cursive;font-size:24px;color:var(--ink);position:absolute;right:0;top:-8px;transform:rotate(-4deg);max-width:200px;line-height:1.2}
+.question-note::before{content:"← "}
+.triptych-label{font-family:'IBM Plex Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:2px;color:var(--mut);margin:48px 0 20px;display:flex;align-items:center;gap:14px}
+.triptych-label::before{content:"";display:block;flex:0 0 40px;height:1px;background:var(--ink)}
+.triptych{display:grid;grid-template-columns:1.3fr 1fr 1fr;gap:32px;position:relative;padding-bottom:48px}
+.artifact{position:relative}
+.tv{background:var(--tv);border:1px solid var(--ink);aspect-ratio:16/9;position:relative;display:flex;flex-direction:column;justify-content:flex-end}
+.tv .id{position:absolute;top:10px;right:10px;font-family:'IBM Plex Mono',monospace;font-size:10px;background:var(--bg);color:var(--ink);padding:3px 7px;letter-spacing:1.5px;font-weight:700;border:1px solid var(--ink)}
+.tv .chyron{background:var(--yel);color:var(--ink);font-family:'IBM Plex Sans',sans-serif;font-size:12px;font-weight:700;padding:9px 12px;border-top:1px solid var(--ink);display:flex;justify-content:space-between;gap:10px}
+.tv .chyron .t{font-family:'IBM Plex Mono',monospace}
+.yt{background:var(--bg);border:1px solid var(--ink);display:flex;flex-direction:column;position:relative}
+.yt .thumb{background:var(--tv);aspect-ratio:16/9;position:relative;border-bottom:1px solid var(--ink)}
+.yt .thumb::before{content:"▶";position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:var(--bg);font-size:28px;opacity:0.4}
+.yt .stamp{position:absolute;top:10px;left:10px;background:var(--pink);color:var(--ink);font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;padding:4px 8px;border:1px solid var(--ink)}
+.yt .body{padding:12px}
+.yt .t{font-weight:600;font-size:13px;margin-bottom:4px;line-height:1.3}
+.yt .c{color:var(--mut);font-size:11px;font-family:'IBM Plex Mono',monospace}
+.chat{background:var(--bg);border:1px solid var(--ink);padding:12px 10px;display:flex;flex-direction:column;gap:8px}
+.bub{padding:8px 10px;border:1px solid var(--ink);max-width:92%;line-height:1.4;font-size:12px}
+.bub.them{align-self:flex-start;background:var(--bg)}
+.bub.you{align-self:flex-end;background:var(--yel)}
+.bub .ts{font-family:'IBM Plex Mono',monospace;font-size:9px;opacity:0.65;display:block;margin-top:3px}
+.bub .src{background:var(--yel);padding:0 3px;font-weight:600}
+.anno{position:absolute;font-family:'Caveat',cursive;font-size:18px;color:var(--ink);line-height:1.2;max-width:160px}
+.anno-green{color:#1a4a1a}
+.anno-pink{color:#7a1f4a}
+.anno-yellow{color:#7a5e1a}
+.tv-anno{bottom:-44px;left:14px;transform:rotate(-2deg)}
+.tv-anno::before{content:"↑ "}
+.yt-anno{bottom:-44px;right:14px;transform:rotate(2deg)}
+.yt-anno::before{content:"↑ "}
+.chat-anno{bottom:-44px;left:14px;transform:rotate(-1deg)}
+.chat-anno::before{content:"↑ "}
+.underline-y{background:linear-gradient(transparent 70%,var(--yel) 70%,var(--yel) 95%,transparent 95%);padding:0 2px}
+.underline-p{background:linear-gradient(transparent 70%,var(--pink) 70%,var(--pink) 95%,transparent 95%);padding:0 2px}
+.underline-g{background:linear-gradient(transparent 70%,var(--grn) 70%,var(--grn) 95%,transparent 95%);padding:0 2px}
+.footer{padding-top:28px;border-top:1px solid var(--ink);margin-top:64px;display:flex;justify-content:space-between;font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--mut);text-transform:uppercase;letter-spacing:1.5px}
+@media (max-width:900px){.triptych{grid-template-columns:1fr;gap:64px}.question{font-size:42px}.question-note{position:static;transform:none;display:block;margin-top:12px}.legend{position:static;margin-top:8px}}
+</style>
+</head>
+<body>
+  <div class="page">
+    <div class="top">
+      <div class="wordmark">Civil Witness</div>
+      <div class="meta">Working Document · Holding Page · 2026</div>
+    </div>
+    <div class="legend">
+      <span><span class="pill y">yellow</span>evidence</span>
+      <span><span class="pill p">pink</span>gap</span>
+      <span><span class="pill g">green</span>verified</span>
+    </div>
+    <section class="hero">
+      <div class="dateline-scribble">Civil Witness — first marks, in working copy</div>
+      <h1 class="question">How do you believe <span class="hi">what you see?</span><span class="question-note">the whole page is the answer.</span></h1>
+    </section>
+    <div class="triptych-label">In the working set · three surfaces</div>
+    <section class="triptych">
+      <div class="artifact">
+        <div class="tv">
+          <div class="id">CH 7</div>
+          <div class="chyron"><span>BREAKING — anti-state elements seeking to destabilize the federation</span><span class="t">20:04</span></div>
+        </div>
+        <div class="anno tv-anno anno-green">verified phrase — appears on 6 channels in 4 hours</div>
+      </div>
+      <div class="artifact">
+        <div class="yt">
+          <div class="thumb"><span class="stamp">Forwarded · Unverified</span></div>
+          <div class="body">
+            <div class="t">Why everyone is talking about this — must watch</div>
+            <div class="c">Verified Channel · 2.4M · 3d</div>
+          </div>
+        </div>
+        <div class="anno yt-anno anno-pink">no source · flagged</div>
+      </div>
+      <div class="artifact">
+        <div class="chat">
+          <div class="bub them">Forwarded as received: this is the real story they don't want you to see<span class="ts">10:42 PM</span></div>
+          <div class="bub you">where did you get this<span class="ts">10:43 PM</span></div>
+          <div class="bub them">someone in the <span class="src">family group</span> sent it<span class="ts">10:43 PM</span></div>
+        </div>
+        <div class="anno chat-anno anno-yellow">provenance: "family group"</div>
+      </div>
+    </section>
+    <div class="footer">
+      <span>Civil Witness · 2026</span>
+      <span>marked-up. open. in process.</span>
+      <span>About · Contact</span>
+    </div>
+  </div>
+</body>
+</html>

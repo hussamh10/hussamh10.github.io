@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Civil Witness — Cobalt Inquiry</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;700&family=IBM+Plex+Sans:wght@400;500;700&family=IBM+Plex+Serif:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root { --bg:#F4F4EC; --ink:#1A1714; --cob:#2A4A8C; --mut:#7A7A75; --tv:#2A2521; }
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--bg);color:var(--ink)}
+body{font-family:'IBM Plex Mono',monospace;font-size:13px;line-height:1.55;padding:40px 28px;min-height:100vh}
+.page{max-width:1080px;margin:0 auto;background:var(--bg);border:2px solid var(--cob);position:relative}
+.case-header{background:var(--cob);color:var(--bg);padding:14px 28px;display:flex;justify-content:space-between;font-size:11px;text-transform:uppercase;letter-spacing:2.5px;font-weight:600}
+.top{display:flex;justify-content:space-between;align-items:baseline;padding:24px 28px 16px;border-bottom:1px solid var(--cob)}
+.wordmark{font-family:'IBM Plex Serif',serif;font-size:24px;font-weight:600;letter-spacing:-0.3px;color:var(--cob)}
+.nav{display:flex;gap:24px;font-size:10px;text-transform:uppercase;letter-spacing:1.8px;color:var(--mut)}
+.nav a{color:var(--ink);text-decoration:none;border-bottom:1px solid transparent}
+.nav a:hover{border-bottom-color:var(--cob);color:var(--cob)}
+.filing-info{padding:16px 28px;display:grid;grid-template-columns:repeat(3,1fr);gap:24px;border-bottom:1px solid var(--cob);font-size:11px}
+.filing-info dt{color:var(--mut);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:3px}
+.filing-info dd{color:var(--ink);font-weight:500}
+.matter{padding:48px 28px 24px;text-align:left;border-bottom:1px solid var(--cob)}
+.matter .label{font-size:10px;text-transform:uppercase;letter-spacing:2.5px;color:var(--cob);margin-bottom:18px;font-weight:600;display:flex;align-items:center;gap:12px}
+.matter .label::before{content:"";display:block;width:30px;height:1px;background:var(--cob)}
+.question{font-family:'IBM Plex Serif',serif;font-size:60px;line-height:1.04;font-weight:500;letter-spacing:-1.2px;color:var(--ink);max-width:900px}
+.question .em{font-style:italic;color:var(--cob);font-weight:500}
+.exhibit-label-row{padding:14px 28px;border-bottom:1px solid var(--cob);font-size:11px;text-transform:uppercase;letter-spacing:2px;color:var(--cob);font-weight:600;display:flex;justify-content:space-between}
+.exhibits{display:grid;grid-template-columns:repeat(3,1fr);border-bottom:2px solid var(--cob)}
+.exhibit{padding:24px 20px;border-right:1px solid var(--cob);display:flex;flex-direction:column;gap:12px}
+.exhibit:last-child{border-right:none}
+.ex-label{font-size:10px;text-transform:uppercase;letter-spacing:1.8px;color:var(--cob);font-weight:700;display:flex;justify-content:space-between;border-bottom:1px solid var(--cob);padding-bottom:6px}
+.ex-label .name{color:var(--ink)}
+.tv{background:var(--tv);border:1px solid var(--ink);aspect-ratio:16/9;position:relative;display:flex;flex-direction:column;justify-content:flex-end}
+.tv .id{position:absolute;top:10px;right:10px;font-family:'IBM Plex Mono',monospace;font-size:10px;background:var(--bg);color:var(--ink);padding:3px 7px;letter-spacing:1.5px;font-weight:700;border:1px solid var(--ink)}
+.tv .chyron{background:var(--bg);color:var(--ink);font-family:'IBM Plex Sans',sans-serif;font-size:12px;font-weight:600;padding:9px 12px;border-top:1px solid var(--ink);display:flex;justify-content:space-between;gap:10px}
+.tv .chyron .t{font-family:'IBM Plex Mono',monospace;color:var(--cob)}
+.yt{background:var(--bg);border:1px solid var(--ink);display:flex;flex-direction:column;position:relative}
+.yt .thumb{background:var(--tv);aspect-ratio:16/9;position:relative;border-bottom:1px solid var(--ink)}
+.yt .thumb::before{content:"▶";position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:var(--bg);font-size:28px;opacity:0.4}
+.yt .stamp{position:absolute;top:10px;left:10px;background:var(--bg);color:var(--cob);font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:4px 8px;border:1px solid var(--cob)}
+.yt .body{padding:12px}
+.yt .t{font-weight:600;font-size:12.5px;margin-bottom:4px;line-height:1.3;font-family:'IBM Plex Sans',sans-serif}
+.yt .c{color:var(--mut);font-size:11px}
+.chat{background:var(--bg);border:1px solid var(--ink);padding:12px 11px;display:flex;flex-direction:column;gap:8px}
+.bub{padding:8px 10px;border:1px solid var(--ink);max-width:92%;line-height:1.4;font-size:12px;font-family:'IBM Plex Sans',sans-serif}
+.bub.them{align-self:flex-start;background:var(--bg)}
+.bub.you{align-self:flex-end;background:var(--cob);color:var(--bg);border-color:var(--cob)}
+.bub .ts{font-family:'IBM Plex Mono',monospace;font-size:9px;opacity:0.65;display:block;margin-top:3px}
+.caption{font-size:10.5px;color:var(--mut);font-family:'IBM Plex Mono',monospace;line-height:1.5}
+.footer{padding:16px 28px;display:flex;justify-content:space-between;font-size:10px;color:var(--mut);text-transform:uppercase;letter-spacing:1.5px;background:var(--bg)}
+@media (max-width:900px){.exhibits{grid-template-columns:1fr}.exhibit{border-right:none;border-bottom:1px solid var(--cob)}.filing-info{grid-template-columns:1fr}.question{font-size:36px}}
+</style>
+</head>
+<body>
+  <div class="page">
+    <div class="case-header">
+      <span>Civil Witness · Public Inquiry Series</span>
+      <span>Holding Notice · Active</span>
+    </div>
+    <div class="top">
+      <div class="wordmark">Civil Witness</div>
+      <nav class="nav"><a href="#">About</a><a href="#">Contact</a></nav>
+    </div>
+    <dl class="filing-info">
+      <div><dt>Filed</dt><dd>17 April 2026</dd></div>
+      <div><dt>Jurisdiction</dt><dd>Pakistan · Information Ecosystem</dd></div>
+      <div><dt>Notice No.</dt><dd>CW–2026–001</dd></div>
+    </dl>
+    <section class="matter">
+      <div class="label">In the matter of</div>
+      <h1 class="question">How do you believe <span class="em">what you see?</span></h1>
+    </section>
+    <div class="exhibit-label-row">
+      <span>Exhibits submitted in evidence</span>
+      <span>3 of 3</span>
+    </div>
+    <div class="exhibits">
+      <div class="exhibit">
+        <div class="ex-label"><span>Exhibit A</span><span class="name">Television</span></div>
+        <div class="tv">
+          <div class="id">CH 7</div>
+          <div class="chyron"><span>BREAKING — anti-state elements seeking to destabilize the federation</span><span class="t">20:04</span></div>
+        </div>
+        <div class="caption">Prime-time chyron, station identifier visible, broadcast timestamp 20:04 PKT.</div>
+      </div>
+      <div class="exhibit">
+        <div class="ex-label"><span>Exhibit B</span><span class="name">Online Video</span></div>
+        <div class="yt">
+          <div class="thumb"><span class="stamp">Forwarded · Unverified</span></div>
+          <div class="body">
+            <div class="t">Why everyone is talking about this — must watch</div>
+            <div class="c">Verified Channel · 2.4M views · 3 days ago</div>
+          </div>
+        </div>
+        <div class="caption">Algorithmic recommendation. Provenance label "Forwarded · Unverified" attached.</div>
+      </div>
+      <div class="exhibit">
+        <div class="ex-label"><span>Exhibit C</span><span class="name">Messaging</span></div>
+        <div class="chat">
+          <div class="bub them">Forwarded as received: this is the real story they don't want you to see<span class="ts">10:42 PM</span></div>
+          <div class="bub you">where did you get this<span class="ts">10:43 PM</span></div>
+          <div class="bub them">someone in the family group sent it<span class="ts">10:43 PM</span></div>
+        </div>
+        <div class="caption">Three messages exchanged in 60 seconds. Source attribution: "family group."</div>
+      </div>
+    </div>
+    <div class="footer">
+      <span>Civil Witness · 2026</span>
+      <span>The civil record on Pakistan's information ecosystem</span>
+      <span>CW–2026–001 · Open</span>
+    </div>
+  </div>
+</body>
+</html>

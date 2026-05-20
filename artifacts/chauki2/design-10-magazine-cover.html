@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Civil Witness — Magazine Cover</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;700&family=IBM+Plex+Sans:wght@400;500;700&family=IBM+Plex+Serif:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root { --bg:#F4EFE4; --ink:#1A1714; --saf:#E8A325; --brk:#8B2A22; --mut:#6E6A62; --tv:#2A2521; }
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--bg);color:var(--ink)}
+body{font-family:'IBM Plex Sans',sans-serif;font-size:14px;line-height:1.5;padding:32px 24px;min-height:100vh}
+.cover{max-width:1100px;margin:0 auto;background:var(--bg);border:3px solid var(--ink);padding:40px 56px 48px;position:relative;min-height:90vh;display:flex;flex-direction:column}
+.masthead{display:flex;justify-content:space-between;align-items:baseline;padding-bottom:18px;border-bottom:3px solid var(--ink)}
+.wordmark{font-family:'IBM Plex Serif',serif;font-size:30px;font-weight:700;letter-spacing:-0.6px}
+.issue{font-family:'IBM Plex Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:2.5px;color:var(--ink);display:flex;gap:18px;align-items:center}
+.issue .sep{color:var(--mut)}
+.issue .price{background:var(--brk);color:var(--bg);padding:3px 8px;font-weight:600}
+.cover-strip{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--ink);font-family:'IBM Plex Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:2px;color:var(--mut)}
+.cover-strip .dot{color:var(--saf)}
+.hero{flex:1;display:flex;flex-direction:column;justify-content:center;padding:48px 0 32px;position:relative}
+.cover-line{font-family:'IBM Plex Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:3px;color:var(--brk);margin-bottom:24px;font-weight:600}
+.cover-line::before{content:"◆ "}
+.question{font-family:'IBM Plex Serif',serif;font-size:148px;line-height:0.92;font-weight:700;letter-spacing:-5px;color:var(--ink)}
+.question .l1{display:block}
+.question .l2{display:block;margin-left:0}
+.question .em{background:var(--saf);padding:0 16px;box-decoration-break:clone;-webkit-box-decoration-break:clone}
+.question .accent{color:var(--brk);font-style:italic}
+.cover-features{display:flex;flex-direction:column;gap:6px;position:absolute;right:0;top:48px;text-align:right;font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--ink);text-transform:uppercase;letter-spacing:1.5px;line-height:1.4;max-width:200px}
+.cover-features .num{color:var(--brk);font-weight:700;margin-right:6px}
+.triptych-strip{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:14px;padding-top:24px;border-top:3px solid var(--ink);margin-top:24px}
+.tile-label{font-family:'IBM Plex Mono',monospace;font-size:9px;text-transform:uppercase;letter-spacing:2px;color:var(--mut);margin-bottom:6px;display:flex;justify-content:space-between}
+.tile-label .n{color:var(--brk);font-weight:700}
+.tv{background:var(--tv);border:2px solid var(--ink);aspect-ratio:16/9;position:relative;display:flex;flex-direction:column;justify-content:flex-end}
+.tv .id{position:absolute;top:8px;right:8px;font-family:'IBM Plex Mono',monospace;font-size:9px;background:var(--saf);color:var(--ink);padding:2px 6px;letter-spacing:1.2px;font-weight:700}
+.tv .chyron{background:var(--saf);color:var(--ink);font-family:'IBM Plex Sans',sans-serif;font-size:10px;font-weight:700;padding:6px 9px;border-top:2px solid var(--ink);display:flex;justify-content:space-between;gap:8px}
+.tv .chyron .t{font-family:'IBM Plex Mono',monospace}
+.yt{background:var(--bg);border:2px solid var(--ink);display:flex;flex-direction:column;position:relative}
+.yt .thumb{background:var(--tv);aspect-ratio:16/9;position:relative;border-bottom:2px solid var(--ink)}
+.yt .thumb::before{content:"▶";position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:var(--bg);font-size:22px;opacity:0.4}
+.yt .stamp{position:absolute;top:7px;left:7px;background:var(--brk);color:var(--bg);font-family:'IBM Plex Mono',monospace;font-size:8px;font-weight:800;letter-spacing:1.2px;text-transform:uppercase;padding:3px 6px;border:1px solid var(--ink);transform:rotate(-3deg)}
+.yt .body{padding:8px}
+.yt .t{font-weight:700;font-size:11px;margin-bottom:2px;line-height:1.25}
+.yt .c{color:var(--mut);font-size:9.5px;font-family:'IBM Plex Mono',monospace}
+.chat{background:var(--bg);border:2px solid var(--ink);padding:8px;display:flex;flex-direction:column;gap:5px}
+.bub{padding:5px 8px;border:1px solid var(--ink);max-width:92%;line-height:1.35;font-size:10.5px}
+.bub.them{align-self:flex-start;background:var(--bg)}
+.bub.you{align-self:flex-end;background:var(--saf)}
+.bub .ts{font-family:'IBM Plex Mono',monospace;font-size:8px;opacity:0.65;display:block;margin-top:2px}
+.barcode-row{display:flex;justify-content:space-between;align-items:flex-end;padding-top:20px;margin-top:24px;border-top:1px solid var(--ink);font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--mut);text-transform:uppercase;letter-spacing:1.5px}
+.barcode{display:flex;gap:1px}
+.barcode span{display:block;width:2px;background:var(--ink)}
+@media (max-width:900px){.question{font-size:64px;letter-spacing:-2px}.cover-features{position:static;text-align:left;margin-top:18px;max-width:none}.triptych-strip{grid-template-columns:1fr}.cover{padding:32px 28px}}
+</style>
+</head>
+<body>
+  <div class="cover">
+    <div class="masthead">
+      <div class="wordmark">Civil Witness</div>
+      <div class="issue"><span>Issue 01</span><span class="sep">·</span><span>2026</span><span class="sep">·</span><span class="price">Holding</span></div>
+    </div>
+    <div class="cover-strip">
+      <span>The civil record on Pakistan's information ecosystem</span>
+      <span><span class="dot">●</span> Karachi · Lahore · Islamabad</span>
+    </div>
+    <section class="hero">
+      <div class="cover-line">Cover question · 17 April 2026</div>
+      <h1 class="question">
+        <span class="l1">How do you</span>
+        <span class="l2"><span class="accent">believe</span> <span class="em">what you see?</span></span>
+      </h1>
+      <div class="cover-features">
+        <div><span class="num">01</span>TELEVISION</div>
+        <div><span class="num">02</span>YOUTUBE</div>
+        <div><span class="num">03</span>WHATSAPP</div>
+      </div>
+    </section>
+    <div class="triptych-strip">
+      <div>
+        <div class="tile-label"><span>Television</span><span class="n">01</span></div>
+        <div class="tv">
+          <div class="id">CH 7</div>
+          <div class="chyron"><span>BREAKING — anti-state elements seeking to destabilize the federation</span><span class="t">20:04</span></div>
+        </div>
+      </div>
+      <div>
+        <div class="tile-label"><span>YouTube</span><span class="n">02</span></div>
+        <div class="yt">
+          <div class="thumb"><span class="stamp">Forwarded · Unverified</span></div>
+          <div class="body">
+            <div class="t">Why everyone is talking about this — must watch</div>
+            <div class="c">Verified Channel · 2.4M · 3d</div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="tile-label"><span>WhatsApp</span><span class="n">03</span></div>
+        <div class="chat">
+          <div class="bub them">Forwarded as received: this is the real story they don't want you to see<span class="ts">10:42 PM</span></div>
+          <div class="bub you">where did you get this<span class="ts">10:43 PM</span></div>
+          <div class="bub them">someone in the family group sent it<span class="ts">10:43 PM</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="barcode-row">
+      <span>Civil Witness · 2026</span>
+      <div class="barcode">
+        <span style="height:18px"></span><span style="height:18px;width:1px"></span><span style="height:18px;width:3px"></span><span style="height:18px"></span><span style="height:18px;width:2px"></span><span style="height:18px"></span><span style="height:18px;width:1px"></span><span style="height:18px;width:3px"></span><span style="height:18px"></span><span style="height:18px;width:2px"></span><span style="height:18px;width:1px"></span><span style="height:18px"></span><span style="height:18px;width:3px"></span><span style="height:18px"></span><span style="height:18px;width:1px"></span><span style="height:18px"></span>
+      </div>
+      <span>CW–001 · 2026</span>
+    </div>
+  </div>
+</body>
+</html>

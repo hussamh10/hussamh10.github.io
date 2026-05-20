@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Civil Witness — Design Comparison · 10 alternates</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;700&family=IBM+Plex+Sans:wght@400;500;700&family=IBM+Plex+Serif:wght@400;500;600;700&family=Caveat:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root { --bg:#F4EFE4; --ink:#1A1714; --saf:#E8A325; --brk:#8B2A22; --mut:#6E6A62; }
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--bg);color:var(--ink)}
+body{font-family:'IBM Plex Sans',sans-serif;font-size:14px;line-height:1.55;padding:32px 24px;min-height:100vh}
+.page{max-width:1480px;margin:0 auto;background:var(--bg);border:2px solid var(--ink);position:relative}
+.corner-stamp{position:absolute;top:18px;right:24px;border:2px solid var(--brk);color:var(--brk);font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:700;letter-spacing:2px;padding:5px 11px;transform:rotate(3deg);text-transform:uppercase;z-index:2;background:var(--bg)}
+.top{display:flex;align-items:baseline;justify-content:space-between;padding:24px 32px 18px;border-bottom:2px solid var(--ink)}
+.wordmark{font-family:'IBM Plex Serif',serif;font-size:26px;font-weight:700;letter-spacing:-0.5px}
+.meta{font-family:'IBM Plex Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:1.8px;color:var(--mut)}
+.dateline{background:var(--saf);color:var(--ink);font-family:'IBM Plex Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:1.5px;padding:8px 32px;display:flex;justify-content:space-between;border-bottom:2px solid var(--ink);font-weight:600}
+.intro{padding:48px 32px;border-bottom:2px solid var(--ink);text-align:center}
+.intro-label{font-family:'IBM Plex Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:2.5px;color:var(--mut);margin-bottom:18px}
+.intro h1{font-family:'IBM Plex Serif',serif;font-size:48px;line-height:1.1;font-weight:600;letter-spacing:-1.2px;max-width:780px;margin:0 auto 16px}
+.intro h1 .em{background:var(--saf);padding:0 8px}
+.intro p{font-size:15px;color:var(--mut);max-width:640px;margin:0 auto;line-height:1.6}
+.intro p .marginalia{font-family:'Caveat',cursive;font-size:18px;color:var(--brk);display:block;margin-top:18px;transform:rotate(-1deg)}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:28px;padding:36px 32px}
+.card{border:2px solid var(--ink);background:var(--bg);box-shadow:6px 6px 0 var(--ink);display:flex;flex-direction:column;overflow:hidden;position:relative;transition:transform 0.12s ease}
+.card:hover{transform:translate(-2px,-2px);box-shadow:8px 8px 0 var(--ink)}
+.card-header{display:flex;justify-content:space-between;align-items:baseline;padding:14px 18px;border-bottom:2px solid var(--ink);background:var(--bg)}
+.card-num{font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:700;letter-spacing:2px;color:var(--brk);background:var(--bg);padding:3px 8px;border:2px solid var(--brk)}
+.card-name{font-family:'IBM Plex Serif',serif;font-size:18px;font-weight:600;letter-spacing:-0.3px;flex:1;margin:0 14px}
+.card-open{font-family:'IBM Plex Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:1.8px;color:var(--ink);text-decoration:none;padding:4px 9px;border:2px solid var(--ink);background:var(--saf);font-weight:600;white-space:nowrap}
+.card-open:hover{background:var(--ink);color:var(--saf)}
+.card-strategy{padding:12px 18px;font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--mut);text-transform:uppercase;letter-spacing:1.3px;border-bottom:2px solid var(--ink);background:var(--bg)}
+.preview-wrap{position:relative;height:500px;overflow:hidden;background:#ddd;border-bottom:2px solid var(--ink)}
+.preview-wrap iframe{position:absolute;top:0;left:0;width:200%;height:200%;transform:scale(0.5);transform-origin:0 0;border:0;pointer-events:none}
+.preview-link{position:absolute;inset:0;z-index:2}
+.card-meta{padding:10px 18px;font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--mut);text-transform:uppercase;letter-spacing:1.5px;display:flex;justify-content:space-between;background:var(--bg)}
+.footer{padding:18px 32px;border-top:2px solid var(--ink);display:flex;justify-content:space-between;font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--mut);text-transform:uppercase;letter-spacing:1px;background:var(--bg)}
+@media (max-width:980px){.grid{grid-template-columns:1fr}.preview-wrap{height:420px}}
+</style>
+</head>
+<body>
+  <div class="page">
+    <div class="corner-stamp">COMPARISON SET · DESIGNS 01—10</div>
+    <div class="top">
+      <div class="wordmark">Civil Witness</div>
+      <div class="meta">Design Review · Holding Page Candidates · 2026</div>
+    </div>
+    <div class="dateline">
+      <span>Comparison set · 10 alternates</span>
+      <span>Same content · same question · different instant-look</span>
+      <span>Click any preview to open full</span>
+    </div>
+    <section class="intro">
+      <div class="intro-label">For internal review</div>
+      <h1>Ten ways to <span class="em">stage</span> the same question.</h1>
+      <p>The locked content is identical across all ten: the wordmark <em>Civil Witness</em>, the question <em>"How do you believe what you see?"</em>, and the TV / YouTube / WhatsApp triptych below. What varies is palette, typography register, layout shape, and decorative vocabulary — so you can compare instant look, not concept.<span class="marginalia">pick the survivor → refine → ship.</span></p>
+    </section>
+    <div class="grid">
+      <div class="card">
+        <div class="card-header">
+          <span class="card-num">01</span>
+          <span class="card-name">Dossier Classic</span>
+          <a class="card-open" href="design-01-dossier-classic.html" target="_blank">Open ↗</a>
+        </div>
+        <div class="card-strategy">Palette 7 + Type 03 · the default file register · stamps, sijill, Caveat marginalia</div>
+        <div class="preview-wrap">
+          <iframe src="design-01-dossier-classic.html" loading="lazy"></iframe>
+          <a class="preview-link" href="design-01-dossier-classic.html" target="_blank" aria-label="Open design 01"></a>
+        </div>
+        <div class="card-meta"><span>Cream · Saffron · Brick</span><span>IBM Plex Serif/Sans/Mono + Caveat</span></div>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <span class="card-num">02</span>
+          <span class="card-name">Riso Pamphlet</span>
+          <a class="card-open" href="design-02-riso-pamphlet.html" target="_blank">Open ↗</a>
+        </div>
+        <div class="card-strategy">Misregistered ink shadows · drop caps · paper grain · indie zine</div>
+        <div class="preview-wrap">
+          <iframe src="design-02-riso-pamphlet.html" loading="lazy"></iframe>
+          <a class="preview-link" href="design-02-riso-pamphlet.html" target="_blank" aria-label="Open design 02"></a>
+        </div>
+        <div class="card-meta"><span>Cream · Pink · Blue · Orange</span><span>IBM Plex Sans heavy</span></div>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <span class="card-num">03</span>
+          <span class="card-name">Dark Newsroom</span>
+          <a class="card-open" href="design-03-dark-newsroom.html" target="_blank">Open ↗</a>
+        </div>
+        <div class="card-strategy">Asymmetric split · question left, triptych right · TV glows on dark</div>
+        <div class="preview-wrap">
+          <iframe src="design-03-dark-newsroom.html" loading="lazy"></iframe>
+          <a class="preview-link" href="design-03-dark-newsroom.html" target="_blank" aria-label="Open design 03"></a>
+        </div>
+        <div class="card-meta"><span>Dark file · Cream · Saffron pop</span><span>IBM Plex Mono dominant</span></div>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <span class="card-num">04</span>
+          <span class="card-name">Newsprint Masthead</span>
+          <a class="card-open" href="design-04-newsprint-masthead.html" target="_blank">Open ↗</a>
+        </div>
+        <div class="card-strategy">Full-width newspaper masthead · dateline strip · 3 byline columns</div>
+        <div class="preview-wrap">
+          <iframe src="design-04-newsprint-masthead.html" loading="lazy"></iframe>
+          <a class="preview-link" href="design-04-newsprint-masthead.html" target="_blank" aria-label="Open design 04"></a>
+        </div>
+        <div class="card-meta"><span>Cream · Ink · Saffron</span><span>IBM Plex Serif at masthead scale</span></div>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <span class="card-num">05</span>
+          <span class="card-name">Cobalt Inquiry</span>
+          <a class="card-open" href="design-05-cobalt-inquiry.html" target="_blank">Open ↗</a>
+        </div>
+        <div class="card-strategy">Court-filing register · exhibits A/B/C · mono-dominant chrome · juridical</div>
+        <div class="preview-wrap">
+          <iframe src="design-05-cobalt-inquiry.html" loading="lazy"></iframe>
+          <a class="preview-link" href="design-05-cobalt-inquiry.html" target="_blank" aria-label="Open design 05"></a>
+        </div>
+        <div class="card-meta"><span>Off-white · Cobalt · Ink</span><span>IBM Plex Mono + Serif</span></div>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <span class="card-num">06</span>
+          <span class="card-name">Truck Art Maximalist</span>
+          <a class="card-open" href="design-06-truck-art.html" target="_blank">Open ↗</a>
+        </div>
+        <div class="card-strategy">Full-bleed zoned color blocks · each artifact in its own bright zone · wildcard</div>
+        <div class="preview-wrap">
+          <iframe src="design-06-truck-art.html" loading="lazy"></iframe>
+          <a class="preview-link" href="design-06-truck-art.html" target="_blank" aria-label="Open design 06"></a>
+        </div>
+        <div class="card-meta"><span>Pink · Sage · Marigold · Cobalt</span><span>IBM Plex Serif heavy</span></div>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <span class="card-num">07</span>
+          <span class="card-name">Henna &amp; Indigo</span>
+          <a class="card-open" href="design-07-henna-indigo.html" target="_blank">Open ↗</a>
+        </div>
+        <div class="card-strategy">Vertical scroll narrative · serif-heavy editorial · regional scholarly press</div>
+        <div class="preview-wrap">
+          <iframe src="design-07-henna-indigo.html" loading="lazy"></iframe>
+          <a class="preview-link" href="design-07-henna-indigo.html" target="_blank" aria-label="Open design 07"></a>
+        </div>
+        <div class="card-meta"><span>Cream · Henna · Indigo · Saffron</span><span>IBM Plex Serif throughout</span></div>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <span class="card-num">08</span>
+          <span class="card-name">Highlighter Markup</span>
+          <a class="card-open" href="design-08-highlighter-markup.html" target="_blank">Open ↗</a>
+        </div>
+        <div class="card-strategy">Marked-up working document · 3 semantic highlighters (evidence / gap / verified)</div>
+        <div class="preview-wrap">
+          <iframe src="design-08-highlighter-markup.html" loading="lazy"></iframe>
+          <a class="preview-link" href="design-08-highlighter-markup.html" target="_blank" aria-label="Open design 08"></a>
+        </div>
+        <div class="card-meta"><span>Cream · Yellow · Pink · Green</span><span>IBM Plex Sans + Caveat</span></div>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <span class="card-num">09</span>
+          <span class="card-name">Brutalist Wire</span>
+          <a class="card-open" href="design-09-brutalist-wire.html" target="_blank">Open ↗</a>
+        </div>
+        <div class="card-strategy">Austere two-column · ONE saffron pop · no decoration · most photocopy-survivable</div>
+        <div class="preview-wrap">
+          <iframe src="design-09-brutalist-wire.html" loading="lazy"></iframe>
+          <a class="preview-link" href="design-09-brutalist-wire.html" target="_blank" aria-label="Open design 09"></a>
+        </div>
+        <div class="card-meta"><span>Cream · Ink · One Saffron rule</span><span>IBM Plex Mono dominant</span></div>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <span class="card-num">10</span>
+          <span class="card-name">Magazine Cover</span>
+          <a class="card-open" href="design-10-magazine-cover.html" target="_blank">Open ↗</a>
+        </div>
+        <div class="card-strategy">Question at 148px · cover-features list · triptych as cover image · editorial</div>
+        <div class="preview-wrap">
+          <iframe src="design-10-magazine-cover.html" loading="lazy"></iframe>
+          <a class="preview-link" href="design-10-magazine-cover.html" target="_blank" aria-label="Open design 10"></a>
+        </div>
+        <div class="card-meta"><span>Cream · Saffron · Brick</span><span>IBM Plex Serif at maximum scale</span></div>
+      </div>
+    </div>
+    <div class="footer">
+      <span>Civil Witness · 2026</span>
+      <span>10 of 10 candidates · holding page · ready for review</span>
+      <span>designs/index.html</span>
+    </div>
+  </div>
+</body>
+</html>
