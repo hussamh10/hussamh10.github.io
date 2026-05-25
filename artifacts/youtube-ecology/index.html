@@ -85,6 +85,8 @@
   .badge-tag-affordance-effects { background: #ecfeff; color: #0e7490; border: 1px solid #a5f3fc; }
   .badge-tag-attributes { background: #f0fdf4; color: #15803d; border: 1px solid #bbf7d0; }
   .badge-tag-methods { background: #fdf2f8; color: #be185d; border: 1px solid #fbcfe8; }
+  .badge-tag-youtube-architecture { background: #0f0f0f; color: #fff; border: 1px solid #0f0f0f; }
+  .chip.active.chip-tag-arch { background: #0f0f0f; border-color: #0f0f0f; }
 
   .badge-nature-theoretical { background: #faf5ff; color: #7c3aed; border: 1px solid #ddd6fe; }
   .badge-nature-empirical { background: #eff6ff; color: #1d4ed8; border: 1px solid #bfdbfe; }
@@ -177,6 +179,7 @@
         <span class="chip" data-filter="tag" data-val="affordance-effects">Affordances &rarr; content</span>
         <span class="chip" data-filter="tag" data-val="attributes">Attributes &amp; measures</span>
         <span class="chip" data-filter="tag" data-val="methods">Methods &amp; design</span>
+        <span class="chip chip-tag-arch" data-filter="tag" data-val="youtube-architecture">YouTube architecture</span>
       </div>
       <div class="filter-row">
         <label>Nature</label>
@@ -222,6 +225,7 @@
           <option value="12-format-discovery">12 &middot; Format &amp; discovery</option>
           <option value="13-governance-deplatforming">13 &middot; Governance &amp; deplatforming</option>
           <option value="14-platformization">14 &middot; Platformization of production</option>
+          <option value="15-youtube-architecture">15 &middot; YouTube architecture (how it works/changed)</option>
         </select>
       </div>
     </div>
@@ -243,7 +247,7 @@
     <div class="empty-state">
       <div>Select a source from the list.</div>
       <div class="thesis"><b>Thesis under review:</b> YouTube's affordances <b>construct</b> rather than merely <b>reflect</b> user preferences. Changing an affordance &mdash; how engagement is operationalized (CTR&rarr;watch-time), personalization intensity, monetization, metric visibility &mdash; changes what content is produced and consumed. Documented affordance changes are treated as natural experiments; against the "we give people what they want" defense and the Munger&ndash;Phillips supply-and-demand account.</div>
-      <div class="hint">Switch to <b>Reading Strategy</b> for a curated 20-paper path through the argument. Filter by priority, stance, tag, nature, project area, or source cluster.</div>
+      <div class="hint">Switch to <b>Reading Strategy</b> for a curated 20-paper path through the argument. Filter by priority, stance, tag, nature, project area, or source cluster. The <b>YouTube architecture</b> tag (and cluster 15) is a separate reference layer documenting how the platform works and how it has changed.</div>
     </div>
   </div>
 </div>
@@ -323,6 +327,7 @@ const STRATEGY = [
 
 const strategyIds = new Set(STRATEGY.flatMap(s => s.items.map(i => i.id)));
 const priorityLabel = { 1: 'must-read', 2: 'important', 3: 'supporting', 4: 'context' };
+const tagLabels = { 'affordance-theory':'affordance theory', 'the-debate':'the debate', 'affordance-effects':'affordances → content', 'attributes':'attributes & measures', 'methods':'methods & design', 'youtube-architecture':'YouTube architecture' };
 const areaLabels = {
   'intro-preferences-constructed': 'intro — preferences constructed',
   'affordance-concept': 'affordance concept',
@@ -450,7 +455,7 @@ function docItemHTML(d) {
         <div class="doc-item-meta">
           <span class="badge badge-priority-${d.priority}">P${d.priority}</span>
           <span class="badge badge-stance-${d.stance || 'neutral'}">${d.stance || 'neutral'}</span>
-          <span class="badge badge-tag-${d.tag || 'methods'}">${(d.tag || '').replace(/-/g,' ')}</span>
+          <span class="badge badge-tag-${d.tag || 'methods'}">${tagLabels[d.tag] || (d.tag || '').replace(/-/g,' ')}</span>
           <span class="badge badge-nature-${d.nature || 'review'}">${d.nature || ''}</span>
         </div>
       </div>
@@ -503,7 +508,7 @@ function showDoc(d) {
       <div class="status-row">
         <span class="badge badge-priority-${d.priority}">P${d.priority} · ${priorityLabel[d.priority] || ''}</span>
         <span class="badge badge-stance-${d.stance || 'neutral'}">${(d.stance || 'neutral').toUpperCase()}</span>
-        <span class="badge badge-tag-${d.tag || 'methods'}">${(d.tag || '').replace(/-/g,' ')}</span>
+        <span class="badge badge-tag-${d.tag || 'methods'}">${tagLabels[d.tag] || (d.tag || '').replace(/-/g,' ')}</span>
         <span class="badge badge-nature-${d.nature || 'review'}">${d.nature || ''}</span>
         <span class="badge badge-type-${d.type || 'paper'}">${d.type || 'paper'}</span>
         <span class="badge badge-verified-${d.verified ? 'true' : 'false'}">${d.verified ? '✓ verified' : '⚠ check citation'}</span>

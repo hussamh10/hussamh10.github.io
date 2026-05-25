@@ -37,57 +37,58 @@
       "dup_count": "how many slice extractions referenced it"
     },
     "stats": {
-      "total_raw": 377,
-      "total_unique": 325,
-      "duplicates_collapsed": 52,
+      "total_raw": 460,
+      "total_unique": 385,
+      "duplicates_collapsed": 75,
       "by_priority": {
-        "2": 112,
-        "1": 104,
-        "3": 99,
+        "2": 146,
+        "1": 121,
+        "3": 108,
         "4": 10
       },
       "by_stance": {
-        "neutral": 99,
+        "neutral": 155,
         "pro": 186,
-        "mixed": 24,
+        "mixed": 28,
         "anti": 16
       },
       "by_tag": {
         "affordance-theory": 34,
-        "affordance-effects": 134,
-        "the-debate": 55,
+        "affordance-effects": 124,
+        "the-debate": 53,
         "methods": 52,
+        "youtube-architecture": 72,
         "attributes": 50
       },
       "by_nature": {
         "theoretical": 89,
-        "empirical": 184,
-        "review": 9,
-        "methodological": 43
+        "empirical": 189,
+        "review": 58,
+        "methodological": 49
       },
       "by_type": {
         "chapter": 7,
         "book": 42,
-        "paper": 240,
-        "report": 18,
-        "essay": 7,
+        "paper": 249,
+        "report": 41,
+        "essay": 35,
         "preprint": 7,
         "dataset": 4
       },
       "by_area": {
         "affordance-concept": 50,
         "intro-preferences-constructed": 48,
-        "affordance-moves-content": 179,
+        "affordance-moves-content": 207,
         "decomposition": 22,
-        "chain-duration": 31,
-        "measurement": 74,
-        "chain-algospeak": 27,
-        "rebut-supply-demand": 59,
+        "chain-duration": 40,
+        "measurement": 86,
+        "chain-algospeak": 62,
+        "rebut-supply-demand": 79,
         "cross-medium-tv": 14,
         "chain-parasocial": 31,
         "chain-animosity-dispersion": 47,
         "affiliated-split": 6,
-        "chain-clickbait": 24
+        "chain-clickbait": 25
       },
       "by_cluster": {
         "01-affordance-theory": 40,
@@ -100,14 +101,15 @@
         "03-youtube-politics": 18,
         "04-engagement-metrics": 25,
         "10-methods": 35,
-        "09-clickbait": 23,
+        "15-youtube-architecture": 72,
+        "09-clickbait": 24,
         "11-feed-experiments": 23,
         "08-animosity-outrage": 26,
         "12-format-discovery": 16
       },
-      "verified_true": 271,
-      "verified_false": 54,
-      "multi_cluster": 39
+      "verified_true": 329,
+      "verified_false": 56,
+      "multi_cluster": 49
     }
   },
   "sources": [
@@ -196,7 +198,8 @@
       "tag": "the-debate",
       "areas": [
         "rebut-supply-demand",
-        "chain-animosity-dispersion"
+        "chain-animosity-dispersion",
+        "measurement"
       ],
       "clusters": [
         "03-youtube-politics",
@@ -204,8 +207,8 @@
       ],
       "verified": true,
       "note": "Four large-scale randomized experiments finding minimal attitude effects of filter-bubble recommendations; must be engaged as limiting condition. The paper can respond that affordance construction operates cumulatively and structurally, not through individual persuasion events, and that attitude is an imperfect downstream outcome.",
-      "claim": "Filter-bubble algorithmic recommendations have minimal effects on political attitudes in short-term experiments",
-      "dup_count": 2
+      "claim": "experimental manipulation of YouTube-like recommendations shows no short-term polarization attitude effects (PNAS 2025)",
+      "dup_count": 3
     },
     {
       "id": "milli-2025-engagement-satisfaction-divisive-content",
@@ -290,15 +293,16 @@
       "nature": "empirical",
       "tag": "the-debate",
       "areas": [
-        "rebut-supply-demand"
+        "rebut-supply-demand",
+        "measurement"
       ],
       "clusters": [
         "03-youtube-politics"
       ],
       "verified": true,
-      "note": "Most causally credible demand-side paper; counterfactual bots switching to recommendation-only navigation move toward more moderate content, suggesting algorithmic recommendations play a moderating role. The paper must engage this squarely and respond on grounds of social context, preference formation, and the wrong counterfactual margin.",
+      "note": "Introduces counterfactual bot methodology to causally isolate YouTube's recommendation algorithm effects by comparing real user behavior against bots replicating user history then following only algorithmic suggestions; finds recommendations yield less partisan consumption on average, with effects most pronounced for heavy partisan consumers post-2019 algorithm updates.",
       "claim": "Algorithmic recommendations play a moderating rather than radicalizing role; partisan viewing history is forgotten within ~30 recommended videos",
-      "dup_count": 1
+      "dup_count": 2
     },
     {
       "id": "kerkhof-2024-advertising-differentiation-youtube",
@@ -449,6 +453,33 @@
       "dup_count": 1
     },
     {
+      "id": "axios-2023-election-misinfo-reversal",
+      "authors": [
+        "Fischer, S."
+      ],
+      "title": "Scoop: YouTube reverses misinformation policy to allow U.S. election denialism",
+      "year": 2023,
+      "venue": "Axios",
+      "type": "essay",
+      "url": "https://www.axios.com/2023/06/02/us-election-fraud-youtube-policy",
+      "doi": null,
+      "priority": 1,
+      "stance": "neutral",
+      "nature": "review",
+      "tag": "youtube-architecture",
+      "areas": [
+        "rebut-supply-demand",
+        "chain-algospeak"
+      ],
+      "clusters": [
+        "15-youtube-architecture"
+      ],
+      "verified": true,
+      "note": "June 2, 2023 scoop on YouTube reversing its December 2020 election-integrity policy, no longer removing videos falsely claiming widespread fraud in the 2020 and other past US presidential elections. YouTube cited risk of 'curtailing political speech without meaningfully reducing real-world harm'.",
+      "claim": "documents the June 2, 2023 reversal of YouTube's 2020 election-fraud removal policy",
+      "dup_count": 1
+    },
+    {
       "id": "chen-2023-subscriptions-external-links",
       "authors": [
         "Chen, A. Y.",
@@ -590,7 +621,9 @@
       "tag": "the-debate",
       "areas": [
         "rebut-supply-demand",
-        "affordance-moves-content"
+        "affordance-moves-content",
+        "measurement",
+        "chain-algospeak"
       ],
       "clusters": [
         "03-youtube-politics"
@@ -598,7 +631,7 @@
       "verified": true,
       "note": "Large-scale 100,000 sock-puppet audit finding that right-leaning users receive progressively more radical recommendations deeper in the recommendation trail; among the strongest empirical cases for the amplification hypothesis. The paper can cite this as evidence the algorithm constructs a content environment that differs from neutral browsing.",
       "claim": "Algorithmic recommendations amplify ideological bias, especially for right-leaning users, with increasing extremity deeper in the recommendation trail",
-      "dup_count": 1
+      "dup_count": 2
     },
     {
       "id": "jagadeesan-2023-supply-side-equilibria",
@@ -746,6 +779,33 @@
       "note": "First peer-reviewed empirical study of algospeak; establishes creator motivations (economic and inclusion-based), community distribution, and four systemic moderation failures driving adoption — central citation for the demonetization-as-driver argument.",
       "claim": "demonetization and suppression drive algospeak adoption; documents creator motivations and community patterns",
       "dup_count": 1
+    },
+    {
+      "id": "youtube-blog-2023-election-misinfo-update",
+      "authors": [
+        "YouTube Team"
+      ],
+      "title": "An update on our approach to US election misinformation",
+      "year": 2023,
+      "venue": "YouTube Blog",
+      "type": "essay",
+      "url": "https://blog.youtube/inside-youtube/us-election-misinformation-update-2023/",
+      "doi": null,
+      "priority": 1,
+      "stance": "neutral",
+      "nature": "review",
+      "tag": "youtube-architecture",
+      "areas": [
+        "rebut-supply-demand",
+        "chain-algospeak"
+      ],
+      "clusters": [
+        "15-youtube-architecture"
+      ],
+      "verified": true,
+      "note": "June 2 2023 announcement reversing the December 2020 policy of removing content claiming the 2020 presidential election was stolen, citing findings that removal 'could also have the unintended effect of curtailing political speech' without meaningfully reducing real-world harm. Remaining election logistics misinformation policies unchanged.",
+      "claim": "official June 2023 policy reversal stopping removal of 2020 election fraud-claim content after two years of enforcement",
+      "dup_count": 2
     },
     {
       "id": "borusyak-2022-shift-share",
@@ -1083,14 +1143,14 @@
       ],
       "title": "On YouTube's recommendation system",
       "year": 2021,
-      "venue": "YouTube Blog",
+      "venue": "Official YouTube Blog",
       "type": "essay",
       "url": "https://blog.youtube/inside-youtube/on-youtubes-recommendation-system/",
       "doi": null,
       "priority": 1,
       "stance": "neutral",
       "nature": "empirical",
-      "tag": "affordance-effects",
+      "tag": "youtube-architecture",
       "areas": [
         "affordance-moves-content",
         "chain-duration",
@@ -1098,13 +1158,14 @@
         "rebut-supply-demand"
       ],
       "clusters": [
+        "15-youtube-architecture",
         "04-engagement-metrics",
         "09-clickbait"
       ],
       "verified": true,
-      "note": "Fullest official account of YouTube's causal narrative by VP of Engineering; describes 2011 internal discovery that misleading thumbnails didn't correlate with satisfaction, the 2012 watch-time shift, and the 0.5% watch-time gain from demoting tabloid content — the complete claim the paper tests.",
-      "claim": "official retrospective confirming 2012 watch-time adoption and algorithm's historical phases",
-      "dup_count": 2
+      "note": "September 15 2021 essay by VP of Engineering Cristos Goodrow describing YouTube's recommendation system processing 80 billion daily signals (clicks, watch duration, surveys, shares, likes/dislikes), the two key surfaces (homepage and watch-next), and the 70% borderline-content watch-time reduction from 2019 changes.",
+      "claim": "official 2021 VP-level description of YouTube's recommendation system processing 80 billion signals and its borderline-content demotions",
+      "dup_count": 3
     },
     {
       "id": "hortaribeiro-2021-platform-migrations",
@@ -1161,6 +1222,8 @@
       "tag": "the-debate",
       "areas": [
         "rebut-supply-demand",
+        "measurement",
+        "chain-algospeak",
         "intro-preferences-constructed",
         "affordance-moves-content"
       ],
@@ -1172,7 +1235,7 @@
       "verified": true,
       "note": "Key counter-evidence using browsing panel data for 300k+ Americans: far-right YouTube consumption largely reflects pre-existing preferences rather than recommendation-driven pathways. Must be engaged with honestly — it is compatible with the thesis for the general content distribution even if not for the extreme-content subset.",
       "claim": "Consumption of radical content reflects individual preferences extending across the web; 55% of far-right arrivals from external sources not recommendations",
-      "dup_count": 3
+      "dup_count": 4
     },
     {
       "id": "jhaver-2021-deplatforming-twitter",
@@ -1468,6 +1531,33 @@
       "dup_count": 2
     },
     {
+      "id": "techcrunch-2021-vaccine-misinfo",
+      "authors": [
+        "Silberling, A."
+      ],
+      "title": "YouTube will now ban content with vaccine misinformation",
+      "year": 2021,
+      "venue": "TechCrunch",
+      "type": "essay",
+      "url": "https://techcrunch.com/2021/09/29/youtube-will-now-ban-content-with-vaccine-misinformation/",
+      "doi": null,
+      "priority": 1,
+      "stance": "neutral",
+      "nature": "review",
+      "tag": "youtube-architecture",
+      "areas": [
+        "chain-algospeak",
+        "rebut-supply-demand"
+      ],
+      "clusters": [
+        "15-youtube-architecture"
+      ],
+      "verified": true,
+      "note": "September 29, 2021 report on YouTube expanding its COVID-19 vaccine misinformation policy to cover all approved vaccines, banning false claims about vaccine safety and ingredients platform-wide. Led to removal of channels associated with Joseph Mercola and Robert F. Kennedy Jr.",
+      "claim": "documents YouTube's September 2021 expansion of vaccine misinformation removal to all approved vaccines",
+      "dup_count": 1
+    },
+    {
       "id": "zhu-2021-euphemism-detection",
       "authors": [
         "Zhu, W.",
@@ -1672,6 +1762,8 @@
       "areas": [
         "rebut-supply-demand",
         "affordance-moves-content",
+        "measurement",
+        "chain-algospeak",
         "chain-animosity-dispersion"
       ],
       "clusters": [
@@ -1680,9 +1772,9 @@
         "04-engagement-metrics"
       ],
       "verified": true,
-      "note": "Foundational quantitative evidence for the Alt-Right pipeline thesis; documents user migration from milder to more extreme communities via comment co-occurrence across 330,925 videos. The paper should cite this for recommendation-path structure enabling radicalization pathways while acknowledging the comment-proxy limitation.",
+      "note": "Systematic audit measuring whether YouTube's recommendation algorithm creates radicalization pathways by analyzing migration patterns between YouTube communities (mainstream, alt-lite, alt-right) using comment data and recommendation traversal; characterizes the mechanics by which the algorithm amplifies or directs content discovery.",
       "claim": "Users consistently migrate from milder to more extreme YouTube communities; recommendation architecture makes these pathways structurally available",
-      "dup_count": 3
+      "dup_count": 4
     },
     {
       "id": "stray-2020-aligning-ai-optimization",
@@ -1698,18 +1790,100 @@
       "priority": 1,
       "stance": "mixed",
       "nature": "theoretical",
-      "tag": "affordance-effects",
+      "tag": "youtube-architecture",
       "areas": [
         "affordance-moves-content",
         "chain-duration"
       ],
       "clusters": [
-        "04-engagement-metrics"
+        "04-engagement-metrics",
+        "15-youtube-architecture"
       ],
       "verified": true,
       "note": "Best secondary analysis of YouTube's full objective evolution: views (2011) → minutes watched (2012-2015) → dual engagement/satisfaction objectives (2015+), with quantified impact data (0.5% initial watch-time drop from sensationalism demotion, recovered within months). Bridges the 2012 shift and the satisfaction extension.",
       "claim": "granular secondary timeline of YouTube objective evolution with quantified impact data",
       "dup_count": 1
+    },
+    {
+      "id": "washpost-2020-youtube-election-channels",
+      "authors": [
+        "Harwell, D."
+      ],
+      "title": "YouTube removes 8,000 channels promoting false election claims",
+      "year": 2020,
+      "venue": "The Washington Post",
+      "type": "essay",
+      "url": "https://www.washingtonpost.com/business/2020/12/09/youtube-false-2020-election-claims/",
+      "doi": null,
+      "priority": 1,
+      "stance": "neutral",
+      "nature": "review",
+      "tag": "youtube-architecture",
+      "areas": [
+        "rebut-supply-demand",
+        "chain-algospeak"
+      ],
+      "clusters": [
+        "15-youtube-architecture"
+      ],
+      "verified": false,
+      "note": "December 9, 2020 Washington Post report confirming YouTube's removal of 8,000 channels under its new December 2020 election-integrity policy targeting false claims of election fraud. URL returned HTTP 403, but provenance is confirmed via multiple cross-references.",
+      "claim": "documents removal of 8,000 channels under YouTube's December 2020 election-fraud policy",
+      "dup_count": 1
+    },
+    {
+      "id": "youtube-blog-2020-covid-policy-enforcement",
+      "authors": [
+        "YouTube Team"
+      ],
+      "title": "Responsible policy enforcement during Covid-19",
+      "year": 2020,
+      "venue": "YouTube Blog",
+      "type": "essay",
+      "url": "https://blog.youtube/inside-youtube/responsible-policy-enforcement-during-covid-19/",
+      "doi": null,
+      "priority": 1,
+      "stance": "neutral",
+      "nature": "review",
+      "tag": "youtube-architecture",
+      "areas": [
+        "chain-algospeak",
+        "rebut-supply-demand"
+      ],
+      "clusters": [
+        "15-youtube-architecture"
+      ],
+      "verified": true,
+      "note": "August 25, 2020 transparency report covering Q2 2020: YouTube removed more videos in a single quarter than ever before (200,000+ COVID-19 misinformation videos); automated enforcement prioritized; reinstated rates doubled as human review capacity returned. Documents COVID-19 as a turning point in at-scale automated moderation.",
+      "claim": "official August 2020 account of COVID-19 enforcement shift to automated removal with accepted accuracy tradeoffs",
+      "dup_count": 2
+    },
+    {
+      "id": "youtube-blog-2020-election-integrity",
+      "authors": [
+        "YouTube Team"
+      ],
+      "title": "Supporting the 2020 U.S. election",
+      "year": 2020,
+      "venue": "YouTube Blog",
+      "type": "essay",
+      "url": "https://blog.youtube/news-and-events/supporting-2020-us-election/",
+      "doi": null,
+      "priority": 1,
+      "stance": "neutral",
+      "nature": "review",
+      "tag": "youtube-architecture",
+      "areas": [
+        "rebut-supply-demand",
+        "chain-algospeak"
+      ],
+      "clusters": [
+        "15-youtube-architecture"
+      ],
+      "verified": true,
+      "note": "December 9 2020 post-election report: YouTube terminated 8,000+ channels and removed thousands of election videos (77% before reaching 100 views), announced removal of content claiming widespread fraud changed the election outcome, and reported 88% of top-10 election search results came from authoritative news sources.",
+      "claim": "official December 2020 report on 2020 election enforcement actions and post-certification election-fraud-claim removal policy",
+      "dup_count": 2
     },
     {
       "id": "bishop-2019-algorithmic-gossip",
@@ -1739,6 +1913,34 @@
       "note": "Ethnographic study of beauty vloggers showing 'algorithmic gossip' — shared informal theories about algorithm rewards — produces coordinated sector-wide content patterns. The key behavioral mechanism linking opaque affordance changes to aggregate supply shifts.",
       "claim": "communities of producers develop shared algorithmic folk theories that drive systematic, not idiosyncratic, production restructuring",
       "dup_count": 3
+    },
+    {
+      "id": "bloomberg-2019-youtube-toxic-content",
+      "authors": [
+        "Bergen, M.",
+        "Shaw, L."
+      ],
+      "title": "YouTube Executives Ignored Warnings, Letting Toxic Videos Run Rampant",
+      "year": 2019,
+      "venue": "Bloomberg",
+      "type": "essay",
+      "url": "https://www.bloomberg.com/news/features/2019-04-02/youtube-executives-ignored-warnings-letting-toxic-videos-run-rampant",
+      "doi": null,
+      "priority": 1,
+      "stance": "mixed",
+      "nature": "review",
+      "tag": "youtube-architecture",
+      "areas": [
+        "rebut-supply-demand",
+        "chain-duration"
+      ],
+      "clusters": [
+        "15-youtube-architecture"
+      ],
+      "verified": true,
+      "note": "April 2, 2019 Bloomberg investigation documenting YouTube's internal billion-hours-per-day watch-time goal (set ~2012, achieved October 2016) and how leadership rejected engineer proposals to remove borderline content from recommendations, prioritizing engagement metrics over safety.",
+      "claim": "documents how YouTube's billion-hours engagement goal led executives to reject borderline-content proposals in 2016",
+      "dup_count": 1
     },
     {
       "id": "bruns-2019-filter-bubbles-real",
@@ -1796,6 +1998,33 @@
       "note": "Thematic analysis of Instagram influencer discussions shows creators treat algorithmic signals as a 'visibility game' and systematically alter posting, content type, and hashtag use; confirms cross-platform generalizability of the adaptation mechanism.",
       "claim": "creators engage in instrumentally rational but structurally constrained algorithmic optimization games set by platform design",
       "dup_count": 3
+    },
+    {
+      "id": "ftc-2019-coppa-settlement",
+      "authors": [
+        "Federal Trade Commission"
+      ],
+      "title": "Google and YouTube Will Pay Record $170 Million for Alleged Violations of Children's Privacy Law",
+      "year": 2019,
+      "venue": "Federal Trade Commission",
+      "type": "report",
+      "url": "https://www.ftc.gov/news-events/news/press-releases/2019/09/google-youtube-will-pay-record-170-million-alleged-violations-childrens-privacy-law",
+      "doi": null,
+      "priority": 1,
+      "stance": "neutral",
+      "nature": "review",
+      "tag": "youtube-architecture",
+      "areas": [
+        "chain-algospeak",
+        "affordance-moves-content"
+      ],
+      "clusters": [
+        "15-youtube-architecture"
+      ],
+      "verified": true,
+      "note": "September 4, 2019 FTC press release announcing $170M settlement (largest-ever COPPA penalty) requiring YouTube to implement a channel-level 'made-for-kids' labeling system, disable personalized ads, comments, and notifications on children's content.",
+      "claim": "documents the September 2019 FTC COPPA settlement mandating made-for-kids labeling and comment/personalization changes",
+      "dup_count": 1
     },
     {
       "id": "iyengar-2019-origins-consequences-affective-polarization",
@@ -1857,6 +2086,33 @@
       "dup_count": 1
     },
     {
+      "id": "nytimes-2019-borderline-content",
+      "authors": [
+        "Wakabayashi, D."
+      ],
+      "title": "YouTube Says It Will Stop Recommending Borderline Content and Conspiracy Theories",
+      "year": 2019,
+      "venue": "The New York Times",
+      "type": "essay",
+      "url": "https://www.nytimes.com/2019/01/25/business/youtube-borderline-content-conspiracy-theories.html",
+      "doi": null,
+      "priority": 1,
+      "stance": "neutral",
+      "nature": "review",
+      "tag": "youtube-architecture",
+      "areas": [
+        "rebut-supply-demand",
+        "affordance-moves-content"
+      ],
+      "clusters": [
+        "15-youtube-architecture"
+      ],
+      "verified": false,
+      "note": "January 25, 2019 New York Times report on YouTube's announcement that it would reduce recommendations of borderline content (flat-earth, miracle cures, conspiracy theories) even when it does not violate community guidelines. URL confirmed via Techmeme aggregation but NYT paywall prevents direct fetch.",
+      "claim": "documents YouTube's January 2019 borderline-content recommendation reduction announcement",
+      "dup_count": 1
+    },
+    {
       "id": "petre-2019-platform-paternalism",
       "authors": [
         "Petre, C.",
@@ -1886,6 +2142,63 @@
       "dup_count": 1
     },
     {
+      "id": "youtube-2019-improving-recommendations",
+      "authors": [
+        "YouTube"
+      ],
+      "title": "Continuing our work to improve recommendations on YouTube",
+      "year": 2019,
+      "venue": "Official YouTube Blog",
+      "type": "report",
+      "url": "https://blog.youtube/news-and-events/continuing-our-work-to-improve/",
+      "doi": null,
+      "priority": 1,
+      "stance": "neutral",
+      "nature": "theoretical",
+      "tag": "youtube-architecture",
+      "areas": [
+        "rebut-supply-demand",
+        "affordance-moves-content",
+        "chain-clickbait"
+      ],
+      "clusters": [
+        "15-youtube-architecture",
+        "09-clickbait"
+      ],
+      "verified": true,
+      "note": "January 25 2019 announcement that YouTube would begin reducing recommendations of 'borderline content' — videos approaching but not violating Community Guidelines (flat-earth, miracle cures, 9/11 conspiracies). Affected less than 1% of content; rollout starting in the U.S. using ML + human evaluators.",
+      "claim": "official January 2019 announcement of borderline-content recommendation reduction for sub-policy-threshold misinformation",
+      "dup_count": 2
+    },
+    {
+      "id": "youtube-blog-2019-four-rs-raise-reduce",
+      "authors": [
+        "YouTube Team"
+      ],
+      "title": "The Four Rs of Responsibility, Part 2: Raising authoritative content and reducing borderline content and harmful misinformation",
+      "year": 2019,
+      "venue": "YouTube Blog",
+      "type": "essay",
+      "url": "https://blog.youtube/inside-youtube/the-four-rs-of-responsibility-raise-and-reduce/",
+      "doi": null,
+      "priority": 1,
+      "stance": "neutral",
+      "nature": "review",
+      "tag": "youtube-architecture",
+      "areas": [
+        "rebut-supply-demand",
+        "affordance-moves-content",
+        "chain-algospeak"
+      ],
+      "clusters": [
+        "15-youtube-architecture"
+      ],
+      "verified": true,
+      "note": "December 3 2019 report quantifying the borderline-content reduction: 30+ algorithmic changes since January 2019, resulting in 70% average drop in watch time from non-subscribed recommendations in the U.S. Also reports 93% of top-10 global search results for 'Brexit' coming from high-authority channels.",
+      "claim": "official September 2019 documentation of the 'Remove' pillar of YouTube's Four Rs responsibility framework with Q2 2019 removal statistics",
+      "dup_count": 4
+    },
+    {
       "id": "zhao-2019-multitask-ranking-youtube",
       "authors": [
         "Zhao, Z.",
@@ -1908,18 +2221,19 @@
       "priority": 1,
       "stance": "neutral",
       "nature": "empirical",
-      "tag": "affordance-effects",
+      "tag": "youtube-architecture",
       "areas": [
         "affordance-moves-content",
         "chain-duration"
       ],
       "clusters": [
-        "04-engagement-metrics"
+        "04-engagement-metrics",
+        "15-youtube-architecture"
       ],
       "verified": true,
-      "note": "Confirms watch time remained a core ranking objective in 2019 even as satisfaction objectives were added alongside it; introduces position-bias correction, signalling awareness of distortions the watch-time objective created. Shows the 2012 shift was durable and expanded rather than reversed.",
-      "claim": "confirms watch-time objective persisted and expanded into multi-objective 2019 architecture",
-      "dup_count": 1
+      "note": "Presents the Multi-gate Mixture-of-Experts (MMoE) multi-objective ranking architecture for YouTube, balancing engagement and satisfaction signals simultaneously, and introduces a shallow tower to model and remove selection/position bias. Documents the evolution from single-objective watch-time to multi-task objectives including user satisfaction.",
+      "claim": "multi-objective MMoE ranking replacing single watch-time objective, with position-bias shallow tower (2019)",
+      "dup_count": 2
     },
     {
       "id": "bishop-2018-anxiety-youtube-algorithm",
@@ -2180,6 +2494,87 @@
       "dup_count": 1
     },
     {
+      "id": "youtube-blog-2018-news-experience",
+      "authors": [
+        "Mohan, N.",
+        "Kyncl, R."
+      ],
+      "title": "Building a better news experience on YouTube, together",
+      "year": 2018,
+      "venue": "YouTube Blog",
+      "type": "essay",
+      "url": "https://blog.youtube/news-and-events/building-better-news-experience-on/",
+      "doi": null,
+      "priority": 1,
+      "stance": "neutral",
+      "nature": "review",
+      "tag": "youtube-architecture",
+      "areas": [
+        "rebut-supply-demand",
+        "affordance-moves-content"
+      ],
+      "clusters": [
+        "15-youtube-architecture"
+      ],
+      "verified": true,
+      "note": "July 2018 joint post by Neal Mohan and Robert Kyncl announcing $25 million news initiative, expansion of 'Top News' and 'Breaking News' shelves to 17 countries, Wikipedia/Britannica information panels for contested topics, and local news TV-app tests. Documents the 2018 push for authoritative-source surfacing.",
+      "claim": "official July 2018 announcement of breaking-news shelves, information panels, and $25M news investment to prioritize authoritative sources",
+      "dup_count": 2
+    },
+    {
+      "id": "youtube-blog-2018-ypp-changes",
+      "authors": [
+        "Mohan, N.",
+        "Kyncl, R."
+      ],
+      "title": "Additional Changes to the YouTube Partner Program (YPP) to Better Protect Creators",
+      "year": 2018,
+      "venue": "YouTube Blog",
+      "type": "essay",
+      "url": "https://blog.youtube/news-and-events/additional-changes-to-youtube-partner/",
+      "doi": null,
+      "priority": 1,
+      "stance": "neutral",
+      "nature": "review",
+      "tag": "youtube-architecture",
+      "areas": [
+        "chain-algospeak"
+      ],
+      "clusters": [
+        "15-youtube-architecture"
+      ],
+      "verified": true,
+      "note": "Official January 16, 2018 announcement raising YPP eligibility to 4,000 watch hours in 12 months and 1,000 subscribers (effective February 20, 2018), replacing the prior 10,000 lifetime-views threshold introduced in April 2017. Rationale: exclude bad actors from monetization.",
+      "claim": "documents the January 2018 YPP 1k subscribers / 4k hours threshold change",
+      "dup_count": 1
+    },
+    {
+      "id": "bloomberg-2017-youtube-hate-videos",
+      "authors": [
+        "Bloomberg Technology"
+      ],
+      "title": "YouTube Hate Videos Haunt Advertisers on Google",
+      "year": 2017,
+      "venue": "Bloomberg",
+      "type": "essay",
+      "url": "https://www.bloomberg.com/news/articles/2017-03-23/youtube-hate-videos-snare-ikea-ads-as-google-crisis-spans-europe",
+      "doi": null,
+      "priority": 1,
+      "stance": "neutral",
+      "nature": "review",
+      "tag": "youtube-architecture",
+      "areas": [
+        "chain-algospeak"
+      ],
+      "clusters": [
+        "15-youtube-architecture"
+      ],
+      "verified": true,
+      "note": "Bloomberg's March 23, 2017 report on major brands (IKEA and others) pulling ads after placement next to extremist videos, precipitating the Adpocalypse advertiser boycott and driving YouTube's new advertiser-friendly content guidelines.",
+      "claim": "documents the March 23, 2017 advertiser brand-safety crisis that triggered the Adpocalypse",
+      "dup_count": 1
+    },
+    {
       "id": "brady-2017-moral-emotional-diffusion",
       "authors": [
         "Brady, W. J.",
@@ -2328,6 +2723,32 @@
       "dup_count": 1
     },
     {
+      "id": "martech-2017-brand-safety-timeline",
+      "authors": [
+        "Marvin, G."
+      ],
+      "title": "A timeline of the YouTube brand safety debacle",
+      "year": 2017,
+      "venue": "MarTech",
+      "type": "essay",
+      "url": "https://martech.org/google-youtube-brand-safety-timeine/",
+      "doi": null,
+      "priority": 1,
+      "stance": "neutral",
+      "nature": "review",
+      "tag": "youtube-architecture",
+      "areas": [
+        "chain-algospeak"
+      ],
+      "clusters": [
+        "15-youtube-architecture"
+      ],
+      "verified": true,
+      "note": "Comprehensive chronological account of the March 2017 Adpocalypse: The Guardian and The Times UK reports (March 16-17) triggered a major advertiser boycott; Google responded with expanded hate-speech policies (April 26) and machine-learning enforcement improvements. Published June 26, 2017.",
+      "claim": "documents the March 2017 Adpocalypse advertiser crisis and YouTube's policy response",
+      "dup_count": 1
+    },
+    {
       "id": "bayer-2016-ephemeral-snapchat",
       "authors": [
         "Bayer, J. B.",
@@ -2394,30 +2815,31 @@
         "Adams, J.",
         "Sargin, E."
       ],
-      "title": "Deep neural networks for YouTube recommendations",
+      "title": "Deep Neural Networks for YouTube Recommendations",
       "year": 2016,
-      "venue": "Proceedings of the 10th ACM Conference on Recommender Systems (RecSys '16)",
+      "venue": "Proceedings of the 10th ACM Conference on Recommender Systems (RecSys 2016)",
       "type": "paper",
       "url": "https://doi.org/10.1145/2959100.2959190",
       "doi": "10.1145/2959100.2959190",
       "priority": 1,
       "stance": "neutral",
       "nature": "empirical",
-      "tag": "affordance-effects",
+      "tag": "youtube-architecture",
       "areas": [
-        "affordance-moves-content",
         "chain-duration",
+        "affordance-moves-content",
         "chain-clickbait",
         "rebut-supply-demand"
       ],
       "clusters": [
+        "15-youtube-architecture",
         "04-engagement-metrics",
         "09-clickbait"
       ],
       "verified": true,
-      "note": "Primary engineering citation for the watch-time objective: explicitly states ranking optimizes for expected watch time (not CTR), and training weights positive examples by observed watch duration, directly incentivizing longer retention-optimized content. Contains the key anti-clickbait quote.",
-      "claim": "documents expected watch-time as explicit ranking objective and its incentive for longer content",
-      "dup_count": 2
+      "note": "Google Research paper describing YouTube's production recommendation system as a two-stage deep-learning architecture (candidate generation + ranking), documenting the move from popularity-based heuristics to neural embeddings trained on watch history. Foundational engineering reference for post-2015 YouTube recommender.",
+      "claim": "Google Research 2016 paper documenting YouTube's deep neural network two-stage recommender architecture",
+      "dup_count": 5
     },
     {
       "id": "davis-2016-theorizing",
@@ -2675,6 +3097,32 @@
       "dup_count": 1
     },
     {
+      "id": "techcrunch-2012-watch-time-algorithm",
+      "authors": [
+        "Lardinois, F."
+      ],
+      "title": "YouTube Changes Its Search Ranking Algorithm To Focus On Engagement, Not Just Clicks",
+      "year": 2012,
+      "venue": "TechCrunch",
+      "type": "essay",
+      "url": "https://techcrunch.com/2012/10/12/youtube-changes-its-search-ranking-algorithm-to-focus-on-engagement-not-just-clicks/",
+      "doi": null,
+      "priority": 1,
+      "stance": "neutral",
+      "nature": "review",
+      "tag": "youtube-architecture",
+      "areas": [
+        "chain-duration"
+      ],
+      "clusters": [
+        "15-youtube-architecture"
+      ],
+      "verified": true,
+      "note": "Reports YouTube's October 12, 2012 switch from click-based to watch-time-based search and recommendation ranking, adding watch-time analytics to YouTube Studio. The shift was designed to reward engagement over clickbait thumbnails.",
+      "claim": "documents the October 2012 switch from click-through to watch-time ranking",
+      "dup_count": 1
+    },
+    {
       "id": "webster-2012-audience-fragmentation",
       "authors": [
         "Webster, J. G.",
@@ -2716,18 +3164,51 @@
       "priority": 1,
       "stance": "neutral",
       "nature": "empirical",
-      "tag": "affordance-effects",
+      "tag": "youtube-architecture",
       "areas": [
         "affordance-moves-content",
-        "chain-duration"
+        "chain-duration",
+        "chain-clickbait",
+        "rebut-supply-demand"
       ],
       "clusters": [
-        "04-engagement-metrics"
+        "04-engagement-metrics",
+        "15-youtube-architecture",
+        "09-clickbait"
       ],
       "verified": true,
       "note": "Official primary announcement of the October 12, 2012 watch-time optimization rollout to YouTube Search, with the canonical quote about rewarding engaging videos and referencing the prior March 2012 Suggested Videos change. The dated affordance change central to the project thesis.",
-      "claim": "primary dated announcement of the CTR-to-watch-time affordance change (October 2012)",
-      "dup_count": 1
+      "claim": "official October 2012 announcement that YouTube search ranking shifted to reward watch time over click counts",
+      "dup_count": 4
+    },
+    {
+      "id": "youtube-2012-watch-time-focus",
+      "authors": [
+        "YouTube"
+      ],
+      "title": "YouTube Now: Why We Focus on Watch Time",
+      "year": 2012,
+      "venue": "Official YouTube Blog",
+      "type": "report",
+      "url": "https://blog.youtube/news-and-events/youtube-now-why-we-focus-on-watch-time/",
+      "doi": null,
+      "priority": 1,
+      "stance": "neutral",
+      "nature": "theoretical",
+      "tag": "youtube-architecture",
+      "areas": [
+        "chain-duration",
+        "chain-clickbait",
+        "rebut-supply-demand"
+      ],
+      "clusters": [
+        "15-youtube-architecture",
+        "09-clickbait"
+      ],
+      "verified": true,
+      "note": "August 2012 rationale piece explaining why YouTube prioritized watch-time over view counts across all discovery surfaces, arguing that watch-time signals viewer happiness and 'opens up more opportunities to generate revenue.' Warns creators against artificial optimization.",
+      "claim": "official explanation of why YouTube adopted watch-time as its core engagement metric in 2012",
+      "dup_count": 2
     },
     {
       "id": "hartmann-2011-horton-wohl-revisited",
@@ -2839,18 +3320,19 @@
       "priority": 1,
       "stance": "neutral",
       "nature": "empirical",
-      "tag": "affordance-effects",
+      "tag": "youtube-architecture",
       "areas": [
         "affordance-moves-content",
         "chain-duration"
       ],
       "clusters": [
-        "04-engagement-metrics"
+        "04-engagement-metrics",
+        "15-youtube-architecture"
       ],
       "verified": true,
-      "note": "Documents the pre-2012 baseline recommendation system anchored in co-visitation and click/view signals, establishing the objective function that the 2012 watch-time shift displaced. Essential for dating and characterizing the regime change.",
-      "claim": "establishes pre-watch-time CTR/view baseline for YouTube recommender",
-      "dup_count": 1
+      "note": "The original YouTube recommendation architecture paper describing co-visitation-based collaborative filtering, seed-video expansion, and ranking signals including video quality, diversity, and personalization. Documents the pre-deep-learning system before watch-time optimization.",
+      "claim": "co-visitation collaborative filtering as the first YouTube recommendation architecture (2010)",
+      "dup_count": 2
     },
     {
       "id": "beshears-2008-preferences-revealed",
@@ -3350,6 +3832,32 @@
       "dup_count": 1
     },
     {
+      "id": "mohan-2024-big-bets",
+      "authors": [
+        "Mohan, N."
+      ],
+      "title": "Letter from the YouTube CEO: 4 Big bets for 2024",
+      "year": 2024,
+      "venue": "Official YouTube Blog",
+      "type": "essay",
+      "url": "https://blog.youtube/inside-youtube/2024-letter-from-neal/",
+      "doi": null,
+      "priority": 2,
+      "stance": "neutral",
+      "nature": "review",
+      "tag": "youtube-architecture",
+      "areas": [
+        "affordance-moves-content"
+      ],
+      "clusters": [
+        "15-youtube-architecture"
+      ],
+      "verified": true,
+      "note": "February 6 2024 CEO letter reporting Shorts at over 70 billion daily views (+50% channel uploads YoY), 1 billion daily TV hours, 3 million YPP channels, and $70B paid to creators over three years. Introduces AI creation tools (Dream Screen) and synthetic-content labeling as 2024 platform bets.",
+      "claim": "official February 2024 CEO letter reporting 70 billion daily Shorts views and outlining AI tools and synthetic-content labeling as platform priorities",
+      "dup_count": 1
+    },
+    {
       "id": "munger-2024-youtube-apparatus",
       "authors": [
         "Munger, K."
@@ -3401,6 +3909,128 @@
       "verified": true,
       "note": "Analysis of 11,198 YouTube far-right channels removed 2018–2019: BitChute could not compensate for YouTube's recommendation and discovery infrastructure, so deplatforming effectively minimized reach. Directly relevant to YouTube focus; shows that the algorithmic recommendation affordance—not merely posting access—is the critical governance lever.",
       "claim": "YouTube deplatforming minimized far-right reach because BitChute's recommendation infrastructure is not comparable",
+      "dup_count": 1
+    },
+    {
+      "id": "su-2024-longterm-value-exploration-wsdm",
+      "authors": [
+        "Su, Y.",
+        "Wang, X.",
+        "Le, E. Y.",
+        "Liu, L.",
+        "Li, Y.",
+        "Lu, H.",
+        "Lipshitz, B.",
+        "Badam, S.",
+        "Heldt, L.",
+        "Bi, S.",
+        "Chi, E.",
+        "Goodrow, C.",
+        "Wu, S.-L.",
+        "Baugher, L.",
+        "Chen, M."
+      ],
+      "title": "Long-Term Value of Exploration: Measurements, Findings and Algorithms",
+      "year": 2024,
+      "venue": "Proceedings of the 17th ACM International Conference on Web Search and Data Mining (WSDM 2024)",
+      "type": "paper",
+      "url": "https://arxiv.org/abs/2305.07764",
+      "doi": null,
+      "priority": 2,
+      "stance": "neutral",
+      "nature": "methodological",
+      "tag": "youtube-architecture",
+      "areas": [
+        "affordance-moves-content",
+        "chain-duration"
+      ],
+      "clusters": [
+        "15-youtube-architecture"
+      ],
+      "verified": true,
+      "note": "Introduces experiment designs to formally quantify the long-term value of exploration in recommendation on a large-scale short-form video platform (YouTube), measuring effects on content corpus growth and long-term user experience; validates Neural Linear Bandit algorithm in live experiments on billions of users.",
+      "claim": "empirical measurement of long-term exploration value in YouTube-scale recommender, Neural Linear Bandit deployed in production (WSDM 2024)",
+      "dup_count": 1
+    },
+    {
+      "id": "techcrunch-2024-ai-disclosure",
+      "authors": [
+        "Malik, A."
+      ],
+      "title": "YouTube now requires creators to disclose when realistic content was made with AI",
+      "year": 2024,
+      "venue": "TechCrunch",
+      "type": "essay",
+      "url": "https://techcrunch.com/2024/03/18/youtube-requires-creatorsdisclose-realistic-content-made-ai/",
+      "doi": null,
+      "priority": 2,
+      "stance": "neutral",
+      "nature": "review",
+      "tag": "youtube-architecture",
+      "areas": [
+        "chain-algospeak",
+        "affordance-moves-content"
+      ],
+      "clusters": [
+        "15-youtube-architecture"
+      ],
+      "verified": true,
+      "note": "March 18, 2024 TechCrunch report on YouTube's new mandatory AI-disclosure tool requiring creators to label realistic content made with synthetic or altered media; prominent labels on health/news videos, description-level labels elsewhere.",
+      "claim": "documents the March 2024 mandatory AI-disclosure requirement for realistic synthetic content",
+      "dup_count": 1
+    },
+    {
+      "id": "youtube-2024-ai-disclosure",
+      "authors": [
+        "YouTube"
+      ],
+      "title": "How we're helping creators disclose altered or synthetic content",
+      "year": 2024,
+      "venue": "Official YouTube Blog",
+      "type": "report",
+      "url": "https://blog.youtube/news-and-events/disclosing-ai-generated-content/",
+      "doi": null,
+      "priority": 2,
+      "stance": "neutral",
+      "nature": "review",
+      "tag": "youtube-architecture",
+      "areas": [
+        "affordance-moves-content",
+        "chain-algospeak"
+      ],
+      "clusters": [
+        "15-youtube-architecture"
+      ],
+      "verified": true,
+      "note": "March 18 2024 implementation details for synthetic-content disclosure: creators must label realistic AI-generated content (face replacement, voice synthesis, event fabrication); labels appear in expanded description for most videos but in the video player itself for sensitive topics like health, news, elections, or finance.",
+      "claim": "official March 2024 rollout of creator-mandatory synthetic-content disclosure labels with prominent placement for sensitive topics",
+      "dup_count": 2
+    },
+    {
+      "id": "youtube-2024-creator-ai-protection",
+      "authors": [
+        "YouTube"
+      ],
+      "title": "New tools to protect creators and artists",
+      "year": 2024,
+      "venue": "Official YouTube Blog",
+      "type": "report",
+      "url": "https://blog.youtube/news-and-events/responsible-ai-tools/",
+      "doi": null,
+      "priority": 2,
+      "stance": "neutral",
+      "nature": "review",
+      "tag": "youtube-architecture",
+      "areas": [
+        "chain-algospeak",
+        "affordance-moves-content"
+      ],
+      "clusters": [
+        "15-youtube-architecture"
+      ],
+      "verified": true,
+      "note": "September 5 2024 announcement of synthetic-singing detection technology within Content ID allowing partners to detect AI-simulated voices, plus facial-likeness detection for creators/athletes/musicians, with pilot program for early 2025. Extends Content ID's monetization/rights infrastructure to AI-generated content.",
+      "claim": "official September 2024 announcement of AI voice and face detection tools within Content ID to protect creator likeness from synthetic replication",
       "dup_count": 1
     },
     {
@@ -3894,6 +4524,59 @@
       "dup_count": 1
     },
     {
+      "id": "socialmediatoday-2023-shorts-monetization",
+      "authors": [
+        "Social Media Today Staff"
+      ],
+      "title": "YouTube's New Shorts Monetization Process Will Come Into Effect in February",
+      "year": 2023,
+      "venue": "Social Media Today",
+      "type": "essay",
+      "url": "https://www.socialmediatoday.com/news/YouTube-Shorts-Monetization-Begins-in-February-2023/640087/",
+      "doi": null,
+      "priority": 2,
+      "stance": "neutral",
+      "nature": "review",
+      "tag": "youtube-architecture",
+      "areas": [
+        "chain-algospeak",
+        "affordance-moves-content"
+      ],
+      "clusters": [
+        "15-youtube-architecture"
+      ],
+      "verified": true,
+      "note": "Reports YouTube's February 1, 2023 replacement of the Shorts Fund with a 45/55 creator ad-revenue-sharing model for Shorts, integrating short-form content into the YPP monetization framework for the first time.",
+      "claim": "documents the February 2023 Shorts ad revenue-sharing launch replacing the Shorts Fund",
+      "dup_count": 1
+    },
+    {
+      "id": "techcrunch-2023-ypp-500-subscribers",
+      "authors": [
+        "Mehta, I."
+      ],
+      "title": "YouTube is lowering the barrier to be eligible for its monetization program",
+      "year": 2023,
+      "venue": "TechCrunch",
+      "type": "essay",
+      "url": "https://techcrunch.com/2023/06/13/youtube-is-lowering-the-barrier-to-be-eligible-for-its-monetization-program/",
+      "doi": null,
+      "priority": 2,
+      "stance": "neutral",
+      "nature": "review",
+      "tag": "youtube-architecture",
+      "areas": [
+        "chain-algospeak"
+      ],
+      "clusters": [
+        "15-youtube-architecture"
+      ],
+      "verified": true,
+      "note": "June 13, 2023 TechCrunch report on YouTube lowering the YPP entry threshold to 500 subscribers plus 3 public uploads plus 3,000 watch hours or 3M Shorts views (down from 1,000 subscribers/4,000 hours), initially in five markets including the US and UK.",
+      "claim": "documents YouTube's June 2023 reduction of YPP entry requirements to 500 subscribers",
+      "dup_count": 1
+    },
+    {
       "id": "wilson-2023-ctr-vs-watch-time",
       "authors": [
         "Wilson, L. T."
@@ -3907,18 +4590,46 @@
       "priority": 2,
       "stance": "mixed",
       "nature": "empirical",
-      "tag": "affordance-effects",
+      "tag": "youtube-architecture",
       "areas": [
         "chain-duration",
         "affordance-moves-content",
         "measurement"
       ],
       "clusters": [
-        "04-engagement-metrics"
+        "04-engagement-metrics",
+        "15-youtube-architecture"
       ],
       "verified": true,
       "note": "Using 2018 creator-level data finds CTR has 71-318x larger marginal effect on views than average watch time per view; complicates the algorithmic mechanism — creator-observable metrics remain CTR-dominated despite watch-time being the stated ranking objective, likely due to impressions endogeneity.",
       "claim": "CTR paradox: creator-observable data shows CTR 70-300x stronger predictor of views than watch time",
+      "dup_count": 1
+    },
+    {
+      "id": "youtube-2023-ai-responsibility",
+      "authors": [
+        "YouTube"
+      ],
+      "title": "Our approach to responsible AI innovation",
+      "year": 2023,
+      "venue": "Official YouTube Blog",
+      "type": "report",
+      "url": "https://blog.youtube/inside-youtube/our-approach-to-responsible-ai-innovation/",
+      "doi": null,
+      "priority": 2,
+      "stance": "neutral",
+      "nature": "review",
+      "tag": "youtube-architecture",
+      "areas": [
+        "affordance-moves-content",
+        "chain-algospeak"
+      ],
+      "clusters": [
+        "15-youtube-architecture"
+      ],
+      "verified": true,
+      "note": "November 14 2023 policy announcement requiring creator disclosure of synthetic/AI-generated realistic content, introducing labels on sensitive-topic videos, enabling AI-face/voice removal requests, and planning AI-powered moderation. First formal YouTube AI governance framework.",
+      "claim": "official November 2023 announcement of YouTube's AI governance framework including synthetic content disclosure requirements and labeling policy",
       "dup_count": 1
     },
     {
@@ -4060,6 +4771,32 @@
       "dup_count": 1
     },
     {
+      "id": "mohan-2022-misinfo-next-steps",
+      "authors": [
+        "Mohan, N."
+      ],
+      "title": "Inside Responsibility: What's next on our misinfo efforts",
+      "year": 2022,
+      "venue": "Official YouTube Blog",
+      "type": "essay",
+      "url": "https://blog.youtube/inside-youtube/inside-responsibility-whats-next-on-our-misinfo-efforts/",
+      "doi": null,
+      "priority": 2,
+      "stance": "neutral",
+      "nature": "review",
+      "tag": "youtube-architecture",
+      "areas": [
+        "rebut-supply-demand"
+      ],
+      "clusters": [
+        "15-youtube-architecture"
+      ],
+      "verified": true,
+      "note": "February 17 2022 essay by SVP Neal Mohan announcing three next-stage misinformation initiatives: faster detection of emerging narratives via targeted classifiers, potential cross-platform sharing interstitials, and global expansion of misinformation systems to 100+ countries and multiple languages.",
+      "claim": "official February 2022 roadmap for next-generation misinformation detection including emerging-narrative classifiers and global expansion",
+      "dup_count": 1
+    },
+    {
       "id": "papadamou-2022-pseudoscience-filter-bubbles",
       "authors": [
         "Papadamou, K.",
@@ -4142,6 +4879,33 @@
       "verified": true,
       "note": "Cross-partisan replication of quarantine effects on r/The_Donald and r/ChapoTrapHouse: posting volume declined but toxicity remained unchanged in both communities. Confirms that the discoverability affordance change reduces community size but not internal norm intensity regardless of political valence.",
       "claim": "Reddit quarantine reduced posting volume but left toxicity unchanged across both right- and left-leaning communities",
+      "dup_count": 1
+    },
+    {
+      "id": "youtube-2022-shorts-ypp-announced",
+      "authors": [
+        "YouTube"
+      ],
+      "title": "Made on YouTube: supporting the next wave of creative entrepreneurs",
+      "year": 2022,
+      "venue": "Official YouTube Blog",
+      "type": "report",
+      "url": "https://blog.youtube/news-and-events/supporting-the-next-wave-of-creative-entrepreneurs/",
+      "doi": null,
+      "priority": 2,
+      "stance": "neutral",
+      "nature": "review",
+      "tag": "youtube-architecture",
+      "areas": [
+        "chain-algospeak",
+        "chain-duration"
+      ],
+      "clusters": [
+        "15-youtube-architecture"
+      ],
+      "verified": true,
+      "note": "September 20 2022 announcement of Shorts-specific YPP eligibility (1,000 subscribers + 10M Shorts views over 90 days) launching in early 2023, with creators keeping 45% of ad revenue from Shorts feed. Represents YouTube extending monetization incentive structures to short-form content creators.",
+      "claim": "official September 2022 announcement of Shorts creator YPP eligibility at 1,000 subscribers and 10M Shorts views with 45% revenue share",
       "dup_count": 1
     },
     {
@@ -4316,6 +5080,33 @@
       "dup_count": 2
     },
     {
+      "id": "mozilla-2021-youtube-regrets",
+      "authors": [
+        "Mozilla Foundation"
+      ],
+      "title": "YouTube Regrets: A crowdsourced investigation into YouTube's recommendation algorithm",
+      "year": 2021,
+      "venue": "Mozilla Foundation",
+      "type": "report",
+      "url": "https://assets.mofoprod.net/network/documents/Mozilla_YouTube_Regrets_Report.pdf",
+      "doi": null,
+      "priority": 2,
+      "stance": "mixed",
+      "nature": "empirical",
+      "tag": "youtube-architecture",
+      "areas": [
+        "affordance-moves-content",
+        "rebut-supply-demand"
+      ],
+      "clusters": [
+        "15-youtube-architecture"
+      ],
+      "verified": true,
+      "note": "July 2021 crowdsourced study with 37,380 volunteers (data July 2020 – May 2021): 71% of regretted videos came from YouTube recommendations; recommended videos were 40% more likely to be regretted than sought-out content. Largest independent empirical audit of YouTube's recommendation algorithm at that date.",
+      "claim": "empirically documents that YouTube recommendations drove 71% of regretted harmful content in 2020-2021",
+      "dup_count": 1
+    },
+    {
       "id": "schellewald-2021-communicative-forms-tiktok",
       "authors": [
         "Schellewald, A."
@@ -4371,6 +5162,59 @@
       "dup_count": 1
     },
     {
+      "id": "techcrunch-2021-dislike-removal",
+      "authors": [
+        "Perez, S."
+      ],
+      "title": "YouTube is removing the dislike count on all videos across its platform",
+      "year": 2021,
+      "venue": "TechCrunch",
+      "type": "essay",
+      "url": "https://techcrunch.com/2021/11/10/youtube-is-removing-the-dislike-count-on-all-videos-across-its-platform/",
+      "doi": null,
+      "priority": 2,
+      "stance": "neutral",
+      "nature": "review",
+      "tag": "youtube-architecture",
+      "areas": [
+        "affordance-moves-content"
+      ],
+      "clusters": [
+        "15-youtube-architecture"
+      ],
+      "verified": true,
+      "note": "November 10, 2021 TechCrunch report on YouTube making the public dislike count private platform-wide, citing dislike-attack harassment of smaller creators. Creators retained private access via YouTube Studio; viewers lost the public accountability signal.",
+      "claim": "documents the November 10, 2021 removal of public dislike counts",
+      "dup_count": 1
+    },
+    {
+      "id": "variety-2021-youtube-shorts-global",
+      "authors": [
+        "Variety Staff"
+      ],
+      "title": "YouTube Shorts Global Launch: Short-Form Video in 100-Plus Countries",
+      "year": 2021,
+      "venue": "Variety",
+      "type": "essay",
+      "url": "https://variety.com/2021/digital/news/youtube-shorts-global-launch-1235018403/",
+      "doi": null,
+      "priority": 2,
+      "stance": "neutral",
+      "nature": "review",
+      "tag": "youtube-architecture",
+      "areas": [
+        "affordance-moves-content",
+        "chain-duration"
+      ],
+      "clusters": [
+        "15-youtube-architecture"
+      ],
+      "verified": true,
+      "note": "July 2021 report on YouTube Shorts global launch to 100+ countries, following India beta (September 2020) and US beta (March 2021). By launch, Shorts already generated 6.5 billion daily views. Marks the formal global expansion of YouTube's short-form video surface.",
+      "claim": "documents the July 2021 global launch of YouTube Shorts to 100+ countries",
+      "dup_count": 1
+    },
+    {
       "id": "wulf-2021-parasocial-twitch-streamers",
       "authors": [
         "Wulf, T.",
@@ -4397,6 +5241,84 @@
       "verified": true,
       "note": "3×2 experiment (N=251) on Twitch showing individual name-based address generates significantly higher PSI than collective address; replicates Hartmann & Goldhoorn in live-streaming contexts. Demonstrates granularity of address modulates PSI, informing how creators learn address strategies under algorithmic feedback.",
       "claim": "individual name-based address produces higher PSI than collective address; extends direct-address PSI finding to live streaming",
+      "dup_count": 1
+    },
+    {
+      "id": "youtube-2021-dislike-count-removal",
+      "authors": [
+        "YouTube"
+      ],
+      "title": "An update to dislikes on YouTube",
+      "year": 2021,
+      "venue": "Official YouTube Blog",
+      "type": "report",
+      "url": "https://blog.youtube/news-and-events/update-to-youtube/",
+      "doi": null,
+      "priority": 2,
+      "stance": "neutral",
+      "nature": "review",
+      "tag": "youtube-architecture",
+      "areas": [
+        "affordance-moves-content"
+      ],
+      "clusters": [
+        "15-youtube-architecture"
+      ],
+      "verified": true,
+      "note": "November 10 2021 announcement making public dislike counts private platform-wide, citing experiments showing it reduced coordinated 'dislike attacks' targeting smaller creators. Dislike button retained for personal recommendations and creator-accessible Studio analytics; removes dislike as a visible social signal.",
+      "claim": "official November 2021 announcement removing public dislike counts to reduce coordinated dislike attacks while retaining button for private signals",
+      "dup_count": 1
+    },
+    {
+      "id": "youtube-2021-vaccine-misinfo",
+      "authors": [
+        "YouTube"
+      ],
+      "title": "Managing harmful vaccine content on YouTube",
+      "year": 2021,
+      "venue": "Official YouTube Blog",
+      "type": "report",
+      "url": "https://blog.youtube/news-and-events/managing-harmful-vaccine-content-youtube/",
+      "doi": null,
+      "priority": 2,
+      "stance": "neutral",
+      "nature": "review",
+      "tag": "youtube-architecture",
+      "areas": [
+        "rebut-supply-demand"
+      ],
+      "clusters": [
+        "15-youtube-architecture"
+      ],
+      "verified": true,
+      "note": "September 29 2021 announcement expanding vaccine misinformation policy beyond COVID-19 to all WHO/authority-approved vaccines, prohibiting false claims about vaccine danger, transmission prevention failure, and ingredient misinformation. Over 130,000 COVID vaccine policy violations already removed.",
+      "claim": "official September 2021 expansion of vaccine misinformation policy to all approved vaccines with immediate removal enforcement",
+      "dup_count": 1
+    },
+    {
+      "id": "youtube-2021-vvr-transparency",
+      "authors": [
+        "YouTube"
+      ],
+      "title": "Building greater transparency and accountability with the Violative View Rate",
+      "year": 2021,
+      "venue": "Official YouTube Blog",
+      "type": "report",
+      "url": "https://blog.youtube/inside-youtube/building-greater-transparency-and-accountability/",
+      "doi": null,
+      "priority": 2,
+      "stance": "neutral",
+      "nature": "review",
+      "tag": "youtube-architecture",
+      "areas": [
+        "measurement"
+      ],
+      "clusters": [
+        "15-youtube-architecture"
+      ],
+      "verified": true,
+      "note": "April 6 2021 announcement of the Violative View Rate (VVR) metric, defined as the percentage of all YouTube views coming from violative content. Q4 2020 VVR was 0.16–0.18%, a 70% decline from Q4 2017. YouTube committed to quarterly VVR updates as a platform health accountability measure.",
+      "claim": "official April 2021 introduction of the Violative View Rate metric showing 0.16-0.18% VVR and 70% improvement since 2017",
       "dup_count": 1
     },
     {
@@ -4484,6 +5406,33 @@
       "dup_count": 1
     },
     {
+      "id": "cjr-2020-youtube-radicalization-debate",
+      "authors": [
+        "Ingram, M."
+      ],
+      "title": "The YouTube 'radicalization engine' debate continues",
+      "year": 2020,
+      "venue": "Columbia Journalism Review",
+      "type": "essay",
+      "url": "https://www.cjr.org/the_media_today/youtube-radicalization.php",
+      "doi": null,
+      "priority": 2,
+      "stance": "mixed",
+      "nature": "review",
+      "tag": "youtube-architecture",
+      "areas": [
+        "rebut-supply-demand",
+        "affordance-moves-content"
+      ],
+      "clusters": [
+        "15-youtube-architecture"
+      ],
+      "verified": true,
+      "note": "January 9, 2020 CJR piece surveying competing empirical claims about whether YouTube's post-2019 algorithmic changes actually stopped radicalization, featuring Guillaume Chaslot (AlgoTransparency), Mark Ledwich's counter-research, and Harvard researcher testimony on data access barriers.",
+      "claim": "surveys conflicting empirical evidence on whether YouTube's January 2019 recommendation changes reduced radicalization",
+      "dup_count": 1
+    },
+    {
       "id": "hussein-2020-misinformation-search",
       "authors": [
         "Hussein, E.",
@@ -4567,6 +5516,127 @@
       "dup_count": 1
     },
     {
+      "id": "pew-2020-youtube-news",
+      "authors": [
+        "Stocking, G.",
+        "van Kessel, P.",
+        "Barthel, M.",
+        "Matsa, K.E.",
+        "Khuzam, M."
+      ],
+      "title": "Many Americans Get News on YouTube, Where News Organizations and Independent Producers Thrive Side by Side",
+      "year": 2020,
+      "venue": "Pew Research Center",
+      "type": "report",
+      "url": "https://www.pewresearch.org/journalism/2020/09/28/many-americans-get-news-on-youtube-where-news-organizations-and-independent-producers-thrive-side-by-side/",
+      "doi": null,
+      "priority": 2,
+      "stance": "neutral",
+      "nature": "empirical",
+      "tag": "youtube-architecture",
+      "areas": [
+        "rebut-supply-demand",
+        "measurement"
+      ],
+      "clusters": [
+        "15-youtube-architecture"
+      ],
+      "verified": true,
+      "note": "September 28, 2020 Pew study finding that 26% of US adults get news from YouTube; 71% report YouTube helps understand current events. Documents that 14% of independent-channel videos cover conspiracy theories vs. <1% for established news organizations, contextualizing why YouTube's 2018 authoritative-source elevation mattered.",
+      "claim": "provides empirical baseline on Americans' YouTube news consumption as of 2020",
+      "dup_count": 1
+    },
+    {
+      "id": "youtube-2020-coppa-kids-privacy",
+      "authors": [
+        "YouTube"
+      ],
+      "title": "Better protecting kids' privacy on YouTube",
+      "year": 2020,
+      "venue": "Official YouTube Blog",
+      "type": "report",
+      "url": "https://blog.youtube/news-and-events/better-protecting-kids-privacy-on-youtube/",
+      "doi": null,
+      "priority": 2,
+      "stance": "neutral",
+      "nature": "review",
+      "tag": "youtube-architecture",
+      "areas": [
+        "chain-algospeak"
+      ],
+      "clusters": [
+        "15-youtube-architecture"
+      ],
+      "verified": true,
+      "note": "January 6 2020 announcement of full implementation of COPPA changes: creators required to label content as 'made for kids' in YouTube Studio, ML used to identify children's content, personalized advertising and features like comments/notifications disabled on kids videos effective immediately.",
+      "claim": "official January 2020 implementation of COPPA-mandated made-for-kids labeling system and feature restrictions",
+      "dup_count": 1
+    },
+    {
+      "id": "youtube-2020-shorts-launch",
+      "authors": [
+        "YouTube"
+      ],
+      "title": "Building YouTube Shorts, a new way to watch & create on YouTube",
+      "year": 2020,
+      "venue": "Official YouTube Blog",
+      "type": "report",
+      "url": "https://blog.youtube/news-and-events/building-youtube-shorts/",
+      "doi": null,
+      "priority": 2,
+      "stance": "neutral",
+      "nature": "review",
+      "tag": "youtube-architecture",
+      "areas": [
+        "affordance-moves-content",
+        "chain-duration"
+      ],
+      "clusters": [
+        "15-youtube-architecture"
+      ],
+      "verified": true,
+      "note": "September 14 2020 announcement by VP Chris Jaffe of YouTube Shorts beta launch in India for 15-second vertical videos, with dedicated homepage row for short content. Marks YouTube's entry into TikTok-style short-form vertical video as a new recommendation surface distinct from long-form.",
+      "claim": "official September 2020 announcement of YouTube Shorts beta launch in India as a new short-form vertical video surface",
+      "dup_count": 1
+    },
+    {
+      "id": "beutel-2019-fairness-recommendation-ranking",
+      "authors": [
+        "Beutel, A.",
+        "Chen, J.",
+        "Doshi, T.",
+        "Qian, H.",
+        "Wei, L.",
+        "Wu, Y.",
+        "Heldt, L.",
+        "Zhao, Z.",
+        "Hong, L.",
+        "Chi, E. H.",
+        "Goodrow, C."
+      ],
+      "title": "Fairness in Recommendation Ranking through Pairwise Comparisons",
+      "year": 2019,
+      "venue": "Proceedings of the 25th ACM SIGKDD International Conference on Knowledge Discovery & Data Mining (KDD 2019)",
+      "type": "paper",
+      "url": "https://doi.org/10.1145/3292500.3330745",
+      "doi": "10.1145/3292500.3330745",
+      "priority": 2,
+      "stance": "neutral",
+      "nature": "methodological",
+      "tag": "youtube-architecture",
+      "areas": [
+        "affordance-moves-content",
+        "chain-algospeak"
+      ],
+      "clusters": [
+        "15-youtube-architecture"
+      ],
+      "verified": true,
+      "note": "Documents the implementation of pairwise fairness metrics and regularization techniques applied directly to YouTube's production recommendation system, showing how fairness constraints are integrated into the ranking model training and validated through randomized experiments.",
+      "claim": "pairwise fairness regularization integrated into YouTube production ranking (KDD 2019)",
+      "dup_count": 1
+    },
+    {
       "id": "boot-2019-character-limit-language",
       "authors": [
         "Boot, A. B.",
@@ -4593,6 +5663,37 @@
       "verified": true,
       "note": "Quasi-experimental before/after analysis of Dutch-language tweets around the November 2017 character limit change, documenting that pre-change tweets used more textisms and abbreviations while post-change tweets used complete grammatical structures. Replicates Gligorić et al. in a separate language population, strengthening external validity.",
       "claim": "140-char constraint produced textisms and contracted grammar; 280 restored full grammatical structures (Dutch replication)",
+      "dup_count": 1
+    },
+    {
+      "id": "chen-2019-topk-offpolicy-reinforce-youtube",
+      "authors": [
+        "Chen, M.",
+        "Beutel, A.",
+        "Covington, P.",
+        "Jain, S.",
+        "Belletti, F.",
+        "Chi, E. H."
+      ],
+      "title": "Top-K Off-Policy Correction for a REINFORCE Recommender System",
+      "year": 2019,
+      "venue": "Proceedings of the 12th ACM International Conference on Web Search and Data Mining (WSDM 2019)",
+      "type": "paper",
+      "url": "https://doi.org/10.1145/3289600.3290999",
+      "doi": "10.1145/3289600.3290999",
+      "priority": 2,
+      "stance": "neutral",
+      "nature": "methodological",
+      "tag": "youtube-architecture",
+      "areas": [
+        "affordance-moves-content"
+      ],
+      "clusters": [
+        "15-youtube-architecture"
+      ],
+      "verified": true,
+      "note": "Documents the deployment of a REINFORCE policy-gradient recommender on YouTube at scale, introducing top-K off-policy correction to address selection bias from logged feedback and handle the combinatorial action space of recommending multiple items simultaneously; establishes RL as a mechanism for long-term reward optimization.",
+      "claim": "REINFORCE policy-gradient recommender with top-K off-policy correction deployed on YouTube (2019)",
       "dup_count": 1
     },
     {
@@ -4740,6 +5841,40 @@
       "dup_count": 1
     },
     {
+      "id": "ie-2019-slateq-rl-recommendation-sets",
+      "authors": [
+        "Ie, E.",
+        "Jain, V.",
+        "Wang, J.",
+        "Narvekar, S.",
+        "Agarwal, R.",
+        "Wu, R.",
+        "Cheng, H.-T.",
+        "Chandra, T.",
+        "Boutilier, C."
+      ],
+      "title": "SlateQ: A Tractable Decomposition for Reinforcement Learning with Recommendation Sets",
+      "year": 2019,
+      "venue": "Proceedings of the 28th International Joint Conference on Artificial Intelligence (IJCAI 2019), pp. 2592-2599",
+      "type": "paper",
+      "url": "https://doi.org/10.24963/ijcai.2019/360",
+      "doi": "10.24963/ijcai.2019/360",
+      "priority": 2,
+      "stance": "neutral",
+      "nature": "methodological",
+      "tag": "youtube-architecture",
+      "areas": [
+        "affordance-moves-content"
+      ],
+      "clusters": [
+        "15-youtube-architecture"
+      ],
+      "verified": true,
+      "note": "Introduces the SLATEQ Q-learning decomposition for slate-based YouTube recommendations, showing that long-term slate value decomposes tractably into item-wise long-term values; validated in simulation and live YouTube experiments demonstrating improved long-term user engagement over greedy ranking.",
+      "claim": "SlateQ RL decomposition for optimizing long-term engagement with slate recommendations on YouTube (2019)",
+      "dup_count": 1
+    },
+    {
       "id": "pew-2019-week-in-life-popular-channels",
       "authors": [
         "Pew Research Center"
@@ -4823,6 +5958,120 @@
       "verified": true,
       "note": "Proposes stage model of PSR development (initiation → bonding) showing that PSI episodes accumulate into PSR through repeated exposure and perceived intimacy; explains why watch-time accumulation selects for escalating intimacy to sustain subscriber retention across a channel's lifetime.",
       "claim": "PSI episodes accumulate into PSR via repeated direct-address exposure; escalating intimacy sustains subscriber retention",
+      "dup_count": 1
+    },
+    {
+      "id": "wojcicki-2019-four-rs-framework",
+      "authors": [
+        "Wojcicki, S."
+      ],
+      "title": "Susan Wojcicki: Preserving openness through responsibility",
+      "year": 2019,
+      "venue": "Official YouTube Blog",
+      "type": "essay",
+      "url": "https://blog.youtube/inside-youtube/preserving-openness-through-responsibility/",
+      "doi": null,
+      "priority": 2,
+      "stance": "neutral",
+      "nature": "review",
+      "tag": "youtube-architecture",
+      "areas": [
+        "rebut-supply-demand",
+        "chain-algospeak"
+      ],
+      "clusters": [
+        "15-youtube-architecture"
+      ],
+      "verified": true,
+      "note": "August 27 2019 CEO letter by Susan Wojcicki introducing the full 'Four Rs' framework — Remove, Raise, Reduce, Reward — as YouTube's unified content responsibility approach. Reports 50% U.S. watch-time drop for borderline content and describes the Reward pillar as higher monetization standards.",
+      "claim": "official August 2019 CEO articulation of the complete Remove/Raise/Reduce/Reward four-Rs responsibility framework",
+      "dup_count": 1
+    },
+    {
+      "id": "yi-2019-sampling-bias-corrected-neural-youtube",
+      "authors": [
+        "Yi, X.",
+        "Yang, J.",
+        "Hong, L.",
+        "Cheng, D. Z.",
+        "Heldt, L.",
+        "Kumthekar, A.",
+        "Zhao, Z.",
+        "Wei, L.",
+        "Chi, E."
+      ],
+      "title": "Sampling-Bias-Corrected Neural Modeling for Large Corpus Item Recommendations",
+      "year": 2019,
+      "venue": "Proceedings of the 13th ACM Conference on Recommender Systems (RecSys 2019)",
+      "type": "paper",
+      "url": "https://doi.org/10.1145/3298689.3346996",
+      "doi": "10.1145/3298689.3346996",
+      "priority": 2,
+      "stance": "neutral",
+      "nature": "methodological",
+      "tag": "youtube-architecture",
+      "areas": [
+        "affordance-moves-content"
+      ],
+      "clusters": [
+        "15-youtube-architecture"
+      ],
+      "verified": true,
+      "note": "Describes the two-tower neural retrieval model for YouTube candidate generation with a novel bias-correction technique for in-batch negative sampling that corrects for item popularity in power-law distributed corpora, enabling scalable personalized retrieval across a massive video corpus.",
+      "claim": "bias-corrected two-tower neural retrieval model for YouTube candidate generation at scale (2019)",
+      "dup_count": 1
+    },
+    {
+      "id": "youtube-2019-coppa-kids-update",
+      "authors": [
+        "Wojcicki, S."
+      ],
+      "title": "An update on kids and data protection on YouTube",
+      "year": 2019,
+      "venue": "Official YouTube Blog",
+      "type": "report",
+      "url": "https://blog.youtube/news-and-events/an-update-on-kids/",
+      "doi": null,
+      "priority": 2,
+      "stance": "neutral",
+      "nature": "review",
+      "tag": "youtube-architecture",
+      "areas": [
+        "chain-algospeak"
+      ],
+      "clusters": [
+        "15-youtube-architecture"
+      ],
+      "verified": true,
+      "note": "September 4 2019 response by CEO Susan Wojcicki to the FTC/NY AG $170M COPPA settlement, announcing YouTube will treat all data from children's content viewers as child data regardless of user age, disable personalized ads and comments on kids content, and establish a $100M fund for children's programming.",
+      "claim": "official September 2019 COPPA settlement response announcing data treatment changes for children's content and $100M programming fund",
+      "dup_count": 1
+    },
+    {
+      "id": "youtube-2019-hate-speech-expanded",
+      "authors": [
+        "YouTube"
+      ],
+      "title": "Our ongoing work to tackle hate",
+      "year": 2019,
+      "venue": "Official YouTube Blog",
+      "type": "report",
+      "url": "https://blog.youtube/news-and-events/our-ongoing-work-to-tackle-hate/",
+      "doi": null,
+      "priority": 2,
+      "stance": "neutral",
+      "nature": "review",
+      "tag": "youtube-architecture",
+      "areas": [
+        "rebut-supply-demand",
+        "chain-algospeak"
+      ],
+      "clusters": [
+        "15-youtube-architecture"
+      ],
+      "verified": true,
+      "note": "June 5 2019 announcement expanding hate-speech policy to prohibit content asserting group superiority to justify discrimination, Nazi ideology promotion, and Holocaust denial. Also announced 50% U.S. watch-time reduction target for borderline content and monetization suspension for repeat hate-policy violators.",
+      "claim": "official June 2019 hate-speech policy expansion banning Nazi ideology, Holocaust denial, and supremacist content",
       "dup_count": 1
     },
     {
@@ -5022,6 +6271,32 @@
       "dup_count": 1
     },
     {
+      "id": "slate-2018-wikipedia-panels",
+      "authors": [
+        "Glaser, A."
+      ],
+      "title": "YouTube is adding fact-check links from Wikipedia and Encyclopedia Britannica for videos on topics that inspire conspiracy theories",
+      "year": 2018,
+      "venue": "Slate",
+      "type": "essay",
+      "url": "https://slate.com/technology/2018/08/youtube-is-adding-fact-check-links-from-wikipedia-and-encyclopedia-britannica-for-videos-on-topics-that-inspire-conspiracy-theories.html",
+      "doi": null,
+      "priority": 2,
+      "stance": "mixed",
+      "nature": "review",
+      "tag": "youtube-architecture",
+      "areas": [
+        "rebut-supply-demand"
+      ],
+      "clusters": [
+        "15-youtube-architecture"
+      ],
+      "verified": true,
+      "note": "August 14, 2018 journalism covering YouTube's rollout of Wikipedia/Britannica information panels beneath conspiracy-prone videos (starting July 2018 with climate change). Notes Wikimedia Foundation was not consulted beforehand.",
+      "claim": "documents the August 2018 expansion of Wikipedia information panels on conspiracy videos",
+      "dup_count": 1
+    },
+    {
       "id": "vandijck-2018-platform-society",
       "authors": [
         "van Dijck, J.",
@@ -5076,6 +6351,58 @@
       "verified": true,
       "note": "Large-scale diffusion analysis of 126,000 verified true/false stories showing false news spreads 6× faster and reaches 10× more people via the retweet affordance, driven by human sharing of novel content rather than bots. Demonstrates the retweet button's frictionlessness as a substrate for differential content amplification by veracity.",
       "claim": "retweet affordance enables false news to reach 1,500 people 6× faster than true news",
+      "dup_count": 1
+    },
+    {
+      "id": "youtube-2018-first-transparency-report",
+      "authors": [
+        "YouTube"
+      ],
+      "title": "More information, faster removals, more people - an update on what we're doing to enforce YouTube's Community Guidelines",
+      "year": 2018,
+      "venue": "Official YouTube Blog",
+      "type": "report",
+      "url": "https://blog.youtube/news-and-events/more-information-faster-removals-more/",
+      "doi": null,
+      "priority": 2,
+      "stance": "neutral",
+      "nature": "review",
+      "tag": "youtube-architecture",
+      "areas": [
+        "measurement"
+      ],
+      "clusters": [
+        "15-youtube-architecture"
+      ],
+      "verified": true,
+      "note": "April 2018 launch of YouTube's first quarterly Community Guidelines Enforcement Report, revealing that 6.7 million of 8 million videos removed in Q4 2017 were first flagged by machines and 76% had zero views at removal. Introduced the quarterly transparency reporting cadence still in use.",
+      "claim": "official April 2018 launch of the first Community Guidelines Enforcement Report with machine-detection and removal statistics",
+      "dup_count": 1
+    },
+    {
+      "id": "youtube-2018-ipp-thresholds",
+      "authors": [
+        "YouTube"
+      ],
+      "title": "Additional Changes to the YouTube Partner Program (YPP) to Better Protect Creators",
+      "year": 2018,
+      "venue": "Official YouTube Blog",
+      "type": "report",
+      "url": "https://blog.youtube/news-and-events/additional-changes-to-youtube-partner/",
+      "doi": null,
+      "priority": 2,
+      "stance": "neutral",
+      "nature": "review",
+      "tag": "youtube-architecture",
+      "areas": [
+        "chain-algospeak"
+      ],
+      "clusters": [
+        "15-youtube-architecture"
+      ],
+      "verified": true,
+      "note": "January 2018 announcement replacing the old 10,000 lifetime-views YPP threshold with new requirements of 4,000 watch hours (past 12 months) and 1,000 subscribers, effective February 20 2018. Watch-time thus became the gateway metric for monetization eligibility itself.",
+      "claim": "official January 2018 YPP threshold change requiring 4,000 watch hours and 1,000 subscribers for monetization",
       "dup_count": 1
     },
     {
@@ -5249,6 +6576,32 @@
       "dup_count": 2
     },
     {
+      "id": "tubefilter-2017-ad-friendly-guidelines",
+      "authors": [
+        "Tubefilter Staff"
+      ],
+      "title": "YouTube Updates Its Guidelines For Advertiser-Friendly Content To Offer More Thorough Info To Creators",
+      "year": 2017,
+      "venue": "Tubefilter",
+      "type": "essay",
+      "url": "https://www.tubefilter.com/2017/06/01/youtube-update-ad-friendly-guidelines/",
+      "doi": null,
+      "priority": 2,
+      "stance": "neutral",
+      "nature": "review",
+      "tag": "youtube-architecture",
+      "areas": [
+        "chain-algospeak"
+      ],
+      "clusters": [
+        "15-youtube-architecture"
+      ],
+      "verified": true,
+      "note": "June 1, 2017 report on YouTube's updated advertiser-friendly content guidelines issued after the Adpocalypse, spelling out demonetization triggers for creators and explaining the new category-level demonetization system.",
+      "claim": "documents YouTube's June 2017 clarification of advertiser-friendly content guidelines post-Adpocalypse",
+      "dup_count": 1
+    },
+    {
       "id": "youtube-2017-advertiser-friendly-content-guidelines",
       "authors": [
         "YouTube"
@@ -5262,17 +6615,70 @@
       "priority": 2,
       "stance": "neutral",
       "nature": "empirical",
-      "tag": "affordance-effects",
+      "tag": "youtube-architecture",
       "areas": [
         "affordance-moves-content",
         "chain-algospeak"
       ],
       "clusters": [
-        "06-demonetization-algospeak"
+        "06-demonetization-algospeak",
+        "15-youtube-architecture"
       ],
       "verified": true,
       "note": "Primary policy document defining the demonetization rules creators must navigate; the June 2017 expanded version is the key affordance-shock document for the Adpocalypse natural experiment.",
       "claim": "primary policy text establishing demonetization categories post-Adpocalypse",
+      "dup_count": 1
+    },
+    {
+      "id": "youtube-2017-advertiser-strengthen",
+      "authors": [
+        "YouTube"
+      ],
+      "title": "Strengthening YouTube for advertisers and creators",
+      "year": 2017,
+      "venue": "Official YouTube Blog",
+      "type": "report",
+      "url": "https://blog.youtube/news-and-events/strengthening-youtube-for-advertisers/",
+      "doi": null,
+      "priority": 2,
+      "stance": "neutral",
+      "nature": "review",
+      "tag": "youtube-architecture",
+      "areas": [
+        "chain-algospeak"
+      ],
+      "clusters": [
+        "15-youtube-architecture"
+      ],
+      "verified": true,
+      "note": "March 2017 response to advertiser boycott ('adpocalypse'), announcing broader demonetization policies for hateful/inflammatory content, new advertiser controls to exclude higher-risk content, and faster creator appeals. First formal articulation of the YouTube monetization-as-moderation lever.",
+      "claim": "official March 2017 announcement of expanded demonetization policies following the advertiser boycott crisis",
+      "dup_count": 1
+    },
+    {
+      "id": "youtube-2017-content-making-money",
+      "authors": [
+        "YouTube"
+      ],
+      "title": "Your Content and Making Money from Advertising on YouTube",
+      "year": 2017,
+      "venue": "Official YouTube Blog",
+      "type": "report",
+      "url": "https://blog.youtube/news-and-events/your-content-and-making-money-from/",
+      "doi": null,
+      "priority": 2,
+      "stance": "neutral",
+      "nature": "review",
+      "tag": "youtube-architecture",
+      "areas": [
+        "chain-algospeak"
+      ],
+      "clusters": [
+        "15-youtube-architecture"
+      ],
+      "verified": true,
+      "note": "June 2017 update introducing three new categories ineligible for advertising — hateful content, inappropriate family-entertainment characters, and incendiary/demeaning content — clarifying that violating advertiser guidelines does not require removal but triggers demonetization.",
+      "claim": "official June 2017 expansion of advertiser-friendly content guidelines adding three new demonetization categories",
       "dup_count": 1
     },
     {
@@ -5716,6 +7122,33 @@
       "verified": true,
       "note": "Pre-algorithm-change baseline: 50% of most-watched YouTube videos were ≤2 minutes long, only 18% exceeded 5 minutes. Essential anchor for measuring the duration shift against post-2012 data.",
       "claim": "2012 baseline: 50% popular videos ≤2 min, pre-watch-time-shift",
+      "dup_count": 1
+    },
+    {
+      "id": "youtube-2012-analytics-timewatched",
+      "authors": [
+        "YouTube"
+      ],
+      "title": "YouTube Analytics now includes Time Watched, Annotation reporting, and more",
+      "year": 2012,
+      "venue": "Official YouTube Blog",
+      "type": "report",
+      "url": "https://blog.youtube/news-and-events/youtube-analytics-now-includes-time_11/",
+      "doi": null,
+      "priority": 2,
+      "stance": "neutral",
+      "nature": "review",
+      "tag": "youtube-architecture",
+      "areas": [
+        "chain-duration",
+        "measurement"
+      ],
+      "clusters": [
+        "15-youtube-architecture"
+      ],
+      "verified": true,
+      "note": "October 2012 announcement of 'Estimated minutes watched' added to YouTube Analytics, giving creators visibility into the same watch-time signals driving the new recommendation algorithm. Companion release to the October 2012 search-ranking change.",
+      "claim": "official October 2012 launch of creator-facing watch-time analytics alongside the algorithm shift",
       "dup_count": 1
     },
     {
@@ -6352,6 +7785,33 @@
       "dup_count": 1
     },
     {
+      "id": "mohan-2025-big-bets",
+      "authors": [
+        "Mohan, N."
+      ],
+      "title": "From the YouTube CEO: Our big bets for 2025",
+      "year": 2025,
+      "venue": "Official YouTube Blog",
+      "type": "essay",
+      "url": "https://blog.youtube/inside-youtube/our-big-bets-for-2025/",
+      "doi": null,
+      "priority": 3,
+      "stance": "neutral",
+      "nature": "review",
+      "tag": "youtube-architecture",
+      "areas": [
+        "affordance-moves-content",
+        "chain-algospeak"
+      ],
+      "clusters": [
+        "15-youtube-architecture"
+      ],
+      "verified": true,
+      "note": "February 11 2025 CEO letter reporting TV as the primary U.S. YouTube viewing device by watch time (1 billion+ daily hours), 40%+ channel membership growth, and auto-dubbing AI expanding to all YPP creators. Also highlights age-estimation AI for youth safety and plans to reduce low-quality AI-generated content spread.",
+      "claim": "official February 2025 CEO letter reporting TV as primary U.S. viewing device and expanding AI dubbing and age-estimation tools",
+      "dup_count": 1
+    },
+    {
       "id": "naveed-2025-thumbnailtruth-misleading",
       "authors": [
         "Naveed, W.",
@@ -6407,6 +7867,32 @@
       "verified": true,
       "note": "Tracks 40 million headlines over two decades showing secular rise in clickbait-style features (first/second-person pronouns, question words, sentence format); documents text clickbait supply increases but covers news headlines not YouTube, reinforcing the project's gap.",
       "claim": "secular rise in clickbait-style headline features across major news outlets over two decades",
+      "dup_count": 1
+    },
+    {
+      "id": "youtube-blog-2025-mid-roll-ads",
+      "authors": [
+        "YouTube Team"
+      ],
+      "title": "Mid-roll ads updates explained",
+      "year": 2025,
+      "venue": "YouTube Blog",
+      "type": "essay",
+      "url": "https://blog.youtube/creator-and-artist-stories/mid-roll-ads-updates-explained/",
+      "doi": null,
+      "priority": 3,
+      "stance": "neutral",
+      "nature": "review",
+      "tag": "youtube-architecture",
+      "areas": [
+        "chain-algospeak"
+      ],
+      "clusters": [
+        "15-youtube-architecture"
+      ],
+      "verified": true,
+      "note": "March 24, 2025 announcement of YouTube's new mid-roll ad placement system (effective May 12, 2025): automatic placement at natural breakpoints (pauses, scene transitions), reducing mid-sentence interruptions; retroactive update to pre-February 2025 videos; average 5% revenue increase with hybrid manual/auto slots.",
+      "claim": "documents the March 2025 shift to natural-breakpoint automatic mid-roll ad placement",
       "dup_count": 1
     },
     {
@@ -6489,6 +7975,35 @@
       "verified": true,
       "note": "keyATM integrates researcher-specified keywords into an LDA-style topic model, improving coherence and interpretability; useful for discovering thematic structure in the YouTube transcript corpus and detecting whether topic prevalence shifts over time in response to algorithm changes, and for detecting algospeak patterns when candidate substitute terms are known.",
       "claim": "keyword-assisted topic modeling for thematic discovery and algospeak pattern detection in transcripts",
+      "dup_count": 1
+    },
+    {
+      "id": "liu-2024-train-youtube-recommender-unwanted",
+      "authors": [
+        "Liu, A.",
+        "Wu, S.",
+        "Resnick, P."
+      ],
+      "title": "How to Train Your YouTube Recommender to Avoid Unwanted Videos",
+      "year": 2024,
+      "venue": "Proceedings of the 18th International AAAI Conference on Web and Social Media (ICWSM 2024), 18(1):930-942",
+      "type": "paper",
+      "url": "https://doi.org/10.1609/icwsm.v18i1.31363",
+      "doi": "10.1609/icwsm.v18i1.31363",
+      "priority": 3,
+      "stance": "neutral",
+      "nature": "empirical",
+      "tag": "youtube-architecture",
+      "areas": [
+        "measurement",
+        "chain-algospeak"
+      ],
+      "clusters": [
+        "15-youtube-architecture"
+      ],
+      "verified": true,
+      "note": "Sock-puppet study measuring effectiveness of YouTube's user-facing disinterest controls ('Not interested', 'Don't recommend channel') in altering recommendation outputs; finds 'Not interested' reduces targeted topic recommendations by 88% on average, documenting how user feedback mechanisms interact with the recommendation feedback loop.",
+      "claim": "sock-puppet measurement of YouTube disinterest control effectiveness: 'Not interested' removes ~88% of targeted recommendations (ICWSM 2024)",
       "dup_count": 1
     },
     {
@@ -6660,6 +8175,69 @@
       "dup_count": 1
     },
     {
+      "id": "mohan-2023-priorities-letter",
+      "authors": [
+        "Mohan, N."
+      ],
+      "title": "Neal's 2023 Priorities for the Future of YouTube",
+      "year": 2023,
+      "venue": "Official YouTube Blog",
+      "type": "essay",
+      "url": "https://blog.youtube/inside-youtube/2023-letter-from-neal/",
+      "doi": null,
+      "priority": 3,
+      "stance": "neutral",
+      "nature": "review",
+      "tag": "youtube-architecture",
+      "areas": [
+        "affordance-moves-content"
+      ],
+      "clusters": [
+        "15-youtube-architecture"
+      ],
+      "verified": true,
+      "note": "March 1 2023 inaugural CEO letter by Neal Mohan outlining three priorities: creator success via expanded monetization, building YouTube's future (TV growth, Shorts at 50B daily views, podcasts, AI tools), and community protection via YouTube Kids and under-18 safeguards.",
+      "claim": "official March 2023 inaugural CEO letter by Neal Mohan setting platform priorities including Shorts at 50 billion daily views",
+      "dup_count": 1
+    },
+    {
+      "id": "srba-2023-auditing-misinformation-filter-bubbles-youtube",
+      "authors": [
+        "Srba, I.",
+        "Moro, R.",
+        "Tomlein, M.",
+        "Pecher, B.",
+        "Simko, J.",
+        "Stefancova, E.",
+        "Kompan, M.",
+        "Hrckova, A.",
+        "Podrouzek, J.",
+        "Gavornik, A.",
+        "Bielikova, M."
+      ],
+      "title": "Auditing YouTube's Recommendation Algorithm for Misinformation Filter Bubbles",
+      "year": 2023,
+      "venue": "ACM Transactions on Recommender Systems, 1(1), Article 6",
+      "type": "paper",
+      "url": "https://doi.org/10.1145/3568392",
+      "doi": "10.1145/3568392",
+      "priority": 3,
+      "stance": "neutral",
+      "nature": "empirical",
+      "tag": "youtube-architecture",
+      "areas": [
+        "measurement",
+        "chain-algospeak"
+      ],
+      "clusters": [
+        "15-youtube-architecture"
+      ],
+      "verified": true,
+      "note": "Systematic audit using pre-programmed agents to measure how quickly YouTube recommendations lead users into misinformation filter bubbles and what viewing behaviors burst them, characterizing the recommendation feedback-loop mechanics for false health and political information.",
+      "claim": "audit of YouTube misinformation filter-bubble formation and burst mechanics via programmatic agents (ACM TORS 2023)",
+      "dup_count": 1
+    },
+    {
       "id": "wojcieszak-2023-watch-histories-nonpolitical",
       "authors": [
         "Wojcieszak, M.",
@@ -6685,6 +8263,32 @@
       "verified": true,
       "note": "Shows 93% of YouTube viewing is non-political and non-news; political content shows partisan segregation but only for a small subset. Complicates both camps: any affordance-construction mechanism operates at the margins among political consumers, not the median user.",
       "claim": "Political content is a tiny fraction of YouTube use; demand for political content is concentrated among a small high-engagement subset",
+      "dup_count": 1
+    },
+    {
+      "id": "youtube-2024-election-support",
+      "authors": [
+        "YouTube"
+      ],
+      "title": "Supporting the 2024 United States election",
+      "year": 2023,
+      "venue": "Official YouTube Blog",
+      "type": "report",
+      "url": "https://blog.youtube/inside-youtube/supporting-2024-united-states-election/",
+      "doi": null,
+      "priority": 3,
+      "stance": "neutral",
+      "nature": "review",
+      "tag": "youtube-architecture",
+      "areas": [
+        "rebut-supply-demand"
+      ],
+      "clusters": [
+        "15-youtube-architecture"
+      ],
+      "verified": true,
+      "note": "December 19 2023 pre-election policy statement requiring AI-generated election content disclosure, banning election disinformation ads, and maintaining prohibitions on voter-suppression content and incitement. Documents YouTube's evolved election-integrity architecture heading into the 2024 election cycle.",
+      "claim": "official December 2023 policy statement requiring synthetic-content disclosure for election videos and maintaining voter-suppression prohibitions for 2024",
       "dup_count": 1
     },
     {
@@ -6937,6 +8541,59 @@
       "verified": true,
       "note": "Solves labeled-data scarcity for thumbnail clickbait via weak supervision (7,039 noisy labels) + co-teaching; multimodal title+thumbnail fusion (F1=0.7153) is the scalable pipeline applicable to large-scale longitudinal scoring without full manual annotation.",
       "claim": "weak-supervision thumbnail clickbait classifier enabling large-scale longitudinal scoring",
+      "dup_count": 1
+    },
+    {
+      "id": "youtube-2021-shorts-fund",
+      "authors": [
+        "YouTube"
+      ],
+      "title": "Introducing the YouTube Shorts Fund",
+      "year": 2021,
+      "venue": "Official YouTube Blog",
+      "type": "report",
+      "url": "https://blog.youtube/news-and-events/introducing-youtube-shorts-fund/",
+      "doi": null,
+      "priority": 3,
+      "stance": "neutral",
+      "nature": "review",
+      "tag": "youtube-architecture",
+      "areas": [
+        "chain-algospeak"
+      ],
+      "clusters": [
+        "15-youtube-architecture"
+      ],
+      "verified": true,
+      "note": "May 11 2021 announcement of a $100M Shorts Fund for 2021–2022 to reward creators based on engagement, open to non-YPP creators. Explicitly framed as 'the first step in our journey to build a monetization model for Shorts,' preceding the 2023 revenue-sharing launch.",
+      "claim": "official May 2021 announcement of $100M YouTube Shorts Fund as interim monetization before formal revenue sharing",
+      "dup_count": 1
+    },
+    {
+      "id": "youtube-2021-shorts-us-launch",
+      "authors": [
+        "YouTube"
+      ],
+      "title": "Bringing YouTube Shorts to the U.S.",
+      "year": 2021,
+      "venue": "Official YouTube Blog",
+      "type": "report",
+      "url": "https://blog.youtube/news-and-events/youtube-shorts-united-states/",
+      "doi": null,
+      "priority": 3,
+      "stance": "neutral",
+      "nature": "review",
+      "tag": "youtube-architecture",
+      "areas": [
+        "affordance-moves-content",
+        "chain-duration"
+      ],
+      "clusters": [
+        "15-youtube-architecture"
+      ],
+      "verified": true,
+      "note": "March 18 2021 announcement of Shorts U.S. beta rollout, reporting 6.5 billion daily Shorts views globally and music licensing deals with 250+ labels including Universal, Sony, and Warner. Documents the Shorts surface scaling as a new discovery and engagement mechanism alongside long-form video.",
+      "claim": "official March 2021 announcement of YouTube Shorts U.S. launch at 6.5 billion daily global views",
       "dup_count": 1
     },
     {
@@ -7227,6 +8884,35 @@
       "dup_count": 1
     },
     {
+      "id": "roth-2020-tubes-bubbles-youtube-topology",
+      "authors": [
+        "Roth, C.",
+        "Mazieres, A.",
+        "Menezes, T."
+      ],
+      "title": "Tubes and Bubbles: Topological Confinement of YouTube Recommendations",
+      "year": 2020,
+      "venue": "PLOS ONE, 15(4):e0231703",
+      "type": "paper",
+      "url": "https://doi.org/10.1371/journal.pone.0231703",
+      "doi": "10.1371/journal.pone.0231703",
+      "priority": 3,
+      "stance": "neutral",
+      "nature": "empirical",
+      "tag": "youtube-architecture",
+      "areas": [
+        "measurement",
+        "affordance-moves-content"
+      ],
+      "clusters": [
+        "15-youtube-architecture"
+      ],
+      "verified": true,
+      "note": "Network-theoretic analysis of YouTube's recommendation graph topology distinguishing 'tubes' (narrow recommendation channels) from 'bubbles' (filter bubbles), measuring how the recommendation graph structure shapes navigability and confinement within content neighborhoods.",
+      "claim": "graph-topology analysis of YouTube recommendation graph showing topological confinement via tubes and bubbles (PLOS ONE 2020)",
+      "dup_count": 1
+    },
+    {
       "id": "sokolova-2020-instagram-youtube-psi-purchase",
       "authors": [
         "Sokolova, K.",
@@ -7278,6 +8964,32 @@
       "verified": true,
       "note": "Qualitative study (interviews + photo-elicitation with museum visitors) showing ephemeral format on Snapchat and Instagram Stories drives minimal curation and spontaneous, in-the-moment production compared to permanent posts. Extends generalizability of Bayer et al.'s ephemerality findings beyond college students to a different real-world context.",
       "claim": "Ephemerality affordance produces rougher, more spontaneous, less-curated content in an applied institutional context (museum visitors)",
+      "dup_count": 1
+    },
+    {
+      "id": "youtube-2020-howyoutubeworks-launch",
+      "authors": [
+        "YouTube"
+      ],
+      "title": "Ever wonder how YouTube works?",
+      "year": 2020,
+      "venue": "Official YouTube Blog",
+      "type": "report",
+      "url": "https://blog.youtube/inside-youtube/ever-wonder-how-youtube-works/",
+      "doi": null,
+      "priority": 3,
+      "stance": "neutral",
+      "nature": "review",
+      "tag": "youtube-architecture",
+      "areas": [
+        "affordance-moves-content"
+      ],
+      "clusters": [
+        "15-youtube-architecture"
+      ],
+      "verified": true,
+      "note": "June 25 2020 announcement launching the 'How YouTube Works' transparency website (youtube.com/howyoutubeworks), centralizing explanations of search, recommendations, policies, and enforcement reports. Documents YouTube's shift toward systematic public transparency about algorithmic operations.",
+      "claim": "official June 2020 launch of the How YouTube Works transparency website explaining products, policies, and enforcement",
       "dup_count": 1
     },
     {
@@ -7523,33 +9235,6 @@
       "verified": true,
       "note": "Survey study of tweens showing wishful identification predicts PSR with YouTubers; qualitatively confirms direct camera gaze and conversational address as recognized primary triggers of parasocial bonds on YouTube, corroborating supply-side marker validity.",
       "claim": "direct camera gaze and conversational address widely recognized as primary YouTube PSI triggers",
-      "dup_count": 1
-    },
-    {
-      "id": "youtube-2019-improving-recommendations",
-      "authors": [
-        "YouTube"
-      ],
-      "title": "Continuing our work to improve recommendations on YouTube",
-      "year": 2019,
-      "venue": "YouTube Blog",
-      "type": "report",
-      "url": "https://blog.youtube/news-and-events/continuing-our-work-to-improve/",
-      "doi": null,
-      "priority": 3,
-      "stance": "neutral",
-      "nature": "theoretical",
-      "tag": "the-debate",
-      "areas": [
-        "chain-clickbait",
-        "rebut-supply-demand"
-      ],
-      "clusters": [
-        "09-clickbait"
-      ],
-      "verified": true,
-      "note": "Announces satisfaction-signal refinements (surveys, likes/dislikes, sharing) and claims demoting tabloid content increased watch time by 0.5%; reasserts the algorithm-reduces-clickbait narrative at a later date, complicating the natural experiment design.",
-      "claim": "platform claim that satisfaction-signal refinements reduced tabloid content and raised watch time",
       "dup_count": 1
     },
     {
@@ -7954,6 +9639,34 @@
       "dup_count": 1
     },
     {
+      "id": "joachims-2017-unbiased-learning-rank",
+      "authors": [
+        "Joachims, T.",
+        "Swaminathan, A.",
+        "Schnabel, T."
+      ],
+      "title": "Unbiased Learning-to-Rank with Biased Feedback",
+      "year": 2017,
+      "venue": "Proceedings of the 10th ACM International Conference on Web Search and Data Mining (WSDM 2017)",
+      "type": "paper",
+      "url": "https://arxiv.org/abs/1608.04468",
+      "doi": null,
+      "priority": 3,
+      "stance": "neutral",
+      "nature": "methodological",
+      "tag": "youtube-architecture",
+      "areas": [
+        "affordance-moves-content"
+      ],
+      "clusters": [
+        "15-youtube-architecture"
+      ],
+      "verified": true,
+      "note": "Foundational methodology paper introducing counterfactual inverse-propensity-scoring (IPS) for unbiased learning-to-rank from position-biased click feedback; directly cited and applied in YouTube's production ranking debiasing work including the Zhao et al. 2019 shallow tower for position-bias removal.",
+      "claim": "IPS-based counterfactual unbiased learning-to-rank framework correcting position bias in click feedback (WSDM 2017)",
+      "dup_count": 1
+    },
+    {
       "id": "khamis-2017-self-branding-microcelebrity",
       "authors": [
         "Khamis, S.",
@@ -8190,13 +9903,14 @@
       "priority": 3,
       "stance": "pro",
       "nature": "empirical",
-      "tag": "affordance-effects",
+      "tag": "youtube-architecture",
       "areas": [
         "affordance-moves-content",
         "affordance-concept"
       ],
       "clusters": [
-        "14-platformization"
+        "14-platformization",
+        "15-youtube-architecture"
       ],
       "verified": true,
       "note": "Historical-structural analysis of YouTube's partner program; shows that monetization architecture (content ID, revenue share, audience analytics) structured which activities become economically viable content long before the algorithm-optimization discourse.",
@@ -8568,33 +10282,6 @@
       "note": "Synthesizes microcelebrity into five defining practices including strategic intimacy, performing a continuous self, and converting attention into economic value; provides cultural theory foundation for why intimacy performance is structurally required by the microcelebrity genre.",
       "claim": "strategic intimacy and continuous self-performance are structurally required microcelebrity practices",
       "dup_count": 1
-    },
-    {
-      "id": "youtube-2012-search-watch-time",
-      "authors": [
-        "YouTube"
-      ],
-      "title": "YouTube search, now optimized for time watched",
-      "year": 2012,
-      "venue": "YouTube Blog",
-      "type": "report",
-      "url": "https://blog.youtube/news-and-events/youtube-search-now-optimized-for-time/",
-      "doi": null,
-      "priority": 3,
-      "stance": "neutral",
-      "nature": "theoretical",
-      "tag": "the-debate",
-      "areas": [
-        "chain-clickbait",
-        "rebut-supply-demand"
-      ],
-      "clusters": [
-        "09-clickbait"
-      ],
-      "verified": true,
-      "note": "Earliest archived official statement of YouTube's watch-time shift; explicitly names thumbnail clickbait ('cleavage thumbnails') as the problem the algorithm change addresses — the primary source for the platform narrative the project empirically tests.",
-      "claim": "platform's 'less clicking more watching' empirical assertion that the paper directly tests",
-      "dup_count": 2
     },
     {
       "id": "marwick-2011-twitter-celebrity-practice",
@@ -9074,13 +10761,14 @@
       "priority": 3,
       "stance": "neutral",
       "nature": "empirical",
-      "tag": "affordance-effects",
+      "tag": "youtube-architecture",
       "areas": [
         "chain-duration",
         "affordance-moves-content"
       ],
       "clusters": [
-        "04-engagement-metrics"
+        "04-engagement-metrics",
+        "15-youtube-architecture"
       ],
       "verified": true,
       "note": "Documents YouTube's mid-roll ad policy thresholds: ≥10 minutes for eligibility (pre-July 2020), then lowered to ≥8 minutes. Establishes the monetization-side incentive that compounds the algorithmic watch-time incentive for creators to produce videos exceeding these duration thresholds.",
