@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>YouTube Ecology — Affordances &rarr; Attributes</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif; background: #f5f5f5; color: #222; }
+
+  /* Layout */
+  .app { display: flex; height: 100vh; }
+  .sidebar { width: 440px; min-width: 440px; border-right: 1px solid #ddd; display: flex; flex-direction: column; background: #fff; }
+  .main { flex: 1; overflow-y: auto; padding: 32px 40px; background: #fafafa; }
+
+  /* Tabs */
+  .tabs { display: flex; border-bottom: 1px solid #ddd; }
+  .tab { flex: 1; padding: 10px 12px; font-size: 12px; font-weight: 600; text-align: center; cursor: pointer; background: #f9f9f9; color: #777; border-bottom: 2px solid transparent; transition: all 0.15s; }
+  .tab:hover { color: #444; background: #f0f0f0; }
+  .tab.active { color: #b91c1c; background: #fff; border-bottom-color: #b91c1c; }
+
+  /* Sidebar header */
+  .sidebar-header { padding: 12px 16px; border-bottom: 1px solid #eee; }
+  .sidebar-header h1 { font-size: 13px; font-weight: 600; color: #111; margin-bottom: 8px; }
+  .search { width: 100%; padding: 8px 12px; background: #f5f5f5; border: 1px solid #ddd; border-radius: 6px; color: #222; font-size: 13px; outline: none; }
+  .search:focus { border-color: #b91c1c; background: #fff; }
+
+  /* Filters */
+  .filters { padding: 10px 16px; border-bottom: 1px solid #eee; display: flex; flex-direction: column; gap: 8px; }
+  .filter-row { display: flex; gap: 5px; flex-wrap: wrap; align-items: center; }
+  .filter-row label { font-size: 10px; color: #999; width: 100%; margin-bottom: 1px; text-transform: uppercase; letter-spacing: 0.5px; }
+  .chip { padding: 3px 8px; border-radius: 4px; font-size: 11px; cursor: pointer; border: 1px solid #ddd; background: #fff; color: #666; transition: all 0.15s; user-select: none; }
+  .chip:hover { border-color: #aaa; color: #333; }
+  .chip.active { background: #b91c1c; border-color: #b91c1c; color: #fff; }
+  .chip.active.chip-stance-pro { background: #16a34a; border-color: #16a34a; }
+  .chip.active.chip-stance-anti { background: #dc2626; border-color: #dc2626; }
+  .chip.active.chip-stance-mixed { background: #d97706; border-color: #d97706; }
+  .chip.active.chip-stance-neutral { background: #888; border-color: #888; }
+
+  /* Select dropdown */
+  .filters select { flex: 1; padding: 4px 8px; font-size: 11px; border: 1px solid #ddd; border-radius: 4px; background: #fff; color: #444; outline: none; }
+  .filters select:focus { border-color: #b91c1c; }
+
+  /* Sort */
+  .sort-bar { padding: 6px 16px; border-bottom: 1px solid #eee; display: flex; align-items: center; gap: 8px; }
+  .sort-bar label { font-size: 11px; color: #999; }
+  .sort-bar select { background: #fff; border: 1px solid #ddd; border-radius: 4px; color: #444; font-size: 11px; padding: 3px 6px; outline: none; }
+
+  /* Doc list */
+  .doc-list { flex: 1; overflow-y: auto; }
+  .doc-item { padding: 10px 16px; border-bottom: 1px solid #f0f0f0; cursor: pointer; transition: background 0.1s; display: flex; gap: 10px; align-items: flex-start; }
+  .doc-item:hover { background: #fff5f5; }
+  .doc-item.selected { background: #fef2f2; border-left: 3px solid #ef4444; }
+  .doc-item.is-read { opacity: 0.5; }
+  .doc-item-content { flex: 1; min-width: 0; }
+  .doc-item-title { font-size: 13px; font-weight: 500; color: #222; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .doc-item.is-read .doc-item-title { text-decoration: line-through; color: #999; }
+  .doc-item-author { font-size: 11px; color: #777; margin-top: 1px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .doc-item-meta { font-size: 11px; color: #999; margin-top: 4px; display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
+  .doc-count { padding: 6px 16px; font-size: 11px; color: #999; border-bottom: 1px solid #eee; background: #fafafa; }
+  .read-check { width: 16px; height: 16px; margin-top: 2px; accent-color: #b91c1c; cursor: pointer; flex-shrink: 0; }
+
+  /* Strategy section header */
+  .strategy-section { padding: 10px 16px; font-size: 11px; font-weight: 700; color: #b91c1c; background: #fef2f2; border-bottom: 1px solid #fecaca; text-transform: uppercase; letter-spacing: 0.5px; }
+  .strategy-section .phase-num { display: inline-block; background: #b91c1c; color: #fff; padding: 2px 6px; border-radius: 3px; font-size: 10px; margin-right: 6px; }
+  .strategy-section .phase-blurb { display: block; margin-top: 4px; color: #555; font-size: 11px; font-weight: 400; text-transform: none; letter-spacing: 0; line-height: 1.4; }
+  .strategy-why { padding: 2px 16px 10px 42px; font-size: 11.5px; color: #6b21a8; background: #fff; border-bottom: 1px solid #f0f0f0; line-height: 1.45; }
+  .strategy-why b { color: #581c87; }
+  .strategy-missing { padding: 8px 16px; font-size: 11px; color: #dc2626; background: #fff7ed; border-bottom: 1px solid #f0f0f0; }
+
+  /* Badges */
+  .badge { display: inline-block; padding: 1px 6px; border-radius: 3px; font-size: 10px; font-weight: 500; white-space: nowrap; }
+  .badge-priority-1 { background: #fef2f2; color: #dc2626; border: 1px solid #fecaca; }
+  .badge-priority-2 { background: #fffbeb; color: #d97706; border: 1px solid #fde68a; }
+  .badge-priority-3 { background: #eff6ff; color: #2563eb; border: 1px solid #bfdbfe; }
+  .badge-priority-4 { background: #f5f5f5; color: #888; border: 1px solid #e5e5e5; }
+
+  .badge-stance-pro { background: #f0fdf4; color: #15803d; border: 1px solid #bbf7d0; }
+  .badge-stance-anti { background: #fef2f2; color: #dc2626; border: 1px solid #fecaca; }
+  .badge-stance-mixed { background: #fffbeb; color: #d97706; border: 1px solid #fde68a; }
+  .badge-stance-neutral { background: #f5f5f5; color: #777; border: 1px solid #e5e5e5; }
+
+  .badge-tag-affordance-theory { background: #eef2ff; color: #4338ca; border: 1px solid #c7d2fe; }
+  .badge-tag-the-debate { background: #fef2f2; color: #b91c1c; border: 1px solid #fecaca; }
+  .badge-tag-affordance-effects { background: #ecfeff; color: #0e7490; border: 1px solid #a5f3fc; }
+  .badge-tag-attributes { background: #f0fdf4; color: #15803d; border: 1px solid #bbf7d0; }
+  .badge-tag-methods { background: #fdf2f8; color: #be185d; border: 1px solid #fbcfe8; }
+
+  .badge-nature-theoretical { background: #faf5ff; color: #7c3aed; border: 1px solid #ddd6fe; }
+  .badge-nature-empirical { background: #eff6ff; color: #1d4ed8; border: 1px solid #bfdbfe; }
+  .badge-nature-methodological { background: #fdf2f8; color: #be185d; border: 1px solid #fbcfe8; }
+  .badge-nature-review { background: #f5f5f5; color: #555; border: 1px solid #e5e5e5; }
+
+  .badge-type-book { background: #faf5ff; color: #7c3aed; border: 1px solid #ddd6fe; }
+  .badge-type-paper { background: #eff6ff; color: #2563eb; border: 1px solid #bfdbfe; }
+  .badge-type-chapter { background: #f0fdfa; color: #0d9488; border: 1px solid #99f6e4; }
+  .badge-type-report { background: #fdf2f8; color: #be185d; border: 1px solid #fbcfe8; }
+  .badge-type-essay { background: #fef3c7; color: #92400e; border: 1px solid #fde68a; }
+  .badge-type-preprint { background: #f1f5f9; color: #475569; border: 1px solid #cbd5e1; }
+  .badge-type-dataset { background: #f0fdfa; color: #0f766e; border: 1px solid #99f6e4; }
+
+  .badge-verified-false { background: #fff7ed; color: #c2410c; border: 1px solid #fed7aa; }
+  .badge-verified-true { background: #f0fdf4; color: #166534; border: 1px solid #bbf7d0; }
+
+  /* Main panel */
+  .empty-state { display: flex; align-items: center; justify-content: center; height: 100%; color: #bbb; font-size: 14px; flex-direction: column; gap: 12px; text-align:center; }
+  .empty-state .hint { font-size: 12px; max-width: 460px; line-height: 1.6; }
+  .empty-state .thesis { font-size: 12px; max-width: 520px; line-height: 1.6; color:#666; background:#fff; border:1px solid #eee; border-radius:8px; padding:14px 16px; text-align:left; }
+  .empty-state .thesis b { color:#b91c1c; }
+
+  .doc-detail h2 { font-size: 22px; font-weight: 600; color: #111; margin-bottom: 4px; line-height: 1.3; }
+  .doc-detail .authors-line { font-size: 13px; color: #555; margin-bottom: 8px; }
+  .doc-detail .venue-line { font-size: 12px; color: #888; margin-bottom: 10px; }
+  .doc-detail .url { font-size: 12px; color: #b91c1c; text-decoration: none; word-break: break-all; display: inline-block; margin-top: 4px; }
+  .doc-detail .url:hover { text-decoration: underline; }
+
+  .read-toggle { margin: 16px 0; display: flex; align-items: center; gap: 8px; }
+  .read-toggle input { width: 18px; height: 18px; accent-color: #b91c1c; cursor: pointer; }
+  .read-toggle label { font-size: 13px; color: #555; cursor: pointer; }
+
+  .status-row { display: flex; gap: 8px; align-items: center; margin: 12px 0; flex-wrap: wrap; }
+  .status-row .badge { font-size: 12px; padding: 4px 12px; }
+
+  .section { margin: 20px 0; }
+  .section h3 { font-size: 12px; color: #999; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
+
+  .note-box { font-size: 14px; line-height: 1.7; color: #444; background: #fff; border: 1px solid #e5e5e5; border-radius: 8px; padding: 16px; }
+  .claim-box { font-size: 13px; line-height: 1.6; color: #92400e; background: #fffbeb; border: 1px solid #fde68a; border-radius: 8px; padding: 12px 16px; }
+
+  .tag-list { display: flex; flex-wrap: wrap; gap: 6px; }
+  .tag { padding: 3px 10px; border-radius: 4px; font-size: 12px; }
+  .tag-area { background: #eef2ff; color: #4338ca; border: 1px solid #c7d2fe; }
+  .tag-cluster { background: #f0fdf4; color: #15803d; border: 1px solid #bbf7d0; }
+
+  /* Notes */
+  .notes-section { margin: 24px 0; }
+  .notes-section h3 { font-size: 12px; color: #999; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
+  .notes-area { width: 100%; min-height: 120px; padding: 12px; font-family: inherit; font-size: 13px; line-height: 1.6; color: #333; background: #fff; border: 1px solid #ddd; border-radius: 8px; outline: none; resize: vertical; }
+  .notes-area:focus { border-color: #b91c1c; }
+  .notes-saved { font-size: 11px; color: #16a34a; margin-top: 4px; opacity: 0; transition: opacity 0.3s; }
+  .notes-saved.show { opacity: 1; }
+
+  /* Footer credit */
+  .credit { position:fixed; bottom:16px; right:16px; background:#fff; border:1px solid #ddd; border-radius:8px; padding:6px 14px; display:flex; align-items:center; gap:8px; font-family:-apple-system,system-ui,sans-serif; font-size:12px; color:#666; box-shadow:0 2px 8px rgba(0,0,0,0.08); z-index:9999; }
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="sidebar">
+    <div class="tabs">
+      <div class="tab active" data-tab="all">All Sources</div>
+      <div class="tab" data-tab="strategy">Reading Strategy</div>
+    </div>
+    <div class="sidebar-header">
+      <h1 id="sidebar-title">YouTube Ecology &mdash; sources</h1>
+      <input class="search" type="text" placeholder="Search title, author, note, claim, area..." id="search">
+    </div>
+    <div class="filters" id="filters-panel">
+      <div class="filter-row">
+        <label>Priority to read</label>
+        <span class="chip" data-filter="priority" data-val="1">1 &middot; Must-read</span>
+        <span class="chip" data-filter="priority" data-val="2">2 &middot; Important</span>
+        <span class="chip" data-filter="priority" data-val="3">3 &middot; Supporting</span>
+        <span class="chip" data-filter="priority" data-val="4">4 &middot; Context</span>
+      </div>
+      <div class="filter-row">
+        <label>Stance (toward thesis: affordances <i>construct</i> preferences)</label>
+        <span class="chip chip-stance-pro" data-filter="stance" data-val="pro">Pro</span>
+        <span class="chip chip-stance-anti" data-filter="stance" data-val="anti">Anti</span>
+        <span class="chip chip-stance-mixed" data-filter="stance" data-val="mixed">Mixed</span>
+        <span class="chip chip-stance-neutral" data-filter="stance" data-val="neutral">Neutral</span>
+      </div>
+      <div class="filter-row">
+        <label>Tag (role in the argument)</label>
+        <span class="chip" data-filter="tag" data-val="affordance-theory">Affordance theory</span>
+        <span class="chip" data-filter="tag" data-val="the-debate">The debate</span>
+        <span class="chip" data-filter="tag" data-val="affordance-effects">Affordances &rarr; content</span>
+        <span class="chip" data-filter="tag" data-val="attributes">Attributes &amp; measures</span>
+        <span class="chip" data-filter="tag" data-val="methods">Methods &amp; design</span>
+      </div>
+      <div class="filter-row">
+        <label>Nature</label>
+        <span class="chip" data-filter="nature" data-val="theoretical">Theoretical</span>
+        <span class="chip" data-filter="nature" data-val="empirical">Empirical</span>
+        <span class="chip" data-filter="nature" data-val="methodological">Methodological</span>
+        <span class="chip" data-filter="nature" data-val="review">Review</span>
+      </div>
+      <div class="filter-row">
+        <label>Project area</label>
+        <select id="area-filter">
+          <option value="">All project areas</option>
+          <option value="intro-preferences-constructed">Intro &middot; preferences constructed</option>
+          <option value="affordance-concept">Affordance concept</option>
+          <option value="rebut-supply-demand">Rebut supply-and-demand</option>
+          <option value="affordance-moves-content">Affordances move content</option>
+          <option value="chain-duration">Chain &middot; watch-time &rarr; duration</option>
+          <option value="chain-parasocial">Chain &middot; watch-time &rarr; parasocial</option>
+          <option value="chain-animosity-dispersion">Chain &middot; personalization &rarr; animosity dispersion</option>
+          <option value="chain-algospeak">Chain &middot; demonetization &rarr; algospeak</option>
+          <option value="chain-clickbait">Chain &middot; CTR &rarr; clickbait (secondary)</option>
+          <option value="decomposition">Method &middot; composition vs within</option>
+          <option value="affiliated-split">Affiliated / unaffiliated split</option>
+          <option value="cross-medium-tv">Cross-medium TV comparison</option>
+          <option value="measurement">Measurement methods</option>
+        </select>
+      </div>
+      <div class="filter-row">
+        <label>Cluster (source slice)</label>
+        <select id="cluster-filter">
+          <option value="">All clusters</option>
+          <option value="01-affordance-theory">01 &middot; Affordance theory</option>
+          <option value="02-preferences">02 &middot; Preferences: constructed vs revealed</option>
+          <option value="03-youtube-politics">03 &middot; YouTube politics / radicalization</option>
+          <option value="04-engagement-metrics">04 &middot; Engagement metrics &amp; objectives</option>
+          <option value="05-personalization">05 &middot; Personalization &amp; fragmentation</option>
+          <option value="06-demonetization-algospeak">06 &middot; Demonetization &amp; algospeak</option>
+          <option value="07-parasocial">07 &middot; Parasocial direct-address</option>
+          <option value="08-animosity-outrage">08 &middot; Animosity / outrage</option>
+          <option value="09-clickbait">09 &middot; Clickbait (de-emphasized)</option>
+          <option value="10-methods">10 &middot; Measurement &amp; design methods</option>
+          <option value="11-feed-experiments">11 &middot; Feed/interaction experiments</option>
+          <option value="12-format-discovery">12 &middot; Format &amp; discovery</option>
+          <option value="13-governance-deplatforming">13 &middot; Governance &amp; deplatforming</option>
+          <option value="14-platformization">14 &middot; Platformization of production</option>
+        </select>
+      </div>
+    </div>
+    <div class="sort-bar" id="sort-bar">
+      <label>Sort by</label>
+      <select id="sort">
+        <option value="priority">Priority (1 first)</option>
+        <option value="year-desc">Year (newest)</option>
+        <option value="year-asc">Year (oldest)</option>
+        <option value="author">Author (A&ndash;Z)</option>
+        <option value="dup">Appears in most slices</option>
+        <option value="id">ID (A&ndash;Z)</option>
+      </select>
+    </div>
+    <div class="doc-count" id="doc-count"></div>
+    <div class="doc-list" id="doc-list"></div>
+  </div>
+  <div class="main" id="main">
+    <div class="empty-state">
+      <div>Select a source from the list.</div>
+      <div class="thesis"><b>Thesis under review:</b> YouTube's affordances <b>construct</b> rather than merely <b>reflect</b> user preferences. Changing an affordance &mdash; how engagement is operationalized (CTR&rarr;watch-time), personalization intensity, monetization, metric visibility &mdash; changes what content is produced and consumed. Documented affordance changes are treated as natural experiments; against the "we give people what they want" defense and the Munger&ndash;Phillips supply-and-demand account.</div>
+      <div class="hint">Switch to <b>Reading Strategy</b> for a curated 20-paper path through the argument. Filter by priority, stance, tag, nature, project area, or source cluster.</div>
+    </div>
+  </div>
+</div>
+
+<script>
+let DATA = [];
+let selected = null;
+let currentTab = 'all';
+let filters = { priority: null, stance: null, tag: null, nature: null, area: null, cluster: null };
+let readState = JSON.parse(localStorage.getItem('yt-read') || '{}');
+let notesState = JSON.parse(localStorage.getItem('yt-notes') || '{}');
+
+const STRATEGY = [
+  {
+    label: 'Phase 1 — The stakes: are preferences stable or constructed?',
+    blurb: 'The whole paper hinges on rejecting exogenous, stable preferences. Stage the strongest version of the foil, then the construction/endogeneity reply.',
+    items: [
+      { id: 'stigler-1977-de-gustibus', why: 'The <b>foil in its purest form</b>: tastes are stable, exogenous, the same across people. Quote it as the assumption "we give people what they want" smuggles in.' },
+      { id: 'slovic-1995-construction-preference', why: 'The pivot: preferences are <b>constructed in the act of elicitation</b>. Grounds the claim that an interface partly constitutes the preference expressed in it.' },
+      { id: 'perdomo-2020-performative-prediction', why: 'The modern bridge: recommenders <b>co-produce the very preferences</b> they appear to predict — a formal account of preferences as endogenous to the system.' }
+    ]
+  },
+  {
+    label: 'Phase 2 — What an affordance is, reframed as an incentive',
+    blurb: 'Pin down the construct, then make the move the paper needs: affordances as population-level cost/reward gradients, not individual perceptions.',
+    items: [
+      { id: 'treem-2013-affordances', why: 'Canonical affordance typology (visibility/editability/persistence/association). The vocabulary you adopt — and then push from "possibility for action" toward incentive.' },
+      { id: 'nieborg-2018-platformization', why: 'The "contingent cultural commodity": platforms continuously <b>reprice</b> content. The closest existing theory to treating a metric change as a market-wide affordance shock.' }
+    ]
+  },
+  {
+    label: 'Phase 3 — The debate the paper must beat',
+    blurb: 'The supply-and-demand camp is the named adversary. Read the strongest demand-side causal evidence; you must answer it, not dismiss it.',
+    items: [
+      { id: 'munger-2022-right-wing', why: 'The <b>primary foil</b>: far-right viewership peaked before algorithmic moderation; supply expanded to meet pre-existing demand.' },
+      { id: 'hosseinmardi-2024-counterfactual-bots', why: 'The <b>strongest causal demand-side result</b>: counterfactual bots show recommendations <i>moderate</i>. Your argument must shift the question from real-time recs to supply/preference formation.' },
+      { id: 'chen-2023-subscriptions-external-links', why: 'Exposure runs through subscriptions/external links, not recs — but those are <b>themselves affordances</b>, which is exactly the reframe you exploit.' }
+    ]
+  },
+  {
+    label: 'Phase 4 — Precedent: affordance changes move produced/consumed content',
+    blurb: 'The empirical backbone. Cross-platform natural experiments prove the general claim, so YouTube is an instance of a known phenomenon, not a one-off.',
+    items: [
+      { id: 'gligoric-2018-140-280-characters', why: 'The <b>cleanest natural experiment</b>: a single affordance change (140&rarr;280) measurably changed content. The template for your whole identification strategy.' },
+      { id: 'huszar-2022-algorithmic-amplification-politics', why: 'The platform’s own RCT: the <b>ranking affordance</b> amplifies some political content over others — affordance, not neutral mirror.' },
+      { id: 'violot-2024-shorts-vs-regular-youtube', why: 'On YouTube itself: introducing <b>Shorts</b> shifted what 70k+ channels produce — large-N supply-side evidence of a format affordance reshaping production.' },
+      { id: 'bishop-2019-algorithmic-gossip', why: 'The producer mechanism: creators <b>actively reverse-engineer and adapt</b> to the algorithm — the micro-foundation for within-channel change.' }
+    ]
+  },
+  {
+    label: 'Phase 5 — The affordance → attribute chains (what to measure, and why)',
+    blurb: 'Your Step 1. Each chain needs an affordance anchor and a measurable attribute. These four anchor the mechanism for each chain.',
+    items: [
+      { id: 'covington-2016-deep-neural-networks-youtube', why: 'Engineering proof that <b>watch-time replaced CTR</b> as the objective — the documented affordance change behind the duration/format chain.' },
+      { id: 'hartmann-2011-horton-wohl-revisited', why: 'Experimental proof that <b>direct address (gaze + "you") causally produces parasocial interaction</b> — licenses measuring direct-address as the parasocial attribute.' },
+      { id: 'rathje-2021-outgroup-animosity-engagement', why: 'Out-group <b>animosity is engagement-selected</b> — the mechanism linking the engagement/personalization affordance to the animosity attribute.' },
+      { id: 'steen-2023-algospeak-tiktok', why: 'Defines <b>algospeak</b> as measurable linguistic adaptation to moderation/monetization pressure — the attribute end of the demonetization chain.' }
+    ]
+  },
+  {
+    label: 'Phase 6 — Cross-medium baseline (Step 4)',
+    blurb: 'The consistency check that breaks the platform’s defense: the same appetite looks different on differently-built interfaces.',
+    items: [
+      { id: 'mutz-2007-in-your-face-television', why: 'Shows interface <b>form itself</b> — close-up camera + incivility — drives affect. Bridges parasocial direct-address, animosity, and the TV-vs-YouTube comparison in one move.' }
+    ]
+  },
+  {
+    label: 'Phase 7 — Measure it, then decompose the shift',
+    blurb: 'Your Steps 1–2 toolkit: measure attributes at scale, treat changes as natural experiments, split composition from within-channel change.',
+    items: [
+      { id: 'gilardi-2023-chatgpt-annotation', why: 'Validates <b>LLM annotation</b> as a scalable measurement instrument — how you score parasociality/animosity/algospeak across millions of videos.' },
+      { id: 'borusyak-2022-shift-share', why: 'The <b>decomposition</b> engine: separate compositional (entry/exit) from within-unit change — directly operationalizes your Step 2.' },
+      { id: 'callaway-2021-staggered-did', why: 'Difference-in-differences across <b>multiple dated affordance changes</b> without the two-way-FE bias — the estimator for your natural experiments.' }
+    ]
+  }
+];
+
+const strategyIds = new Set(STRATEGY.flatMap(s => s.items.map(i => i.id)));
+const priorityLabel = { 1: 'must-read', 2: 'important', 3: 'supporting', 4: 'context' };
+const areaLabels = {
+  'intro-preferences-constructed': 'intro — preferences constructed',
+  'affordance-concept': 'affordance concept',
+  'rebut-supply-demand': 'rebut supply-and-demand',
+  'affordance-moves-content': 'affordances move content',
+  'chain-duration': 'chain — watch-time → duration',
+  'chain-parasocial': 'chain — watch-time → parasocial',
+  'chain-animosity-dispersion': 'chain — personalization → animosity dispersion',
+  'chain-algospeak': 'chain — demonetization → algospeak',
+  'chain-clickbait': 'chain — CTR → clickbait (secondary)',
+  'decomposition': 'method — composition vs within',
+  'affiliated-split': 'affiliated / unaffiliated split',
+  'cross-medium-tv': 'cross-medium TV comparison',
+  'measurement': 'measurement methods'
+};
+
+fetch('sources.json')
+  .then(r => r.json())
+  .then(payload => {
+    DATA = payload.sources || payload;
+    const n = DATA.length;
+    document.getElementById('sidebar-title').textContent = `YouTube Ecology — ${n} sources`;
+    render();
+  })
+  .catch(err => {
+    document.getElementById('doc-list').innerHTML = `<div style="padding:20px;color:#dc2626">Failed to load sources.json: ${err.message}</div>`;
+  });
+
+function setTab(tab) {
+  currentTab = tab;
+  document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t.dataset.tab === tab));
+  const fp = document.getElementById('filters-panel');
+  const sb = document.getElementById('sort-bar');
+  fp.style.display = (tab === 'strategy') ? 'none' : '';
+  sb.style.display = (tab === 'strategy') ? 'none' : '';
+  render();
+}
+document.querySelectorAll('.tab').forEach(t => t.addEventListener('click', () => setTab(t.dataset.tab)));
+
+function render() {
+  if (currentTab === 'strategy') return renderStrategy();
+  renderAll();
+}
+
+function matchesFilters(d, q) {
+  if (filters.priority && String(d.priority) !== String(filters.priority)) return false;
+  if (filters.stance && d.stance !== filters.stance) return false;
+  if (filters.tag && d.tag !== filters.tag) return false;
+  if (filters.nature && d.nature !== filters.nature) return false;
+  if (filters.area && !(d.areas || []).includes(filters.area)) return false;
+  if (filters.cluster && !(d.clusters || []).includes(filters.cluster)) return false;
+  if (q) {
+    const hay = [
+      d.title, d.id, (d.authors || []).join(' '), d.venue, d.note, d.claim, d.tag, d.nature,
+      ...(d.areas || []), ...(d.clusters || [])
+    ].filter(Boolean).join(' ').toLowerCase();
+    if (!hay.includes(q)) return false;
+  }
+  return true;
+}
+
+function renderAll() {
+  const q = document.getElementById('search').value.toLowerCase().trim();
+  const sort = document.getElementById('sort').value;
+  let docs = DATA.filter(d => matchesFilters(d, q));
+  docs.sort((a, b) => {
+    if (sort === 'priority') {
+      const pa = a.priority || 9, pb = b.priority || 9;
+      if (pa !== pb) return pa - pb;
+      return (b.year || 0) - (a.year || 0);
+    }
+    if (sort === 'year-desc') return (b.year || 0) - (a.year || 0);
+    if (sort === 'year-asc') return (a.year || 0) - (b.year || 0);
+    if (sort === 'dup') return (b.dup_count || 0) - (a.dup_count || 0);
+    if (sort === 'author') {
+      const aa = (a.authors && a.authors[0] || 'zzz').toLowerCase();
+      const ab = (b.authors && b.authors[0] || 'zzz').toLowerCase();
+      return aa.localeCompare(ab);
+    }
+    if (sort === 'id') return (a.id || '').localeCompare(b.id || '');
+    return 0;
+  });
+  const readCount = docs.filter(d => readState[d.id]).length;
+  document.getElementById('doc-count').textContent = `${docs.length} sources (${readCount} read)`;
+  const list = document.getElementById('doc-list');
+  list.innerHTML = docs.map(d => docItemHTML(d)).join('') || '<div style="padding:20px;color:#bbb;font-size:13px">No sources match.</div>';
+  bindDocItems();
+}
+
+function renderStrategy() {
+  const q = document.getElementById('search').value.toLowerCase().trim();
+  let totalCount = 0, readCount = 0, html = '';
+  for (let i = 0; i < STRATEGY.length; i++) {
+    const phase = STRATEGY[i];
+    let rows = '';
+    let shown = 0;
+    for (const item of phase.items) {
+      const d = DATA.find(x => x.id === item.id);
+      if (!d) { rows += `<div class="strategy-missing">⚠ missing id: ${item.id}</div>`; continue; }
+      if (q && !matchesFilters(d, q)) continue;
+      rows += docItemHTML(d);
+      rows += `<div class="strategy-why">${item.why}</div>`;
+      shown++; totalCount++;
+      if (readState[d.id]) readCount++;
+    }
+    if (shown === 0 && !rows.includes('missing')) continue;
+    html += `<div class="strategy-section"><span class="phase-num">${i + 1}</span>${phase.label.replace(/^Phase \d+\s*—\s*/, '')}<span class="phase-blurb">${phase.blurb}</span></div>`;
+    html += rows;
+  }
+  document.getElementById('doc-count').textContent = `${totalCount} papers across ${STRATEGY.length} phases (${readCount} read)`;
+  document.getElementById('doc-list').innerHTML = html;
+  bindDocItems();
+}
+
+function docItemHTML(d) {
+  const isRead = readState[d.id];
+  const firstAuthor = (d.authors && d.authors[0]) || 'Unknown';
+  const authorShort = firstAuthor.split(',')[0] + (d.authors && d.authors.length > 1 ? ' et al.' : '');
+  return `
+    <div class="doc-item ${selected === d.id ? 'selected' : ''} ${isRead ? 'is-read' : ''}" data-id="${d.id}">
+      <input type="checkbox" class="read-check" data-id="${d.id}" ${isRead ? 'checked' : ''} title="Mark as read">
+      <div class="doc-item-content">
+        <div class="doc-item-title">${escapeHTML(d.title || d.id)}</div>
+        <div class="doc-item-author">${escapeHTML(authorShort)} &middot; ${d.year || '—'} &middot; ${escapeHTML(d.venue || '')}</div>
+        <div class="doc-item-meta">
+          <span class="badge badge-priority-${d.priority}">P${d.priority}</span>
+          <span class="badge badge-stance-${d.stance || 'neutral'}">${d.stance || 'neutral'}</span>
+          <span class="badge badge-tag-${d.tag || 'methods'}">${(d.tag || '').replace(/-/g,' ')}</span>
+          <span class="badge badge-nature-${d.nature || 'review'}">${d.nature || ''}</span>
+        </div>
+      </div>
+    </div>`;
+}
+
+function bindDocItems() {
+  document.querySelectorAll('.doc-item').forEach(el => {
+    el.addEventListener('click', (e) => {
+      if (e.target.classList.contains('read-check')) return;
+      selected = el.dataset.id;
+      document.querySelectorAll('.doc-item').forEach(x => x.classList.toggle('selected', x.dataset.id === selected));
+      const d = DATA.find(x => x.id === selected);
+      if (d) showDoc(d);
+    });
+  });
+  document.querySelectorAll('.read-check').forEach(cb => {
+    cb.addEventListener('change', (e) => {
+      e.stopPropagation();
+      const id = cb.dataset.id;
+      readState[id] = cb.checked;
+      localStorage.setItem('yt-read', JSON.stringify(readState));
+      render();
+      if (selected === id) showDoc(DATA.find(d => d.id === id));
+    });
+  });
+}
+
+function showDoc(d) {
+  const main = document.getElementById('main');
+  const isRead = readState[d.id];
+  const notes = notesState[d.id] || '';
+  const authors = (d.authors || []).join('; ') || 'Unknown';
+  const venueLine = [d.venue, d.year, d.type].filter(Boolean).join(' · ');
+  const areas = (d.areas || []).map(a => `<span class="tag tag-area">${escapeHTML(areaLabels[a] || a)}</span>`).join('');
+  const clusters = (d.clusters || []).map(c => `<span class="tag tag-cluster">${escapeHTML(c)}</span>`).join('');
+  main.innerHTML = `
+    <div class="doc-detail">
+      <h2>${escapeHTML(d.title)}</h2>
+      <div class="authors-line">${escapeHTML(authors)}</div>
+      <div class="venue-line">${escapeHTML(venueLine)}</div>
+      ${d.url ? `<a class="url" href="${escapeAttr(d.url)}" target="_blank" rel="noopener">${escapeHTML(d.url)}</a>` : ''}
+      ${d.doi ? `<div style="font-size:12px;color:#888;margin-top:2px">DOI: <a class="url" href="https://doi.org/${escapeAttr(d.doi)}" target="_blank" rel="noopener">${escapeHTML(d.doi)}</a></div>` : ''}
+
+      <div class="read-toggle">
+        <input type="checkbox" id="read-main" ${isRead ? 'checked' : ''}>
+        <label for="read-main">${isRead ? 'Read' : 'Mark as read'}</label>
+      </div>
+
+      <div class="status-row">
+        <span class="badge badge-priority-${d.priority}">P${d.priority} · ${priorityLabel[d.priority] || ''}</span>
+        <span class="badge badge-stance-${d.stance || 'neutral'}">${(d.stance || 'neutral').toUpperCase()}</span>
+        <span class="badge badge-tag-${d.tag || 'methods'}">${(d.tag || '').replace(/-/g,' ')}</span>
+        <span class="badge badge-nature-${d.nature || 'review'}">${d.nature || ''}</span>
+        <span class="badge badge-type-${d.type || 'paper'}">${d.type || 'paper'}</span>
+        <span class="badge badge-verified-${d.verified ? 'true' : 'false'}">${d.verified ? '✓ verified' : '⚠ check citation'}</span>
+        ${d.dup_count > 1 ? `<span class="badge" style="background:#f5f3ff;color:#6d28d9;border:1px solid #ddd6fe">in ${d.dup_count} slices</span>` : ''}
+      </div>
+
+      <div class="section">
+        <h3>Contribution to the project</h3>
+        <div class="note-box">${escapeHTML(d.note || 'No summary recorded.')}</div>
+      </div>
+
+      ${d.claim ? `<div class="section"><h3>Claim / argument-step it supports</h3><div class="claim-box">${escapeHTML(d.claim)}</div></div>` : ''}
+
+      ${areas ? `<div class="section"><h3>Project areas</h3><div class="tag-list">${areas}</div></div>` : ''}
+      ${clusters ? `<div class="section"><h3>Appears in clusters</h3><div class="tag-list">${clusters}</div></div>` : ''}
+
+      <div class="notes-section">
+        <h3>Your notes</h3>
+        <textarea class="notes-area" id="notes-area" placeholder="Write your notes here...">${escapeHTML(notes)}</textarea>
+        <div class="notes-saved" id="notes-saved">Saved</div>
+      </div>
+    </div>
+  `;
+  main.scrollTop = 0;
+  document.getElementById('read-main').addEventListener('change', (e) => {
+    readState[d.id] = e.target.checked;
+    localStorage.setItem('yt-read', JSON.stringify(readState));
+    document.querySelector(`label[for="read-main"]`).textContent = e.target.checked ? 'Read' : 'Mark as read';
+    render();
+  });
+  let saveTimer;
+  document.getElementById('notes-area').addEventListener('input', (e) => {
+    notesState[d.id] = e.target.value;
+    clearTimeout(saveTimer);
+    saveTimer = setTimeout(() => {
+      localStorage.setItem('yt-notes', JSON.stringify(notesState));
+      const saved = document.getElementById('notes-saved');
+      saved.classList.add('show');
+      setTimeout(() => saved.classList.remove('show'), 1500);
+    }, 500);
+  });
+}
+
+function escapeHTML(s) {
+  if (s == null) return '';
+  return String(s).replace(/[&<>"']/g, c => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c]));
+}
+function escapeAttr(s) { return escapeHTML(s); }
+
+document.querySelectorAll('.chip').forEach(chip => {
+  chip.addEventListener('click', () => {
+    const f = chip.dataset.filter, v = chip.dataset.val;
+    if (filters[f] === v) { filters[f] = null; chip.classList.remove('active'); }
+    else {
+      document.querySelectorAll(`.chip[data-filter="${f}"]`).forEach(c => c.classList.remove('active'));
+      filters[f] = v; chip.classList.add('active');
+    }
+    render();
+  });
+});
+document.getElementById('area-filter').addEventListener('change', (e) => { filters.area = e.target.value || null; render(); });
+document.getElementById('cluster-filter').addEventListener('change', (e) => { filters.cluster = e.target.value || null; render(); });
+document.getElementById('search').addEventListener('input', render);
+document.getElementById('sort').addEventListener('change', render);
+</script>
+
+<div class="credit">
+  <svg width="16" height="16" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="32" height="32" rx="6" fill="#D97757"/><path d="M22.5 10.8C20.8 9 18.5 8 16 8c-4.4 0-8 3.6-8 8s3.6 8 8 8c2.5 0 4.8-1 6.5-2.8l-2.2-2.1C19 20.3 17.6 21 16 21c-2.8 0-5-2.2-5-5s2.2-5 5-5c1.6 0 3 .7 4 1.8l2.5-2z" fill="#fff"/></svg>
+  Made by Claude
+</div>
+</body>
+</html>
