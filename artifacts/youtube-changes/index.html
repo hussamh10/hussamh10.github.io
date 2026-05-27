@@ -448,9 +448,11 @@
       repeating-linear-gradient(0deg, transparent 0 23px, rgba(15,15,15,.05) 23px 24px),
       repeating-linear-gradient(90deg, transparent 0 23px, rgba(15,15,15,.05) 23px 24px);
   }
-  .event{ content-visibility:auto; contain-intrinsic-size:auto 150px; padding-right:14px; } /* skip rendering offscreen rows; padding keeps hover shadow unclipped */
+  /* NOTE: content-visibility virtualization removed — variable card heights made the
+     spine + nodes jump as offscreen size estimates were corrected on scroll. The fixed
+     composited grid above is the real lag fix; the column now has stable layout. */
   .card{ transition:transform .12s; }            /* animate only transform; box-shadow snaps (no per-frame repaint) */
-  @media (prefers-reduced-motion:reduce){ .event{ content-visibility:visible; } }
+  main::before{ background:var(--ink); }         /* solid spine — cheaper than a tall repeating-gradient (no slow tile rasterization on scroll) */
 
   /* ---- legibility: readable headings + body; pixel face kept for the hero title + tiny labels ---- */
   body{ font-family:"Archivo",system-ui,sans-serif; }
