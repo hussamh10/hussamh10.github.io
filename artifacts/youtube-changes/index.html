@@ -6,7 +6,7 @@
 <title>The Architecture of Attention — A YouTube Production-Side Timeline (2005–2026)</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Pixelify+Sans:wght@400;500;600;700&family=VT323&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
 <style>
   :root{
     --paper:#f4f0e7;
@@ -439,6 +439,27 @@
     h1{ font-size:clamp(.85rem,4.8vw,1.15rem); }
     .mast-meta,.count-line,.foot{ font-size:15px; }
   }
+
+  /* ---- perf: fixed composited grid + offscreen row virtualization ---- */
+  body{ background:var(--bg); }                 /* drop the full-document gradient (repainted on scroll) */
+  body::before{                                  /* grid now lives on one fixed, composited layer */
+    content:"" !important; display:block !important; position:fixed; inset:0; z-index:-1; pointer-events:none;
+    background:
+      repeating-linear-gradient(0deg, transparent 0 23px, rgba(15,15,15,.05) 23px 24px),
+      repeating-linear-gradient(90deg, transparent 0 23px, rgba(15,15,15,.05) 23px 24px);
+  }
+  .event{ content-visibility:auto; contain-intrinsic-size:auto 150px; padding-right:14px; } /* skip rendering offscreen rows; padding keeps hover shadow unclipped */
+  .card{ transition:transform .12s; }            /* animate only transform; box-shadow snaps (no per-frame repaint) */
+  @media (prefers-reduced-motion:reduce){ .event{ content-visibility:visible; } }
+
+  /* ---- legibility: readable headings + body; pixel face kept for the hero title + tiny labels ---- */
+  body{ font-family:"Archivo",system-ui,sans-serif; }
+  .short,.detail .more,.note-text,.note-ta,.verdict,.chip,.empty{ font-family:"Archivo",sans-serif; }
+  .standfirst{ font-family:"Archivo",sans-serif; font-weight:500; }
+  .title{ font-family:"Archivo",sans-serif; font-weight:800; font-size:1.18rem; line-height:1.22; letter-spacing:-.01em; }
+  .year-head .yr{ font-family:"Archivo",sans-serif; font-weight:800; letter-spacing:-.02em; }
+  .chip{ font-weight:600; }
+  .empty{ font-weight:700; font-size:1.1rem; }
 </style>
 </head>
 <body>
