@@ -6,7 +6,7 @@
 <title>The Architecture of Attention — A YouTube Production-Side Timeline (2005–2026)</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&family=Hanken+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Pixelify+Sans:wght@400;500;600;700&family=VT323&display=swap" rel="stylesheet">
 <style>
   :root{
     --paper:#f4f0e7;
@@ -325,6 +325,119 @@
   @media (prefers-reduced-motion:reduce){
     *{animation-duration:.001s!important;transition-duration:.001s!important}
     html{scroll-behavior:auto}
+  }
+
+  /* ===================================================================
+     PIXEL / YOUTUBE-CODED LIGHT RESKIN  (overrides the editorial theme)
+     =================================================================== */
+  :root{
+    --bg:#f9f9f9; --panel:#fff; --ink:#0f0f0f; --muted:#5b5b5b; --faint:#8a8a8a;
+    --rule:#0f0f0f; --rule-strong:#0f0f0f; --soft:#e7e7e7; --yt:#ff0000;
+    --corp:#5a5a5a; --rec:#ff0000; --view:#1f6feb; --tool:#16a34a; --money:#e09600; --mod:#8b2fc9;
+    --keep:#16a34a; --cut:#ff0000; --paper:#f9f9f9; --paper-2:#fff;
+  }
+  *{ border-radius:0 !important; }
+  body{
+    font-family:"Pixelify Sans",system-ui,sans-serif; color:var(--ink); font-size:16.5px;
+    background:
+      repeating-linear-gradient(0deg, transparent 0 23px, rgba(15,15,15,.045) 23px 24px),
+      repeating-linear-gradient(90deg, transparent 0 23px, rgba(15,15,15,.045) 23px 24px),
+      var(--bg);
+  }
+  body::before{ content:none !important; display:none !important; }
+  ::selection{ background:#ffd0d0; }
+
+  header.mast{ padding:54px 0 22px; }
+  .kicker{ font-family:"Press Start 2P",monospace; font-size:9px; line-height:1.6; letter-spacing:.04em; color:var(--yt); gap:0; }
+  .kicker::after{ display:none; }
+  .kicker::before{ content:"\25B6"; display:inline-grid; place-items:center; width:24px; height:24px; background:var(--yt); color:#fff; border:2px solid var(--ink); box-shadow:3px 3px 0 var(--ink); margin-right:13px; font-size:8px; padding-left:2px; flex:none; }
+  h1{ font-family:"Press Start 2P",monospace; font-weight:400; text-transform:uppercase; font-size:clamp(1.05rem,3.1vw,2.05rem); line-height:1.55; letter-spacing:0; margin:.55em 0 .6em; color:var(--ink); text-shadow:4px 4px 0 rgba(15,15,15,.09); }
+  h1 em{ font-style:normal; color:var(--yt); text-shadow:4px 4px 0 rgba(255,0,0,.2); }
+  .standfirst{ font-family:"Pixelify Sans",sans-serif; font-style:normal; font-weight:500; font-size:clamp(1rem,1.8vw,1.2rem); color:var(--muted); line-height:1.45; }
+  .mast-meta{ font-family:"VT323",monospace; font-size:17px; color:var(--muted); gap:4px 22px; }
+  .mast-meta b{ color:var(--ink); font-weight:400; }
+
+  .hist-label{ font-family:"Press Start 2P",monospace; font-size:8px; color:var(--faint); }
+  .hist{ border-bottom:3px solid var(--ink); gap:4px; }
+  .hbar{ background:var(--ink); opacity:.18; }
+  .hbar:hover{ opacity:1; background:var(--yt); }
+  .hbar .htip{ font-family:"VT323",monospace; font-size:15px; background:var(--ink); color:#fff; border:2px solid var(--ink); box-shadow:3px 3px 0 rgba(0,0,0,.25); padding:2px 7px; }
+  .hist-years span{ font-family:"VT323",monospace; font-size:13px; color:var(--faint); }
+
+  .controls{ background:#fff; border-bottom:3px solid var(--ink); backdrop-filter:none; -webkit-backdrop-filter:none; box-shadow:0 4px 0 rgba(15,15,15,.06); }
+  .ctrl-tag{ font-family:"Press Start 2P",monospace; font-size:8px; color:var(--faint); }
+  .chip{ font-family:"Pixelify Sans",sans-serif; font-weight:600; font-size:12.5px; color:var(--ink); background:#fff; border:2px solid var(--ink); box-shadow:2px 2px 0 var(--ink); padding:5px 11px; transition:transform .08s,box-shadow .08s,background .12s,color .12s; }
+  .chip:hover{ color:var(--ink); border-color:var(--ink); transform:translate(-1px,-1px); box-shadow:3px 3px 0 var(--ink); }
+  .chip:active{ transform:translate(2px,2px); box-shadow:0 0 0 var(--ink); }
+  .chip .dot{ width:10px; height:10px; background:var(--c,var(--ink)); border:1px solid var(--ink); box-shadow:none; }
+  .chip.cat[data-on="1"]{ background:var(--c); color:#fff; border-color:var(--ink); text-shadow:1px 1px 0 rgba(0,0,0,.35); }
+  .chip.cat[data-on="1"] .dot{ background:#fff; }
+  .chip.plain[data-on="1"]{ background:var(--ink); color:#fff; border-color:var(--ink); }
+  .chip[data-on="0"]{ opacity:.45; box-shadow:0 0 0 var(--ink); transform:translate(2px,2px); text-decoration:none; }
+  .search{ background:#fff; border:2px solid var(--ink); box-shadow:2px 2px 0 var(--ink); padding:5px 12px; }
+  .search:focus-within{ box-shadow:3px 3px 0 var(--yt); border-color:var(--ink); }
+  .search input{ font-family:"VT323",monospace; font-size:17px; color:var(--ink); }
+  .search svg{ stroke:var(--ink); }
+  .count-line{ font-family:"VT323",monospace; font-size:16px; color:var(--muted); }
+  .count-line b{ color:var(--yt); }
+  .reset{ font-family:"VT323",monospace; font-size:16px; color:var(--muted); border-bottom:2px dotted var(--ink); }
+  .reset:hover{ color:var(--yt); border-color:var(--yt); }
+
+  main::before{ width:4px; left:calc(var(--gutter)/2 - 2px); background:repeating-linear-gradient(var(--ink) 0 5px, transparent 5px 11px); }
+  .year-head{ top:104px; }
+  .year-head .marker i{ width:16px; height:16px; background:var(--yt); border:2px solid var(--ink); box-shadow:3px 3px 0 var(--ink); transform:none; }
+  .year-head .yr{ font-family:"Press Start 2P",monospace; font-size:clamp(1rem,2.3vw,1.45rem); color:var(--ink); gap:14px; }
+  .year-head .yr small{ font-family:"VT323",monospace; font-size:15px; color:var(--faint); letter-spacing:0; }
+  .year-head::after{ height:3px; background:var(--ink); opacity:.1; }
+
+  .node{ background:var(--c); border:2px solid var(--ink); box-shadow:2px 2px 0 var(--ink); }
+  .m1 .node{ width:10px;height:10px } .m2 .node{ width:15px;height:15px } .m3 .node{ width:19px;height:19px } .m4 .node{ width:25px;height:25px; box-shadow:3px 3px 0 var(--ink); }
+  .event:hover .node{ transform:translate(-1px,-1px) scale(1.12); box-shadow:3px 3px 0 var(--ink); }
+
+  .card{ background:#fff; border:2px solid var(--ink); border-left:7px solid var(--c); box-shadow:4px 4px 0 rgba(15,15,15,.16); padding:15px 18px 16px; transition:transform .1s,box-shadow .1s; }
+  .card::before{ display:none; }
+  .event:hover .card, .event.pinned .card, .card:focus-visible{ transform:translate(-3px,-3px); box-shadow:7px 7px 0 var(--c); }
+  .date{ font-family:"VT323",monospace; font-size:16px; color:var(--ink); }
+  .cat-tag{ font-family:"Press Start 2P",monospace; font-size:7px; letter-spacing:.02em; color:var(--c); }
+  .conf{ font-family:"VT323",monospace; font-size:14px; color:var(--muted); gap:5px; }
+  .conf .ring{ width:11px; height:11px; border:2px solid var(--muted); }
+  .conf.high .ring{ background:var(--muted); }
+  .conf.med .ring{ background:linear-gradient(90deg,var(--muted) 50%,transparent 50%); }
+  .conf.low .ring{ background:transparent; border-style:dashed; }
+  .flag{ font-family:"VT323",monospace; font-size:14px; color:var(--yt); border:2px solid var(--yt); background:#fff; box-shadow:2px 2px 0 rgba(255,0,0,.25); padding:0 6px; text-transform:none; }
+  .title{ font-family:"Pixelify Sans",sans-serif; font-weight:700; font-size:1.12rem; line-height:1.2; color:var(--ink); margin-bottom:9px; }
+  .meter i{ background:var(--soft); width:6px; }
+  .meter i.on{ background:var(--c); }
+  .mag-label{ font-family:"VT323",monospace; font-size:14px; letter-spacing:.03em; color:var(--muted); }
+  .src{ font-family:"VT323",monospace; font-size:15px; color:var(--muted); border-bottom:2px dotted var(--ink); }
+  .src:hover{ color:var(--yt); border-color:var(--yt); }
+  .short{ font-family:"Pixelify Sans",sans-serif; font-size:15px; color:var(--ink); line-height:1.45; }
+  .detail .more{ font-family:"Pixelify Sans",sans-serif; font-size:14px; color:var(--muted); line-height:1.5; border-top:2px dashed rgba(15,15,15,.18); }
+  .detail .more .flag-note{ color:var(--yt); font-style:normal; }
+
+  .annot{ border-top:2px dashed rgba(15,15,15,.18); }
+  .verdict{ font-family:"Pixelify Sans",sans-serif; font-weight:600; font-size:13px; color:var(--ink); background:#fff; border:2px solid var(--ink); box-shadow:2px 2px 0 var(--ink); padding:4px 11px; }
+  .verdict:hover{ transform:translate(-1px,-1px); box-shadow:3px 3px 0 var(--ink); color:var(--ink); }
+  .verdict:active{ transform:translate(2px,2px); box-shadow:0 0 0; }
+  .event.v1 .verdict{ background:var(--keep); color:#fff; border-color:var(--ink); text-shadow:1px 1px 0 rgba(0,0,0,.3); }
+  .event.v2 .verdict{ background:var(--cut); color:#fff; border-color:var(--ink); text-shadow:1px 1px 0 rgba(0,0,0,.3); }
+  .note-text{ font-family:"Pixelify Sans",sans-serif; font-size:13.5px; color:var(--muted); }
+  .note-text[data-empty="1"]{ font-family:"VT323",monospace; font-size:15px; color:var(--faint); }
+  .note-text:hover{ color:var(--ink); }
+  .note-ta{ font-family:"Pixelify Sans",sans-serif; font-size:13.5px; color:var(--ink); background:#fff; border:2px solid var(--ink); box-shadow:2px 2px 0 var(--ink); }
+  .note-ta:focus{ border-color:var(--ink); box-shadow:3px 3px 0 var(--yt); }
+  .event.v1 .card{ background:#f3fbf4; box-shadow:4px 4px 0 var(--keep); }
+  .event.v2 .card{ background:#fff4f4; box-shadow:4px 4px 0 var(--cut); }
+
+  .empty{ font-family:"Press Start 2P",monospace; font-size:12px; font-style:normal; color:var(--muted); }
+  footer{ border-top:3px solid var(--ink); }
+  .foot{ font-family:"VT323",monospace; font-size:16px; color:var(--muted); line-height:1.55; }
+  .foot b{ color:var(--ink); }
+  .totop{ background:var(--yt); color:#fff; border:2px solid var(--ink); box-shadow:3px 3px 0 var(--ink); }
+  .totop:hover{ transform:translate(-1px,-1px); box-shadow:4px 4px 0 var(--ink); }
+  @media (max-width:680px){
+    h1{ font-size:clamp(.85rem,4.8vw,1.15rem); }
+    .mast-meta,.count-line,.foot{ font-size:15px; }
   }
 </style>
 </head>
