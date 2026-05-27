@@ -1,0 +1,959 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Architecture of Attention — A YouTube Production-Side Timeline (2005–2026)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&family=Hanken+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#f4f0e7;
+    --paper-2:#fbf8f2;
+    --ink:#211e18;
+    --muted:#6f6657;
+    --faint:#9a9080;
+    --rule:rgba(33,30,24,.14);
+    --rule-strong:rgba(33,30,24,.3);
+    --corp:#46546e;   /* Corporate & Format */
+    --rec:#c0432b;    /* Recommendation & Ranking */
+    --view:#2c6e68;   /* Viewer Features */
+    --tool:#557a3f;   /* Creator Tools */
+    --money:#b5852b;  /* Monetization & Ads */
+    --mod:#864e76;    /* Moderation & Policy */
+    --keep:#2f9e54;   /* annotation: keep / tick */
+    --cut:#d33a2f;    /* annotation: cut / cross */
+    --shadow:0 1px 2px rgba(33,30,24,.05);
+    --shadow-lift:0 14px 34px -12px rgba(33,30,24,.32), 0 3px 8px -4px rgba(33,30,24,.18);
+    --gutter:66px;
+    --ctrl-h:0px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:"Hanken Grotesk",-apple-system,BlinkMacSystemFont,sans-serif;
+    font-size:16px;line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+    position:relative;
+    overflow-x:hidden;
+  }
+  /* paper grain */
+  body::before{
+    content:"";position:fixed;inset:0;z-index:0;pointer-events:none;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    opacity:.035;mix-blend-mode:multiply;
+  }
+  ::selection{background:rgba(192,67,43,.18)}
+  a{color:inherit}
+  .wrap{position:relative;z-index:1;max-width:1080px;margin:0 auto;padding:0 28px}
+
+  /* ---------- Masthead ---------- */
+  header.mast{padding:64px 0 26px}
+  .kicker{
+    font-family:"IBM Plex Mono",monospace;font-size:12px;letter-spacing:.34em;
+    text-transform:uppercase;color:var(--rec);font-weight:500;
+    display:flex;align-items:center;gap:14px;
+    opacity:0;animation:rise .7s .05s cubic-bezier(.2,.7,.2,1) forwards;
+  }
+  .kicker::after{content:"";flex:1;height:1px;background:var(--rule);max-width:340px}
+  h1{
+    font-family:"Fraunces",Georgia,serif;font-weight:500;
+    font-size:clamp(2.6rem,6.4vw,5.1rem);line-height:.98;letter-spacing:-.018em;
+    margin:.28em 0 .12em;font-optical-sizing:auto;
+    opacity:0;animation:rise .8s .12s cubic-bezier(.2,.7,.2,1) forwards;
+  }
+  h1 em{font-style:italic;color:var(--rec)}
+  .standfirst{
+    font-family:"Fraunces",Georgia,serif;font-weight:400;font-style:italic;
+    font-size:clamp(1.06rem,2vw,1.34rem);color:var(--muted);
+    max-width:60ch;line-height:1.42;
+    opacity:0;animation:rise .8s .2s cubic-bezier(.2,.7,.2,1) forwards;
+  }
+  .mast-meta{
+    margin-top:22px;display:flex;flex-wrap:wrap;gap:8px 26px;
+    font-family:"IBM Plex Mono",monospace;font-size:12.5px;color:var(--muted);
+    letter-spacing:.02em;
+    opacity:0;animation:rise .8s .28s cubic-bezier(.2,.7,.2,1) forwards;
+  }
+  .mast-meta b{color:var(--ink);font-weight:500}
+
+  /* ---------- Histogram ---------- */
+  .hist-block{
+    margin-top:34px;
+    opacity:0;animation:rise .9s .36s cubic-bezier(.2,.7,.2,1) forwards;
+  }
+  .hist-label{
+    font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.22em;
+    text-transform:uppercase;color:var(--faint);margin-bottom:9px;
+    display:flex;justify-content:space-between;
+  }
+  .hist{
+    display:flex;align-items:flex-end;gap:3px;height:74px;
+    border-bottom:1.5px solid var(--rule-strong);padding-bottom:0;
+  }
+  .hbar{
+    flex:1;background:var(--ink);opacity:.26;border-radius:2px 2px 0 0;
+    cursor:pointer;position:relative;transition:opacity .25s,background .25s,transform .25s;
+    transform-origin:bottom;min-height:3px;
+    animation:grow .9s cubic-bezier(.2,.8,.2,1) backwards;
+  }
+  .hbar:hover{opacity:1;background:var(--rec)}
+  .hbar .htip{
+    position:absolute;bottom:calc(100% + 8px);left:50%;transform:translateX(-50%) translateY(4px);
+    background:var(--ink);color:var(--paper);font-family:"IBM Plex Mono",monospace;
+    font-size:11px;white-space:nowrap;padding:4px 8px;border-radius:4px;
+    opacity:0;pointer-events:none;transition:opacity .2s,transform .2s;z-index:5;
+  }
+  .hbar:hover .htip{opacity:1;transform:translateX(-50%) translateY(0)}
+  .hist-years{display:flex;gap:3px;margin-top:6px}
+  .hist-years span{
+    flex:1;text-align:center;font-family:"IBM Plex Mono",monospace;font-size:9.5px;
+    color:var(--faint);letter-spacing:-.02em;
+  }
+
+  /* ---------- Controls ---------- */
+  .controls{
+    position:sticky;top:0;z-index:30;background:rgba(244,240,231,.86);
+    backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--rule);margin-top:30px;
+  }
+  .controls-inner{padding:14px 0 13px;display:flex;flex-direction:column;gap:11px}
+  .ctrl-row{display:flex;flex-wrap:wrap;align-items:center;gap:7px}
+  .ctrl-tag{
+    font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.18em;
+    text-transform:uppercase;color:var(--faint);margin-right:5px;min-width:74px;
+  }
+  .chip{
+    font-family:"IBM Plex Mono",monospace;font-size:12px;
+    padding:5px 11px 5px 9px;border:1px solid var(--rule-strong);
+    background:transparent;color:var(--muted);border-radius:100px;cursor:pointer;
+    display:inline-flex;align-items:center;gap:7px;transition:all .18s;letter-spacing:.01em;
+    user-select:none;
+  }
+  .chip:hover{border-color:var(--ink);color:var(--ink)}
+  .chip .dot{width:9px;height:9px;border-radius:50%;background:var(--c,var(--ink));flex:none;
+    box-shadow:0 0 0 0 var(--c);transition:box-shadow .18s}
+  .chip.cat[data-on="1"]{color:#fff;border-color:transparent;background:var(--c)}
+  .chip.cat[data-on="1"] .dot{background:#fff}
+  .chip.plain[data-on="1"]{color:var(--paper);background:var(--ink);border-color:var(--ink)}
+  .chip[data-on="0"]{opacity:.42;text-decoration:line-through;text-decoration-thickness:1px}
+  .search{
+    margin-left:auto;display:flex;align-items:center;gap:8px;
+    border:1px solid var(--rule-strong);border-radius:100px;padding:5px 13px;background:var(--paper-2);
+    transition:border-color .18s,box-shadow .18s;
+  }
+  .search:focus-within{border-color:var(--ink);box-shadow:0 0 0 3px rgba(33,30,24,.06)}
+  .search input{
+    border:0;background:transparent;outline:0;font-family:"IBM Plex Mono",monospace;
+    font-size:12.5px;color:var(--ink);width:168px;
+  }
+  .search svg{width:13px;height:13px;stroke:var(--faint);flex:none}
+  .count-line{
+    font-family:"IBM Plex Mono",monospace;font-size:11.5px;color:var(--muted);
+    display:flex;align-items:center;gap:14px;flex-wrap:wrap;
+  }
+  .count-line b{color:var(--rec);font-weight:500}
+  .reset{cursor:pointer;color:var(--faint);border-bottom:1px dashed var(--rule-strong);transition:color .18s}
+  .reset:hover{color:var(--ink)}
+  .legend-mini{display:flex;gap:16px;flex-wrap:wrap;margin-left:auto}
+  .legend-mini span{display:inline-flex;align-items:center;gap:6px}
+  .lg-node{border-radius:50%;background:var(--faint);display:inline-block}
+
+  /* ---------- Timeline ---------- */
+  main{padding:30px 0 40px;position:relative}
+  main::before{ /* spine */
+    content:"";position:absolute;top:0;bottom:64px;
+    left:calc(var(--gutter)/2);width:2px;
+    background:linear-gradient(var(--rule-strong),var(--rule-strong));
+    background-size:2px 100%;
+  }
+  .year-group{scroll-margin-top:150px}
+  .year-head{
+    position:sticky;top:104px;z-index:20;
+    display:grid;grid-template-columns:var(--gutter) 1fr;align-items:center;
+    padding:18px 0 10px;
+  }
+  .year-head .marker{display:flex;justify-content:center}
+  .year-head .marker i{
+    width:13px;height:13px;background:var(--paper);border:2px solid var(--ink);
+    transform:rotate(45deg);display:block;box-shadow:0 0 0 5px var(--paper);
+  }
+  .year-head .yr{
+    font-family:"Fraunces",serif;font-weight:500;font-size:2.05rem;letter-spacing:-.02em;
+    line-height:1;display:flex;align-items:baseline;gap:13px;
+  }
+  .year-head .yr small{font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--faint);
+    font-weight:400;letter-spacing:.04em}
+  .year-head::after{content:"";position:absolute;left:var(--gutter);right:0;bottom:6px;height:1px;background:var(--rule)}
+
+  .event{
+    display:grid;grid-template-columns:var(--gutter) 1fr;align-items:start;
+    opacity:0;transform:translateY(14px);
+    transition:opacity .6s cubic-bezier(.2,.7,.2,1),transform .6s cubic-bezier(.2,.7,.2,1);
+  }
+  .event.in{opacity:1;transform:none}
+  .event.is-hidden{display:none}
+  .node-wrap{display:flex;justify-content:center;padding-top:21px;position:relative}
+  .node{
+    border-radius:50%;background:var(--c);position:relative;flex:none;
+    box-shadow:0 0 0 4px var(--paper),0 0 0 5px rgba(33,30,24,.08);
+    transition:transform .22s cubic-bezier(.2,.8,.2,1),box-shadow .22s;cursor:pointer;
+  }
+  .m1 .node{width:9px;height:9px}
+  .m2 .node{width:13px;height:13px}
+  .m3 .node{width:17px;height:17px}
+  .m4 .node{width:23px;height:23px}
+  .m4 .node{box-shadow:0 0 0 4px var(--paper),0 0 0 6px var(--c),inset 0 0 0 3px rgba(255,255,255,.4)}
+  .event:hover .node{transform:scale(1.22)}
+
+  .card{
+    background:var(--paper-2);border:1px solid var(--rule);
+    border-left:3px solid var(--c);border-right:3px solid transparent;border-radius:3px;
+    padding:14px 17px 15px;margin:11px 0;box-shadow:var(--shadow);position:relative;
+    transition:box-shadow .26s,transform .26s,border-color .26s;cursor:default;outline:none;
+  }
+  .card::before{ /* connector */
+    content:"";position:absolute;left:-15px;top:24px;width:12px;height:1px;background:var(--rule-strong);
+    opacity:.0;transition:opacity .26s;
+  }
+  .event:hover .card,.event.pinned .card,.card:focus-visible{
+    box-shadow:var(--shadow-lift);transform:translateY(-2px);
+  }
+  .event:hover .card::before{opacity:1}
+  .card-top{display:flex;align-items:center;gap:11px;margin-bottom:7px;flex-wrap:wrap}
+  .date{font-family:"IBM Plex Mono",monospace;font-size:11.5px;color:var(--ink);letter-spacing:.01em}
+  .cat-tag{
+    font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.13em;text-transform:uppercase;
+    color:var(--c);font-weight:500;
+  }
+  .badges{margin-left:auto;display:flex;align-items:center;gap:9px}
+  .conf{
+    font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.08em;text-transform:uppercase;
+    color:var(--muted);display:inline-flex;align-items:center;gap:5px;
+  }
+  .conf .ring{width:9px;height:9px;border-radius:50%;border:1.5px solid var(--muted);flex:none;position:relative}
+  .conf.high .ring{background:var(--muted)}
+  .conf.med .ring{background:linear-gradient(90deg,var(--muted) 50%,transparent 50%)}
+  .conf.low .ring{background:transparent;border-style:dotted}
+  .flag{
+    font-family:"IBM Plex Mono",monospace;font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;
+    color:var(--rec);border:1px solid rgba(192,67,43,.4);border-radius:3px;padding:1px 5px;
+    cursor:help;background:rgba(192,67,43,.05);
+  }
+  .title{
+    font-family:"Fraunces",Georgia,serif;font-weight:500;font-size:1.18rem;line-height:1.18;
+    letter-spacing:-.005em;margin-bottom:8px;
+  }
+  .mag{display:flex;align-items:center;gap:9px;margin-bottom:9px}
+  .meter{display:flex;gap:3px;align-items:flex-end}
+  .meter i{width:5px;background:var(--rule-strong);border-radius:1px;display:block}
+  .meter i:nth-child(1){height:7px}.meter i:nth-child(2){height:10px}
+  .meter i:nth-child(3){height:13px}.meter i:nth-child(4){height:16px}
+  .meter i.on{background:var(--c)}
+  .mag-label{font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.13em;
+    text-transform:uppercase;color:var(--muted)}
+  .src{margin-left:auto;font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.04em;
+    color:var(--faint);text-decoration:none;border-bottom:1px dotted var(--rule-strong);
+    white-space:nowrap;transition:color .18s,border-color .18s;flex:none}
+  .src:hover{color:var(--c);border-color:var(--c)}
+  .short{font-size:14.5px;color:var(--ink);line-height:1.45}
+  .detail{display:grid;grid-template-rows:0fr;opacity:0;
+    transition:grid-template-rows .34s cubic-bezier(.3,.7,.2,1),opacity .3s,margin-top .3s;margin-top:0}
+  .detail>div{overflow:hidden}
+  .event:hover .detail,.event.pinned .detail,.card:focus-visible .detail{
+    grid-template-rows:1fr;opacity:1;margin-top:10px;
+  }
+  .detail .more{
+    font-size:13.5px;color:var(--muted);line-height:1.5;
+    padding-top:10px;border-top:1px solid var(--rule);
+  }
+  .detail .more .flag-note{color:var(--rec);font-style:italic}
+  /* ---- annotation bar (always visible) ---- */
+  .annot{display:flex;align-items:flex-start;gap:9px;margin-top:11px;padding-top:10px;border-top:1px dashed var(--rule)}
+  .verdict{
+    font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.04em;
+    border:1px solid var(--rule-strong);background:transparent;color:var(--muted);
+    border-radius:100px;padding:4px 11px;cursor:pointer;display:inline-flex;align-items:center;gap:6px;
+    transition:all .18s;flex:none;white-space:nowrap;
+  }
+  .verdict:hover{border-color:var(--ink);color:var(--ink)}
+  .verdict .vg{font-size:13px;line-height:1}
+  .event.v1 .verdict{background:var(--keep);border-color:transparent;color:#fff}
+  .event.v2 .verdict{background:var(--cut);border-color:transparent;color:#fff}
+  .note-wrap{flex:1;min-width:0;padding-top:2px}
+  .note-text{font-family:"Hanken Grotesk",sans-serif;font-size:13px;color:var(--muted);cursor:text;line-height:1.4;word-wrap:break-word}
+  .note-text[data-empty="1"]{color:var(--faint);font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.03em}
+  .note-text:hover{color:var(--ink)}
+  .note-ta{
+    width:100%;border:1px solid var(--rule-strong);border-radius:5px;padding:7px 9px;
+    font-family:"Hanken Grotesk",sans-serif;font-size:13px;color:var(--ink);background:var(--paper);
+    resize:vertical;outline:none;line-height:1.4;min-height:46px;
+  }
+  .note-ta:focus{border-color:var(--ink);box-shadow:0 0 0 3px rgba(33,30,24,.06)}
+  .event.v1 .card{border-right-color:var(--keep);background:linear-gradient(90deg,var(--paper-2) 78%,rgba(47,158,84,.07))}
+  .event.v2 .card{border-right-color:var(--cut);background:linear-gradient(90deg,var(--paper-2) 78%,rgba(211,58,47,.07))}
+
+  .empty{display:none;text-align:center;padding:80px 0;color:var(--muted);
+    font-family:"Fraunces",serif;font-style:italic;font-size:1.3rem}
+  .empty.show{display:block}
+
+  footer{border-top:1px solid var(--rule);padding:34px 0 70px;margin-top:30px}
+  .foot{font-family:"IBM Plex Mono",monospace;font-size:11.5px;color:var(--muted);line-height:1.7}
+  .foot b{color:var(--ink);font-weight:500}
+  .totop{position:fixed;right:22px;bottom:22px;z-index:40;width:42px;height:42px;border-radius:50%;
+    background:var(--ink);color:var(--paper);border:0;cursor:pointer;display:flex;align-items:center;
+    justify-content:center;opacity:0;pointer-events:none;transition:opacity .3s,transform .3s;box-shadow:var(--shadow-lift)}
+  .totop.show{opacity:1;pointer-events:auto}
+  .totop:hover{transform:translateY(-3px)}
+
+  @keyframes rise{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+  @keyframes grow{from{transform:scaleY(0)}to{transform:scaleY(1)}}
+  @media (max-width:680px){
+    :root{--gutter:42px}
+    .wrap{padding:0 16px}
+    header.mast{padding:40px 0 18px}
+    .ctrl-tag{min-width:100%;margin-bottom:-3px}
+    .search{margin-left:0;width:100%}.search input{width:100%}
+    .legend-mini{display:none}
+    .year-head{top:0}
+    .hist-years span{font-size:0}
+    .hist-years span:nth-child(5n+1){font-size:9px}
+  }
+  @media (prefers-reduced-motion:reduce){
+    *{animation-duration:.001s!important;transition-duration:.001s!important}
+    html{scroll-behavior:auto}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="mast">
+    <div class="kicker">YouTube Ecology · Production-Side Timeline</div>
+    <h1>The Architecture<br>of <em>Attention</em></h1>
+    <p class="standfirst">Twenty-one years of YouTube's affordances, features, algorithm shifts and policy changes — read as a sequence of levers on what creators are paid, prompted and pressured to make.</p>
+    <div class="mast-meta">
+      <span><b id="m-count">—</b> documented changes</span>
+      <span><b>2005 – 2026</b></span>
+      <span><b>6</b> categories</span>
+      <span>node size = <b>impact</b> · ring = <b>date confidence</b> · hover for detail · <b>↗</b> source</span>
+    </div>
+    <div class="hist-block">
+      <div class="hist-label"><span>Changes per year</span><span id="hist-peak"></span></div>
+      <div class="hist" id="hist"></div>
+      <div class="hist-years" id="hist-years"></div>
+    </div>
+  </header>
+</div>
+
+<div class="controls">
+  <div class="wrap controls-inner">
+    <div class="ctrl-row">
+      <span class="ctrl-tag">Category</span>
+      <div id="cat-chips" style="display:contents"></div>
+    </div>
+    <div class="ctrl-row">
+      <span class="ctrl-tag">Impact</span>
+      <button class="chip plain mag-chip" data-mag="4" data-on="1">Seismic</button>
+      <button class="chip plain mag-chip" data-mag="3" data-on="1">Major</button>
+      <button class="chip plain mag-chip" data-mag="2" data-on="1">Moderate</button>
+      <button class="chip plain mag-chip" data-mag="1" data-on="1">Minor</button>
+      <span class="ctrl-tag" style="min-width:auto;margin-left:14px">Confidence</span>
+      <button class="chip plain conf-chip" data-conf="high" data-on="1">High</button>
+      <button class="chip plain conf-chip" data-conf="med" data-on="1">Med</button>
+      <button class="chip plain conf-chip" data-conf="low" data-on="1">Low</button>
+      <label class="search">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2.2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+        <input id="search" type="text" placeholder="search changes…" autocomplete="off">
+      </label>
+    </div>
+    <div class="ctrl-row">
+      <div class="count-line">
+        <span>Showing <b id="vis-count">0</b> of <span id="tot-count">0</span></span>
+        <button class="chip plain" id="annot-only" data-on="0">★ tagged only</button>
+        <span id="tag-count"></span>
+        <span class="reset" id="export">⤓ export review</span>
+        <span class="reset" id="reset">reset filters</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="wrap">
+  <main id="timeline"></main>
+  <div class="empty" id="empty">Nothing matches these filters.</div>
+  <footer>
+    <div class="foot">
+      <b>Sources &amp; method.</b> Compiled from six parallel web-research passes prioritising primary sources (blog.youtube, blog.google, YouTube Help, FTC, SEC, academic papers), corroborated with contemporaneous press. Full sourcing and date-confidence notes: <b>youtube-platform-timeline.md</b>.<br>
+      <b>Impact</b> tiers (Seismic / Major / Moderate / Minor) are an editorial judgement of how much each change reshaped production incentives. <b>Date confidence</b>: ● High · ◐ Med · ○ Low. <span style="color:var(--rec)">⚑</span> marks a date correction or a flagged source conflict.
+    </div>
+  </footer>
+</div>
+<button class="totop" id="totop" aria-label="Back to top"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 19V5M5 12l7-7 7 7"/></svg></button>
+
+<script>
+const CATS={
+  corp:{label:"Corporate & Format",v:"--corp"},
+  rec:{label:"Recommendation & Ranking",v:"--rec"},
+  view:{label:"Viewer Features",v:"--view"},
+  tool:{label:"Creator Tools",v:"--tool"},
+  money:{label:"Monetization & Ads",v:"--money"},
+  mod:{label:"Moderation & Policy",v:"--mod"}
+};
+const MAGL={4:"Seismic",3:"Major",2:"Moderate",1:"Minor"};
+const AKEY='yt_timeline_annotations_v1';
+let ANNOT={};try{ANNOT=JSON.parse(localStorage.getItem(AKEY)||'{}')||{};}catch(e){ANNOT={};}
+const VMETA=[{g:'▷',l:'tag'},{g:'✓',l:'keep'},{g:'✗',l:'cut'}];
+function saveAnnot(){try{localStorage.setItem(AKEY,JSON.stringify(ANNOT));}catch(e){}updateTagCount();}
+const SRC={
+20050214:"https://en.wikipedia.org/wiki/History_of_YouTube",
+20050423:"https://en.wikipedia.org/wiki/Me_at_the_zoo",
+20051101:"https://www.britannica.com/topic/YouTube",
+20051215:"https://www.britannica.com/topic/YouTube",
+20061009:"https://techcrunch.com/2006/10/09/google-has-acquired-youtube/",
+20061113:"https://www.sec.gov/Archives/edgar/data/1288776/000119312506206884/dex991.htm",
+20070504:"https://techcrunch.com/2007/05/04/youtube-launches-revenue-sharing-partners-program-but-no-pre-rolls/",
+20070619:"https://techcrunch.com/2007/06/19/youtube-goes-local-with-9-country-specific-versions/",
+20070822:"https://searchengineland.com/youtube-initiates-monetization-strategy-with-transparent-video-overlays-11995",
+20071015:"https://googleblog.blogspot.com/2007/10/latest-content-id-tool-for-youtube.html",
+20080000:"https://blog.youtube/inside-youtube/on-youtubes-recommendation-system/",
+20080221:"https://techcrunch.com/2008/02/21/adsense-for-video-comes-out-of-private-beta-can-we-kill-the-pre-roll-now/",
+20080326:"https://googleblog.blogspot.com/2008/03/insight-into-youtube-videos.html",
+20080409:"https://blog.youtube/news-and-events/new-viewer-discovery-metrics-in-insight",
+20080515:"https://blog.youtube/news-and-events/demographics-now-available-in-youtube/",
+20080601:"https://waxy.org/2018/11/a-tribute-to-youtube-annotations/",
+20080801:"https://en.wikipedia.org/wiki/History_of_YouTube",
+20080930:"https://techcrunch.com/2008/09/30/youtube-hot-spots-shows-publishers-when-their-viewers-jump-ship/",
+20081101:"https://en.wikipedia.org/wiki/List_of_YouTube_features",
+20090318:"https://blog.youtube/news-and-events/new-youtube-insight-feature-do-people/",
+20090501:"https://en.wikipedia.org/wiki/Google_Video",
+20091116:"https://blog.youtube/news-and-events/1080p-hd-comes-to-youtube/",
+20091119:"https://googleblog.blogspot.com/2009/11/automatic-captions-in-youtube.html",
+20091208:"https://en.wikipedia.org/wiki/Vevo",
+20100331:"https://en.wikipedia.org/wiki/History_of_YouTube",
+20100701:"https://blog.youtube/news-and-events/whats-bigger-than-1080p-4k-video-comes/",
+20100707:"https://techcrunch.com/2010/07/07/youtube-leanback-tv/",
+20100926:"https://dl.acm.org/doi/10.1145/1864708.1864770",
+20101201:"https://techcrunch.com/2010/12/01/youtube-officially-launches-ads-you-can-skip/",
+20110000:"https://blog.youtube/inside-youtube/on-youtubes-recommendation-system/",
+20110401:"https://en.wikipedia.org/wiki/YouTube_Live",
+20110900:"https://variety.com/2025/digital/news/why-youtube-exited-original-content-1236326071/",
+20111130:"https://blog.youtube/news-and-events/announcing-youtube-analytics-next/",
+20111201:"https://techcrunch.com/2011/12/01/newyoutube/",
+20120301:"https://blog.youtube/news-and-events/youtube-search-now-optimized-for-time/",
+20120413:"https://en.wikipedia.org/wiki/History_of_YouTube",
+20120810:"https://blog.youtube/news-and-events/youtube-now-why-we-focus-on-watch-time/",
+20120820:"https://blog.youtube/news-and-events/google-video-content-moving-to-youtube/",
+20120901:"https://techcrunch.com/2012/08/06/youtube-app-removed-from-ios-6-because-apples-licensing-agreement-is-over/",
+20121012:"https://blog.youtube/news-and-events/youtube-search-now-optimized-for-time/",
+20130301:"https://en.wikipedia.org/wiki/History_of_YouTube",
+20130603:"https://www.tubefilter.com/2013/06/03/youtube-creator-academy-debut/",
+20130700:"https://thenextweb.com/news/youtube-experimenting-on-new-video-discovery-feature-called-youtube-mix",
+20130924:"https://www.tubefilter.com/2013/11/06/new-youtube-comments/",
+20131001:"https://en.wikipedia.org/wiki/YouTube_Studio",
+20140205:"https://techcrunch.com/2014/02/05/susan-wojcicki-youtube-ceo/",
+20140710:"https://9to5mac.com/2014/07/10/google-launches-youtube-creator-studio-app-for-ios/",
+20140829:"https://googlesystem.blogspot.com/2014/08/youtube-autoplay-experiment.html",
+20140901:"https://www.engadget.com/2014-09-02-youtube-fan-funding.html",
+20140918:"https://martech.org/youtube-adds-real-time-analytics/",
+20141211:"https://techcrunch.com/2014/12/11/youtube-is-testing-an-autoplay-feature-that-streams-suggested-videos-automatically/",
+20150101:"https://blog.youtube/inside-youtube/on-youtubes-recommendation-system/",
+20150102:"https://blog.youtube/inside-youtube/on-youtubes-recommendation-system/",
+20150127:"https://en.wikipedia.org/wiki/List_of_YouTube_features",
+20150223:"https://en.wikipedia.org/wiki/YouTube_Kids",
+20150310:"https://en.wikipedia.org/wiki/List_of_YouTube_features",
+20150316:"https://blog.youtube/news-and-events/make-your-videos-even-more-interactive/",
+20150322:"https://googlesystem.blogspot.com/2015/03/youtube-autoplay-enabled-by-default.html",
+20150601:"https://en.wikipedia.org/wiki/List_of_YouTube_features",
+20150710:"https://dl.acm.org/doi/10.1145/2959100.2959190",
+20150727:"https://youtube.googleblog.com/2015/07/youtube-comments.html",
+20150826:"https://en.wikipedia.org/wiki/YouTube_Gaming",
+20151021:"https://techcrunch.com/2015/10/21/youtube-red/",
+20151112:"https://techcrunch.com/2015/11/12/youtube-music-app/",
+20151201:"https://9to5google.com/2025/07/10/youtube-trending-page-removal/",
+20160101:"https://en.wikipedia.org/wiki/List_of_YouTube_Premium_original_programming",
+20160503:"https://www.androidpolice.com/2016/05/03/youtubes-up-next-autoplay-feature-appears-to-be-rolling-out-to-android/",
+20160601:"https://variety.com/2016/digital/news/youtube-slammed-by-creators-about-pulling-ads-from-inappropriate-content-1201850250/",
+20160628:"https://developers.google.com/youtube/reporting/revision_history",
+20160831:"https://variety.com/2016/digital/news/youtube-slammed-by-creators-about-pulling-ads-from-inappropriate-content-1201850250/",
+20160913:"https://www.tubefilter.com/2016/09/13/youtube-new-community-tab-developed-with-creators/",
+20160914:"https://en.wikipedia.org/wiki/History_of_YouTube",
+20161011:"https://techcrunch.com/2016/10/11/google-acquires-famebit-to-connect-youtube-creators-with-brands/",
+20161026:"https://techcrunch.com/2016/10/26/youtube-launches-mobile-friendly-end-screens-feature-to-keep-viewers-watching-more-video/",
+20161107:"https://blog.youtube/news-and-events/true-colors-adding-support-for-hdr/",
+20170112:"https://blog.youtube/news-and-events/can-we-chat-hello-super-chat/",
+20170201:"https://en.wikipedia.org/wiki/YouTube",
+20170227:"https://techcrunch.com/2017/02/28/people-now-watch-1-billion-hours-of-youtube-per-day/",
+20170228:"https://techcrunch.com/2017/02/28/youtube-launches-youtube-tv-its-live-tv-streaming-service/",
+20170321:"https://blog.google/topics/ads/expanded-safeguards-for-advertisers/",
+20170406:"https://blog.youtube/news-and-events/additional-changes-to-youtube-partner/",
+20170502:"https://www.tubefilter.com/2017/03/17/youtube-phase-out-annotations-cards-end-screens/",
+20170515:"https://www.techradar.com/how-to/how-to-use-youtube-dark-mode",
+20170618:"https://blog.youtube/news-and-events/an-update-on-our-commitment-to-fight/",
+20170624:"https://blog.youtube/news-and-events/from-creation-to-community-creator/",
+20170701:"https://en.wikipedia.org/wiki/Elsagate",
+20170720:"https://youtube.googleblog.com/2017/07/bringing-new-redirect-method-features.html",
+20170801:"https://www.tubefilter.com/2017/08/01/youtube-controversial-religious-supremacist-videos-limited-state/",
+20170808:"https://www.engadget.com/2017-08-08-youtube-monetization-symbols-appeals.html",
+20170818:"https://techcrunch.com/2017/08/18/youtube-starts-delivering-breaking-news-on-its-homepage-across-platforms/",
+20171115:"https://knowyourmeme.com/memes/events/adpocalypse-youtube-advertiser-boycott",
+20171129:"https://techcrunch.com/2017/11/29/youtube-is-launching-its-own-take-stories-with-a-new-video-format-called-reels/",
+20180116:"https://blog.youtube/news-and-events/introducing-expanded-youtube-partner/",
+20180202:"https://blog.youtube/news-and-events/greater-transparency-for-users-around/",
+20180307:"https://blog.youtube/news-and-events/youtube-studio-better-insights-new/",
+20180313:"https://deadline.com/2018/03/youtubes-susan-wojcicki-sxsw-conspiracy-theory-vieos-1202337434/",
+20180314:"https://techcrunch.com/2018/03/13/youtubes-mobile-app-gets-a-dark-mode/",
+20180315:"https://routenote.com/blog/youtubes-new-mini-player-lets-you-browse-as-you-watch/",
+20180322:"https://money.cnn.com/2018/03/22/technology/youtube-gun-videos/index.html",
+20180621:"https://techcrunch.com/2018/06/21/youtube-introduces-channel-memberships-merchandise-and-premieres/",
+20180709:"https://blog.youtube/news-and-events/building-better-news-experience-on/",
+20180711:"https://blog.youtube/news-and-events/helping-creators-protect-their-content/",
+20181023:"https://www.socialmediatoday.com/news/youtube-opens-up-premieres-to-everyone-announces-new-investment-into-how-t/540304/",
+20181129:"https://techcrunch.com/2018/11/29/youtube-rolls-out-stories-to-creators-with-over-10k-subscribers/",
+20181201:"https://arxiv.org/abs/1812.02353",
+20181204:"https://techcrunch.com/2018/12/04/youtube-rolls-out-autoplaying-but-silent-videos-on-its-mobile-apps-homepage/",
+20190115:"https://www.socialmediatoday.com/news/youtube-to-remove-all-video-annotations-in-january-2019/543061/",
+20190116:"https://variety.com/2019/digital/news/youtube-officially-bans-life-threatening-pranks-and-stunts-like-bird-box-and-tide-pod-challenges-1203109840/",
+20190125:"https://blog.youtube/news-and-events/continuing-our-work-to-improve/",
+20190219:"https://blog.youtube/news-and-events/making-our-strikes-system-clear-and/",
+20190228:"https://www.cnbc.com/2019/02/28/youtube-is-disabling-comments-on-videos-with-minors.html",
+20190315:"https://www.cnbc.com/2019/03/15/facebook-youtube-and-twitter-struggle-to-remove-mosque-shooting-videos.html",
+20190605:"https://blog.youtube/news-and-events/our-ongoing-work-to-tackle-hate/",
+20190606:"https://blog.youtube/news-and-events/our-ongoing-work-to-tackle-hate/",
+20190806:"https://www.peggyktc.com/2019/08/youtube-studio-beta-is-now-default.html",
+20190827:"https://blog.youtube/inside-youtube/preserving-openness-through-responsibility/",
+20190904:"https://www.ftc.gov/news-events/news/press-releases/2019/09/google-youtube-will-pay-record-170-million-alleged-violations-childrens-privacy-law",
+20190916:"https://dl.acm.org/doi/10.1145/3298689.3346997",
+20191105:"https://blog.youtube/news-and-events/introducing-super-stickers/",
+20191203:"https://blog.youtube/inside-youtube/the-four-rs-of-responsibility-raise-and-reduce/",
+20191211:"https://blog.youtube/news-and-events/an-update-to-our-harassment-policy/",
+20200106:"https://blog.google/products/ads-commerce/our-strict-privacy-standards-around-made-for-kids-content/",
+20200203:"https://blog.youtube/news-and-events/supporting-the-2020-us-election/",
+20200401:"https://support.google.com/youtube/answer/13813322",
+20200423:"https://support.google.com/youtube/answer/7687980",
+20200514:"https://www.tubefilter.com/2020/05/14/youtube-grey-clock-monetization-icon-checking/",
+20200528:"https://techcrunch.com/2020/05/28/youtube-introduces-video-chapters-to-make-it-easier-to-navigate-through-longer-videos/",
+20200616:"https://en.wikipedia.org/wiki/YouTube_BrandConnect",
+20200707:"https://www.tubefilter.com/2020/07/07/youtube-lowering-minimum-video-length-mid-roll-ads/",
+20200915:"https://en.wikipedia.org/wiki/YouTube_Shorts",
+20201014:"https://www.cnbc.com/2020/10/14/youtube-preps-for-covid-19-vaccine-misinformation-with-new-policies-.html",
+20201015:"https://www.nbcnews.com/tech/tech-news/youtube-bans-qanon-other-conspiracy-content-targets-individuals-n1243525",
+20201118:"https://www.cnbc.com/2020/11/19/youtube-will-put-ads-on-non-partner-videos-but-wont-pay-the-creators.html",
+20201208:"https://techcrunch.com/2020/12/08/youtube-launches-hdr-support-for-live-streams/",
+20201209:"https://www.usnews.com/news/national-news/articles/2020-12-09/youtube-to-start-removing-videos-containing-election-misinformation",
+20201222:"https://9to5google.com/2020/12/22/youtube-autoplay-web/",
+20210215:"https://www.socialmediatoday.com/news/youtube-outlines-how-shorts-views-and-counted-and-how-theyll-impact-cha/593536/",
+20210318:"https://en.wikipedia.org/wiki/YouTube_Shorts",
+20210415:"https://blog.youtube/inside-youtube/building-greater-transparency-and-accountability/",
+20210511:"https://blog.youtube/news-and-events/introducing-youtube-shorts-fund/",
+20210701:"https://blog.youtube/news-and-events/new-ways-licensed-healthcare-professionals-product-feature-application/",
+20210713:"https://variety.com/2021/digital/news/youtube-shorts-global-launch-1235018403/",
+20210720:"https://www.tubefilter.com/2021/07/20/youtube-super-thanks-creator-monetization-tips/",
+20210915:"https://blog.youtube/inside-youtube/on-youtubes-recommendation-system/",
+20210929:"https://blog.youtube/news-and-events/managing-harmful-vaccine-content-youtube/",
+20211025:"https://techcrunch.com/2021/10/25/youtube-rolls-out-personalized-new-to-you-feed-to-help-users-discover-content/",
+20211110:"https://blog.youtube/news-and-events/update-to-youtube/",
+20220217:"https://blog.youtube/inside-youtube/inside-responsibility-whats-next-on-our-misinfo-efforts/",
+20220413:"https://searchengineland.com/youtube-research-search-insights-383554",
+20220501:"https://www.socialmediaexaminer.com/using-youtube-studio-analytics-for-shorts-remixes-and-more/",
+20220601:"https://support.google.com/youtube/answer/13376398",
+20220721:"https://www.cnn.com/2022/07/21/tech/youtube-abortion-misinformation-policy",
+20220722:"https://ppc.land/youtube-raises-minimum-live-streaming-age-to-16-years-starting-july-22/",
+20220920:"https://www.cnbc.com/2022/09/20/youtube-will-share-revenue-with-shorts-creators-as-tiktok-surges.html",
+20230111:"https://www.socialmediatoday.com/news/youtube-adds-new-analytics-updates-with-a-focus-on-shorts-content/640194/",
+20230201:"https://techcrunch.com/2023/01/09/youtube-new-partner-program-terms-shorts-revenue-sharing-february-1/",
+20230418:"https://techcrunch.com/2023/04/18/youtube-updates-its-policies-on-eating-disorder-content-will-ban-videos-showing-imitable-behavior/",
+20230516:"https://www.socialmediatoday.com/news/youtube-shorts-and-revenue-analytics-tools/650464/",
+20230517:"https://techcrunch.com/2023/05/18/youtube-is-bringing-30-second-unskippable-ads-to-tvs/",
+20230602:"https://blog.youtube/inside-youtube/us-election-misinformation-update-2023/",
+20230613:"https://techcrunch.com/2023/06/13/youtube-is-lowering-the-barrier-to-be-eligible-for-its-monetization-program/",
+20230620:"https://thumbnailtest.com/news/youtube-test-and-compare/",
+20230626:"https://www.searchenginejournal.com/youtube-stories-to-be-discontinued/487909/",
+20230627:"https://www.socialmediatoday.com/news/youtube-changes-studio-analytics-supportive-gamification/653953/",
+20230808:"https://techcrunch.com/2023/08/08/youtube-update-homepage-watch-history/",
+20230815:"https://blog.youtube/inside-youtube/a-long-term-vision-for-medical-misinformation-policies/",
+20231013:"https://www.cnn.com/2023/10/13/tech/google-youtube-hamas-israel-disinformation/index.html",
+20231015:"https://www.niemanlab.org/2023/10/youtube-launches-new-watch-page-that-only-shows-videos-from-authoritative-news-sources/",
+20231114:"https://blog.youtube/news-and-events/disclosing-ai-generated-content/",
+20240318:"https://www.cnn.com/2024/03/18/tech/youtube-ai-label-for-creators",
+20240601:"https://support.google.com/youtube/answer/15575509",
+20240611:"https://www.searchenginejournal.com/youtube-rolls-out-thumbnail-a-b-testing-to-all-channels/519281/",
+20240618:"https://www.nbcnews.com/tech/tech-news/youtube-implementing-stricter-rules-gun-videos-rcna155896",
+20240901:"https://en.wikipedia.org/wiki/YouTube_Shorts",
+20240918:"https://blog.google/products/youtube/made-on-youtube-2024/",
+20240919:"https://techcrunch.com/2025/08/26/youtubes-hype-feature-that-boosts-smaller-creators-launches-globally/",
+20241201:"https://www.engadget.com/entertainment/youtube/youtube-now-allows-more-harmful-misinformation-on-its-platform-133002902.html",
+20241202:"https://support.google.com/youtube/answer/13813322",
+20250326:"https://techcrunch.com/2025/03/26/youtube-is-changing-how-youtube-shorts-views-are-counted/",
+20250710:"https://techcrunch.com/2025/07/10/youtube-is-getting-rid-of-its-trending-page-and-trending-now-list/",
+20250715:"https://www.socialmediatoday.com/news/youtube-clarifies-monetization-update-inauthentic-repeated-content/752892/",
+20250826:"https://techcrunch.com/2025/08/26/youtubes-hype-feature-that-boosts-smaller-creators-launches-globally/",
+20250916:"https://blog.youtube/news-and-events/youtube-studio-made-on-youtube-2025/",
+20250923:"https://www.cnbc.com/2025/09/23/youtube-creators-banned-covid-election-misinformation-apply-reinstatement.html",
+20251009:"https://variety.com/2025/digital/news/youtube-second-chance-reinstate-users-terminated-banned-1236544596/",
+20251015:"https://en.wikipedia.org/wiki/YouTube_Shorts",
+20251016:"https://techcrunch.com/2025/09/16/youtube-rolls-out-studio-updates-likeness-detection-lip-synced-dubs-creator-collabs-and-more/",
+20260116:"https://techcrunch.com/2026/01/16/youtube-relaxes-monetization-guidelines-for-some-controversial-topics/",
+20260417:"https://9to5google.com/2026/04/17/youtube-clips-share-at-time-changes/"
+};
+// y=year k=sortkey d=display c=category n=name m=magnitude(1-4) cf=confidence s=short x=more f=flag
+const DATA=[
+{y:2005,k:20050214,d:"Feb 14, 2005",c:"corp",n:"Domain registered / company founded",m:2,cf:"high",s:"YouTube.com registered; founded by Hurley, Chen & Karim.",x:"The corporate origin — all three founders were ex-PayPal."},
+{y:2005,k:20050423,d:"Apr 23, 2005",c:"corp",n:"First upload + open beta",m:2,cf:"high",s:"“Me at the zoo” uploaded; site enters public beta.",x:"The 19-second clip is the platform's first video."},
+{y:2005,k:20051101,d:"Nov 2005",c:"corp",n:"Sequoia Series A ($3.5M)",m:1,cf:"med",s:"First major venture funding.",x:"Enabled the scale-up to public launch; month varies (Sept/Nov) across sources."},
+{y:2005,k:20051215,d:"Dec 15, 2005",c:"corp",n:"Official public launch (out of beta)",m:4,cf:"high",s:"Formal launch; ~2M views/day.",x:"The conventional “YouTube launch” date.",f:"Some sources loosely cite “May 2005” — that was the beta opening, not launch."},
+{y:2006,k:20061009,d:"Oct 9, 2006",c:"corp",n:"Google acquisition announced",m:4,cf:"high",s:"$1.65B all-stock deal announced.",x:"Brought Google's ad infrastructure and a path to monetization at scale."},
+{y:2006,k:20061113,d:"Nov 13, 2006",c:"corp",n:"Google acquisition closed",m:3,cf:"high",s:"Deal completed (SEC 8-K); YouTube becomes a Google subsidiary.",x:"Marks the start of the Google-resourced era."},
+{y:2007,k:20070504,d:"May 4, 2007",c:"money",n:"YouTube Partner Program v1",m:4,cf:"high",s:"Invite-only revenue sharing via AdSense.",x:"The birth of the creator economy — the first time making videos could pay.",f:"Dec 2007 = open US/Canada application; broad open-to-all monetization came Apr 2012."},
+{y:2007,k:20070619,d:"Jun 19, 2007",c:"corp",n:"International localization",m:2,cf:"high",s:"Nine country-specific versions launch.",x:"Brazil, France, Ireland, Italy, Japan, Netherlands, Poland, Spain, UK."},
+{y:2007,k:20070822,d:"Aug 22, 2007",c:"money",n:"InVideo overlay ads",m:2,cf:"high",s:"First in-video ad format (clickable overlays).",x:"YouTube's first attempt to monetize the watch page itself."},
+{y:2007,k:20071015,d:"Oct 15, 2007",c:"money",n:"Content ID",m:4,cf:"high",s:"Automated copyright matching launches.",x:"Rights holders can block, track, or monetize matches — created whole genres (reaction, commentary) that live in tension with copyright. Trials ran from ~June 2007."},
+{y:2008,k:20080000,d:"~2008",c:"rec",n:"Popularity / view-count ranking era",m:3,cf:"low",s:"Homepage “Most Viewed”; ranking by raw popularity.",x:"The pre-personalization regime that rewarded pure clickbait.",f:"Year is from YouTube's 2021 retrospective; no contemporaneous post, exact date unverified."},
+{y:2008,k:20080221,d:"Feb 21, 2008",c:"money",n:"AdSense for Video out of beta",m:2,cf:"high",s:"Contextual video ad monetization expands.",x:"Pre-rolls still deliberately avoided at this stage."},
+{y:2008,k:20080326,d:"Mar 26, 2008",c:"tool",n:"YouTube Insight",m:3,cf:"high",s:"First free creator analytics.",x:"Views by geography and lifecycle for any uploader — the start of the creator feedback loop."},
+{y:2008,k:20080409,d:"Apr 9, 2008",c:"tool",n:"Insight “Discovery” tab",m:2,cf:"high",s:"Shows how viewers found a video.",x:"Search queries, related-video referrals and embeds — the first window into discovery mechanics."},
+{y:2008,k:20080515,d:"May 15, 2008",c:"tool",n:"Insight “Demographics” tab",m:1,cf:"high",s:"Views by age group and gender.",x:"Let creators see who they were reaching."},
+{y:2008,k:20080601,d:"Jun 2008",c:"view",n:"Annotations launched",m:3,cf:"med",s:"Clickable in-video text / link overlays.",x:"Creators' first in-video navigation tool (“click here / next video”). Deprecated 2017, removed 2019."},
+{y:2008,k:20080801,d:"~Aug 2008",c:"money",n:"Pre-roll ads introduced",m:2,cf:"med",s:"Ads before the video begin appearing.",x:"Exact month is approximate (secondary sources)."},
+{y:2008,k:20080930,d:"Sep 30, 2008",c:"tool",n:"Insight “Hot Spots”",m:3,cf:"high",s:"Per-moment attention / drop-off graph.",x:"The direct ancestor of the audience-retention report — the first time creators saw exactly where viewers leave."},
+{y:2008,k:20081101,d:"Nov 2008",c:"corp",n:"720p HD playback",m:2,cf:"high",s:"HD support; player moves to 16:9 widescreen.",x:"Incremental quality upgrade that reshaped framing conventions."},
+{y:2009,k:20090318,d:"Mar 18, 2009",c:"tool",n:"Insight “Community” tab",m:1,cf:"high",s:"Ratings, comments, favorites & shares stats.",x:"Early engagement metrics surfaced to creators."},
+{y:2009,k:20090501,d:"May 2009",c:"corp",n:"Google Video stops uploads",m:1,cf:"high",s:"Consolidation of Google's video onto YouTube.",x:"Removed an internal competitor; YouTube becomes Google's sole video bet."},
+{y:2009,k:20091116,d:"Nov 2009",c:"corp",n:"1080p Full HD",m:2,cf:"high",s:"1080p playback support.",x:"Incremental quality upgrade."},
+{y:2009,k:20091119,d:"Nov 19, 2009",c:"view",n:"Automatic captions",m:2,cf:"high",s:"Machine captions (partner beta); opened to all Mar 4, 2010.",x:"Made speech machine-readable — the substrate later mined for content analysis."},
+{y:2009,k:20091208,d:"Dec 8, 2009",c:"corp",n:"Vevo partnership & launch",m:2,cf:"high",s:"UMG–Google deal (Apr); Vevo launches Dec 8.",x:"Reshaped premium music-video distribution and monetization."},
+{y:2010,k:20100331,d:"Mar 31, 2010",c:"view",n:"Like/Dislike replaces 5-star rating",m:3,cf:"med",s:"Thumbs up/down replace star ratings; watch-page redesign.",x:"Redesign aimed at increasing time-on-site.",f:"Origin of the dislike button later hidden in Nov 2021."},
+{y:2010,k:20100701,d:"Jul 2010",c:"corp",n:"4K / 2160p support",m:1,cf:"high",s:"Ultra-HD playback added.",x:"Incremental quality upgrade."},
+{y:2010,k:20100707,d:"Jul 7, 2010",c:"corp",n:"YouTube Leanback (TV interface)",m:2,cf:"high",s:"First living-room / 10-foot interface with continuous play.",x:"An early autoplay-driven “lean-back” consumption mode.",f:"Often misdated to 2012; the original Leanback was July 2010."},
+{y:2010,k:20100926,d:"Sep 2010",c:"rec",n:"Davidson et al. recommender paper (RecSys 2010)",m:3,cf:"high",s:"First published YouTube recommender.",x:"Co-visitation candidate generation + ranking, optimizing CTR — the documented baseline architecture before watch-time."},
+{y:2010,k:20101201,d:"Dec 1, 2010",c:"money",n:"TrueView skippable ads",m:3,cf:"high",s:"Skip-after-5s ad model; pay only if not skipped.",x:"Becomes YouTube's dominant ad format and central to creator RPM and the “hook fast” imperative."},
+{y:2011,k:20110000,d:"~2011",c:"rec",n:"“Derecommender” classifiers",m:2,cf:"low",s:"Classifiers suppress racy/violent videos from recommendations.",x:"An early quality override on the recommender.",f:"Year is from YouTube's 2021 retrospective; exact date unverified."},
+{y:2011,k:20110401,d:"Apr 2011",c:"corp",n:"YouTube Live (limited launch)",m:2,cf:"high",s:"Live-streaming platform begins (select partners).",x:"Opened a real-time format with its own engagement dynamics."},
+{y:2011,k:20110900,d:"2011–12",c:"corp",n:"Original Channels initiative (~$100M)",m:1,cf:"med",s:"Funded premium channels; largely failed.",x:"An early bet on professionalized content that didn't take."},
+{y:2011,k:20111130,d:"Nov 30, 2011",c:"tool",n:"YouTube Analytics replaces Insight",m:3,cf:"high",s:"Full rebuild; modern audience-retention report named.",x:"The retention curve becomes a first-class creator obsession."},
+{y:2011,k:20111201,d:"Dec 1, 2011",c:"view",n:"Algorithmic home feed",m:3,cf:"high",s:"Homepage shifts to a watch-history / activity feed.",x:"Displaces the chronological/subscriptions home — the start of the algorithmic surface as the default."},
+{y:2012,k:20120301,d:"~Mar 2012",c:"rec",n:"Watch-time focus begins in Suggested Videos",m:2,cf:"med",s:"Precursor to the full switch.",x:"YouTube's later post says the watch-time emphasis in Suggested Videos began “in March”; exact day unpublished."},
+{y:2012,k:20120413,d:"Apr 13, 2012",c:"money",n:"Monetization opened broadly",m:2,cf:"med",s:"YPP opens to ~all users in 20+ countries.",x:"Democratized monetization before the 2017–18 tightening."},
+{y:2012,k:20120810,d:"Aug 10, 2012",c:"rec",n:"Recommendations optimize WATCH TIME",m:4,cf:"high",s:"Suggested videos now maximize time spent, not clicks.",x:"One half of the project's anchor “natural experiment.” Redefines success from the click to retention.",f:"The search-side companion change came Oct 12, 2012 — treat as two dated events, not one."},
+{y:2012,k:20120820,d:"Aug 20, 2012",c:"corp",n:"Google Video shut down",m:1,cf:"high",s:"Remaining content migrated to YouTube.",x:"Announced Jul 3, 2012; closed Aug 20."},
+{y:2012,k:20120901,d:"Sep 2012",c:"corp",n:"First dedicated iPhone app",m:2,cf:"high",s:"YouTube ships its own iOS app.",x:"After Apple dropped the built-in app from iOS 6 — the mobile-era marker."},
+{y:2012,k:20121012,d:"Oct 12, 2012",c:"rec",n:"Search ranking optimizes watch time",m:4,cf:"high",s:"“Less clicking, more watching.”",x:"The search-side companion to the Aug 10 recommendations change; longer videos and retention hooks rise.",f:"The 2012 “switch” is really two dated events; pick per the surface you study."},
+{y:2013,k:20130301,d:"Mar 2013",c:"corp",n:"1 billion monthly users",m:1,cf:"high",s:"Scale milestone.",x:"YouTube crosses a billion monthly uniques."},
+{y:2013,k:20130603,d:"Jun 3, 2013",c:"tool",n:"Creator Academy",m:1,cf:"high",s:"Free channel-optimization courses.",x:"YouTube actively teaching creators how to grow — codifying “best practice.”"},
+{y:2013,k:20130700,d:"2013",c:"view",n:"YouTube “Mix” infinite playlists",m:1,cf:"low",s:"Auto-generated, continuously extending playlists.",x:"Continuous-play discovery; year approximate."},
+{y:2013,k:20130924,d:"Sep–Nov 2013",c:"view",n:"Google+ threaded comments",m:2,cf:"high",s:"Comments require Google+, become threaded.",x:"Beta Sep 24, rollout Nov 6; widely unpopular. Reverted from Jul 2015."},
+{y:2013,k:20131001,d:"~2013–14",c:"tool",n:"“Creator Studio” web dashboard",m:2,cf:"low",s:"Tools consolidated under one brand (later “Classic”).",x:"No clean launch announcement; the brand name's exact debut is unverified."},
+{y:2014,k:20140205,d:"Feb 5, 2014",c:"corp",n:"Susan Wojcicki becomes CEO",m:2,cf:"high",s:"Leads through the watch-time / “responsibility” eras.",x:"Sets policy direction through 2023."},
+{y:2014,k:20140710,d:"Jun–Jul 2014",c:"tool",n:"Creator Studio mobile app",m:2,cf:"high",s:"On-the-go analytics, comments, notifications.",x:"Android Jun 26 / iOS Jul 10 — metrics in creators' pockets."},
+{y:2014,k:20140829,d:"Aug 29, 2014",c:"view",n:"Autoplay experiment first spotted (desktop)",m:2,cf:"high",s:"Hidden auto-advance experiment discovered.",x:"The earliest public sign of automatic next-video play."},
+{y:2014,k:20140901,d:"Sep 2014",c:"money",n:"Fan Funding (“Tip Jar”)",m:1,cf:"high",s:"First viewer-tipping feature.",x:"Precursor to Super Chat; discontinued early 2017."},
+{y:2014,k:20140918,d:"Sep 18, 2014",c:"tool",n:"Real-time analytics",m:2,cf:"high",s:"“Last 48 hours” live viewership.",x:"Minute-by-minute feedback that rewards reacting fast to a video's launch.",f:"Project seed said 2013 — it's Sept 2014."},
+{y:2014,k:20141211,d:"Dec 11, 2014",c:"view",n:"Autoplay test confirmed (desktop)",m:3,cf:"high",s:"“Up Next” countdown to the next video.",x:"The “Up Next” label rides in with the autoplay UI here; YouTube now chooses what plays next by default."},
+{y:2015,k:20150101,d:"~2015",c:"rec",n:"Satisfaction surveys begin",m:3,cf:"med",s:"1–5★ post-watch surveys; “valued watch time.”",x:"An ML model scales survey responses; 4–5★ = valued watch time.",f:"YouTube dates the survey signal to ~2015, not 2016 — correcting the seed list."},
+{y:2015,k:20150102,d:"~2015",c:"rec",n:"Demoting tabloid content",m:2,cf:"low",s:"Sensational tabloid content demoted on homepages.",x:"An early content-quality nudge on the home feed.",f:"Year from YouTube's retrospective; exact date unverified."},
+{y:2015,k:20150127,d:"Jan 27, 2015",c:"corp",n:"HTML5 player becomes default",m:1,cf:"high",s:"Flash replaced by HTML5.",x:"Infrastructure/era marker."},
+{y:2015,k:20150223,d:"Feb 23, 2015",c:"corp",n:"YouTube Kids app",m:2,cf:"high",s:"Standalone kids app launches.",x:"Begins the separation of children's content that COPPA later forces."},
+{y:2015,k:20150310,d:"Mar 2015",c:"corp",n:"360° video support",m:1,cf:"med",s:"Immersive video playback.",x:"A niche format; month approximate."},
+{y:2015,k:20150316,d:"Mar 16, 2015",c:"view",n:"Cards",m:2,cf:"high",s:"Mobile-friendly interactive overlays.",x:"The cross-device evolution of annotations — video/playlist/merch pop-outs."},
+{y:2015,k:20150322,d:"~Mar 22, 2015",c:"view",n:"Autoplay enabled BY DEFAULT (desktop)",m:3,cf:"high",s:"~10s countdown auto-plays the next video.",x:"Continuous, platform-chosen viewing becomes the default path — where “rabbit-hole” claims live.",f:"Day disputed (Mar 22 vs 23); use “week of Mar 22.”"},
+{y:2015,k:20150601,d:"Jun 2015",c:"corp",n:"8K / 4320p support",m:1,cf:"high",s:"8K playback added.",x:"Incremental quality upgrade."},
+{y:2015,k:20150727,d:"Jul 27, 2015",c:"view",n:"De-Google+ of comments begins",m:1,cf:"high",s:"Google+ requirement unwound over 2015–16.",x:"Reversed the unpopular 2013 integration."},
+{y:2015,k:20150826,d:"Aug 26, 2015",c:"corp",n:"YouTube Gaming app",m:1,cf:"high",s:"Dedicated gaming portal (Twitch rival).",x:"Folded back into the main app in 2019."},
+{y:2015,k:20151021,d:"Oct 21–28, 2015",c:"corp",n:"YouTube Red",m:2,cf:"high",s:"Ad-free subscription launches (US).",x:"Beginning of the subscription-revenue era; rebrands to Premium in 2018."},
+{y:2015,k:20151112,d:"Nov 12, 2015",c:"corp",n:"YouTube Music (original app)",m:1,cf:"high",s:"First standalone Music app, tied to Red.",x:"Relaunched as a full streaming service in 2018."},
+{y:2015,k:20151201,d:"~Dec 2015",c:"corp",n:"Trending tab launches",m:2,cf:"med",s:"Dedicated viral-content surface.",x:"A single global “what's hot” page; removed in 2025.",f:"Year firm (YouTube's own retrospective); exact month not pinned."},
+{y:2016,k:20160101,d:"2016",c:"corp",n:"YouTube Originals (scripted division)",m:1,cf:"med",s:"Premium scripted/unscripted programming behind Red.",x:"Wound down by early 2022."},
+{y:2016,k:20160503,d:"May 3, 2016",c:"view",n:"“Up Next” autoplay reaches mobile (Android)",m:2,cf:"med",s:"Autoplay queue rolls out on Android (staggered).",x:"Brings default continuous play to the dominant surface."},
+{y:2016,k:20160601,d:"Jun 2016",c:"money",n:"Advertiser-friendly enforcement tightens",m:1,cf:"med",s:"Ads pulled from “offensive” content more aggressively.",x:"Policy wasn't new but enforcement escalated — a prelude to the Adpocalypse."},
+{y:2016,k:20160628,d:"Jun 28, 2016",c:"tool",n:"Card metrics in Analytics",m:1,cf:"high",s:"Card impressions / clicks / click-rate exposed.",x:"More surfaces for creators to optimize against."},
+{y:2016,k:20160831,d:"Late Aug 2016",c:"money",n:"Yellow-$ demonetization becomes visible",m:3,cf:"high",s:"Demonetization alerts surface → #YouTubeIsOverParty.",x:"A transparency change, not a new policy — but making invisible suppression visible triggered widespread creator anxiety and self-censorship."},
+{y:2016,k:20160913,d:"Sep 13, 2016",c:"view",n:"Community tab / posts (beta)",m:2,cf:"high",s:"Text / image / poll posts on channels.",x:"~10k-subscriber gate at first; an off-video engagement surface."},
+{y:2016,k:20160914,d:"Sep 2016",c:"view",n:"Notification bell",m:1,cf:"med",s:"Per-channel upload / live alerts.",x:"Adds a push channel that rewards posting cadence."},
+{y:2015,k:20150710,d:"2015 · paper Sep 2016",c:"rec",n:"Deep-neural recommender deployed (Google Brain)",m:4,cf:"med",s:"YouTube rebuilds recommendations on two deep neural nets — candidate generation + ranking.",x:"Google Brain began rebuilding the recommender around deep neural networks in 2015; the in-production system was then documented by Covington, Adams & Sargin at RecSys 2016 (Sept). Ranking predicts expected watch time, so personalization gets hard to game with surface packaging and gaming migrates to substance. Watch time reportedly grew ~50%/yr for three years; the exact 2015 month is undocumented.",f:"Re-dated to 2015: the Sept 2016 paper lags the production rollout — the deep-learning (Google Brain) recommender meaningfully began in 2015."},
+{y:2016,k:20161011,d:"Oct 11, 2016",c:"money",n:"Google acquires FameBit",m:1,cf:"high",s:"Influencer/branded-content marketplace.",x:"Became YouTube BrandConnect (2020) — a sanctioned sponsorship pipeline."},
+{y:2016,k:20161026,d:"Oct 26, 2016",c:"view",n:"End screens",m:2,cf:"high",s:"Last 5–20s promote up to 4 videos / subscribe.",x:"Successor to end-of-video annotations; engineered to keep the session going."},
+{y:2016,k:20161107,d:"Nov 7, 2016",c:"corp",n:"HDR video support",m:1,cf:"high",s:"High-dynamic-range playback.",x:"Incremental quality upgrade."},
+{y:2017,k:20170112,d:"Jan 12–31, 2017",c:"money",n:"Super Chat",m:2,cf:"high",s:"Paid, pinned live-chat messages.",x:"Replaced Fan Funding; rewards live, high-intensity audience interaction."},
+{y:2017,k:20170201,d:"Feb 2017",c:"corp",n:"YouTube Go launches (India)",m:1,cf:"high",s:"Data-saving app for emerging markets.",x:"Announced Sept 2016; shut down 2022."},
+{y:2017,k:20170227,d:"Feb 27, 2017",c:"corp",n:"1 billion hours watched per day",m:2,cf:"high",s:"Daily watch-time milestone.",x:"YouTube credits the recommender (since 2012) for the surge — a public marker of watch-time's success."},
+{y:2017,k:20170228,d:"Feb 28 / Apr 5, 2017",c:"corp",n:"YouTube TV",m:1,cf:"high",s:"Live-TV streaming service.",x:"Announced Feb 28; launched Apr 5 in five US markets."},
+{y:2017,k:20170321,d:"Mar 21, 2017",c:"money",n:"Adpocalypse I",m:4,cf:"high",s:"Advertiser boycott → “Expanded Safeguards.”",x:"A Times of London exposé on ads beside extremist content triggered a 250+ advertiser boycott, stricter placement rules and tougher content standards — permanently diversifying creator economics toward sponsorships/memberships."},
+{y:2017,k:20170406,d:"Apr 6, 2017",c:"money",n:"YPP threshold: 10,000 lifetime views",m:2,cf:"high",s:"New channels can't serve ads until 10k views.",x:"First eligibility gate, aimed at re-uploaders and abuse."},
+{y:2017,k:20170502,d:"May 2, 2017",c:"view",n:"Annotations editor disabled",m:2,cf:"high",s:"No new annotations (announced Mar 17).",x:"Migration toward mobile-friendly cards/end-screens."},
+{y:2017,k:20170515,d:"May 2017",c:"view",n:"Desktop dark mode / Material redesign",m:1,cf:"med",s:"Polymer redesign; opt-in dark theme.",x:"A major visual reset of the watch page.",f:"Date conflict: May 2017 (press) vs Aug 2017 (Wikipedia)."},
+{y:2017,k:20170618,d:"Jun 2017",c:"mod",n:"Violent-extremism crackdown + ML flagging",m:2,cf:"high",s:"Four steps incl. a “tougher stance” framework.",x:"Kent Walker op-ed (Jun 18): more ML detection, more reviewers, the Redirect Method, and limited features for borderline videos."},
+{y:2017,k:20170624,d:"Jun 24, 2017",c:"tool",n:"YouTube Studio (beta) announced",m:2,cf:"high",s:"New creator dashboard; old one → “Classic.”",x:"The interface that would later expose impressions/CTR."},
+{y:2017,k:20170701,d:"Summer 2017",c:"mod",n:"Elsagate",m:2,cf:"med",s:"Disturbing kids' content purge.",x:"150k+ videos / 50k+ channels removed; 10,000 moderators hired — accelerated the kid-safety turn."},
+{y:2017,k:20170720,d:"Jul 20, 2017",c:"rec",n:"Redirect Method",m:1,cf:"high",s:"Search-surfacing of counter-extremism content.",x:"Redirected certain extremism queries toward debunking playlists."},
+{y:2017,k:20170801,d:"Aug 1, 2017",c:"mod",n:"“Limited state” for borderline content",m:3,cf:"high",s:"Interstitial; no recs / ads / comments / likes / sharing.",x:"The direct ancestor of modern “limited features” — load-bearing for the project's “limit-without-removal reshapes production” argument."},
+{y:2017,k:20170808,d:"Aug 8, 2017",c:"money",n:"Monetization-icon system + appeals",m:2,cf:"high",s:"Green / yellow / slashed-$ icons standardized.",x:"Formalized the demonetization signal creators now design around."},
+{y:2017,k:20170818,d:"Aug 18, 2017",c:"rec",n:"Breaking News shelf (homepage)",m:1,cf:"high",s:"Surfaces news-org videos on the home feed.",x:"Formalized across 17 countries in Jul 2018."},
+{y:2017,k:20171115,d:"Nov–Dec 2017",c:"money",n:"Adpocalypse II",m:2,cf:"med",s:"Renewed advertiser pullback.",x:"Elsagate/predatory-comment crisis plus the Logan Paul fallout (Dec 31) drove more demonetization."},
+{y:2017,k:20171129,d:"Nov 29, 2017",c:"view",n:"“Reels” (→ Stories) announced",m:1,cf:"high",s:"Short vertical mobile clips.",x:"Later renamed YouTube Stories; an early short-form experiment."},
+{y:2018,k:20180116,d:"Jan 16 / Feb 20, 2018",c:"money",n:"YPP threshold: 1,000 subs + 4,000 hours",m:4,cf:"high",s:"Biggest eligibility tightening; cut off many small creators.",x:"Announced Jan 16, enforced Feb 20. Shifted the barrier from “anyone can earn” to “prove you have an audience first.”",f:"Replaced the Apr 2017 10k-views rule."},
+{y:2018,k:20180202,d:"Feb 2, 2018",c:"rec",n:"Info panels for state-funded media",m:1,cf:"high",s:"Wikipedia notices on government-funded publishers.",x:"US first; an authority/context-labeling move."},
+{y:2018,k:20180307,d:"Mar 7, 2018",c:"tool",n:"Impressions + CTR exposed to creators",m:4,cf:"high",s:"Thumbnail/title click-worthiness becomes a measurable, optimizable signal.",x:"Arguably the single most thesis-relevant creator-tools event: YouTube tells every creator the click is an explicit, trackable craft, separable from the video itself."},
+{y:2018,k:20180313,d:"Mar 13, 2018",c:"rec",n:"Information cues (Wikipedia/Britannica panels)",m:1,cf:"high",s:"Context boxes on conspiracy/debated topics.",x:"Announced at SXSW; rollout over 2018."},
+{y:2018,k:20180314,d:"Mar 13 / Jul 30, 2018",c:"view",n:"Dark mode on mobile apps",m:1,cf:"high",s:"Dark theme on iOS (Mar 13) and Android (Jul 30).",x:"Followed the desktop redesign."},
+{y:2018,k:20180315,d:"2018",c:"view",n:"Miniplayer (desktop web)",m:1,cf:"med",s:"Keep watching while browsing.",x:"Tested Mar 2018; a session-continuation affordance."},
+{y:2018,k:20180322,d:"Mar 22, 2018",c:"mod",n:"Firearms policy",m:2,cf:"high",s:"No firearm sales or assembly instructions.",x:"Announced Mar 22; enforcement began April."},
+{y:2018,k:20180621,d:"Jun 21, 2018",c:"money",n:"Memberships, Merch Shelf, Premieres",m:3,cf:"high",s:"Major push toward non-ad revenue.",x:"Channel memberships (>100k), Merch Shelf (>10k) and Premieres announced at VidCon — diversifying away from ad dependence."},
+{y:2018,k:20180709,d:"Jul 9, 2018",c:"rec",n:"Breaking / Top News shelves formalized",m:1,cf:"high",s:"News surfaces in search + home across 17 countries.",x:"Plus Wikipedia/Britannica panels on historical/scientific topics."},
+{y:2018,k:20180711,d:"Jul 11, 2018",c:"tool",n:"Copyright Match Tool",m:1,cf:"high",s:"Find full re-uploads of your video.",x:"Rolled from 100k+ channels toward all partners."},
+{y:2018,k:20181023,d:"Oct 23, 2018",c:"view",n:"Premieres open to all creators",m:1,cf:"high",s:"Scheduled VOD debuts with live chat for everyone.",x:"From June's limited rollout to global."},
+{y:2018,k:20181129,d:"Nov 29, 2018",c:"view",n:"Stories expanded to 10k+ creators",m:1,cf:"high",s:"The renamed “Reels” opens up.",x:"Ephemeral mobile format; discontinued 2023."},
+{y:2018,k:20181201,d:"Dec 2018",c:"rec",n:"Chen et al. REINFORCE recommender (WSDM 2019)",m:3,cf:"high",s:"Shift to reinforcement learning for long-term satisfaction.",x:"Policy-gradient RL over millions of items — explore/exploit rather than predicting only immediate engagement."},
+{y:2018,k:20181204,d:"Dec 4, 2018",c:"view",n:"Autoplaying muted previews on mobile Home",m:2,cf:"high",s:"Videos auto-preview on mute as you scroll.",x:"Brings feed-level autoplay to the home tab."},
+{y:2019,k:20190115,d:"Jan 15, 2019",c:"view",n:"All annotations removed",m:2,cf:"high",s:"Every remaining annotation deleted platform-wide.",x:"End of the original in-video link layer."},
+{y:2019,k:20190116,d:"Jan 15–16, 2019",c:"mod",n:"Dangerous challenges / pranks ban",m:2,cf:"high",s:"Bans death/serious-harm challenges and scare pranks.",x:"Post Bird Box / Tide Pod."},
+{y:2019,k:20190125,d:"Jan 25, 2019",c:"rec",n:"Borderline-content recommendation reduction (US)",m:4,cf:"high",s:"Demote (not remove) borderline / misinformation recs.",x:"US-first, gradual; ~70% reported drop in borderline watch time from recommendations. Demote-not-remove is central to the project's thesis.",f:"International expansion announced Dec 3, 2019."},
+{y:2019,k:20190219,d:"Feb 19–25, 2019",c:"mod",n:"Three-strikes system revamp",m:2,cf:"high",s:"One-time warning, then escalating freezes → termination.",x:"Announced Feb 19, effective Feb 25; strikes expire after 90 days."},
+{y:2019,k:20190228,d:"Feb 28, 2019",c:"mod",n:"Comments disabled on videos with minors",m:2,cf:"high",s:"Predatory-comment classifier; 400+ channels terminated.",x:"Response to the “wormhole” exploitation scandal."},
+{y:2019,k:20190315,d:"Mar 15, 2019",c:"mod",n:"Christchurch response (enforcement)",m:1,cf:"high",s:"Disabled “sort by upload date”; auto-removed copies.",x:"Crisis enforcement under existing policy, not a new rule."},
+{y:2019,k:20190605,d:"Jun 5, 2019",c:"mod",n:"Major hate-speech update",m:3,cf:"high",s:"Removes supremacist/Nazi-glorifying + denialist content.",x:"Also bans denial of well-documented violent events (Holocaust, Sandy Hook). Seed-verified exact date."},
+{y:2019,k:20190606,d:"Jun 5, 2019",c:"money",n:"Adpocalypse III",m:2,cf:"med",s:"Hate-speech update + mass demonetization.",x:"Triggered by the Maza/Crowder dispute; the “III” label is informal press shorthand."},
+{y:2019,k:20190806,d:"~Aug 6, 2019",c:"tool",n:"YouTube Studio becomes default",m:2,cf:"high",s:"Studio replaces Creator Studio Classic.",x:"Classic phased out through ~May 2020."},
+{y:2019,k:20190827,d:"Aug 27, 2019",c:"rec",n:"“Four Rs of Responsibility”",m:2,cf:"high",s:"Remove, Raise, Reduce, Reward framework.",x:"Names the surfacing strategy — the first time content quality could formally override engagement in ranking."},
+{y:2019,k:20190904,d:"Sep 4, 2019",c:"mod",n:"FTC/COPPA settlement ($170M)",m:4,cf:"high",s:"→ “Made for Kids” overhaul.",x:"Personalized ads, comments, notifications and end-screens removed on kids' content; kids channels lost 60–90% of revenue. Enforcement began Jan 6, 2020."},
+{y:2019,k:20190916,d:"Sep 2019",c:"rec",n:"Zhao et al. MMoE multitask ranking (RecSys 2019)",m:3,cf:"high",s:"Engagement + satisfaction objectives; position-bias tower.",x:"The paper where YouTube explicitly optimizes beyond pure watch time."},
+{y:2019,k:20191105,d:"Nov 5, 2019",c:"money",n:"Super Stickers",m:1,cf:"high",s:"Animated paid live-chat stickers.",x:"Built on Super Chat.",f:"Often misdated to 2021 — it launched Nov 5, 2019."},
+{y:2019,k:20191203,d:"Dec 3, 2019",c:"rec",n:"Borderline reduction expands beyond US",m:2,cf:"high",s:"Rolls to UK, Ireland, Brazil, France, Germany, etc.",x:"Per-country dates not published; staggering confirmed."},
+{y:2019,k:20191211,d:"Dec 11, 2019",c:"mod",n:"Harassment & cyberbullying overhaul",m:3,cf:"high",s:"Veiled threats; channel-level penalties.",x:"Malicious insults on protected attributes banned (even for public figures); a pattern of harassment can demonetize/terminate a channel.",f:"This — not a 2022 event — is the origin of creator-level harassment penalties."},
+{y:2020,k:20200106,d:"Jan 6, 2020",c:"mod",n:"“Made for Kids” enforcement begins",m:3,cf:"high",s:"Personalized ads/comments/notifications disabled on MFK.",x:"The operational hit that followed the Sept 2019 COPPA settlement."},
+{y:2020,k:20200203,d:"Feb 3, 2020",c:"mod",n:"Manipulated-media + election-integrity policy",m:2,cf:"high",s:"Bans deepfakes & false eligibility/voting-procedure claims.",x:"Ahead of the 2020 US election."},
+{y:2020,k:20200401,d:"Apr–May 2020",c:"mod",n:"COVID-19 medical-misinformation policy",m:3,cf:"med",s:"Removes claims contradicting WHO / local authorities.",x:"CEO statement April; formal policy page May 20.",f:"Two dates — Apr 2020 (statement) vs May 20, 2020 (formal page)."},
+{y:2020,k:20200423,d:"Apr 2020",c:"money",n:"Self-Certification expanded",m:1,cf:"med",s:"Creators self-rate uploads vs advertiser guidelines.",x:"Speeds monetization decisions; ties into the icon system."},
+{y:2020,k:20200514,d:"May 14, 2020",c:"money",n:"Gray “checking” monetization icon",m:1,cf:"high",s:"Shows while ad-suitability is evaluated.",x:"Reduced green/yellow “flip-flopping.”"},
+{y:2020,k:20200528,d:"May 28, 2020",c:"view",n:"Video chapters",m:2,cf:"high",s:"Timestamp navigation in the scrubber.",x:"Reshaped long-video structure around skimmable segments."},
+{y:2020,k:20200616,d:"Jun 16, 2020",c:"money",n:"FameBit → YouTube BrandConnect",m:1,cf:"med",s:"Branded-content marketplace folded into YouTube.",x:"Self-serve program shut; sponsorship pipeline absorbed."},
+{y:2020,k:20200707,d:"Jul 7, 2020",c:"money",n:"Mid-roll minimum 10 → 8 min; on by default",m:3,cf:"high",s:"Many more videos become mid-roll-eligible.",x:"A direct incentive to make 8-minute videos — a measurable production attribute (length)."},
+{y:2020,k:20200915,d:"Sep 15, 2020",c:"view",n:"YouTube Shorts beta (India)",m:3,cf:"high",s:"Short-form vertical feed launches.",x:"After TikTok's ban in India; a new format with its own incentive surface."},
+{y:2020,k:20201014,d:"Oct 14, 2020",c:"mod",n:"COVID-19 vaccine misinformation policy",m:2,cf:"high",s:"Pre-emptive ban on vaccine falsehoods.",x:"Ahead of vaccine rollout."},
+{y:2020,k:20201015,d:"Oct 15, 2020",c:"mod",n:"QAnon / violence-justifying conspiracy ban",m:2,cf:"high",s:"Bans conspiracies used to justify real-world violence.",x:"Targets QAnon, Pizzagate-style content."},
+{y:2020,k:20201118,d:"Nov 18, 2020",c:"money",n:"“Right to Monetize” ToS",m:3,cf:"high",s:"Ads on any video incl. non-YPP creators — no revenue share.",x:"US from Nov 2020; ex-US from Jun 1, 2021. Asserted platform control over all inventory."},
+{y:2020,k:20201208,d:"Dec 8, 2020",c:"view",n:"HDR for live streams",m:1,cf:"high",s:"HDR extended to live.",x:"Incremental quality upgrade."},
+{y:2020,k:20201209,d:"Dec 9, 2020",c:"mod",n:"2020-election-fraud removal policy",m:3,cf:"high",s:"Removes claims fraud changed the outcome.",x:"Triggered by the Dec 8 safe-harbor deadline. Seed-verified; reversed Jun 2, 2023."},
+{y:2020,k:20201222,d:"Dec 22, 2020",c:"view",n:"Autoplay toggle moved into the player (desktop)",m:1,cf:"high",s:"Switch relocated to the player control bar.",x:"Aligns desktop with the mobile app."},
+{y:2021,k:20210215,d:"~Q1 2021",c:"tool",n:"Dedicated Shorts metrics appear",m:1,cf:"low",s:"Studio begins separating Shorts performance.",x:"Exact date of a distinct Shorts analytics surface unverified."},
+{y:2021,k:20210318,d:"Mar 2021",c:"view",n:"Shorts beta (US)",m:2,cf:"med",s:"Shorts opens to US users (~Mar 18).",x:"The TikTok-rival format reaches the key market."},
+{y:2021,k:20210415,d:"Apr 15, 2021",c:"corp",n:"Violative View Rate added to Transparency Report",m:1,cf:"high",s:"New metric: share of views from violating content.",x:"A self-reported quality gauge.",f:"The project seed's “2021 transparency report” is this; the report itself began Apr 2018."},
+{y:2021,k:20210511,d:"May 11 / Aug 3, 2021",c:"money",n:"$100M Shorts Fund",m:2,cf:"high",s:"Bonus pool for top Shorts (open to non-YPP).",x:"First Shorts monetization; replaced by ad-revenue share in 2023."},
+{y:2021,k:20210701,d:"Jul 2021",c:"rec",n:"Health source info panels (US)",m:1,cf:"high",s:"Labels + shelves for authoritative health content.",x:"Surfacing move during the pandemic.",f:"Primary launch is Jul 2021 (US), not 2019–20."},
+{y:2021,k:20210713,d:"Jul 13, 2021",c:"view",n:"Shorts global rollout",m:3,cf:"high",s:"Expands to 100+ countries.",x:"Short-form becomes a platform-wide pillar with its own ranking logic."},
+{y:2021,k:20210720,d:"Jul 20, 2021",c:"money",n:"Super Thanks",m:1,cf:"high",s:"Tip jar on regular VOD videos.",x:"Extends paid appreciation beyond live streams."},
+{y:2021,k:20210915,d:"Sep 15, 2021",c:"rec",n:"“On YouTube's recommendation system” explainer",m:1,cf:"high",s:"Canonical primary source for the system's history.",x:"Defines valued watch time and recounts 2008–2019 changes."},
+{y:2021,k:20210929,d:"Sep 29, 2021",c:"mod",n:"Vaccine-misinformation expansion",m:3,cf:"high",s:"Extends the ban to all approved vaccines.",x:"Removed prominent anti-vaccine channels.",f:"This is the project's “medical misinfo Sept 2021” — distinct from the May 2020 COVID policy and the Aug 2023 framework."},
+{y:2021,k:20211025,d:"Oct 25, 2021",c:"rec",n:"“New to you” discovery feed",m:1,cf:"high",s:"Recommends creators outside your usual patterns.",x:"YouTube's discovery counterpart to a “for you” feed."},
+{y:2021,k:20211110,d:"Nov 10, 2021",c:"view",n:"Public dislike count removed",m:3,cf:"high",s:"Counts hidden platform-wide (creators still see them).",x:"Removed a key public quality signal; spawned the Return YouTube Dislike extension and founder protest."},
+{y:2022,k:20220217,d:"Feb 17, 2022",c:"rec",n:"“What's next on misinfo” (Mohan)",m:1,cf:"high",s:"Plans: more classifiers, non-English keywords, share limits.",x:"Addresses borderline content shared/embedded off-platform."},
+{y:2022,k:20220413,d:"Apr 13, 2022",c:"tool",n:"Research tab / Search Insights",m:2,cf:"high",s:"Viewer search topics + “content gaps” for creators.",x:"Tells creators precisely what audiences are searching for — demand made legible."},
+{y:2022,k:20220501,d:"May 2022",c:"tool",n:"Channel-analytics redesign (Content tab)",m:1,cf:"med",s:"Separates Shorts / Live / Posts / Remixes.",x:"Rollout completed ~Sept 2022; exact announce day unverified."},
+{y:2022,k:20220601,d:"2022",c:"money",n:"YouTube Shopping affiliate program",m:1,cf:"low",s:"Commissions on tagged products.",x:"Evolution of the Merch Shelf; exact month unverified."},
+{y:2022,k:20220721,d:"Jul 21, 2022",c:"mod",n:"Abortion-misinformation policy",m:1,cf:"high",s:"Removes unsafe-method / false-safety claims.",x:"Post-Dobbs; adds info panels."},
+{y:2022,k:20220722,d:"Jul 22, 2022",c:"mod",n:"Minimum live-streaming age raised to 16",m:1,cf:"med",s:"Under-16s can't livestream unaccompanied.",x:"Child-safety tightening."},
+{y:2022,k:20220920,d:"Sep 20, 2022",c:"money",n:"Shorts ad-revenue sharing announced",m:3,cf:"high",s:"45% rev-share; Shorts on-ramp into YPP.",x:"Replaces the flat Shorts Fund with real ad revenue — making short-form a genuine career path (Made on YouTube event)."},
+{y:2023,k:20230111,d:"Jan 11, 2023",c:"tool",n:"Subscribers-by-content-type analytics",m:1,cf:"med",s:"Plus thumbnails & video length in advanced mode.",x:"Finer attribution of what drives subscriptions."},
+{y:2023,k:20230201,d:"Feb 1, 2023",c:"money",n:"Shorts revenue sharing begins",m:2,cf:"high",s:"Shorts ad + Premium revenue sharing starts.",x:"New YPP terms required; ends the Shorts Fund."},
+{y:2023,k:20230418,d:"Apr 18, 2023",c:"mod",n:"Eating-disorder policy",m:2,cf:"high",s:"Removes imitable behaviors; age-restricts recovery content.",x:"Adds crisis panels; global rollout over following weeks."},
+{y:2023,k:20230516,d:"May 16, 2023",c:"tool",n:"Content-format engagement card + revenue pages",m:1,cf:"med",s:"“Which format do viewers engage with?” + revenue-by-source.",x:"Helps creators choose between long-form and Shorts."},
+{y:2023,k:20230517,d:"May 17, 2023",c:"money",n:"30-second unskippable CTV ads; pause ads",m:1,cf:"high",s:"Single 30s unskippable ad on TV screens.",x:"Signals the ad-load / connected-TV monetization shift."},
+{y:2023,k:20230602,d:"Jun 2, 2023",c:"mod",n:"Reversal: stop removing 2020 fraud claims",m:3,cf:"high",s:"Reverses the Dec 2020 election-fraud policy.",x:"Rationale: removal “could curtail political speech without meaningfully reducing real-world harm.” Seed-verified date."},
+{y:2023,k:20230613,d:"Jun 13, 2023",c:"money",n:"YPP lowered tier: 500 subscribers",m:2,cf:"high",s:"Unlocks fan-funding / Shopping only — NOT ad revenue.",x:"Full ad-revenue still needs 1,000 subs + 4,000 hours.",f:"Corrects the “500 subs + 3,000 hours” shorthand in the project notes."},
+{y:2023,k:20230620,d:"2023",c:"tool",n:"Thumbnail “Test & Compare” (preview)",m:2,cf:"med",s:"A/B testing of thumbnails first shown (limited).",x:"VidCon preview; broad launch came Jun 2024."},
+{y:2023,k:20230626,d:"Jun 26, 2023",c:"view",n:"YouTube Stories discontinued",m:1,cf:"high",s:"Stories shut down.",x:"Creators pointed to Community posts and Shorts."},
+{y:2023,k:20230627,d:"Jun 26, 2023",c:"tool",n:"“Reduce data-comparison pressure” redesign",m:1,cf:"med",s:"Collapsible comparisons; gamified weekly recaps.",x:"YouTube deliberately reframing how creators experience metrics."},
+{y:2023,k:20230808,d:"Aug 8, 2023",c:"rec",n:"Watch-history-off ⇒ no home feed",m:2,cf:"high",s:"Recommendation surfaces disabled without history.",x:"Makes the recommender's dependence on tracking explicit; gradual rollout."},
+{y:2023,k:20230815,d:"Aug 15, 2023",c:"mod",n:"Consolidated medical-misinfo framework",m:2,cf:"high",s:"Prevention / Treatment / Denial buckets.",x:"Collapsed dozens of health rules; banned false cancer-treatment claims. Seed-verified date."},
+{y:2023,k:20231013,d:"Oct 2023",c:"mod",n:"Israel–Hamas war moderation",m:1,cf:"high",s:"Mass removals under existing policy; EU DSA letter.",x:"Enforcement event, not a new written policy."},
+{y:2023,k:20231015,d:"Oct 2023",c:"rec",n:"Authoritative-only news watch page",m:1,cf:"med",s:"Surfaces only authoritative news sources for some contexts.",x:"A stronger authority filter on news."},
+{y:2023,k:20231114,d:"Nov 14, 2023",c:"mod",n:"AI / synthetic-content disclosure rules",m:2,cf:"high",s:"Must label realistic AI / altered content.",x:"Announced Nov 2023; disclosure tool went live Mar 18, 2024."},
+{y:2024,k:20240318,d:"Mar 18, 2024",c:"mod",n:"AI-disclosure tool goes live",m:1,cf:"high",s:"Studio checklist for “altered or synthetic” content.",x:"Labels begin appearing across apps."},
+{y:2024,k:20240601,d:"Jun 2024",c:"tool",n:"“Research” tab → “Inspiration”",m:1,cf:"med",s:"Rebrand ahead of AI features.",x:"Prelude to generative ideation tools."},
+{y:2024,k:20240611,d:"Jun 11, 2024",c:"tool",n:"Thumbnail Test & Compare → all channels",m:3,cf:"high",s:"Native A/B testing of up to 3 thumbnails.",x:"Institutionalizes thumbnail optimization as a measured experiment — thesis-relevant.",f:"Preview existed 2023; broad launch Jun 2024."},
+{y:2024,k:20240618,d:"Jun 18, 2024",c:"mod",n:"Firearms policy expansion",m:1,cf:"high",s:"Age-restricts homemade / automatic firearms content.",x:"Youth-protection tightening."},
+{y:2024,k:20240901,d:"Sep 2024",c:"view",n:"Shorts max length → 3 minutes",m:1,cf:"med",s:"Up from 60 seconds.",x:"Expands what counts as “short-form.”"},
+{y:2024,k:20240918,d:"Sep 18, 2024",c:"tool",n:"AI “Inspiration” tab + Community Hub",m:1,cf:"high",s:"Generative AI ideas / titles / thumbnails / outlines.",x:"AI begins shaping what creators make at the ideation stage."},
+{y:2024,k:20240919,d:"Sep 18, 2024",c:"view",n:"“Hype” announced",m:1,cf:"med",s:"Viewer button boosting sub-500k creators.",x:"Feeds a weekly Explore leaderboard; beta in Turkey/Taiwan/Brazil."},
+{y:2024,k:20241201,d:"Dec 2024",c:"mod",n:"Quiet moderation-threshold relaxation",m:3,cf:"med",s:"Leave up if <50% violating (“public interest”).",x:"Internal instruction raised from ~25%; never publicly announced.",f:"Internal Dec 2024; reported by the NYT in Jun 2025."},
+{y:2024,k:20241202,d:"Dec 2024",c:"mod",n:"COVID-19 misinformation policy retired",m:2,cf:"med",s:"Folded into the Aug-2023 medical framework.",x:"“Given reduced burden of disease.” Month confirmed; no exact day."},
+{y:2025,k:20250326,d:"Mar 26–31, 2025",c:"tool",n:"Shorts “views” redefined",m:2,cf:"high",s:"Counts on any play/replay; old metric → “Engaged views.”",x:"Changes what the public number signals vs. what's actually rewarded (monetization uses Engaged views). Announced Mar 26, effective Mar 31."},
+{y:2025,k:20250710,d:"Jul 2025",c:"corp",n:"Trending page removed",m:2,cf:"high",s:"→ category Charts + personalized discovery.",x:"Closes the ~10-year “Trending” era (launched 2015)."},
+{y:2025,k:20250715,d:"Jul 15, 2025",c:"money",n:"“Inauthentic content” monetization policy",m:2,cf:"high",s:"Mass-produced / low-effort AI ineligible.",x:"Renamed from “repetitious content”; framed as a clarification."},
+{y:2025,k:20250826,d:"Aug 26, 2025",c:"view",n:"“Hype” goes global",m:1,cf:"high",s:"Rolls out worldwide (39+ countries).",x:"Small-creator boost mechanic at scale."},
+{y:2025,k:20250916,d:"Sep 16, 2025",c:"tool",n:"“Ask Studio” + title A/B testing",m:2,cf:"high",s:"Conversational analytics; test up to 3 titles.",x:"Extends A/B testing from thumbnails to titles — more of the package becomes an experiment (Made on YouTube 2025)."},
+{y:2025,k:20250923,d:"Sep 23, 2025",c:"mod",n:"Reinstatement disclosure (letter to Congress)",m:1,cf:"high",s:"Banned COVID/election creators may seek reinstatement.",x:"Confirms retired standalone misinfo policies."},
+{y:2025,k:20251009,d:"Oct 9, 2025",c:"mod",n:"“Second Chance” reinstatement program",m:1,cf:"high",s:"Some terminated channels can request a new channel.",x:"Excludes copyright / Creator-Responsibility terminations."},
+{y:2025,k:20251015,d:"Oct 2025",c:"view",n:"Shorts daily time-limit control",m:1,cf:"med",s:"Set a daily Shorts viewing limit.",x:"A session-control / digital-wellbeing affordance."},
+{y:2025,k:20251016,d:"Oct 2025",c:"tool",n:"Copyright tab → “Content detection”",m:1,cf:"med",s:"Adds likeness / deepfake detection.",x:"Reorganizes creator-protection tooling."},
+{y:2026,k:20260116,d:"Jan 16, 2026",c:"money",n:"Advertiser guidelines relaxed (controversial topics)",m:2,cf:"high",s:"Self-harm / abortion / suicide / abuse eligible if non-graphic.",x:"Full monetization when handled non-graphically / from personal experience; ad-review decisions promised within 24h."},
+{y:2026,k:20260417,d:"Apr 17, 2026",c:"view",n:"Clips retired → “share at timestamp”",m:1,cf:"med",s:"Standalone Clips phased out.",x:"Native timestamp sharing comes to phones."}
+];
+
+// ---------- build ----------
+DATA.sort((a,b)=>a.k-b.k);
+const root=document.documentElement;
+const state={cats:new Set(Object.keys(CATS)),mags:new Set([1,2,3,4]),confs:new Set(["high","med","low"]),q:"",annot:false};
+
+// category chips
+const catWrap=document.getElementById('cat-chips');
+Object.entries(CATS).forEach(([key,info])=>{
+  const b=document.createElement('button');
+  b.className='chip cat';b.dataset.cat=key;b.dataset.on="1";
+  b.style.setProperty('--c',`var(${info.v})`);
+  b.innerHTML=`<span class="dot"></span>${info.label}`;
+  b.onclick=()=>{const on=b.dataset.on==="1";b.dataset.on=on?"0":"1";on?state.cats.delete(key):state.cats.add(key);apply();};
+  catWrap.appendChild(b);
+});
+document.querySelectorAll('.mag-chip').forEach(b=>b.onclick=()=>{const m=+b.dataset.mag,on=b.dataset.on==="1";b.dataset.on=on?"0":"1";on?state.mags.delete(m):state.mags.add(m);apply();});
+document.querySelectorAll('.conf-chip').forEach(b=>b.onclick=()=>{const c=b.dataset.conf,on=b.dataset.on==="1";b.dataset.on=on?"0":"1";on?state.confs.delete(c):state.confs.add(c);apply();});
+
+const confGlyph={high:"High",med:"Med",low:"Low"};
+// render timeline grouped by year
+const tl=document.getElementById('timeline');
+let years=[...new Set(DATA.map(d=>d.y))].sort((a,b)=>a-b);
+let html="";
+years.forEach(yr=>{
+  const items=DATA.filter(d=>d.y===yr);
+  html+=`<section class="year-group" id="y${yr}" data-year="${yr}">
+    <div class="year-head"><div class="marker"><i></i></div><div class="yr">${yr}<small data-yc="${yr}">${items.length} change${items.length>1?'s':''}</small></div></div>
+    <div class="events">`;
+  items.forEach(d=>{
+    const flag=d.f?`<span class="flag" title="${esc(d.f)}">⚑ flag</span>`:"";
+    const moreFlag=d.f?` <span class="flag-note">⚑ ${esc(d.f)}</span>`:"";
+    const a=ANNOT[d.k]||{v:0,n:""};const vm=VMETA[a.v]||VMETA[0];
+    const src=SRC[d.k]||"https://en.wikipedia.org/wiki/History_of_YouTube";
+    html+=`<article class="event m${d.m}${a.v?' v'+a.v:''}" data-id="${d.k}" data-cat="${d.c}" data-mag="${d.m}" data-conf="${d.cf}" data-txt="${esc((d.n+' '+d.s+' '+d.x).toLowerCase())}" style="--c:var(${CATS[d.c].v})" tabindex="0">
+      <div class="node-wrap"><span class="node"></span></div>
+      <div class="card">
+        <div class="card-top">
+          <span class="date">${d.d}</span>
+          <span class="cat-tag">${CATS[d.c].label}</span>
+          <span class="badges">${flag}<span class="conf ${d.cf}"><span class="ring"></span>${confGlyph[d.cf]}</span></span>
+        </div>
+        <div class="title">${esc(d.n)}</div>
+        <div class="mag"><span class="meter"><i class="${d.m>=1?'on':''}"></i><i class="${d.m>=2?'on':''}"></i><i class="${d.m>=3?'on':''}"></i><i class="${d.m>=4?'on':''}"></i></span><span class="mag-label">${MAGL[d.m]}</span><a class="src" href="${src}" target="_blank" rel="noopener">source ↗</a></div>
+        <div class="short">${esc(d.s)}</div>
+        <div class="detail"><div><div class="more">${esc(d.x)}${moreFlag}</div></div></div>
+        <div class="annot">
+          <button class="verdict" type="button"><span class="vg">${vm.g}</span><span class="vl">${vm.l}</span></button>
+          <div class="note-wrap">
+            <div class="note-text" data-empty="${a.n?'0':'1'}">${a.n?esc(a.n):'＋ add note'}</div>
+            <textarea class="note-ta" hidden placeholder="your comment…">${esc(a.n||'')}</textarea>
+          </div>
+        </div>
+      </div>
+    </article>`;
+  });
+  html+=`</div></section>`;
+});
+tl.innerHTML=html;
+function esc(s){return (s||"").replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+
+// counts
+document.getElementById('tot-count').textContent=DATA.length;
+document.getElementById('m-count').textContent=DATA.length;
+
+// histogram
+const histCounts={};years.forEach(y=>histCounts[y]=DATA.filter(d=>d.y===y).length);
+const maxC=Math.max(...Object.values(histCounts));
+document.getElementById('hist-peak').textContent=`peak ${maxC} · ${Object.keys(histCounts).find(y=>histCounts[y]===maxC)}`;
+const hist=document.getElementById('hist'),hy=document.getElementById('hist-years');
+years.forEach((y,i)=>{
+  const bar=document.createElement('div');bar.className='hbar';
+  bar.style.height=(8+ (histCounts[y]/maxC)*92)+'%';
+  bar.style.animationDelay=(0.4+i*0.022)+'s';
+  bar.innerHTML=`<span class="htip">${y} — ${histCounts[y]} change${histCounts[y]>1?'s':''}</span>`;
+  bar.onclick=()=>document.getElementById('y'+y).scrollIntoView({behavior:'smooth',block:'start'});
+  hist.appendChild(bar);
+  const sp=document.createElement('span');sp.textContent="'"+String(y).slice(2);hy.appendChild(sp);
+});
+
+// filtering
+const events=[...document.querySelectorAll('.event')];
+function apply(){
+  let vis=0;
+  events.forEach(ev=>{
+    const an=ANNOT[ev.dataset.id];
+    const ok=state.cats.has(ev.dataset.cat)&&state.mags.has(+ev.dataset.mag)&&state.confs.has(ev.dataset.conf)&&(state.q===""||ev.dataset.txt.includes(state.q))&&(!state.annot||(an&&(an.v||an.n)));
+    ev.classList.toggle('is-hidden',!ok);if(ok)vis++;
+  });
+  document.querySelectorAll('.year-group').forEach(g=>{
+    const yr=g.dataset.year;
+    const shown=[...g.querySelectorAll('.event')].filter(e=>!e.classList.contains('is-hidden')).length;
+    g.style.display=shown?'':'none';
+    const yc=g.querySelector('[data-yc]');if(yc)yc.textContent=`${shown} change${shown!==1?'s':''}`;
+  });
+  document.getElementById('vis-count').textContent=vis;
+  document.getElementById('empty').classList.toggle('show',vis===0);
+}
+const search=document.getElementById('search');
+search.addEventListener('input',()=>{state.q=search.value.trim().toLowerCase();apply();});
+document.getElementById('reset').onclick=()=>{
+  state.cats=new Set(Object.keys(CATS));state.mags=new Set([1,2,3,4]);state.confs=new Set(["high","med","low"]);state.q="";state.annot=false;search.value="";
+  document.querySelectorAll('.chip.cat,.mag-chip,.conf-chip').forEach(c=>c.dataset.on="1");
+  document.getElementById('annot-only').dataset.on="0";apply();
+};
+// tagged-only filter
+const annotChip=document.getElementById('annot-only');
+annotChip.addEventListener('click',()=>{const on=annotChip.dataset.on==="1";annotChip.dataset.on=on?"0":"1";state.annot=!on;apply();});
+function updateTagCount(){
+  const n=Object.values(ANNOT).filter(a=>a&&(a.v||a.n)).length;
+  const el=document.getElementById('tag-count');if(el)el.textContent=n?`· ${n} tagged`:'';
+}
+// export review (verdicts + notes) as JSON
+document.getElementById('export').addEventListener('click',()=>{
+  const byK={};DATA.forEach(d=>byK[d.k]=d);
+  const rows=Object.keys(ANNOT).map(k=>{const a=ANNOT[k],d=byK[k]||{};return{date:d.d||'',change:d.n||'',category:(CATS[d.c]||{}).label||'',verdict:a.v===1?'keep (✓)':a.v===2?'cut (✗)':'',note:a.n||''};}).filter(r=>r.verdict||r.note);
+  if(!rows.length){alert('No tags or notes yet — add some first.');return;}
+  const blob=new Blob([JSON.stringify(rows,null,2)],{type:'application/json'});
+  const u=URL.createObjectURL(blob),an=document.createElement('a');
+  an.href=u;an.download='youtube-timeline-review.json';an.click();URL.revokeObjectURL(u);
+});
+
+// click-to-pin (touch / accessibility)
+events.forEach(ev=>{
+  const id=ev.dataset.id;
+  ev.addEventListener('click',e=>{if(e.target.closest('a')||e.target.closest('.annot'))return;ev.classList.toggle('pinned');});
+  ev.addEventListener('keydown',e=>{if(e.target.closest('.annot'))return;if(e.key==='Enter'||e.key===' '){e.preventDefault();ev.classList.toggle('pinned');}});
+  // verdict toggle: untagged -> keep -> cut -> untagged
+  const vb=ev.querySelector('.verdict');
+  vb.addEventListener('click',e=>{e.stopPropagation();
+    const cur=(ANNOT[id]&&ANNOT[id].v)||0,nv=(cur+1)%3;
+    ANNOT[id]=ANNOT[id]||{v:0,n:""};ANNOT[id].v=nv;
+    ev.classList.remove('v1','v2');if(nv)ev.classList.add('v'+nv);
+    vb.querySelector('.vg').textContent=VMETA[nv].g;vb.querySelector('.vl').textContent=VMETA[nv].l;
+    if(!nv&&!ANNOT[id].n)delete ANNOT[id];
+    saveAnnot();if(state.annot)apply();
+  });
+  // comment field
+  const nt=ev.querySelector('.note-text'),ta=ev.querySelector('.note-ta');
+  nt.addEventListener('click',e=>{e.stopPropagation();nt.hidden=true;ta.hidden=false;ta.focus();ta.setSelectionRange(ta.value.length,ta.value.length);});
+  ta.addEventListener('click',e=>e.stopPropagation());
+  ta.addEventListener('keydown',e=>{e.stopPropagation();if(e.key==='Escape')ta.blur();});
+  ta.addEventListener('blur',()=>{
+    const val=ta.value.trim();
+    ANNOT[id]=ANNOT[id]||{v:0,n:""};ANNOT[id].n=val;
+    nt.textContent=val||'＋ add note';nt.dataset.empty=val?'0':'1';
+    ta.hidden=true;nt.hidden=false;
+    if(!val&&!ANNOT[id].v)delete ANNOT[id];
+    saveAnnot();if(state.annot)apply();
+  });
+});
+
+// reveal on scroll
+const io=new IntersectionObserver((ent)=>{
+  ent.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}});
+},{rootMargin:"0px 0px -8% 0px",threshold:0.04});
+events.forEach((ev,i)=>{if(i<16)ev.style.transitionDelay=(i*0.035)+'s';io.observe(ev);});
+
+// back to top
+const tt=document.getElementById('totop');
+addEventListener('scroll',()=>{tt.classList.toggle('show',scrollY>700);});
+tt.onclick=()=>scrollTo({top:0,behavior:'smooth'});
+
+updateTagCount();apply();
+</script>
+</body>
+</html>
