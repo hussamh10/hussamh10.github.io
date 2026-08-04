@@ -1,0 +1,1 @@
+I research how social media platforms behave, especially their recommender systems. I measure how platforms have the capacity to change user behaviors and show what it would take to make them work better for the people using them.

@@ -1,933 +1,864 @@
-/* global d3 */
+/* ═══════════════════════════════════════════════════════════════════
+   Hussam Habib — behaviour.
 
-const ROOT_ID = "Root";
+   Four things happen here: inline "+" asides, a card growing into its
+   full self, a paper opening to its full page, and three easter eggs.
+   ═══════════════════════════════════════════════════════════════════ */
+(function () {
+  "use strict";
 
-const NODE_RADIUS = 14;
-const ICON_SIZE = 28;
-const HIT_RADIUS = 22;
-const LABEL_GAP = 18;
-const LABEL_WRAP_CHARS = 20;
-const LABEL_BASELINE_EXTRA = 0;
-const LINK_END_INSET_EXTRA = 6; // extra gap (px) between link strokes and node visuals
+  var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var GROW = reduced ? 0 : 460; /* how long a card takes to become itself */
+  var SHOVE = reduced ? 0 : 240; /* how quickly the others get out of the way */
+  var ZOOM = reduced ? 0 : 340;
+  var EASE = "cubic-bezier(0.22, 0.85, 0.28, 1)";
 
-function clamp(n, min, max) {
-  return Math.max(min, Math.min(max, n));
-}
-
-function $(selector) {
-  return document.querySelector(selector);
-}
-
-function isNonEmptyString(v) {
-  return typeof v === "string" && v.trim().length > 0;
-}
-
-function nodeScale(node) {
-  const raw = Number(node?.size);
-  const pct = Number.isFinite(raw) ? raw : 100;
-  return clamp(pct / 100, 0.25, 4);
-}
-
-function nodeHasIcon(node) {
-  return isNonEmptyString(node?.icon) || node?.type === "image";
-}
-
-function nodeWantsTriangle(node) {
-  // Support multiple shapes encodings:
-  // - type: "shape:triangle"  (current graph.json)
-  // - shape: "triangle"
-  // - type: { shape: "triangle" }
-  const t = node?.type;
-  if (typeof t === "string" && /\btriangle\b/i.test(t)) return true;
-  if (t && typeof t === "object" && t.shape === "triangle") return true;
-  if (node?.shape === "triangle") return true;
-  return false;
-}
-
-function nodeVisualRadius(node) {
-  const s = nodeScale(node);
-  return nodeHasIcon(node) ? (ICON_SIZE * s) / 2 : NODE_RADIUS * s;
-}
-
-function nodeHitRadius(node) {
-  // Keep a minimum hit area for usability.
-  const s = nodeScale(node);
-  return Math.max(18, HIT_RADIUS * s);
-}
-
-function nodeLabelDy(node) {
-  return nodeVisualRadius(node) + LABEL_GAP + LABEL_BASELINE_EXTRA;
-}
-
-function wrapLineToChars(line, maxChars) {
-  const src = isNonEmptyString(line) ? line.trim() : "";
-  if (!src) return [];
-
-  const words = src.split(/\s+/g).filter(Boolean);
-  const out = [];
-  let cur = "";
-
-  for (const w of words) {
-    // Only wrap on spaces. If a single word is longer than maxChars, keep it intact.
-    if (!cur) {
-      cur = w;
-      continue;
-    }
-    const candidate = `${cur} ${w}`;
-    if (candidate.length <= maxChars) cur = candidate;
-    else {
-      out.push(cur);
-      cur = w;
-    }
-  }
-  if (cur) out.push(cur);
-  return out;
-}
-
-function wrapLabelToLines(label, maxChars = LABEL_WRAP_CHARS) {
-  const text = isNonEmptyString(label) ? label : "";
-  // Honor explicit newlines first, then wrap each line to ~maxChars.
-  const hardLines = text.split("\n");
-  const out = [];
-  for (const hl of hardLines) out.push(...wrapLineToChars(hl, maxChars));
-  return out.length ? out : [""];
-}
-
-function applyWrappedNodeLabel(textEl, node) {
-  const raw = node?.label ?? node?.id ?? "";
-  const lines = wrapLabelToLines(String(raw), LABEL_WRAP_CHARS);
-  const textSel = d3.select(textEl);
-  textSel.text(null);
-  for (let i = 0; i < lines.length; i += 1) {
-    const t = textSel.append("tspan").attr("x", 0).text(lines[i]);
-    // Don't set dy on the first line: let the parent <text dy=...> control baseline placement.
-    if (i > 0) t.attr("dy", "1.15em");
-  }
-}
-
-function hashStringToUnit(str) {
-  // Deterministic 0..1 hash (FNV-1a-ish)
-  let h = 2166136261;
-  for (let i = 0; i < str.length; i += 1) {
-    h ^= str.charCodeAt(i);
-    h = Math.imul(h, 16777619);
-  }
-  // Convert to [0,1)
-  return ((h >>> 0) % 1000000) / 1000000;
-}
-
-function nodeTiltDeg(nodeId) {
-  const u = hashStringToUnit(`tilt:${nodeId}`);
-  // Slight rotation: -6..+6 degrees, biased toward 0
-  const signed = (u - 0.5) * 2;
-  return signed * 6;
-}
-
-function buildOutgoingAdj(links) {
-  const adj = new Map();
-  for (const l of links || []) {
-    const s = l?.source;
-    const t = l?.target;
-    if (!isNonEmptyString(s) || !isNonEmptyString(t)) continue;
-    if (!adj.has(s)) adj.set(s, []);
-    adj.get(s).push(t);
-  }
-  return adj;
-}
-
-function computeViewBox(nodes, padding = 140) {
-  const xs = nodes.map((n) => n.x);
-  const ys = nodes.map((n) => n.y);
-  const minX = Math.min(...xs);
-  const maxX = Math.max(...xs);
-  const minY = Math.min(...ys);
-  const maxY = Math.max(...ys);
-  const w = (maxX - minX) + padding * 2;
-  const h = (maxY - minY) + padding * 2;
-  return {
-    x: minX - padding,
-    y: minY - padding,
-    width: w || 1,
-    height: h || 1,
+  var $ = function (s, r) {
+    return (r || document).querySelector(s);
   };
-}
-
-function zigzagPathForLink(linkKey, sx, sy, tx, ty, sInset, tInset) {
-  const dx = tx - sx;
-  const dy = ty - sy;
-  const len = Math.hypot(dx, dy) || 1;
-  const ux = dx / len;
-  const uy = dy / len;
-  const px = -uy;
-  const py = ux;
-
-  // Keep ends slightly inset so strokes don't overlap node centers too much.
-  const ssx = sx + ux * sInset;
-  const ssy = sy + uy * sInset;
-  const ttx = tx - ux * tInset;
-  const tty = ty - uy * tInset;
-
-  // Subtle, organic "hand-jagged" polyline:
-  // - fewer kinks
-  // - smaller perpendicular jitter
-  // - envelope so jitter fades near endpoints
-  const baseAmp = Math.max(2.2, Math.min(8.0, len * 0.020));
-  const segCount = Math.max(4, Math.min(9, Math.round(len / 80)));
-
-  let d = `M ${ssx} ${ssy}`;
-  for (let i = 1; i <= segCount; i += 1) {
-    const t = i / (segCount + 1);
-
-    // Envelope: keep some jitter even near ends (less "smooth" overall).
-    const env = 0.28 + 0.72 * Math.sin(Math.PI * t);
-
-    // Deterministic irregularity per segment.
-    const r1 = (hashStringToUnit(`j:${linkKey}:${i}:a`) - 0.5) * 2; // [-1..1]
-    const r2 = (hashStringToUnit(`j:${linkKey}:${i}:b`) - 0.5) * 2; // [-1..1]
-
-    // Not perfectly alternating: sign comes from hash.
-    const sign = r2 >= 0 ? 1 : -1;
-    const amp = baseAmp * env * (0.55 + 0.55 * Math.abs(r1));
-
-    const ox = px * amp * sign;
-    const oy = py * amp * sign;
-
-    // A touch of along-line jitter so it feels less geometric.
-    const along = (baseAmp * 0.18) * env * r2;
-
-    const x = ssx + (ttx - ssx) * t + ox + ux * along;
-    const y = ssy + (tty - ssy) * t + oy + uy * along;
-    d += ` L ${x} ${y}`;
-  }
-  d += ` L ${ttx} ${tty}`;
-  return d;
-}
-
-function normalizePanelSource(source) {
-  if (!isNonEmptyString(source)) return "";
-  // Keep as-is; caller provides project-relative paths like "panels/about".
-  return source.replace(/\/+$/, "");
-}
-
-const panelCssLoadCache = new Map(); // href -> Promise<void>
-function ensurePanelCssLoaded(source) {
-  const href = `${source}/panel.css`;
-  const id = `panel-css:${source}`;
-  if (panelCssLoadCache.has(href)) return panelCssLoadCache.get(href);
-
-  const existing = document.getElementById(id);
-  const link = existing || document.createElement("link");
-  if (!existing) {
-    link.id = id;
-    link.rel = "stylesheet";
-    link.href = href;
-    document.head.appendChild(link);
-  }
-
-  // Wait for the stylesheet to load so we don't flash unstyled (FOUC).
-  const p = new Promise((resolve, reject) => {
-    if (link.sheet) return resolve();
-    const onLoad = () => resolve();
-    const onError = () => reject(new Error(`Failed to load panel CSS from ${href}`));
-    link.addEventListener("load", onLoad, { once: true });
-    link.addEventListener("error", onError, { once: true });
-  });
-  panelCssLoadCache.set(href, p);
-  return p;
-}
-
-const htmlPanelCache = new Map(); // source -> Promise<string>
-async function loadHtmlPanelHtml(source) {
-  if (htmlPanelCache.has(source)) return await htmlPanelCache.get(source);
-  const p = (async () => {
-    const res = await fetch(`${source}/panel.html`, { cache: "no-store" });
-    if (!res.ok) throw new Error(`Failed to load panel (${res.status}) from ${source}`);
-    return await res.text();
-  })();
-  htmlPanelCache.set(source, p);
-  return await p;
-}
-
-let activePanelFitCleanup = null;
-function clearActivePanelFit() {
-  if (typeof activePanelFitCleanup === "function") {
-    try {
-      activePanelFitCleanup();
-    } catch (e) {
-      console.warn("panel fit cleanup failed", e);
-    }
-  }
-  activePanelFitCleanup = null;
-}
-
-let activePanelJsCleanup = null;
-function clearActivePanelJs() {
-  if (typeof activePanelJsCleanup === "function") {
-    try {
-      activePanelJsCleanup();
-    } catch (e) {
-      console.warn("panel js cleanup failed", e);
-    }
-  }
-  activePanelJsCleanup = null;
-}
-
-const panelJsModuleCache = new Map(); // url -> Promise<any>
-async function initPanelJsIfPresent(source, hostEl) {
-  clearActivePanelJs();
-  if (!isNonEmptyString(source) || !hostEl) return;
-
-  const jsPath = `${source}/panel.js`;
-
-  let exists = false;
-  try {
-    const head = await fetch(jsPath, { method: "HEAD", cache: "no-store" });
-    exists = head.ok;
-  } catch (e) {
-    // Some dev servers may not support HEAD; fall back to GET probe.
-    try {
-      const get = await fetch(jsPath, { method: "GET", cache: "no-store" });
-      exists = get.ok;
-    } catch (e2) {
-      exists = false;
-    }
-  }
-  if (!exists) return;
-
-  try {
-    const url = new URL(jsPath, window.location.href).href;
-    let p = panelJsModuleCache.get(url);
-    if (!p) {
-      p = import(url);
-      panelJsModuleCache.set(url, p);
-    }
-
-    const mod = await p;
-    const init = mod?.init;
-    if (typeof init !== "function") return;
-
-    const panelRoot = hostEl.querySelector(".detail__panelFitInner") || hostEl;
-    const cleanup = await init(panelRoot);
-    if (typeof cleanup === "function") activePanelJsCleanup = cleanup;
-  } catch (e) {
-    // Optional behavior; don't break panel rendering if JS fails.
-    console.debug("panel js init skipped", e);
-  }
-}
-
-function setupHtmlPanelFit(hostEl) {
-  const wrapper = hostEl?.querySelector(".detail__panelFit");
-  const inner = hostEl?.querySelector(".detail__panelFitInner");
-  if (!wrapper || !inner) return () => {};
-
-  function measureAndFit() {
-    const availW = wrapper.clientWidth || 0;
-    const availH = wrapper.clientHeight || 0;
-    if (availW <= 0 || availH <= 0) return;
-
-    // Leave a little breathing room so panels don't feel edge-to-edge.
-    const FIT_MARGIN = 0.90; // 10% inset
-
-    // Temporarily set our transform to 1 so we can measure "natural" size.
-    inner.style.transformOrigin = "center center";
-    inner.style.transform = "scale(1)";
-
-    const rect = inner.getBoundingClientRect();
-    const naturalW = rect.width || 0;
-    const naturalH = rect.height || 0;
-    if (naturalW <= 0 || naturalH <= 0) return;
-
-    const scale = Math.min((availW * FIT_MARGIN) / naturalW, (availH * FIT_MARGIN) / naturalH);
-    inner.style.transformOrigin = "center center";
-    inner.style.transform = `scale(${scale})`;
-  }
-
-  const ro = new ResizeObserver(() => {
-    // Avoid measurement loops
-    requestAnimationFrame(measureAndFit);
-  });
-  ro.observe(wrapper);
-  ro.observe(inner);
-
-  requestAnimationFrame(measureAndFit);
-  return () => ro.disconnect();
-}
-
-function normalizeCitationLinks(markdown) {
-  if (!isNonEmptyString(markdown)) return "";
-  // Turn [[1](url)] into a link whose clickable text is "[1]" (no URL shown).
-  // Markdown needs escaping for literal brackets inside link text.
-  return markdown.replace(/\[\[([^\]]+)\]\(([^)]+)\)\]/g, (m, label, url) => {
-    return `[\\[${label}\\]](${url})`;
-  });
-}
-
-const markdownCache = new Map(); // source -> Promise<string>
-async function loadMarkdown(source) {
-  if (markdownCache.has(source)) return await markdownCache.get(source);
-  const p = (async () => {
-    const res = await fetch(source, { cache: "no-store" });
-    if (!res.ok) throw new Error(`Failed to load markdown (${res.status}) from ${source}`);
-    return await res.text();
-  })();
-  markdownCache.set(source, p);
-  return await p;
-}
-
-function renderMarkdownToHtml(markdown) {
-  const markedLib = globalThis.marked;
-  if (!markedLib) throw new Error('Markdown renderer not found. Expected "marked" on window/globalThis.');
-
-  // Customize link output for safer defaults.
-  const renderer = new markedLib.Renderer();
-  renderer.link = (href, title, text) => {
-    // marked's renderer.link signature varies by version:
-    // - older: (href, title, text)
-    // - newer: (token) where token = { href, title, text, ... }
-    if (href && typeof href === "object") {
-      const token = href;
-      href = token.href;
-      title = token.title;
-      text = token.text;
-    }
-
-    const safeHref = href || "";
-    const safeTitle = title ? ` title="${String(title).replace(/"/g, "&quot;")}"` : "";
-    // Always open external links in a new tab.
-    return `<a href="${safeHref}"${safeTitle} target="_blank" rel="noopener noreferrer">${text}</a>`;
+  var $$ = function (s, r) {
+    return Array.prototype.slice.call((r || document).querySelectorAll(s));
   };
 
-  markedLib.setOptions({
-    renderer,
-    mangle: false,
-    headerIds: false,
-  });
-
-  return markedLib.parse(markdown);
-}
-
-function renderDefaultDetail(hostEl, node) {
-  if (!hostEl) return;
-  clearActivePanelFit();
-  hostEl.classList.remove("detail--panel");
-  hostEl.classList.remove("detail--markdown");
-  hostEl.classList.remove("detail--img");
-  hostEl.classList.remove("detail--website");
-  hostEl.classList.remove("detail--loading");
-  const safeLabel = node?.label ?? node?.id ?? "None";
-  const metaLines = !node
-    ? []
-    : [
-        `id: ${node.id ?? ""}`,
-        `type: ${node.type ?? ""}`,
-        `x: ${node.x ?? ""}`,
-        `y: ${node.y ?? ""}`,
-        node.icon ? `icon: ${node.icon}` : null,
-        node.color ? `color: ${node.color}` : null,
-      ].filter(Boolean);
-
-  hostEl.innerHTML = `
-    <div class="detail__title">Selected Node</div>
-    <div class="detail__label"></div>
-    <div class="detail__meta"></div>
-  `;
-  const labelEl = hostEl.querySelector(".detail__label");
-  const metaEl = hostEl.querySelector(".detail__meta");
-  if (labelEl) labelEl.textContent = safeLabel;
-  if (metaEl) metaEl.textContent = metaLines.join("\n");
-}
-
-function normalizeWebsiteUrl(source) {
-  if (!isNonEmptyString(source)) return "";
-  try {
-    const u = new URL(source, window.location.href);
-    // Avoid dangerous schemes.
-    if (u.protocol !== "http:" && u.protocol !== "https:") return "";
-    return u.href;
-  } catch {
-    return "";
-  }
-}
-
-function renderWebsiteDetail(hostEl, node, url) {
-  if (!hostEl) return;
-
-  clearActivePanelFit();
-  clearActivePanelJs();
-
-  hostEl.classList.remove("detail--panel");
-  hostEl.classList.remove("detail--markdown");
-  hostEl.classList.remove("detail--img");
-  hostEl.classList.add("detail--website");
-  hostEl.classList.remove("detail--loading");
-
-  hostEl.textContent = "";
-
-  const titleEl = document.createElement("div");
-  titleEl.className = "detail__title";
-  titleEl.textContent = "Website";
-
-  const labelEl = document.createElement("div");
-  labelEl.className = "detail__label";
-  labelEl.textContent = String(node?.label ?? node?.id ?? "Website");
-
-  const card = document.createElement("a");
-  card.className = "detail__webCard";
-  card.href = url;
-  card.target = "_blank";
-  card.rel = "noopener noreferrer";
-
-  const top = document.createElement("div");
-  top.className = "detail__webCardTop";
-
-  const urlEl = document.createElement("div");
-  urlEl.className = "detail__webUrl";
-  urlEl.textContent = url;
-
-  const hintEl = document.createElement("div");
-  hintEl.className = "detail__webHint";
-  hintEl.textContent = "Click to open ↗";
-
-  top.appendChild(urlEl);
-  top.appendChild(hintEl);
-
-  const preview = document.createElement("div");
-  preview.className = "detail__webPreview";
-
-  const iframe = document.createElement("iframe");
-  iframe.className = "detail__webFrame";
-  iframe.src = url;
-  iframe.loading = "lazy";
-  iframe.referrerPolicy = "no-referrer";
-  // Keep the preview non-interactive so a click always opens a new tab.
-  iframe.setAttribute("tabindex", "-1");
-  // Allow typical site rendering while preventing it from escaping to top-level navigation by default.
-  iframe.setAttribute("sandbox", "allow-forms allow-scripts allow-same-origin allow-popups");
-
-  preview.appendChild(iframe);
-  card.appendChild(top);
-  card.appendChild(preview);
-
-  hostEl.appendChild(titleEl);
-  hostEl.appendChild(labelEl);
-  hostEl.appendChild(card);
-}
-
-let activeDetailRequestId = 0;
-function renderDetailLoading(hostEl, node, label = "loading...") {
-  if (!hostEl) return;
-
-  clearActivePanelFit();
-  clearActivePanelJs();
-
-  hostEl.classList.remove("detail--panel");
-  hostEl.classList.remove("detail--markdown");
-  hostEl.classList.remove("detail--img");
-  hostEl.classList.remove("detail--website");
-  hostEl.classList.add("detail--loading");
-
-  const title = String(node?.label ?? node?.id ?? "Loading");
-  hostEl.innerHTML = `
-    <div class="detail__title">Selected Node</div>
-    <div class="detail__label"></div>
-    <div class="detail__loading" aria-live="polite"></div>
-  `;
-  const labelEl = hostEl.querySelector(".detail__label");
-  const loadingEl = hostEl.querySelector(".detail__loading");
-  if (labelEl) labelEl.textContent = title;
-  if (loadingEl) loadingEl.textContent = label;
-}
-
-function loadImage(url) {
-  return new Promise((resolve, reject) => {
-    const img = new Image();
-    img.decoding = "async";
-    img.loading = "eager";
-    img.onload = () => resolve(img);
-    img.onerror = () => reject(new Error(`Failed to load image: ${url}`));
-    img.src = url;
-  });
-}
-
-async function renderDetail(node) {
-  const hostEl = document.getElementById("detailHost");
-  if (!hostEl) return;
-
-  const reqId = ++activeDetailRequestId;
-
-  const panelType = node?.["panel-type"];
-  const source = normalizePanelSource(node?.source);
-
-  if (panelType === "html" && isNonEmptyString(source)) {
-    try {
-      renderDetailLoading(hostEl, node, "loading...");
-      await ensurePanelCssLoaded(source);
-      const html = await loadHtmlPanelHtml(source);
-      if (reqId !== activeDetailRequestId) return;
-      hostEl.classList.remove("detail--loading");
-      hostEl.classList.add("detail--panel");
-      hostEl.classList.remove("detail--markdown");
-      hostEl.classList.remove("detail--img");
-      hostEl.classList.remove("detail--website");
-      hostEl.innerHTML = `<div class="detail__panelFit"><div class="detail__panelFitInner">${html}</div></div>`;
-      activePanelFitCleanup = setupHtmlPanelFit(hostEl);
-      await initPanelJsIfPresent(source, hostEl);
-      return;
-    } catch (err) {
-      console.error(err);
-      // Fall back to default view with an inline error.
-      if (reqId !== activeDetailRequestId) return;
-      hostEl.classList.remove("detail--loading");
-      renderDefaultDetail(hostEl, node);
-      const metaEl = hostEl.querySelector(".detail__meta");
-      if (metaEl) {
-        metaEl.textContent = `${metaEl.textContent}\n\npanel error: ${String(err?.message || err)}`.trim();
-      }
-      return;
-    }
-  }
-
-  if (panelType === "markdown" && isNonEmptyString(source)) {
-    try {
-      renderDetailLoading(hostEl, node, "loading...");
-      const mdRaw = await loadMarkdown(source);
-      if (reqId !== activeDetailRequestId) return;
-      const md = normalizeCitationLinks(mdRaw);
-      const html = renderMarkdownToHtml(md);
-      hostEl.classList.remove("detail--loading");
-      hostEl.classList.remove("detail--panel");
-      hostEl.classList.add("detail--markdown");
-      hostEl.classList.remove("detail--img");
-      hostEl.classList.remove("detail--website");
-      hostEl.innerHTML = `<div class="detail__markdown md">${html}</div>`;
-      return;
-    } catch (err) {
-      console.error(err);
-      if (reqId !== activeDetailRequestId) return;
-      hostEl.classList.remove("detail--loading");
-      renderDefaultDetail(hostEl, node);
-      const metaEl = hostEl.querySelector(".detail__meta");
-      if (metaEl) {
-        metaEl.textContent = `${metaEl.textContent}\n\nmarkdown error: ${String(err?.message || err)}`.trim();
-      }
-      return;
-    }
-  }
-
-  if (panelType === "img" && isNonEmptyString(source)) {
-    const ref = node?.ref;
-    const href = isNonEmptyString(ref) ? ref : "";
-    const alt = String(node?.label ?? node?.id ?? "Image");
-
-    renderDetailLoading(hostEl, node, "loading...");
-
-    try {
-      await loadImage(source);
-      if (reqId !== activeDetailRequestId) return;
-
-      hostEl.classList.remove("detail--panel");
-      hostEl.classList.remove("detail--markdown");
-      hostEl.classList.add("detail--img");
-      hostEl.classList.remove("detail--website");
-      hostEl.classList.remove("detail--loading");
-
-      const imgHtml = `<img class="detail__img" src="${source}" alt="${alt}" loading="eager" decoding="async" />`;
-
-      if (href) {
-        hostEl.innerHTML = `
-          <div class="detail__imgFit">
-            <a class="detail__imgLink" href="${href}" target="_blank" rel="noopener noreferrer">
-              ${imgHtml}
-            </a>
-          </div>
-        `;
-      } else {
-        hostEl.innerHTML = `
-          <div class="detail__imgFit">
-            ${imgHtml}
-          </div>
-        `;
-      }
-      return;
-    } catch (err) {
-      console.error(err);
-      if (reqId !== activeDetailRequestId) return;
-      hostEl.classList.remove("detail--loading");
-      renderDefaultDetail(hostEl, node);
-      const metaEl = hostEl.querySelector(".detail__meta");
-      if (metaEl) {
-        metaEl.textContent = `${metaEl.textContent}\n\nimage error: ${String(err?.message || err)}`.trim();
-      }
-      return;
-    }
-  }
-
-  if (panelType === "website") {
-    const url = normalizeWebsiteUrl(node?.source);
-    if (isNonEmptyString(url)) {
-      renderWebsiteDetail(hostEl, node, url);
-      return;
-    }
-  }
-
-  hostEl.classList.remove("detail--loading");
-  renderDefaultDetail(hostEl, node);
-}
-
-async function loadGraph() {
-  if (location.protocol === "file:") {
-    throw new Error(
-      'This app loads "graph.json" via fetch(), which is blocked by most browsers on file://. Run a local server (e.g. `python3 -m http.server`) and open http://localhost:8000/'
-    );
-  }
-
-  const res = await fetch("graph.json", { cache: "no-store" });
-  if (!res.ok) throw new Error(`Failed to load graph.json (${res.status})`);
-  const json = await res.json();
-  return json;
-}
-
-function main(graph) {
-  const rawNodes = Array.isArray(graph?.nodes) ? graph.nodes : [];
-  const links = Array.isArray(graph?.links) ? graph.links : [];
-
-  const nodes = rawNodes.map((n) => ({
-    ...n,
-    x: Number(n?.x) || 0,
-    y: Number(n?.y) || 0,
-  }));
-
-  const nodeById = new Map(nodes.map((n) => [n.id, n]));
-  if (!nodeById.has(ROOT_ID)) {
-    throw new Error(`Root node not found (expected id "${ROOT_ID}")`);
-  }
-
-  const outgoingAdj = buildOutgoingAdj(links);
-
-  // State
-  let selectedId = ROOT_ID;
-  const visibleIds = new Set([ROOT_ID]);
-  for (const child of outgoingAdj.get(ROOT_ID) || []) visibleIds.add(child);
-
-  const svg = d3.select("#graph");
-  const bg = svg.select("rect.bg");
-  const viewport = svg.select("g.viewport");
-  const gLinks = svg.select("g.links");
-  const gNodes = svg.select("g.nodes");
-
-  // Size the background rect to the rendered SVG size, so zoom can start from empty space.
-  function resizeBg() {
-    const rect = svg.node().getBoundingClientRect();
-    bg.attr("width", rect.width).attr("height", rect.height);
-  }
-  resizeBg();
-  window.addEventListener("resize", resizeBg);
-  // Mobile browsers may change viewport size without a reliable window resize
-  // (e.g., address bar collapse/expand). Observe the SVG itself.
-  try {
-    const ro = new ResizeObserver(() => {
-      requestAnimationFrame(resizeBg);
+  /* ── folds: the phone hides a couple of things behind a "+" ─────── */
+  function fold(el, apply) {
+    var from = el.offsetHeight;
+    apply();
+    var to = el.offsetHeight;
+    if (!GROW || from === to) return;
+    el.style.overflow = "hidden";
+    var a = el.animate([{ height: from + "px" }, { height: to + "px" }], {
+      duration: 300,
+      easing: EASE,
     });
-    ro.observe(svg.node());
-  } catch {
-    // ResizeObserver not available; window resize handler is a reasonable fallback.
-  }
-
-  // Fixed coordinate system via viewBox from node extents.
-  const vb = computeViewBox(nodes);
-  svg.attr("viewBox", `${vb.x} ${vb.y} ${vb.width} ${vb.height}`);
-
-  const rootNode = nodeById.get(ROOT_ID);
-  // Default start position: near center, nudged slightly up and to the right.
-  // Expressed in viewBox (user) coordinates so it scales consistently.
-  const START_X_FRAC = 0.48; // > 0.5 => a bit to the right
-  const START_Y_FRAC = 0.44; // < 0.5 => a bit higher
-  const isMobile = window.matchMedia?.("(max-width: 900px)")?.matches;
-  const initialScale = isMobile ? 2.5 : 1;
-  const defaultTransform = d3.zoomIdentity
-    .translate(vb.x + vb.width * START_X_FRAC, vb.y + vb.height * START_Y_FRAC)
-    .scale(initialScale)
-    .translate(-(rootNode?.x ?? 0), -(rootNode?.y ?? 0));
-
-  // Zoom / pan
-  const zoom = d3
-    .zoom()
-    .scaleExtent([0.3, 5])
-    .on("zoom", (event) => {
-      viewport.attr("transform", event.transform);
+    a.finished.then(function () {
+      el.style.overflow = "";
     });
-  svg.call(zoom);
-  // Disable default dblclick-to-zoom; we use dblclick to reset instead.
-  svg.on("dblclick.zoom", null);
-
-  function centerOnNode(node) {
-    if (!node) return;
-    // Keep current scale; just translate so the node becomes the center of the viewport.
-    svg
-      .transition()
-      .duration(240)
-      .call(zoom.translateTo, node.x, node.y);
   }
 
-  function getVisibleNodes() {
-    return nodes.filter((n) => visibleIds.has(n.id));
-  }
-
-  function getVisibleLinks() {
-    return links.filter((l) => visibleIds.has(l.source) && visibleIds.has(l.target));
-  }
-
-  function render() {
-    const visibleNodes = getVisibleNodes();
-    const visibleLinks = getVisibleLinks();
-
-    // Highlight set: selected + its direct neighbors (undirected) among visible links.
-    const neighborIds = new Set();
-    for (const l of visibleLinks) {
-      if (l.source === selectedId) neighborIds.add(l.target);
-      else if (l.target === selectedId) neighborIds.add(l.source);
-    }
-    const activeNodeIds = new Set([selectedId, ...neighborIds]);
-    const activeLinkKeys = new Set();
-    for (const l of visibleLinks) {
-      const k = `${l.source}→${l.target}`;
-      const connectsSelected =
-        (l.source === selectedId && neighborIds.has(l.target)) ||
-        (l.target === selectedId && neighborIds.has(l.source));
-      if (connectsSelected) activeLinkKeys.add(k);
-    }
-
-    // Links (optional but helpful to read expansion)
-    const linkSel = gLinks.selectAll("path.link").data(
-      visibleLinks,
-      (d) => `${d.source}→${d.target}`
-    );
-
-    linkSel
-      .join(
-        (enter) => enter.append("path").attr("class", "link").attr("fill", "none"),
-        (update) => update,
-        (exit) => exit.remove()
-      )
-      .style("opacity", (d) => (activeLinkKeys.has(`${d.source}→${d.target}`) ? 1 : 0.18))
-      .attr("d", (d) => {
-        const s = nodeById.get(d.source);
-        const t = nodeById.get(d.target);
-        if (!s || !t) return "";
-        const key = `${d.source}→${d.target}`;
-        // Add a little extra breathing room so edges don't hug nodes.
-        const sInset = nodeVisualRadius(s) + LINK_END_INSET_EXTRA;
-        const tInset = nodeVisualRadius(t) + LINK_END_INSET_EXTRA;
-        return zigzagPathForLink(key, s.x, s.y, t.x, t.y, sInset, tInset);
+  function bindReveal(btn) {
+    var target = document.getElementById(btn.getAttribute("aria-controls"));
+    var mark = $(".reveal__mark", btn);
+    var text = $(".reveal__text", btn);
+    if (!target) return;
+    btn.addEventListener("click", function (e) {
+      e.stopPropagation();
+      var open;
+      fold(target, function () {
+        open = target.classList.toggle("is-open");
       });
+      btn.setAttribute("aria-expanded", String(open));
+      mark.textContent = open ? "\u2212" : "+";
+      var swap = text.dataset.alt;
+      text.dataset.alt = text.textContent;
+      text.textContent = swap;
+    });
+  }
 
-    // Nodes
-    const nodeSel = gNodes.selectAll("g.node").data(visibleNodes, (d) => d.id);
+  $$(".reveal").forEach(bindReveal);
 
-    const nodeEnter = nodeSel
-      .enter()
-      .append("g")
-      .attr("class", "node")
-      .attr("transform", (d) => `translate(${d.x}, ${d.y}) rotate(${nodeTiltDeg(d.id)})`)
-      .style("cursor", "pointer")
-      .on("click", async (event, d) => {
-        event.stopPropagation();
-        selectedId = d.id;
-        await renderDetail(d);
-        for (const child of outgoingAdj.get(d.id) || []) visibleIds.add(child);
-        render();
-        centerOnNode(d);
-      });
+  /* ── what kind of thing happened ──────────────────────────────────
+     The bullet follows the verb the line opens with, falling through to
+     anything that got accepted. Add a row here plus a rule in styles.css
+     to extend it; a line that matches nothing keeps the plain dot.
+     ─────────────────────────────────────────────────────────────────── */
+  var MARKS = [
+    [/^thinking\b/i, "think"],
+    [/^collected\b/i, "in"],
+    [/^submitted\b/i, "paper"],
+    [/^started\b/i, "star"],
+    [/\baccepted\b/i, "paper"],
+  ];
 
-    // Hit target for easier clicking
-    nodeEnter.append("circle").attr("class", "node-hit").attr("r", (d) => nodeHitRadius(d));
-
-    // Content: image or circle
-    nodeEnter.each(function (d) {
-      const g = d3.select(this);
-      const s = nodeScale(d);
-      const hasIcon = nodeHasIcon(d);
-      if (hasIcon) {
-        const href = d.icon || "";
-        const size = ICON_SIZE * s;
-        g.append("image")
-          .attr("class", "node-image")
-          .attr("href", href)
-          .attr("x", -size / 2)
-          .attr("y", -size / 2)
-          .attr("width", size)
-          .attr("height", size);
-      } else {
-        const fill = isNonEmptyString(d.color) ? d.color : "#64748b";
-        const r = NODE_RADIUS * s;
-        if (nodeWantsTriangle(d)) {
-          // Equilateral triangle centered at (0,0) using circumradius r.
-          const x = r * 0.8660254037844386; // cos(30°)
-          const y = r * 0.5; // sin(30°)
-          g.append("polygon")
-            .attr("class", "node-triangle")
-            .attr("points", `0,${-r} ${x},${y} ${-x},${y}`)
-            .attr("fill", fill);
-        } else {
-          g.append("circle").attr("class", "node-circle").attr("r", r).attr("fill", fill);
+  function markBullets(card) {
+    $$("li", card).forEach(function (li) {
+      if (li.dataset.mark) return; /* the markdown already said so */
+      var text = li.textContent.trim();
+      for (var i = 0; i < MARKS.length; i++) {
+        if (MARKS[i][0].test(text)) {
+          li.dataset.mark = MARKS[i][1];
+          return;
         }
       }
     });
+  }
 
-    // Label
-    nodeEnter
-      .append("text")
-      .attr("class", "node-label")
-      .attr("text-anchor", "middle")
-      .attr("dy", (d) => nodeLabelDy(d))
-      .each(function (d) {
-        applyWrappedNodeLabel(this, d);
+  /* The updates list is rewritten from markdown, which takes the phone's fold
+     with it. Put it back, however many bullets the file happens to have. */
+  var SHOWN = 3;
+
+  function refold(card) {
+    var list = $("ul", card);
+    if (!list) return;
+    var items = $$("li", list);
+    if (items.length <= SHOWN) return;
+
+    list.className = "folds";
+    list.id = "updates-list";
+    items.slice(SHOWN).forEach(function (li) {
+      li.classList.add("later");
+    });
+
+    var btn = document.createElement("button");
+    btn.className = "reveal reveal--in";
+    btn.type = "button";
+    btn.setAttribute("aria-expanded", "false");
+    btn.setAttribute("aria-controls", "updates-list");
+    btn.innerHTML =
+      '<span class="reveal__mark">+</span><span class="reveal__text" data-alt="less">' +
+      (items.length - SHOWN) +
+      " more</span>";
+    card.appendChild(btn);
+    bindReveal(btn);
+  }
+
+  /* ═══════════════════ a card grows into itself ═══════════════════ */
+  var work = $(".work__stage");
+  var grid = document.getElementById("grid");
+  var stage = document.getElementById("stage");
+  var panels = {};
+
+  /* ═══════════════ the cards are written in content/*.md ═══════════════
+     One file per card. The `# heading` is the title; anything after it is the
+     body. A card with a body opens; a card with only a title stays inert.
+     A "## Papers" list takes lines of:  file.webp | Title | url
+     ══════════════════════════════════════════════════════════════════════ */
+
+  function esc(t) {
+    return t.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  }
+
+  /* the small slice of markdown this site speaks:
+     **bold**  *italic*  [text](url)  and  word{+ the aside behind the + }  */
+  var asideSeq = 0;
+
+  function inline(t) {
+    var held = [];
+    t = t.replace(/\{\+([\s\S]+?)\}/g, function (_, body) {
+      held.push(body);
+      return "\u0002" + (held.length - 1) + "\u0002";
+    });
+
+    var link = function (text, url) {
+      /* a bare domain still deserves to be a link */
+      if (!/^([a-z][a-z0-9+.-]*:|\/\/|#|\/)/i.test(url)) url = "https://" + url;
+      return '<a href="' + url + '" target="_blank" rel="noopener">' + text + "</a>";
+    };
+
+    var html = esc(t)
+      .replace(/\[([^\]]+)\]\(([^)\s]+)\)/g, function (_, text, url) {
+        return link(text, url);
+      })
+      /* the other way round reads just as naturally, so accept it too */
+      .replace(/\(([^()\n]+)\)\s*\[([^\]\s]+)\]/g, function (whole, text, url) {
+        return /[.:\/]/.test(url) ? link(text, url) : whole;
+      })
+      .replace(/\*\*([^*]+)\*\*/g, "<b>$1</b>")
+      .replace(/(^|[^*])\*([^*\n]+)\*/g, "$1<i>$2</i>")
+      .replace(/_([^_\n]+)_/g, "<i>$1</i>");
+
+    return html.replace(/\u0002(\d+)\u0002/g, function (_, i) {
+      var id = "aside-" + asideSeq++;
+      return (
+        '<button class="more" type="button" aria-expanded="false" aria-controls="' + id + '">+</button>' +
+        '<span class="aside" id="' + id + '">' + inline(held[+i]) + "</span>"
+      );
+    });
+  }
+
+  /* a whole markdown block: paragraphs, a heading, bullet lists */
+  function renderBlock(src) {
+    src = src.replace(/<!--[\s\S]*?-->/g, "").replace(/\r/g, "");
+    var out = [];
+    src.split(/\n\s*\n/).forEach(function (chunk) {
+      chunk = chunk.trim();
+      if (!chunk) return;
+
+      if (/^#\s+/.test(chunk)) {
+        out.push('<p class="updates__head">' + inline(chunk.replace(/^#\s+/, "")) + "</p>");
+        return;
+      }
+      if (/^-\s+/.test(chunk)) {
+        out.push(
+          "<ul>" +
+            chunk
+              .split(/\n(?=\s*-\s)/)
+              .map(function (li) {
+                var text = li.trim().replace(/^-\s+/, "").replace(/\s*\n\s*/g, " ");
+                /* `- {star} …` forces the bullet's glyph; otherwise markBullets picks */
+                var mark = "";
+                text = text.replace(/^\{([a-z-]+)\}\s*/i, function (_, name) {
+                  mark = name.toLowerCase();
+                  return "";
+                });
+                return "<li" + (mark ? ' data-mark="' + mark + '"' : "") + ">" + inline(text) + "</li>";
+              })
+              .join("") +
+            "</ul>"
+        );
+        return;
+      }
+      var marked = chunk.replace(/(?:  +|\\)\n/g, "\u0001").replace(/\s*\n\s*/g, " ");
+      out.push("<p>" + inline(marked).replace(/\u0001/g, "<br />") + "</p>");
+    });
+    return out.join("\n");
+  }
+
+  function parseCard(src) {
+    var out = { title: "", body: "", papers: [] };
+    src = src.replace(/<!--[\s\S]*?-->/g, "").replace(/\r/g, "");
+
+    var papers = src.split(/^##\s+Papers\s*$/m);
+    src = papers[0];
+    if (papers[1]) {
+      papers[1].split("\n").forEach(function (line) {
+        var m = line.match(/^\s*-\s*(.+)$/);
+        if (!m) return;
+        var bits = m[1].split("|").map(function (x) {
+          return x.trim();
+        });
+        if (bits.length >= 3) out.papers.push({ img: bits[0], title: bits[1], href: bits[2] });
+      });
+    }
+
+    var head = src.match(/^#\s+(.+)$/m);
+    if (head) {
+      out.title = head[1].trim();
+      src = src.slice(src.indexOf(head[0]) + head[0].length);
+    }
+
+    /* blank line = new paragraph. Ordinary wrapping in the file is just
+       wrapping; end a line with two spaces (or a backslash) to force a break,
+       which is how the deck stacks its short lines. */
+    out.body = src
+      .split(/\n\s*\n/)
+      .map(function (para) {
+        return para.trim();
+      })
+      .filter(Boolean)
+      .map(function (para) {
+        var marked = para.replace(/(?:  +|\\)\n/g, "\u0001").replace(/\s*\n\s*/g, " ");
+        return "<p>" + inline(marked).replace(/\u0001/g, "<br />") + "</p>";
+      })
+      .join("\n");
+
+    return out;
+  }
+
+  function buildPanel(key, card) {
+    var panel = document.createElement("div");
+    panel.className = "panel";
+    panel.dataset.panel = key;
+    panel.hidden = true;
+
+    var art = document.createElement("article");
+    art.className = "card card--panel";
+    art.innerHTML = "<h2>" + esc(card.title) + '</h2><div class="card__body">' + card.body + "</div>";
+    panel.appendChild(art);
+
+    if (card.papers.length) {
+      var wrap = document.createElement("div");
+      wrap.className = "papers";
+      card.papers.forEach(function (p) {
+        var b = document.createElement("button");
+        b.className = "paper";
+        b.type = "button";
+        b.dataset.href = p.href;
+        b.dataset.title = p.title;
+        b.innerHTML = '<img src="res/papers/' + encodeURI(p.img) + '" alt="' + esc(p.title) + '" />';
+        wrap.appendChild(b);
+      });
+      panel.appendChild(wrap);
+    }
+    return panel;
+  }
+
+  /* A browser will not let a page opened straight off the disk read its own
+     sibling files. Rather than fail silently — stale text, dead cards — say so. */
+  var contentBroken = false;
+
+  function warnAboutContent() {
+    if (contentBroken) return;
+    contentBroken = true;
+    var bar = document.createElement("div");
+    bar.className = "warnbar";
+    bar.innerHTML =
+      "<b>This page cannot read its own text.</b> Opened straight off the disk, the browser blocks " +
+      "<code>content/*.md</code> (and the fonts), so the words are stale and no card will open. " +
+      "Double-click <code>preview.command</code> in the project folder instead.";
+    document.body.appendChild(bar);
+  }
+
+  function loadMd(key) {
+    return fetch("content/" + key + ".md").then(function (r) {
+      if (!r.ok) throw new Error(r.status);
+      return r.text();
+    });
+  }
+
+  /* the masthead blocks. Their markup in index.html is a no-JS fallback;
+     the markdown is what actually wins. */
+  var blocksReady = Promise.all(
+    $$("[data-md]").map(function (el) {
+      return loadMd(el.dataset.md)
+        .then(function (text) {
+          el.innerHTML = renderBlock(text);
+          if (el.dataset.md === "updates") {
+            markBullets(el);
+            refold(el);
+          }
+        })
+        .catch(warnAboutContent);
+    })
+  );
+
+  var contentReady = Promise.all(
+    $$("[data-card]").map(function (el) {
+      var key = el.dataset.card;
+      return loadMd(key)
+        .then(function (text) {
+          var card = parseCard(text);
+          if (card.title) el.textContent = card.title;
+          if (!card.body) return; /* title only — the card stays put */
+
+          el.classList.add("card--open");
+          el.dataset.open = key;
+          el.setAttribute("role", "button");
+          el.tabIndex = 0;
+
+          var panel = buildPanel(key, card);
+          stage.appendChild(panel);
+          panels[key] = panel;
+        })
+        .catch(warnAboutContent);
+    })
+  );
+
+  var current = null; /* key of the open panel */
+  var busy = false;
+  var everOpened = false; /* once you have opened one, the hand stops offering */
+
+  /* The panel opens below the masthead, so on a tall window the papers can
+     land entirely under the fold — and nobody scrolls looking for something
+     they have no reason to think is there. So the page goes to it. Only when
+     it does not already fit: no lurch when there is nothing to reveal. */
+  function bringIntoView(panel) {
+    var box = panel.getBoundingClientRect();
+    var room = window.innerHeight;
+    if (box.top >= 0 && box.bottom <= room) return;
+    var margin = 1.2 * root();
+    var top = window.scrollY + box.top - margin;
+    /* if it is taller than the window, its top is the part worth showing */
+    window.scrollTo({ top: Math.max(0, top), behavior: reduced ? "auto" : "smooth" });
+  }
+
+  /* geometry of `el` relative to the stage's padding box */
+  function boxIn(el, host) {
+    var a = el.getBoundingClientRect();
+    var b = host.getBoundingClientRect();
+    return { left: a.left - b.left, top: a.top - b.top, width: a.width, height: a.height };
+  }
+
+  function px(v) {
+    return v + "px";
+  }
+
+  function place(el, box) {
+    el.style.left = px(box.left);
+    el.style.top = px(box.top);
+    el.style.width = px(box.width);
+    el.style.height = px(box.height);
+  }
+
+  function frames(el, from, to) {
+    var key = function (b) {
+      return { left: px(b.left), top: px(b.top), width: px(b.width), height: px(b.height) };
+    };
+    return el.animate([key(from), key(to)], { duration: GROW, easing: EASE, fill: "both" });
+  }
+
+  /* ── everything that is not the clicked card gets pushed out of frame ── */
+  var shoves = [];
+
+  function root() {
+    return parseFloat(getComputedStyle(document.documentElement).fontSize);
+  }
+
+  function shoveAside(trigger) {
+    var srcGroup = trigger.closest(".group");
+    var srcCol = trigger.closest(".col");
+    var tr = trigger.getBoundingClientRect();
+    var u = root();
+    var items = [];
+
+    /* other groups travel whole, bracket and label with them */
+    $$(".group", grid).forEach(function (g) {
+      if (g !== srcGroup) items.push(g);
+    });
+    $$(".wave--short", grid).forEach(function (w) {
+      items.push(w);
+    });
+    /* the clicked card's own siblings split around it */
+    if (srcGroup) {
+      $$(".card", srcGroup).forEach(function (c) {
+        if (c !== trigger) items.push(c);
+      });
+      srcGroup.classList.add("is-source");
+    }
+
+    shoves = items.map(function (el) {
+      var r = el.getBoundingClientRect();
+      var to;
+      if (el.closest(".col") !== srcCol) to = "translateX(" + 8 * u + "px)"; /* sideways */
+      else if (r.top >= tr.bottom - 1) to = "translateY(" + 6 * u + "px)"; /* downwards */
+      else to = "translateY(" + -5 * u + "px)"; /* upwards */
+
+      return {
+        el: el,
+        to: to,
+        anim: el.animate([{ transform: "none", opacity: 1 }, { transform: to, opacity: 0 }], {
+          duration: SHOVE,
+          easing: "cubic-bezier(0.36, 0, 0.28, 1)",
+          fill: "both",
+        }),
+      };
+    });
+  }
+
+  function shoveBack() {
+    shoves.forEach(function (s) {
+      s.anim.cancel();
+      s.anim = s.el.animate([{ transform: s.to, opacity: 0 }, { transform: "none", opacity: 1 }], {
+        duration: SHOVE,
+        easing: "cubic-bezier(0.36, 0, 0.28, 1)",
+        fill: "both",
+      });
+    });
+  }
+
+  function shovesClear() {
+    shoves.forEach(function (s) {
+      s.anim.cancel();
+    });
+    shoves = [];
+    $$(".group.is-source", grid).forEach(function (g) {
+      g.classList.remove("is-source");
+    });
+  }
+
+  /* the rect this panel's card wants, once the grid is out of the way.
+     Call it while the card still sits in the panel's own grid, so the
+     width comes from the stylesheet rather than a magic number. */
+  function restingBox(panel) {
+    var card = $(".card--panel", panel);
+    var w = card.getBoundingClientRect().width;
+    var prev = card.getAttribute("style") || "";
+    card.style.cssText = prev + ";position:absolute;visibility:hidden;left:0;top:0;width:" + px(w) + ";height:auto";
+    var h = card.offsetHeight;
+    card.setAttribute("style", prev);
+    return { left: 0, top: 0, width: w, height: h };
+  }
+
+  function open(key, push) {
+    if (busy || current === key || !panels[key]) return;
+    var panel = panels[key];
+    var card = $(".card--panel", panel);
+    var papers = $(".papers", panel);
+    var trigger = $('[data-open="' + key + '"]');
+    busy = true;
+
+    /* freeze the section so nothing below it jumps while we animate */
+    var hold = work.offsetHeight;
+    work.style.height = px(hold);
+
+    var gridBox = boxIn(grid, work);
+    var from = boxIn(trigger, work);
+    from.left -= gridBox.left;
+    from.top -= gridBox.top;
+
+    stage.hidden = false;
+    panel.hidden = false;
+    panel.style.position = "absolute";
+    panel.style.left = px(gridBox.left);
+    panel.style.top = px(gridBox.top);
+    panel.style.width = px(gridBox.width);
+
+    var to = restingBox(panel); /* measured while the grid still governs the width */
+    /* on a phone the papers sit under the card, so they need to know how tall
+       it will end up before the box has finished growing */
+    panel.style.setProperty("--papers-top", px(to.height + 0.8 * root()));
+    panel.classList.add("is-morphing");
+
+    place(card, from);
+    card.style.overflow = "hidden";
+    /* the title needs no crossfade: it lands exactly on the one underneath,
+       same face and measure, only heavier */
+    $(".card__body", card).style.opacity = 0;
+
+    /* let the browser see the start state before we move */
+    void card.offsetWidth;
+
+    grid.classList.add("is-hushed");
+    shoveAside(trigger);
+
+    var anim = frames(card, from, to);
+    setTimeout(function () {
+      $(".card__body", card).style.opacity = 1;
+    }, GROW * 0.28);
+    if (papers) {
+      papers.__anim = papers.animate([{ opacity: 0 }, { opacity: 1 }], {
+        duration: Math.max(1, GROW * 0.28),
+        delay: GROW * 0.72, /* they land exactly as the box stops growing */
+        easing: "ease",
+        fill: "both",
+      });
+    }
+
+    var settle = function () {
+      /* hand the panel back to normal flow — it lands exactly where it is */
+      grid.hidden = true;
+      panel.classList.remove("is-morphing");
+      panel.style.position = panel.style.left = panel.style.top = panel.style.width = "";
+      panel.style.removeProperty("--papers-top");
+      card.style.cssText = "";
+      if (papers) {
+        if (papers.__anim) papers.__anim.cancel();
+        papers.__anim = null;
+        papers.style.opacity = "";
+      }
+      work.style.height = "";
+      current = key;
+      everOpened = true;
+      busy = false;
+      bringIntoView(panel); /* now that it is in flow, its box is real */
+      if (key === "algorithms") flashFreud();
+    };
+
+    if (!GROW) settle();
+    else
+      anim.finished.then(function () {
+        anim.cancel();
+        settle();
       });
 
-    // Update + enter merged
-    const nodeMerged = nodeEnter.merge(nodeSel);
-    nodeMerged.attr("transform", (d) => `translate(${d.x}, ${d.y}) rotate(${nodeTiltDeg(d.id)})`);
-    nodeMerged.style("opacity", (d) => (activeNodeIds.has(d.id) ? 1 : 0.22));
-
-    nodeSel.exit().remove();
+    if (push !== false && location.hash.slice(1) !== key) {
+      history.pushState({ panel: key }, "", "#" + key);
+    }
   }
 
-  // Click on background: just select Root (optional convenience), without collapsing.
-  svg.on("click", () => {
-    selectedId = ROOT_ID;
-    renderDetail(rootNode);
-    render();
-    centerOnNode(rootNode);
+  function close(push) {
+    if (busy || !current) return;
+    var key = current;
+    var panel = panels[key];
+    var card = $(".card--panel", panel);
+    var papers = $(".papers", panel);
+    var trigger = $('[data-open="' + key + '"]');
+    busy = true;
+    current = null;
+
+    var hold = work.offsetHeight;
+    work.style.height = px(hold);
+
+    /* pin the panel where it sits, then let the grid back into the flow */
+    var panelBox = boxIn(panel, work);
+    var from = boxIn(card, work);
+    from.left -= panelBox.left;
+    from.top -= panelBox.top;
+
+    panel.classList.add("is-morphing");
+    panel.style.position = "absolute";
+    panel.style.left = px(panelBox.left);
+    panel.style.top = px(panelBox.top);
+    panel.style.width = px(panelBox.width);
+    place(card, from);
+    card.style.overflow = "hidden";
+
+    grid.hidden = false;
+    void grid.offsetWidth;
+
+    var to = boxIn(trigger, work);
+    to.left -= panelBox.left;
+    to.top -= panelBox.top;
+
+    $(".card__body", card).style.opacity = 0;
+    if (papers) {
+      if (papers.__anim) papers.__anim.cancel();
+      papers.__anim = papers.animate([{ opacity: 1 }, { opacity: 0 }], {
+        duration: Math.max(1, GROW * 0.3),
+        easing: "ease",
+        fill: "both",
+      });
+    }
+
+    var anim = frames(card, from, to);
+    shoveBack();
+
+    var settle = function () {
+      grid.classList.remove("is-hushed");
+      shovesClear();
+      panel.hidden = true;
+      stage.hidden = true;
+      panel.classList.remove("is-morphing");
+      panel.style.position = panel.style.left = panel.style.top = panel.style.width = "";
+      card.style.cssText = "";
+      $(".card__body", card).style.opacity = "";
+      if (papers) {
+        if (papers.__anim) papers.__anim.cancel();
+        papers.__anim = null;
+        papers.style.opacity = "";
+      }
+      work.style.height = "";
+      busy = false;
+      /* deliberately no scroll back — you stay where you were reading */
+    };
+
+    if (!GROW) settle();
+    else
+      anim.finished.then(function () {
+        anim.cancel();
+        settle();
+      });
+
+    if (push !== false && location.hash) {
+      history.pushState({ panel: null }, "", location.pathname + location.search);
+    }
+  }
+
+  /* ═══════════════════ a paper opens to its full page ═══════════════ */
+  var lightbox = document.getElementById("lightbox");
+  var lightboxImg = document.getElementById("lightboxImg");
+  var lightboxLink = document.getElementById("lightboxLink");
+  var lightboxOpen = false;
+
+  function openPaper(paper) {
+    var img = $("img", paper);
+    lightboxImg.src = img.src;
+    lightboxImg.alt = img.alt;
+    lightboxLink.textContent = paper.dataset.title + " ↗";
+    lightboxLink.href = paper.dataset.href;
+    lightbox.hidden = false;
+    lightboxOpen = true;
+
+    var from = paper.getBoundingClientRect();
+    var to = lightboxImg.getBoundingClientRect();
+    var scale = from.width / to.width;
+    lightboxImg.animate(
+      [
+        {
+          transform:
+            "translate(" + (from.left - to.left) + "px," + (from.top - to.top) + "px) scale(" + scale + ")",
+          boxShadow: "0 0 0 rgba(0,0,0,0)",
+        },
+        { transform: "none" },
+      ],
+      { duration: ZOOM, easing: EASE }
+    );
+    requestAnimationFrame(function () {
+      lightbox.classList.add("is-open");
+    });
+  }
+
+  function closePaper() {
+    if (!lightboxOpen) return;
+    lightboxOpen = false;
+    lightbox.classList.remove("is-open");
+    setTimeout(
+      function () {
+        lightbox.hidden = true;
+      },
+      reduced ? 0 : 220
+    );
+  }
+
+  /* ═══════════════════ one click handler to rule them ═══════════════ */
+  document.addEventListener("click", function (e) {
+    /* inline "+" asides — delegated, since the markdown makes them */
+    var more = e.target.closest(".more");
+    if (more) {
+      e.stopPropagation();
+      var aside = document.getElementById(more.getAttribute("aria-controls"));
+      if (aside) {
+        var shown = aside.classList.toggle("is-open");
+        more.setAttribute("aria-expanded", String(shown));
+        more.textContent = shown ? "−" : "+";
+      }
+      return;
+    }
+
+    if (lightboxOpen) {
+      if (!e.target.closest("a")) closePaper();
+      return;
+    }
+
+    var paper = e.target.closest(".paper");
+    if (paper) {
+      openPaper(paper);
+      return;
+    }
+
+    var trigger = e.target.closest(".card--open");
+    if (trigger && !current) {
+      open(trigger.dataset.open);
+      return;
+    }
+
+    /* anywhere else, while something is open, puts it back */
+    if (current && !e.target.closest("a") && !e.target.closest(".more")) close();
   });
 
-  // Double click: reset zoom/pan to default transform.
-  svg.on("dblclick", (event) => {
-    event.preventDefault();
-    svg
-      .transition()
-      .duration(220)
-      .call(zoom.transform, defaultTransform);
+  document.addEventListener("keydown", function (e) {
+    if ((e.key === "Enter" || e.key === " ") && !current) {
+      var c = e.target.closest && e.target.closest(".card--open");
+      if (c) {
+        e.preventDefault();
+        open(c.dataset.open);
+        return;
+      }
+    }
+    if (e.key !== "Escape") return;
+    if (lightboxOpen) closePaper();
+    else close();
   });
 
-  // Initial UI
-  renderDetail(nodeById.get(ROOT_ID));
-  render();
+  window.addEventListener("popstate", function () {
+    var key = location.hash.slice(1);
+    if (panels[key]) open(key, false);
+    else close(false);
+  });
 
-  // Start with Root near center, slightly up/right.
-  svg.call(zoom.transform, defaultTransform);
-}
+  Promise.all([contentReady, blocksReady]).then(function () {
+    var key = location.hash.slice(1);
+    if (panels[key]) open(key, false);
+  });
 
-(async () => {
-  try {
-    const graph = await loadGraph();
-    main(graph);
-  } catch (err) {
-    console.error(err);
-    const labelEl = document.getElementById("detailLabel");
-    const metaEl = document.getElementById("detailMeta");
-    if (labelEl) labelEl.textContent = "Failed to load graph";
-    if (metaEl) metaEl.textContent = String(err?.message || err);
+  /* ══ the hand — the asterisk says there is more here; three times, early
+        on, a hand says it without anyone having to work it out ═════════ */
+  if (!reduced) {
+    var HAND_FIRST = 10000; /* long enough to have read the page first */
+    var HAND_EVERY = 5000;
+    var handsLeft = 3;
+    var handTimer = null;
+
+    var laterHand = function (delay) {
+      clearTimeout(handTimer);
+      handTimer = setTimeout(showHand, delay);
+    };
+
+    var showHand = function () {
+      handTimer = null;
+      if (!handsLeft || everOpened) return;
+      /* nobody is watching — keep the three for when they are */
+      if (document.hidden) return;
+
+      handsLeft--;
+      /* just the first card. One hand is an offer; three at once is a demand */
+      var c = $(".card--open");
+      if (c) {
+        c.classList.remove("is-nudging");
+        void c.offsetWidth; /* so the animation restarts rather than continues */
+        c.classList.add("is-nudging");
+      }
+      if (handsLeft) laterHand(HAND_EVERY);
+    };
+
+    document.addEventListener("visibilitychange", function () {
+      if (!document.hidden && handsLeft && !handTimer && !everOpened) laterHand(HAND_EVERY);
+    });
+
+    /* counted from when the cards actually exist, not from the first byte */
+    contentReady.then(function () {
+      laterHand(HAND_FIRST);
+    });
+  }
+
+  /* ══ easter egg 1 — the portrait grows a scientist ═══════════════ */
+  var portrait = document.getElementById("portrait");
+  var scientist = document.getElementById("scientist");
+
+  function toggleScientist(on) {
+    document.body.classList.toggle("egg-scientist", on);
+    if (portrait) portrait.setAttribute("aria-pressed", String(on));
+  }
+
+  if (portrait) {
+    /* two taps, so a stray finger never summons him. One handler for mouse and
+       touch alike — dblclick is unreliable on phones. */
+    var lastTap = 0;
+    portrait.addEventListener("click", function (e) {
+      e.stopPropagation();
+      var now = Date.now();
+      var isDouble = now - lastTap < 420;
+      lastTap = isDouble ? 0 : now;
+      if (!isDouble) return;
+      /* he is only fetched the first time somebody asks for him */
+      if (scientist && !scientist.src) scientist.src = scientist.dataset.src;
+      toggleScientist(!document.body.classList.contains("egg-scientist"));
+    });
+  }
+  if (scientist) {
+    /* click him anywhere and he goes back where he came from */
+    scientist.addEventListener("click", function (e) {
+      e.stopPropagation();
+      toggleScientist(false);
+    });
+  }
+
+  /* ══ easter egg 2 — a brick, for anyone who sits still ══════════ */
+  var brick = document.getElementById("brick");
+  if (brick && !reduced) {
+    var DWELL = 4500; /* how long you have to hold still */
+    var COOLDOWN = 22000; /* it does not want to be a habit */
+    var timer = null;
+    var last = 0;
+    var stirred = true;
+
+    var flashBrick = function () {
+      if (document.hidden) return;
+      last = Date.now();
+      stirred = false;
+      brick.classList.remove("is-flash");
+      void brick.offsetWidth;
+      brick.classList.add("is-flash");
+    };
+
+    var arm = function () {
+      clearTimeout(timer);
+      if (!stirred) return;
+      /* wait out the dwell, and whatever is left of the cooldown */
+      timer = setTimeout(flashBrick, Math.max(DWELL, COOLDOWN - (Date.now() - last)));
+    };
+
+    var stir = function () {
+      stirred = true;
+      arm();
+    };
+
+    ["mousemove", "pointerdown", "keydown", "wheel", "scroll", "touchstart"].forEach(function (ev) {
+      window.addEventListener(ev, stir, { passive: true });
+    });
+    document.addEventListener("visibilitychange", function () {
+      if (document.hidden) clearTimeout(timer);
+      else stir();
+    });
+    brick.addEventListener("animationend", function () {
+      brick.classList.remove("is-flash");
+    });
+    arm();
+  }
+
+  /* ══ easter egg 3 — Freud drops in on the algorithms, once ══════ */
+  var freud = document.getElementById("freud");
+  var freudSpent = false;
+  function flashFreud() {
+    if (!freud || reduced || freudSpent) return;
+    freudSpent = true; /* once per visit */
+    setTimeout(function () {
+      freud.classList.add("is-flash");
+    }, 300);
+  }
+  if (freud) {
+    freud.addEventListener("animationend", function () {
+      freud.classList.remove("is-flash");
+    });
   }
 })();
-
-

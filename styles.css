@@ -1,420 +1,1173 @@
+/* ═══════════════════════════════════════════════════════════════════
+   Hussam Habib — a sheet of paper cards.
+
+   Geometry is lifted 1:1 from the deck (A4, 7pt Datatype Condensed).
+   Everything below is expressed in rem, so the whole board scales as one
+   object with the window: the root font-size IS the scale knob.
+   ═══════════════════════════════════════════════════════════════════ */
+
+/* Iosevka (SIL OFL), subset to the glyphs this page uses. Unlike the Datatype
+   files we have — whose every "weight" was the same outline — Iosevka carries
+   real weights, and being monospace its advances are identical across them, so
+   bolding still reflows nothing. To go back to Datatype: swap the families
+   below, restore --stroke/--stroke-bold, and set --fs back to 1rem. */
+@font-face {
+  font-family: "Iosevka";
+  src: url("res/fonts/Iosevka-200.woff2") format("woff2");
+  font-weight: 200;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Iosevka";
+  src: url("res/fonts/Iosevka-300.woff2") format("woff2");
+  font-weight: 300;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Iosevka";
+  src: url("res/fonts/Iosevka-400.woff2") format("woff2");
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Iosevka";
+  src: url("res/fonts/Iosevka-700.woff2") format("woff2");
+  font-weight: 700;
+  font-display: swap;
+}
+/* ── the scale knob ────────────────────────────────────────────────
+   1.1666vw is the size at which the board spans the whole window.
+   Capped at 18px so it stops growing on very wide screens.          */
+html {
+  font-size: clamp(11px, 1.1666vw, 18px);
+  background: #f2f2f2;
+  -webkit-text-size-adjust: 100%;
+}
+
 :root {
-  --paper: #fef7eb;
-  --ink: #121212;
-  --inkMuted: rgba(18, 18, 18, 0.62);
-  --border: rgba(18, 18, 18, 0.10);
-  --dot: rgba(18, 18, 18, 0.08);
-  --accent: #1d4ed8;
-  --accentSoft: rgba(29, 78, 216, 0.22);
+  --ink: #111;
+  --paper: #fff;
+  --desk: #f2f2f2;
+  --rule: #000;
+
+  --fs: 0.945rem; /* the size at which Iosevka still holds the deck's measure */
+  --weight: 300; /* body: 200 / 300 / 400 are loaded */
+  --weight-bold: 700;
+  /* Iosevka ships no 350, so we make one. Its H stem grows 61 → 78 units per
+     1000 from Light to Regular; half of that is 8.5, and a text-stroke widens a
+     stem by exactly its own width while leaving every advance alone. So this is
+     a 350 in the only way that matters, and nothing reflows. Dial it: 0 = 300,
+     0.017em = 400. */
+  --gain: 0.0085em;
+  --lh: 1.28;
+  --line: 1.21rem; /* one line of body text — the vertical unit */
+  --micro: 0.66rem; /* the deck's 4pt labels, nudged up to stay legible */
+
+  --rail: 6.318rem; /* 42pt portrait column */
+  --col: 17.429rem; /* 116.5pt card column */
+  --gut: 2.76rem; /* 18.3pt gutter */
+  --indent: 7.117rem; /* the deck's left margin before the portrait */
+  --pad: 1.235rem 1.089rem;
+
+  /* the dashed squiggle: one 7.85pt period per tile */
+  --wave: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='4' viewBox='0 0 10 4'%3E%3Cpath d='M0 2 Q2.5 -0.93 5 2 T10 2' fill='none' stroke='%23787878' stroke-width='.5' stroke-dasharray='1.068 .627'/%3E%3C/svg%3E");
+  --wave-w: 1.176rem;
+  --wave-h: 0.47rem;
 }
 
-* { box-sizing: border-box; }
+* {
+  box-sizing: border-box;
+}
 
-html, body {
-  height: 100%;
+[hidden] {
+  display: none !important;
+}
+
+body {
   margin: 0;
-  font-family: futura, "Avenir Next", Avenir, "Segoe UI", ui-sans-serif, system-ui, -apple-system, Roboto,
-    Helvetica, Arial;
-  background: var(--paper);
+  -webkit-tap-highlight-color: transparent;
+  background: var(--desk);
   color: var(--ink);
+  font-family: "Iosevka", ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-weight: var(--weight);
+  font-size: var(--fs);
+  line-height: var(--lh);
+  -webkit-text-stroke: var(--gain) currentColor;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }
 
-.app {
-  height: 100%;
-  display: flex;
-  align-items: stretch;
+a {
+  color: inherit;
+  text-underline-offset: 2px;
+  text-decoration-thickness: from-font;
 }
 
-.pane {
+/* ── the desk ───────────────────────────────────────────────────── */
+.board {
+  position: relative;
+  overflow: clip; /* shoved cards must not grow the scroll area */
+  min-height: 100vh;
+  min-height: 100svh;
+  padding: 4.72rem 0 6.5rem;
+}
+
+.sheet {
+  max-width: 85.69rem; /* the deck's 573pt board */
+  margin: 0 auto;
+}
+
+/* ── shared card ────────────────────────────────────────────────── */
+.card {
+  background: var(--paper);
+  border: 1px solid var(--rule);
+  padding: var(--pad);
+  box-shadow:
+    1px 1px 0 rgba(0, 0, 0, 0.05),
+    0 2px 4px rgba(0, 0, 0, 0.04);
+}
+.card p {
+  margin: 0;
+}
+.card p + p {
+  margin-top: var(--line);
+}
+.card b {
+  font-weight: var(--weight-bold);
+  -webkit-text-stroke-width: 0; /* 700 is a real weight; it needs no help */
+}
+.card i {
+  font-style: italic;
+}
+
+/* ═══════════════════════ MASTHEAD ═══════════════════════ */
+.masthead {
+  display: grid;
+  grid-template-columns: var(--rail) var(--col) var(--col) var(--col);
+  gap: var(--gut);
+  align-items: start;
+  padding-left: var(--indent);
+}
+
+.col {
   min-width: 0;
-  min-height: 0;
 }
 
-.pane--graph {
-  /* Make the detail pane ~20% wider (33% -> 40% of the horizontal space). */
-  flex: 1.5 1 0%;
-  border-right: none;
+/* ── rail: portrait, socials, the scientist ── */
+.rail {
   position: relative;
 }
 
-:root {
-  --dot: rgba(18, 18, 18, 0.15);
+.portrait {
+  display: block;
+  width: var(--rail);
+  height: 6.173rem;
+  padding: 0;
+  border: 1px solid var(--rule);
+  background: none; /* the desk shows through the cut-out, as in the deck */
+  overflow: hidden;
+  cursor: pointer;
+  position: relative;
+  z-index: 3;
+  touch-action: manipulation;
 }
-
-.graphSurface {
-  height: 100%;
+.portrait__img {
+  display: block;
   width: 100%;
-  background-color: var(--paper);
-  background-image:
-    radial-gradient(var(--dot) 1.2px, transparent 1px);
-  background-size: 24px 24px;
-  background-position: 10px 10px;
-  -webkit-mask-image:
-    radial-gradient(ellipse at center,
-      black 50%,
-      transparent 100%);
-  mask-image:
-    radial-gradient(ellipse at center,
-      black 50%,
-      transparent 100%);
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 32%;
+  transition: opacity 0.3s;
+}
+/* when the scientist is out, he lends his own head to the frame */
+.egg-scientist .portrait__img {
+  opacity: 0;
+  transition: opacity 0.35s 0.3s;
 }
 
-.graphTitle {
+.social {
+  display: flex;
+  gap: 0.581rem;
+  margin-top: 1.089rem;
+  position: relative;
+  z-index: 3;
+}
+.social a {
+  display: block;
+  line-height: 0;
+  opacity: 0.82;
+  transition: opacity 0.15s;
+}
+.social img {
+  width: 1.017rem;
+  height: 1.017rem;
+  display: block;
+}
+
+/* ── the scientist (easter egg #1) — he stands in front of everything ── */
+.scientist {
   position: absolute;
-  top: 20px;
-  left: 20px;
-  font-family: "Helvetica Neue", Arial;
-  z-index: 5;
+  left: 50%;
+  top: -1.598rem;
+  width: 21.786rem;
+  /* the model head lands dead on the face */
+  transform: translateX(calc(-50% + 0.051rem)) scale(0.93);
+  transform-origin: 50% 6%; /* pivot on the head, so it stays put */
   pointer-events: none;
-  user-select: none;
-  font-size: 28px;
-  font-weight: 600;
-  letter-spacing: 0.02em;
-  color: rgba(18, 18, 18, 0.92);
-  padding: 8px 10px;
+  z-index: 9;
+  opacity: 0;
+  transition:
+    transform 0.6s cubic-bezier(0.2, 0.9, 0.25, 1),
+    opacity 0.42s ease;
 }
-
-.pane--detail {
-  /* With graph at 1.5, this yields ~40% width on desktop. */
-  flex: 1 1 0%;
-  /* Solid (non-fading) background that matches the graph's base color. */
-  background-color: var(--paper);
-  background-image: none;
-  overflow: auto;
-}
-
-.detail {
-  height: 100%;
-  padding: 20px 18px;
-}
-
-/* Loading state for async panel fetches (prevents weird intermediate rendering). */
-.detail.detail--loading {
-  display: block;
-}
-
-.detail__loading {
-  font-size: 13px;
-  line-height: 1.55;
-  color: var(--inkMuted);
-  border-top: 1px solid var(--border);
-  padding-top: 12px;
-}
-
-/* When an HTML panel is injected, center it vertically and horizontally (while still allowing scroll). */
-.detail.detail--panel {
-  display: block;
-}
-
-.detail.detail--website {
-  display: block;
-}
-
-.detail__webCard {
-  display: block;
-  margin-top: 12px;
-  border: 1px solid var(--border);
-  border-radius: 14px;
-  overflow: hidden;
-  text-decoration: none;
-  color: inherit;
-  background: rgba(255, 255, 255, 0.35);
-  box-shadow: 0 10px 26px rgba(18, 18, 18, 0.06);
-  transition: transform 160ms ease, box-shadow 160ms ease, border-color 160ms ease;
-}
-
-.detail__webCard:hover {
-  border-color: rgba(29, 78, 216, 0.30);
-  box-shadow: 0 14px 34px rgba(18, 18, 18, 0.10);
-  transform: translateY(-1px);
-}
-
-.detail__webCardTop {
-  display: flex;
-  gap: 10px;
-  align-items: baseline;
-  justify-content: space-between;
-  padding: 10px 12px;
-  border-bottom: 1px solid var(--border);
-  background: rgba(254, 247, 235, 0.85);
-}
-
-.detail__webUrl {
-  min-width: 0;
-  font-size: 12px;
-  line-height: 1.3;
-  color: var(--inkMuted);
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.detail__webHint {
-  flex: none;
-  font-size: 12px;
-  line-height: 1.3;
-  color: rgba(29, 78, 216, 0.90);
-  letter-spacing: 0.01em;
-}
-
-.detail__webPreview {
-  width: 100%;
-  aspect-ratio: 16 / 10;
-  background: white;
-}
-
-.detail__webFrame {
-  display: block;
-  width: 100%;
-  height: 100%;
-  border: 0;
-  pointer-events: none; /* click goes to the card (opens new tab) */
-}
-
-.detail__panelFit {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-}
-
-.detail__panelFitInner {
-  transform-origin: center center;
-  will-change: transform;
-}
-
-/* Image panel: centered, padded, and scaled to fit (contain) */
-.detail.detail--img {
-  display: block;
-}
-
-.detail__imgFit {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 22px;
-}
-
-.detail__imgLink {
-  display: block;
-  max-width: 100%;
-  max-height: 100%;
+.egg-scientist .scientist {
+  transform: translateX(calc(-50% + 0.051rem)) scale(1);
+  opacity: 1;
+  pointer-events: auto;
   cursor: pointer;
 }
 
-.detail__img {
+/* ── hello / bio cards ── */
+.card--justified {
+  text-align: justify;
+  text-justify: inter-word;
+  margin-top: 1.2rem;
+}
+
+/* inline "+" asides */
+.more {
+  font: inherit;
+  font-size: 1em;
+  line-height: 1;
+  padding: 0 0 0 1px;
+  margin: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  cursor: pointer;
+  vertical-align: baseline;
+}
+.aside {
+  display: none;
+}
+.aside.is-open {
+  display: inline;
+}
+
+/* ── folding, on the phone only ── */
+.reveal {
+  display: none;
+  font: inherit;
+  font-size: var(--micro);
+  letter-spacing: 0.04em;
+  color: #5f5f5f;
+  background: none;
+  border: 0;
+  padding: 0.7rem 0 0.2rem;
+  text-align: left;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+.reveal--in {
+  padding: 0.85rem 0 0;
+}
+.reveal__mark {
+  display: inline-block;
+  width: 1.6ch;
+}
+/* ── timeline ── */
+.timeline {
+  list-style: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  position: relative;
+  margin: 1rem 0 0; /* the schools ride midway between the two cards */
+  padding: 0;
+}
+.timeline::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0.64rem;
+  height: var(--wave-h);
+  background: var(--wave) repeat-x;
+  background-size: var(--wave-w) var(--wave-h);
+  z-index: 0;
+}
+.timeline li {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.crest-slot {
+  display: flex;
+  align-items: center;
+  height: 1.743rem;
+}
+.crest {
   display: block;
-  max-width: 100%;
-  max-height: 100%;
+  border: 0.5px solid var(--rule); /* a hairline, as in the deck */
+  background: var(--paper);
+  line-height: 0;
+  padding: 0;
+}
+.crest img {
+  display: block;
+  height: 1.452rem;
+  width: auto;
+}
+/* the first crest is a disc — its rule follows the circle */
+.timeline li:first-child .crest {
+  border-radius: 50%;
+  background: none;
+}
+.timeline li:first-child .crest img {
+  height: 1.743rem;
+  border-radius: 50%;
+}
+.year {
+    font-size: var(--micro);
+  line-height: 1;
+  margin-top: 0.19rem;
+  color: #1a1a1a;
+}
+.year--now {
+  font-size: 0.872rem;
+  line-height: 0.8;
+}
+
+/* ── documents: loose sheets — no rule, just a shadow ── */
+.docs {
+  display: flex;
+  justify-content: center;
+  gap: 1.307rem;
+  margin-top: 1.85rem;
+}
+.doc {
+  text-decoration: none;
+  display: block;
+  width: 4.357rem;
+}
+.doc__sheet {
+  display: block;
+  width: 4.357rem;
+  aspect-ratio: 520 / 673; /* the page's own proportions — never squashed */
+  background: var(--paper);
+  overflow: hidden;
+  box-shadow:
+    0 0.07rem 0.22rem rgba(0, 0, 0, 0.22),
+    0 0.22rem 0.55rem rgba(0, 0, 0, 0.12);
+}
+.doc__sheet img {
+  display: block;
+  width: 100%;
+  height: 100%;
   object-fit: contain;
 }
-
-/* Markdown panel typography */
-.detail.detail--markdown {
+.doc__cap {
   display: block;
+  text-align: center;
+    font-size: var(--micro);
+  line-height: 1.25;
+  margin: 0.22rem -1.452rem 0;
+  width: 7.262rem;
+  color: #1a1a1a;
+}
+.doc__cap i {
+  color: #555;
 }
 
-.detail__markdown {
-  width: 100%;
-  /* Narrower reading column (roughly ~70–80 chars/line in this font). */
-  max-width: 58ch;
-  margin: 0 auto;
-  padding: 6px 24px 24px;
-  color: var(--ink);
-  font-family: system-ui, "Helvetica Neue", -apple-system, "Segoe UI", Roboto;
-  font-size: 16px;
-  overflow-wrap: anywhere;
-  word-break: break-word;
+/* ── brick (easter egg #2) — one frame, half-there ── */
+.brick {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-top: 0.654rem;
+  width: 10.603rem;
+  opacity: 0;
+  transition: opacity 0.28s ease;
 }
 
-.detail.detail--markdown .detail__markdown {
-  /* Start ~1/5 down from the top (markdown-only). */
-  margin-top: 10vh;
-}
-
-.detail__markdown h1,
-.detail__markdown h2,
-.detail__markdown h3 {
-  line-height: 1.2;
-  margin: 0.9em 0 0.4em;
-}
-
-.detail__markdown h1 { font-size: 24px; }
-.detail__markdown h2 { font-size: 20px; }
-.detail__markdown h3 { font-size: 18px; }
-
-.detail__markdown p {
-  margin: 0.7em 0;
-  line-height: 1.65;
-  color: rgba(18, 18, 18, 0.86);
-}
-
-.detail__markdown a {
-  color: var(--accent);
-  text-decoration: none;
-  border-bottom: 1px solid rgba(29, 78, 216, 0.35);
-}
-
-.detail__markdown a:hover {
-  border-bottom-color: rgba(29, 78, 216, 0.8);
-}
-
-.detail__markdown ul,
-.detail__markdown ol {
-  margin: 0.7em 0 0.7em 1.2em;
-  padding: 0;
-  line-height: 1.65;
-  color: rgba(18, 18, 18, 0.86);
-}
-
-.detail__markdown code {
-  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-  font-size: 0.95em;
-  background: rgba(18, 18, 18, 0.06);
-  border: 1px solid rgba(18, 18, 18, 0.10);
-  padding: 0.12em 0.32em;
-  border-radius: 6px;
-}
-
-.detail__markdown pre {
-  background: rgba(18, 18, 18, 0.06);
-  border: 1px solid rgba(18, 18, 18, 0.10);
-  padding: 12px 12px;
-  border-radius: 10px;
-  overflow: auto;
-}
-
-.detail__markdown pre code {
-  background: transparent;
-  border: none;
-  padding: 0;
-}
-
-.detail__title {
-  font-size: 12px;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--inkMuted);
-  margin-bottom: 10px;
-}
-
-.detail__label {
-  font-size: 20px;
-  font-weight: 600;
-  line-height: 1.2;
-  margin-bottom: 14px;
-}
-
-.detail__meta {
-  font-size: 13px;
-  line-height: 1.55;
-  color: var(--inkMuted);
-  border-top: 1px solid var(--border);
-  padding-top: 12px;
-  white-space: pre-wrap;
-}
-
-/* SVG / graph */
-#graph {
-  width: 100%;
-  height: 100%;
+.brick img {
   display: block;
-  background: transparent;
-  cursor: grab;
-}
-
-#graph:active {
-  cursor: grabbing;
-}
-
-#graph .bg {
-  fill: transparent;
   width: 100%;
-  height: 100%;
-  pointer-events: all;
+}
+.col--b {
+  position: relative;
+}
+.brick.is-flash {
+  animation: brick-flash 540ms steps(1, end) 1;
+}
+@keyframes brick-flash {
+  0% {
+    opacity: 0.4;
+  }
+  33% {
+    opacity: 0.26;
+  }
+  66% {
+    opacity: 0.14;
+  }
+  100% {
+    opacity: 0;
+  }
 }
 
-.link {
-  stroke: rgba(18, 18, 18, 0.42);
-  stroke-width: 1.9;
-  stroke-linecap: round;
-  stroke-linejoin: miter;
-  stroke-miterlimit: 3;
+/* ── updates ──────────────────────────────────────────────────────
+   The list grows every time something happens, and left alone it would
+   set the height of the whole masthead. So on the wide layout it is
+   taken out of the flow: the row is then measured by the next-tallest
+   column, and the card fills exactly that and scrolls the rest.
+   ─────────────────────────────────────────────────────────────────── */
+@media (min-width: 1001px) {
+  .masthead > .col--c {
+    align-self: stretch;
+    position: relative;
+  }
+  .masthead > .col--c > .card--updates {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    max-height: 100%; /* = the second-tallest column, since this one no longer counts */
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    scrollbar-width: thin;
+    scrollbar-color: #c4c4c4 transparent;
+  }
+  .masthead > .col--c > .card--updates::-webkit-scrollbar {
+    width: 0.3rem;
+  }
+  .masthead > .col--c > .card--updates::-webkit-scrollbar-thumb {
+    background: #c4c4c4;
+  }
+  /* the title stays put while its list runs underneath. Its own box has to
+     own the gap below it too, or the first bullet slides up into the title. */
+  .masthead > .col--c .updates__head {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    background: var(--paper);
+    margin-bottom: 0 !important;
+    padding-bottom: var(--line);
+    box-shadow: 0 -1.235rem 0 var(--paper); /* and the card's top padding */
+  }
 }
 
-.node-hit {
-  fill: transparent;
-  pointer-events: all;
+.updates__head {
+  font-weight: var(--weight-bold);
+  -webkit-text-stroke-width: 0; /* 700 is a real weight; it needs no help */
+  margin-bottom: var(--line) !important;
+}
+.card--updates ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.card--updates li {
+  position: relative;
+  padding-left: 1.235rem;
+  padding-right: 0.073rem;
+}
+.card--updates li + li {
+  margin-top: 0.3rem;
+}
+.card--updates li::before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  top: 0;
 }
 
-.node-circle {
-  stroke: rgba(18, 18, 18, 0.45);
-  stroke-width: 1.6;
+/* ── bullets that say what kind of thing happened ──────────────────
+   A line that starts "Thinking" gets a thought bubble, "Collected" an
+   arrow in, "Submitted" one out, "Started" a star; anything that got
+   accepted gets a page. Picked from the words in `app.js` — or forced
+   by writing `- {star} …` in the markdown. Anything unmatched keeps the
+   dot. Drawn, because none of these are in the font subset.
+
+   They are masks rather than images, so the shape comes from the SVG and
+   the colour from currentColor — which means they follow the ink into
+   dark mode without a second copy of every icon.
+   ──────────────────────────────────────────────────────────────────── */
+.card--updates li[data-mark]::before {
+  content: "";
+  width: 0.88rem;
+  height: 0.88rem;
+  top: 0.17rem; /* centred on the first line rather than hung from its top */
+  background-color: currentColor;
+  -webkit-mask: var(--icon) no-repeat center / contain;
+  mask: var(--icon) no-repeat center / contain;
 }
 
-.node-image {
-  image-rendering: -webkit-optimize-contrast;
+.card--updates li[data-mark="think"]::before {
+  /* at 14px two tail dots and a modest bubble just read as "o ." — one solid
+     dot under a bubble that fills the box is the version that survives */
+  --icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23111' stroke-width='1.9'%3E%3Cellipse cx='13.2' cy='8.8' rx='9.6' ry='7'/%3E%3Ccircle cx='4.2' cy='20.4' r='2.7' fill='%23111' stroke='none'/%3E%3C/svg%3E");
+}
+.card--updates li[data-mark="in"]::before {
+  --icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23111' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 4v15M5.5 12.5 12 19l6.5-6.5'/%3E%3C/svg%3E");
+}
+.card--updates li[data-mark="paper"]::before {
+  --icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23111' stroke-width='1.9' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M14 2.5H7A2.5 2.5 0 0 0 4.5 5v14A2.5 2.5 0 0 0 7 21.5h10a2.5 2.5 0 0 0 2.5-2.5V8z'/%3E%3Cpath d='M14 2.5V8h5.5'/%3E%3Cpath d='M8.5 13h7M8.5 16.5h4.5'/%3E%3C/svg%3E");
+}
+.card--updates li[data-mark="star"]::before {
+  --icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23111' stroke-width='1.9' stroke-linejoin='round'%3E%3Cpolygon points='12,3 14.29,9.35 21.04,9.56 15.71,13.71 17.58,20.19 12,16.4 6.42,20.19 8.29,13.71 2.96,9.56 9.71,9.35'/%3E%3C/svg%3E");
 }
 
-.node-label {
-  font-size: 13px;
-  font-weight: 500;
-  fill: rgba(18, 18, 18, 0.88);
-  paint-order: stroke;
-  stroke: var(--paper);
-  stroke-width: 5px;
-  stroke-linejoin: round;
+/* ── wave rules ── */
+.wave {
+  border: 0;
+  height: var(--wave-h);
+  background: var(--wave) repeat-x;
+  background-size: var(--wave-w) var(--wave-h);
+  margin: 1.816rem 0 3.558rem;
+}
+.wave--short {
+  margin: 1.017rem 0 1.089rem;
+}
+
+/* ═══════════════════════ WORK ═══════════════════════ */
+.work {
+  display: grid;
+  grid-template-columns: var(--rail) 1fr;
+  gap: var(--gut);
+  align-items: start;
+  padding-left: var(--indent);
+}
+.work__stage {
+  position: relative;
+  min-width: 0;
+}
+
+.rail--work {
+  position: relative;
+  height: 1px;
+}
+
+/* ── freud (easter egg #3) — one slow breath, once per visit ── */
+.freud {
+  position: absolute;
+  left: 3.704rem;
+  top: 14.234rem;
+  width: 4.067rem;
+  height: 5.519rem;
+  object-fit: cover;
+  opacity: 0;
+  pointer-events: none;
+  filter: grayscale(1) contrast(0.9);
+}
+.freud.is-flash {
+  animation: freud-breath 950ms ease-in-out 1;
+}
+@keyframes freud-breath {
+  0% {
+    opacity: 0;
+  }
+  45% {
+    opacity: 0.75;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+/* ── collapsed grid ── */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, var(--col));
+  gap: var(--gut);
+  align-items: start;
+}
+.grid .col {
+  display: flex;
+  flex-direction: column;
+  gap: 0.581rem;
+}
+.grid .wave--short {
+  width: 100%;
+  margin: 0.436rem 0 0.508rem;
+}
+
+/* ── a bracket and a turned label beside each group of cards ── */
+.group {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0.581rem;
+}
+.group::before,
+.group__label {
+  transition: opacity 0.18s ease;
+}
+.group.is-source::before,
+.group.is-source .group__label {
+  opacity: 0;
+}
+.group::before {
+  content: "";
+  position: absolute;
+  left: -0.9rem;
+  top: 0;
+  bottom: 0;
+  width: 0.4rem;
+  border: 1px solid #9b9b9b;
+  border-right: 0;
+  pointer-events: none;
+}
+.group__label {
+  position: absolute;
+  left: -0.9rem;
+  top: 50%;
+  transform: translate(-50%, -50%) rotate(180deg);
+  writing-mode: vertical-rl;
+  font-size: 0.62rem;
+  line-height: 1;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+  color: #5f5f5f;
+  background: var(--desk);
+  padding: 0.42rem 0;
   pointer-events: none;
 }
 
-@media (max-width: 900px) {
-  /* On mobile we want the page to scroll (not a fixed-height split view). */
-  .app {
-    flex-direction: column;
-    height: auto;
-    min-height: 100%;
+.card--quiet,
+.card--open {
+  font: inherit;
+  color: inherit;
+  text-align: left;
+  display: block;
+  width: 100%;
+}
+.card--open {
+  cursor: pointer;
+  position: relative;
+}
+
+/* ── "there is more inside me" ─────────────────────────────────────
+   An asterisk in the corner of every card that opens — a footnote mark,
+   the quietest way to say there is more to this than the line you just
+   read. It rides high in its em box, so it is dropped by hand until it
+   sits where it looks like it belongs.
+
+   Static: no hover, no shadow. It only exists on .card--open, so a card
+   with nothing behind it never makes the claim.
+   ──────────────────────────────────────────────────────────────────── */
+.card--open::after {
+  content: "*";
+  position: absolute;
+  right: 0.62rem;
+  bottom: -0.16rem;
+  font-size: 1.5rem;
+  line-height: 1;
+  color: var(--ink);
+  font-weight: 300; /* a true 300 — lighter than the body's 350 */
+  -webkit-text-stroke-width: 0;
+}
+
+/* ── and, three times, a hand ──────────────────────────────────────
+   An asterisk has to be learned. Early on, a hand says the same thing in
+   a way nobody has to learn: it fades up in the asterisk's place, waves
+   once, and hands the corner back. Three times and it stops — see
+   app.js, which also drops it the moment a card is actually opened.
+   ──────────────────────────────────────────────────────────────────── */
+.card--open::before {
+  content: "";
+  position: absolute;
+  right: 0.55rem;
+  bottom: 0.36rem;
+  /* bigger than the asterisk on purpose: this has folded fingers in it */
+  width: 1.44rem;
+  height: 1.8rem; /* 24 × 30 viewBox — the rays live above the hand */
+  background-color: currentColor;
+  -webkit-mask: var(--icon) no-repeat center / contain;
+  mask: var(--icon) no-repeat center / contain;
+  --icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 30' fill='none' stroke='%23111' stroke-width='1.9' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M8 6.4V3.4M5.2 7 3.2 4.6M10.8 7l2-2.4'/%3E%3Cg transform='translate(0 7)'%3E%3Cpath d='M22 14a8 8 0 0 1-8 8'/%3E%3Cpath d='M18 11v-1a2 2 0 0 0-2-2 2 2 0 0 0-2 2'/%3E%3Cpath d='M14 10V9a2 2 0 0 0-2-2 2 2 0 0 0-2 2v1'/%3E%3Cpath d='M10 9.5V4a2 2 0 0 0-2-2 2 2 0 0 0-2 2v10'/%3E%3Cpath d='M18 11a2 2 0 1 1 4 0v3a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15'/%3E%3C/g%3E%3C/svg%3E");
+  opacity: 0;
+  pointer-events: none;
+}
+
+.card--open.is-nudging::before {
+  animation: hand-in 1.9s ease both;
+}
+.card--open.is-nudging::after {
+  animation: star-out 1.9s ease both;
+}
+
+/* the two cross in the same corner, so only one mark is ever really there */
+@keyframes hand-in {
+  0%,
+  100% {
+    opacity: 0;
   }
-  .pane--graph {
-    flex: none;
-    /* Slightly smaller graph area on mobile; svh handles browser chrome better. */
-    height: 56vh;
-    height: 56svh;
-    border-right: none;
-    border-bottom: none;
+  22%,
+  70% {
+    opacity: 0.5; /* an offer, not a demand */
   }
-  .pane--detail {
-    flex: none;
-    overflow: visible;
+}
+@keyframes star-out {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  22%,
+  70% {
+    opacity: 0;
+  }
+}
+
+.card--green {
+  background: linear-gradient(90deg, #fff 38%, #e8fff2 100%);
+}
+
+/* ── expanded panel ── */
+.stage {
+  display: block;
+}
+/* The card keeps the deck's measure; the papers get the whole width beneath
+   it. They used to sit in a 6.9rem gutter beside the card — 116px, at which
+   nothing on a paper is legible — while 539px of desk sat empty to their
+   right. Stacked, each sheet is ~380px and you can read the title, the
+   authors and the abstract without opening anything. */
+.panel {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 1.3rem;
+  align-items: start;
+}
+.card--panel {
+  position: relative;
+  width: 29.194rem; /* the measure, unchanged — text does not want the width */
+  padding: 1.235rem 1.089rem 1.307rem;
+  overflow: hidden;
+}
+.card--panel h2 {
+  font: inherit;
+  font-weight: var(--weight-bold);
+  -webkit-text-stroke-width: 0; /* 700 is a real weight; it needs no help */
+  margin: 0 0 var(--line);
+}
+.card--panel p {
+  margin: 0;
+}
+.card--panel p + p {
+  margin-top: var(--line);
+}
+
+/* while the box is growing, both children float free so nothing reflows */
+.panel.is-morphing .card--panel,
+.panel.is-morphing .papers {
+  position: absolute;
+  top: 0;
+}
+.panel.is-morphing .papers {
+  left: 0;
+  top: var(--papers-top, 100%);
+}
+.card--panel h2,
+.card--panel .card__body {
+  transition: opacity 0.22s ease;
+}
+.panel.is-morphing .card--panel {
+  white-space: normal;
+}
+
+/* ── papers: bare sheets, like the CV ── */
+/* As many sheets per row as can be ~20rem or wider, capped at 23rem so two
+   papers do not become taller than the screen. Three across on a desktop,
+   two on a tablet, one on a phone — the row count follows from the width a
+   sheet needs to stay readable, rather than being fixed and then squeezed.
+   min(20rem, 100%) so a narrow phone clamps instead of overflowing. */
+.papers {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  width: 100%;
+}
+.paper {
+  display: block;
+  /* wants 18rem, will take up to 23rem, shrinks rather than overflowing —
+     so the row breaks only when a sheet would drop below readable */
+  flex: 1 1 18rem;
+  min-width: 0;
+  max-width: 23rem;
+  aspect-ratio: 1100 / 1544; /* the page's own proportions */
+  padding: 0;
+  border: 0;
+  background: var(--paper);
+  cursor: pointer;
+  overflow: hidden;
+  box-shadow:
+    0 0.07rem 0.22rem rgba(0, 0, 0, 0.22),
+    0 0.22rem 0.55rem rgba(0, 0, 0, 0.12);
+}
+.paper img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* ── the full page ── */
+.lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: grid;
+  place-items: center;
+  background: rgba(242, 242, 242, 0.95);
+  cursor: zoom-out;
+  opacity: 0;
+  transition: opacity 0.22s ease;
+}
+.lightbox.is-open {
+  opacity: 1;
+}
+.lightbox__stage {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+.lightbox__img {
+  display: block;
+  max-height: 80vh;
+  max-width: 92vw;
+  width: auto;
+  background: var(--paper);
+  box-shadow:
+    0 0.2rem 0.6rem rgba(0, 0, 0, 0.2),
+    0 1rem 2.4rem rgba(0, 0, 0, 0.16);
+  transform-origin: top left;
+}
+.lightbox__cap {
+    font-size: var(--micro);
+  line-height: 1.3;
+  max-width: 34rem;
+  text-align: center;
+  color: #444;
+}
+.lightbox__cap a {
+  color: inherit;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+
+/* ── entrance/exit choreography ── */
+.grid.is-hushed {
+  pointer-events: none;
+}
+
+/* ── pointer-only affordances ── */
+@media (hover: hover) and (pointer: fine) {
+  a:hover {
+    text-decoration-color: #999;
+  }
+  .social a:hover {
+    opacity: 1;
+  }
+  .more:hover {
+    color: #888;
+  }
+  .lightbox__cap a:hover {
+    text-decoration: underline;
+  }
+  /* linger over the empty patch under the documents and he surfaces */
+  .brick:hover {
+    opacity: 0.8;
+  }
+}
+
+/* ═══════════════════════ NARROW ═══════════════════════ */
+/* ── tablet: two columns, the rail still beside the cards ── */
+@media (max-width: 1000px) {
+  html {
+    font-size: 17px;
+  }
+  :root {
+    --col: minmax(0, 1fr);
+    --gut: 1.6rem;
+    --indent: 2.4rem;
+  }
+  .board {
+    padding: 2.6rem 0 4rem;
+  }
+  .sheet {
+    max-width: none;
+  }
+  .masthead,
+  .work {
+    padding-right: 1.6rem;
+  }
+  .masthead {
+    grid-template-columns: var(--rail) minmax(0, 1fr) minmax(0, 1fr);
+    row-gap: 1.8rem;
+  }
+  .col--c {
+    grid-column: 2 / span 2;
+  }
+  .grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .grid .col--c {
+    grid-column: auto;
+  }
+}
+
+/* ═══════════════════════ PHONE ═══════════════════════
+   One card is one column. The root size is set so that card still holds
+   the deck's measure — 32 monospace characters — which is what keeps this
+   feeling like the same object rather than a shrunken desktop page.
+
+     card    = 100vw − 1.75rem (indent, where the brackets live) − 0.95rem
+     text    = card − 2×1.089rem padding − 2px rule
+     want    text ≥ 32 × 0.5em × 0.945rem  ⇒  root ≤ (100vw − 2px) / 20
+   ═════════════════════════════════════════════════════ */
+@media (max-width: 700px) {
+  html {
+    font-size: clamp(14px, 4.95vw, 21px);
+  }
+  :root {
+    --indent: 1.75rem; /* the group brackets live in here */
+    --gut: 1.1rem;
   }
 
-  /* Let detail content determine height so the page can scroll. */
-  .detail {
-    height: auto;
+  .board {
+    padding: 2.2rem 0 10.5rem; /* the tail of desk the brick hides in */
+  }
+  .sheet {
+    max-width: none;
+  }
+  /* the waves run edge to edge; only the cards are indented */
+  .masthead,
+  .work {
+    grid-template-columns: minmax(0, 1fr);
+    padding-right: 0.95rem;
+    row-gap: 1.5rem;
+  }
+  .col--c {
+    grid-column: auto;
   }
 
-  /* Center + shrink title on mobile. */
-  .graphTitle {
-    left: 50%;
-    transform: translateX(-50%);
-    text-align: center;
-    font-size: 22px;
-    top: 14px;
-    padding: 6px 8px;
+  /* ── masthead ── */
+  .portrait {
+    width: 6.6rem;
+    height: 6.45rem;
+    margin: 0 auto;
+  }
+  /* the marks stretch the width of a card, like the crests below them */
+  .social {
+    justify-content: space-between;
+    gap: 0;
+    margin: 1.1rem -0.4rem 0;
+  }
+  .social a {
+    padding: 0.4rem; /* a thumb-sized target around a small mark */
+  }
+  .social img {
+    width: 1.35rem;
+    height: 1.35rem;
+  }
+  .scientist {
+    width: 22.3rem; /* he keeps his proportion to the frame */
+    transform: translateX(calc(-50% + 0.051rem)) scale(0.93);
+  }
+  .egg-scientist .scientist {
+    transform: translateX(calc(-50% + 0.051rem)) scale(1);
+  }
+  .crest img {
+    height: 1.6rem;
+  }
+  .timeline li:first-child .crest img {
+    height: 1.92rem;
+  }
+  .crest-slot {
+    height: 1.92rem;
+  }
+  .docs {
+    margin-top: 1.5rem;
+    gap: 1.8rem;
+  }
+  .doc,
+  .doc__sheet {
+    width: 6rem;
+  }
+  .doc__cap {
+    width: 9rem;
+    margin-left: -1.5rem;
+    margin-right: -1.5rem;
   }
 
-  /* Mobile: treat HTML panels like normal flowing content (no fit+scale). */
-  .detail__panelFit {
+  /* ── the brick moves to the empty desk at the foot of the page ── */
+  .col--b {
+    position: static;
+  }
+  .brick {
+    top: auto;
+    bottom: 2rem;
+    margin-top: 0;
+    width: 9rem;
+  }
+
+  /* ── two things fold away, so the work is not a long scroll below ── */
+  .reveal {
     display: block;
-    height: auto;
-    overflow: visible;
+  }
+  .foldable {
+    display: none;
+  }
+  .foldable.is-open {
+    display: flow-root; /* keeps the height stable while it animates */
+  }
+  .card--updates .later {
+    display: none;
+  }
+  .card--updates .folds.is-open .later {
+    display: list-item;
   }
 
-  .detail__panelFitInner {
-    width: 100%;
-    transform: none !important;
+  /* ── work ── */
+  .wave {
+    margin: 1.6rem 0 2.2rem;
   }
+  .grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1.1rem;
+  }
+  .grid .col {
+    gap: 0.581rem;
+  }
+  .grid .wave--short {
+    margin: 0.5rem 0 0.6rem;
+  }
+
+  /* freud has no margin to hide in — he leans in from the left edge instead */
+  .freud {
+    left: -1.2rem;
+    top: 16rem;
+    width: 4.6rem;
+    height: 6.2rem;
+    z-index: 4;
+  }
+
+  /* ── expanded ── */
+  .panel {
+    gap: 0.8rem;
+  }
+  .card--panel {
+    width: 100%; /* on a phone the card is the column */
+  }
+  .papers {
+    gap: 0.7rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ═══════════════════════════ DARK ═══════════════════════════
+   The same board, lit from the other side. The four colour tokens do most
+   of the work: everything written as var(--ink) / var(--paper) follows on
+   its own, and so do the drawn glyphs, which are masks tinted by
+   currentColor rather than pictures of black lines.
+
+   What is left here is the handful of places that name a grey outright,
+   and the images — a photograph and four brand crests cannot be re-lit, so
+   they are left alone; only the social badges, which are pure black-and-
+   white, are turned over.
+   ═══════════════════════════════════════════════════════════════════ */
+@media (prefers-color-scheme: dark) {
+  html {
+    background: #121212;
+  }
+
+  :root {
+    --ink: #e6e4e0; /* slightly warm, so it does not glare */
+    --paper: #1c1c1c;
+    --desk: #121212;
+    --rule: #6e6e6e; /* a white hairline would out-shout the text */
+    --wave: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='4' viewBox='0 0 10 4'%3E%3Cpath d='M0 2 Q2.5 -0.93 5 2 T10 2' fill='none' stroke='%238a8a8a' stroke-width='.5' stroke-dasharray='1.068 .627'/%3E%3C/svg%3E");
+  }
+
+  /* a drop shadow on a dark desk is a smudge; the rule carries the edge */
+  .card {
+    box-shadow: none;
+  }
+
+  /* the second rank of text: dates, captions, labels */
+  .year,
+  .doc__cap {
+    color: #b6b3ae;
+  }
+  .doc__cap i,
+  .lightbox__cap,
+  .reveal,
+  .group__label {
+    color: #918e89;
+  }
+  .group::before {
+    border-color: #575757;
+  }
+
+  .masthead > .col--c > .card--updates {
+    scrollbar-color: #4c4c4c transparent;
+  }
+  .masthead > .col--c > .card--updates::-webkit-scrollbar-thumb {
+    background: #4c4c4c;
+  }
+
+  /* the one card with a colour in it — the same green, taken right down */
+  .card--green {
+    background: linear-gradient(90deg, var(--paper) 38%, #16291f 100%);
+  }
+
+  .lightbox {
+    background: rgba(8, 8, 8, 0.95);
+  }
+
+  /* black badges with white glyphs, turned over — not quite to white, so
+     they read as paper stickers rather than lights */
+  .social img {
+    filter: invert(0.86); /* short of white, so they do not out-glow the text */
+  }
+
+  /* the warning has to shout on whatever it lands on */
+  .warnbar {
+    background: #e9e7e3;
+    color: #141414;
+  }
+  .warnbar code {
+    background: #cbc8c3;
+  }
+}
+
+/* ── shown only when the page cannot read content/*.md ── */
+.warnbar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 99;
+  padding: 0.8rem 1.2rem;
+  background: #1a1a1a;
+  color: #f2f2f2;
+  font-size: 0.8rem;
+  line-height: 1.5;
+  text-align: center;
+}
+.warnbar code {
+  font: inherit;
+  background: #333;
+  padding: 0 0.3em;
 }

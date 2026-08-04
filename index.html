@@ -1,33 +1,219 @@
 <!doctype html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Hussam Habib</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="light dark" />
+    <title>Hussam</title>
+    <meta
+      name="description"
+      content="Hussam Habib — I research how social media platforms behave, especially their recommender systems, and what it would take to make them work better for the people using them."
+    />
+    <link rel="preload" href="res/fonts/Iosevka-300.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="icon" href="res/favicon.svg" type="image/svg+xml" />
+    <link rel="alternate icon" href="res/favicon.png" sizes="32x32" />
     <link rel="stylesheet" href="styles.css" />
   </head>
-  <body>
-    <div class="app">
-      <main class="pane pane--graph" aria-label="Graph area">
-        <div class="graphSurface">
-          <svg id="graph" aria-label="Network graph" role="img">
-            <rect class="bg" />
-            <g class="viewport">
-              <g class="links"></g>
-              <g class="nodes"></g>
-            </g>
-          </svg>
-        </div>
-        <div class="graphTitle" aria-label="Graph title">Hussam Habib</div>
-      </main>
 
-      <aside class="pane pane--detail" aria-label="Detail area">
-        <div id="detailHost" class="detail"></div>
-      </aside>
+  <body>
+    <div class="board">
+      <div class="sheet">
+        <!-- ══════════════════════════ MASTHEAD ══════════════════════════ -->
+        <header class="masthead">
+          <!-- ── rail: portrait + socials ── -->
+          <div class="rail">
+            <button
+              class="portrait"
+              id="portrait"
+              type="button"
+              aria-label="Portrait of Hussam Habib"
+              aria-pressed="false"
+            >
+              <img class="portrait__img" src="res/face.webp" alt="Hussam Habib" />
+            </button>
+            <img class="scientist" id="scientist" data-src="res/eggs/scientist.webp" alt="" aria-hidden="true" />
+
+            <nav class="social" aria-label="Elsewhere">
+              <a href="mailto:mail@hussamhabib.com" title="Email"
+                ><img src="res/social/mail.png" alt="Email"
+              /></a>
+              <a href="https://bsky.app/profile/hussamh10.bsky.social" target="_blank" rel="noopener" title="Bluesky"
+                ><img src="res/social/bluesky.png" alt="Bluesky"
+              /></a>
+              <a
+                href="https://scholar.google.com/citations?user=qVEVeUQAAAAJ&amp;hl=en"
+                target="_blank"
+                rel="noopener"
+                title="Google Scholar"
+                ><img src="res/social/scholar.png" alt="Google Scholar"
+              /></a>
+              <a href="https://github.com/hussamh10" target="_blank" rel="noopener" title="GitHub"
+                ><img src="res/social/github.png" alt="GitHub"
+              /></a>
+            </nav>
+          </div>
+
+          <!-- ── column A: hello · timeline · bio ── -->
+          <div class="col col--a">
+            <article class="card" data-md="hello">
+              <p>Hello! ☺</p>
+              <p>I am Hussam Habib. Currently, I am in Graz, Austria &amp; I do Computational Social Science.</p>
+            </article>
+
+            <button class="reveal" type="button" data-reveal="bio" aria-expanded="false" aria-controls="bio">
+              <span class="reveal__mark">+</span><span class="reveal__text" data-alt="less">where I have been</span>
+            </button>
+
+            <div class="foldable" id="bio">
+            <ol class="timeline" aria-label="Where I have been">
+              <li>
+                <span class="crest-slot"><span class="crest"><img src="res/crests/nuces.webp" alt="FAST NUCES" /></span></span>
+                <span class="year">2018</span>
+              </li>
+              <li>
+                <span class="crest-slot"><span class="crest"><img src="res/crests/uiowa.webp" alt="University of Iowa" /></span></span>
+                <span class="year">2024</span>
+              </li>
+              <li>
+                <span class="crest-slot"><span class="crest"><img src="res/crests/nyu.webp" alt="New York University" /></span></span>
+                <span class="year">2025</span>
+              </li>
+              <li>
+                <span class="crest-slot"><span class="crest"><img src="res/crests/uni-graz.webp" alt="University of Graz" /></span></span>
+                <span class="year year--now">•</span>
+              </li>
+            </ol>
+
+            <article class="card card--justified" data-md="bio">
+              <p>I am a postdoctoral researcher in the CS<sup>2</sup> @ UniGraz, Austria.</p>
+              <p>
+                Previously I was a researcher at NYU<button class="more" type="button" aria-expanded="false" aria-controls="m-nyu">+</button
+                ><span class="aside" id="m-nyu"
+                  >, with <a href="https://engineering.nyu.edu/faculty/rachel-greenstadt" target="_blank" rel="noopener">Rachel Greenstadt</a> at the PSAL lab</span
+                >, a PhD student at University of Iowa<button class="more" type="button" aria-expanded="false" aria-controls="m-iowa">+</button
+                ><span class="aside" id="m-iowa"
+                  >, with <a href="https://sparta.cs.uiowa.edu/people/rishab/" target="_blank" rel="noopener">Rishab Nithyanand</a> at the SPARTA lab</span
+                >, and a member of the <a href="https://cp3.org.uiowa.edu" target="_blank" rel="noopener">CP3</a>.
+              </p>
+            </article>
+            </div>
+          </div>
+
+          <!-- ── column B: statement · documents ── -->
+          <div class="col col--b">
+            <article class="card" data-md="research">
+              <p>
+                I research how social media platforms behave, especially their recommender systems. I measure how
+                platforms have the capacity to change user behaviors and show what it would take to make them work
+                better for the people using them.
+              </p>
+            </article>
+
+            <div class="docs">
+              <a class="doc" href="res/docs/research-statement.pdf" target="_blank" rel="noopener">
+                <span class="doc__sheet"><img src="res/docs/rs.webp" alt="Research statement" /></span>
+                <span class="doc__cap"><i>Outdated</i><br />Research Statement</span>
+              </a>
+              <a class="doc" href="res/docs/cv.pdf" target="_blank" rel="noopener">
+                <span class="doc__sheet"><img src="res/docs/cv.webp" alt="Curriculum vitae" /></span>
+                <span class="doc__cap"><i>Outdated</i><br />CV</span>
+              </a>
+            </div>
+
+            <div class="brick" id="brick" aria-hidden="true">
+              <img loading="lazy" decoding="async" src="res/eggs/brick.gif" alt="" />
+            </div>
+          </div>
+
+          <!-- ── column C: updates ── -->
+          <div class="col col--c">
+            <article class="card card--updates" data-md="updates">
+              <p class="updates__head">Current thoughts &amp; Updates</p>
+              <ul class="folds" id="updates-list">
+                <li data-mark="paper">
+                  Our paper
+                  <a href="https://arxiv.org/pdf/2407.07227" target="_blank" rel="noopener">characterizing platform behaviors</a>
+                  got accepted @ ICWSM’26.
+                </li>
+                <li data-mark="paper">
+                  Submitted a working paper on how to design better social media platforms @ CSCW Compass with
+                  <a href="https://timbooker.net" target="_blank" rel="noopener">Tim</a>. (accepted)
+                </li>
+                <li data-mark="star">Started a Pakistani CSS research collective (link soon).</li>
+                <li class="later" data-mark="think">Thinking about how watching misinformation on TikTok is different from reading it in a newspaper.</li>
+                <li class="later" data-mark="think">Thinking about how algorithms optimizing for engagement and their incentives change production behaviors.</li>
+                <li class="later" data-mark="in">Collected a large (500M) random sample of YouTube videos.</li>
+                <li class="later" data-mark="star">Started my postdoc @ UniGraz.</li>
+              </ul>
+              <button class="reveal reveal--in" type="button" data-reveal="updates" aria-expanded="false" aria-controls="updates-list">
+                <span class="reveal__mark">+</span><span class="reveal__text" data-alt="less">4 more</span>
+              </button>
+            </article>
+          </div>
+        </header>
+
+        <hr class="wave" />
+
+        <!-- ══════════════════════════ WORK ══════════════════════════ -->
+        <section class="work" id="work">
+          <div class="rail rail--work">
+            <img class="freud" id="freud" loading="lazy" decoding="async" src="res/eggs/freud.webp" alt="" aria-hidden="true" />
+          </div>
+
+          <div class="work__stage">
+          <!-- ── the work grid. Every card's text lives in content/<key>.md ── -->
+          <div class="grid" id="grid">
+            <div class="col col--a">
+              <div class="group">
+                <span class="group__label">Work I have done</span>
+                <div class="card" data-card="algorithms">Investigating the behaviors of social media algorithms.</div>
+                <div class="card" data-card="users">How users shape platforms, and how platforms shape users.</div>
+                <div class="card" data-card="moderation">Content moderation and what it cannot do.</div>
+              </div>
+
+              <hr class="wave wave--short" />
+
+              <div class="group">
+                <span class="group__label">Work I am doing</span>
+                <div class="card" data-card="brainrot">The dissociative states of consumption when brain rotting and why they matter.</div>
+                <div class="card" data-card="production">How does curation that predicts engagement change production behaviors?</div>
+              </div>
+            </div>
+
+            <div class="col col--b">
+              <div class="group">
+                <span class="group__label">Big areas I am working towards</span>
+                <div class="card" data-card="dysfunction">Social media platforms and political dysfunction.</div>
+                <div class="card" data-card="mechanisms">The mechanisms of social media platform harms.</div>
+                <div class="card" data-card="better">How can we make better social media platforms?</div>
+              </div>
+            </div>
+
+            <div class="col col--c">
+              <div class="group">
+                <span class="group__label">Other ventures</span>
+                <div class="card card--green" data-card="pakistan">Measuring Pakistan's information system and how power moves through it.</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- panels are built from the markdown at load -->
+          <div class="stage" id="stage" hidden></div>
+          </div>
+        </section>
+      </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-    <script type="module" src="app.js"></script>
+    <!-- ══════════════════════════ FULL PAGE ══════════════════════════ -->
+    <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" hidden>
+      <figure class="lightbox__stage">
+        <img class="lightbox__img" id="lightboxImg" alt="" />
+        <figcaption class="lightbox__cap">
+          <a id="lightboxLink" target="_blank" rel="noopener"></a>
+        </figcaption>
+      </figure>
+    </div>
+
+    <script src="app.js"></script>
   </body>
 </html>
