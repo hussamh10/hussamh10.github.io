@@ -648,76 +648,19 @@ a {
   position: relative;
 }
 
-/* ── "there is more inside me" ─────────────────────────────────────
-   An asterisk in the corner of every card that opens — a footnote mark,
-   the quietest way to say there is more to this than the line you just
-   read. It rides high in its em box, so it is dropped by hand until it
-   sits where it looks like it belongs.
-
-   Static: no hover, no shadow. It only exists on .card--open, so a card
-   with nothing behind it never makes the claim.
-   ──────────────────────────────────────────────────────────────────── */
+/* A small, faded mouse marks every card that opens. */
 .card--open::after {
-  content: "*";
-  position: absolute;
-  right: 0.62rem;
-  bottom: -0.16rem;
-  font-size: 1.5rem;
-  line-height: 1;
-  color: var(--ink);
-  font-weight: 300; /* a true 300 — lighter than the body's 350 */
-  -webkit-text-stroke-width: 0;
-}
-
-/* ── and, three times, a hand ──────────────────────────────────────
-   An asterisk has to be learned. Early on, a hand says the same thing in
-   a way nobody has to learn: it fades up in the asterisk's place, waves
-   once, and hands the corner back. Three times and it stops — see
-   app.js, which also drops it the moment a card is actually opened.
-   ──────────────────────────────────────────────────────────────────── */
-.card--open::before {
   content: "";
   position: absolute;
-  right: 0.55rem;
-  bottom: 0.36rem;
-  /* bigger than the asterisk on purpose: this has folded fingers in it */
-  width: 1.44rem;
-  height: 1.8rem; /* 24 × 30 viewBox — the rays live above the hand */
+  right: 0.62rem;
+  bottom: 0.28rem;
+  width: 1.2rem;
+  height: 1.2rem;
   background-color: currentColor;
-  -webkit-mask: var(--icon) no-repeat center / contain;
-  mask: var(--icon) no-repeat center / contain;
-  --icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 30' fill='none' stroke='%23111' stroke-width='1.9' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M8 6.4V3.4M5.2 7 3.2 4.6M10.8 7l2-2.4'/%3E%3Cg transform='translate(0 7)'%3E%3Cpath d='M22 14a8 8 0 0 1-8 8'/%3E%3Cpath d='M18 11v-1a2 2 0 0 0-2-2 2 2 0 0 0-2 2'/%3E%3Cpath d='M14 10V9a2 2 0 0 0-2-2 2 2 0 0 0-2 2v1'/%3E%3Cpath d='M10 9.5V4a2 2 0 0 0-2-2 2 2 0 0 0-2 2v10'/%3E%3Cpath d='M18 11a2 2 0 1 1 4 0v3a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15'/%3E%3C/g%3E%3C/svg%3E");
-  opacity: 0;
+  -webkit-mask: url("res/mouse-left-click.svg") no-repeat center / contain;
+  mask: url("res/mouse-left-click.svg") no-repeat center / contain;
+  opacity: 0.35;
   pointer-events: none;
-}
-
-.card--open.is-nudging::before {
-  animation: hand-in 1.9s ease both;
-}
-.card--open.is-nudging::after {
-  animation: star-out 1.9s ease both;
-}
-
-/* the two cross in the same corner, so only one mark is ever really there */
-@keyframes hand-in {
-  0%,
-  100% {
-    opacity: 0;
-  }
-  22%,
-  70% {
-    opacity: 0.5; /* an offer, not a demand */
-  }
-}
-@keyframes star-out {
-  0%,
-  100% {
-    opacity: 1;
-  }
-  22%,
-  70% {
-    opacity: 0;
-  }
 }
 
 .card--green {
@@ -745,6 +688,15 @@ a {
   width: 29.194rem; /* the measure, unchanged — text does not want the width */
   padding: 1.235rem 1.089rem 1.307rem;
   overflow: hidden;
+}
+.panel--anchored {
+  padding-top: var(--panel-top, 0px);
+}
+.panel--anchored .card--panel {
+  width: min(29.194rem, 100%);
+}
+.panel--anchored:not(.is-morphing) .card--panel {
+  margin-left: clamp(0px, var(--panel-left, 0px), max(0px, calc(100% - 29.194rem)));
 }
 .card--panel h2 {
   font: inherit;

@@ -20,13 +20,13 @@ Everything you'd want to reword lives in `content/*.md` — one file per card,
 named for its `data-card` / `data-md` key in `index.html`.
 
     hello.md  bio.md  research.md  updates.md      the four masthead cards
-    algorithms.md  users.md  moderation.md         the three that open
-    brainrot.md  production.md  dysfunction.md     the six that are titles only
-    mechanisms.md  better.md  pakistan.md
+    algorithms.md  users.md  moderation.md  pakistan.md  the four that open
+    brainrot.md  production.md  dysfunction.md           the five that are titles only
+    mechanisms.md  better.md
 
 For a work card, the `# heading` is the title and everything after it is the
 body. **A card with a body opens; a card with only a title stays inert.** So the
-six title-only cards become clickable the moment you write something under the
+five title-only cards become clickable the moment you write something under the
 heading — nothing else to change.
 
 Papers go under a `## Papers` heading, one per line:
@@ -180,31 +180,19 @@ offsets, so they cost the grid no width.
 
 ## Saying a card opens
 
-Three of the nine work cards open, and nothing about a closed card used to
-say so — hover is out (it lies on touch), and so is a shadow. So each of them
-carries an **asterisk** in the corner: a footnote mark, the quietest way to
-say there is more to this than the line you just read. It is set at a true
-300, a shade lighter than the body, and dropped by hand — an asterisk rides
-high in its em box, where a footnote wants it, which is not where a corner
-mark wants it.
+The four openable cards each carry a small mouse click icon in the bottom-right
+corner at 35% opacity. It stays visible while the card is collapsed.
 
-An asterisk still has to be learned, so early on a **hand** says the same
-thing in a way nobody has to learn. It fades up in the asterisk's place on the
-first card only, at half opacity, and hands the corner back. Three times, five
-seconds apart, starting ten seconds in — counted from when the cards actually
-exist, not from the first byte. It stops early if you open a card (you clearly
-did not need telling), it does not spend one of its three while the tab is in
-the background, and it never runs at all under `prefers-reduced-motion`. The
-knobs are at the foot of `app.js`.
-
-The hand is drawn rather than typed — no arrow, star or hand is in the font
-subset, and a missing glyph would quietly come back in some other typeface.
-It is a **mask** tinted by `currentColor` rather than a picture of black
-lines, which is why it follows the ink into dark mode with no second copy.
+The icon is `res/mouse-left-click.svg`, used as a **mask** tinted by
+`currentColor`, so it follows the ink into dark mode. Its size is `1.2rem`.
 
 ## Opening a card
 
-There is no separate expanded view: the card grows into it. `open()` in `app.js`
+The Pakistan card uses `data-expand="anchored"`: it grows from its original row
+and right edge, expanding into the available work area while the other cards
+move away. It keeps its green background.
+
+All cards use the same expansion and push-away animation. `open()` in `app.js`
 does the whole thing:
 
 1. Freeze `.work__stage`'s height so nothing below it jumps.
@@ -253,7 +241,8 @@ phone, so it no longer fits in one screen. That is the trade — sheets big enou
 to read cannot also be short.
 
 On finish the panel is handed back to normal flow; it lands exactly where the
-animation left it, so there is no snap. A full open → close cycle returns the
+animation left it, so there is no snap. Opening a card does not automatically
+scroll the page. A full open → close cycle returns the
 page to a pixel-identical state. `GROW` (460ms) and `EASE` at the top of `app.js`
 are the knobs.
 
@@ -261,7 +250,7 @@ are the knobs.
 
 | you click                   | what happens                                |
 | --------------------------- | ------------------------------------------- |
-| one of the three work cards | it grows into its full self                 |
+| one of the four work cards | it grows into its full self                 |
 | a paper, while one is open  | it opens to the full page over a pale scrim |
 | anywhere else, while open   | it collapses back                           |
 | Escape                      | same, innermost thing first                 |
@@ -270,8 +259,7 @@ Each panel also has a deep link (`/#algorithms`), and back/forward work.
 
 Nothing on the board reacts to hover — not the openable cards, not the CV /
 research-statement sheets, not the papers. They carry `cursor: pointer` and
-nothing else. **The affordance for "this one opens" is still an open question**:
-three of the nine cards are clickable and there is currently no visual tell.
+nothing else. The four openable cards carry the mouse click icon described above.
 
 ## Adding a card
 

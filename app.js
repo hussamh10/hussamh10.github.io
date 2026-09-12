@@ -327,6 +327,10 @@
           el.tabIndex = 0;
 
           var panel = buildPanel(key, card);
+          if (el.dataset.expand === "anchored") {
+            panel.classList.add("panel--anchored");
+            if (el.classList.contains("card--green")) $(".card--panel", panel).classList.add("card--green");
+          }
           stage.appendChild(panel);
           panels[key] = panel;
         })
@@ -336,21 +340,6 @@
 
   var current = null; /* key of the open panel */
   var busy = false;
-  var everOpened = false; /* once you have opened one, the hand stops offering */
-
-  /* The panel opens below the masthead, so on a tall window the papers can
-     land entirely under the fold — and nobody scrolls looking for something
-     they have no reason to think is there. So the page goes to it. Only when
-     it does not already fit: no lurch when there is nothing to reveal. */
-  function bringIntoView(panel) {
-    var box = panel.getBoundingClientRect();
-    var room = window.innerHeight;
-    if (box.top >= 0 && box.bottom <= room) return;
-    var margin = 1.2 * root();
-    var top = window.scrollY + box.top - margin;
-    /* if it is taller than the window, its top is the part worth showing */
-    window.scrollTo({ top: Math.max(0, top), behavior: reduced ? "auto" : "smooth" });
-  }
 
   /* geometry of `el` relative to the stage's padding box */
   function boxIn(el, host) {
@@ -484,6 +473,13 @@
     panel.style.width = px(gridBox.width);
 
     var to = restingBox(panel); /* measured while the grid still governs the width */
+    if (panel.classList.contains("panel--anchored")) {
+      /* Grow from the original row and right edge, within the work area. */
+      to.left = Math.max(0, from.left + from.width - to.width);
+      to.top = from.top;
+      panel.style.setProperty("--panel-left", px(to.left));
+      panel.style.setProperty("--panel-top", px(to.top));
+    }
     /* on a phone the papers sit under the card, so they need to know how tall
        it will end up before the box has finished growing */
     panel.style.setProperty("--papers-top", px(to.height + 0.8 * root()));
@@ -528,14 +524,14 @@
       }
       work.style.height = "";
       current = key;
-      everOpened = true;
       busy = false;
-      bringIntoView(panel); /* now that it is in flow, its box is real */
       if (key === "algorithms") flashFreud();
     };
 
-    if (!GROW) settle();
-    else
+    if (!GROW) {
+      anim.cancel();
+      settle();
+    } else
       anim.finished.then(function () {
         anim.cancel();
         settle();
@@ -598,6 +594,8 @@
       shovesClear();
       panel.hidden = true;
       stage.hidden = true;
+      panel.style.removeProperty("--panel-left");
+      panel.style.removeProperty("--panel-top");
       panel.classList.remove("is-morphing");
       panel.style.position = panel.style.left = panel.style.top = panel.style.width = "";
       card.style.cssText = "";
@@ -612,8 +610,10 @@
       /* deliberately no scroll back — you stay where you were reading */
     };
 
-    if (!GROW) settle();
-    else
+    if (!GROW) {
+      anim.cancel();
+      settle();
+    } else
       anim.finished.then(function () {
         anim.cancel();
         settle();
@@ -730,46 +730,6 @@
     var key = location.hash.slice(1);
     if (panels[key]) open(key, false);
   });
-
-  /* ══ the hand — the asterisk says there is more here; three times, early
-        on, a hand says it without anyone having to work it out ═════════ */
-  if (!reduced) {
-    var HAND_FIRST = 10000; /* long enough to have read the page first */
-    var HAND_EVERY = 5000;
-    var handsLeft = 3;
-    var handTimer = null;
-
-    var laterHand = function (delay) {
-      clearTimeout(handTimer);
-      handTimer = setTimeout(showHand, delay);
-    };
-
-    var showHand = function () {
-      handTimer = null;
-      if (!handsLeft || everOpened) return;
-      /* nobody is watching — keep the three for when they are */
-      if (document.hidden) return;
-
-      handsLeft--;
-      /* just the first card. One hand is an offer; three at once is a demand */
-      var c = $(".card--open");
-      if (c) {
-        c.classList.remove("is-nudging");
-        void c.offsetWidth; /* so the animation restarts rather than continues */
-        c.classList.add("is-nudging");
-      }
-      if (handsLeft) laterHand(HAND_EVERY);
-    };
-
-    document.addEventListener("visibilitychange", function () {
-      if (!document.hidden && handsLeft && !handTimer && !everOpened) laterHand(HAND_EVERY);
-    });
-
-    /* counted from when the cards actually exist, not from the first byte */
-    contentReady.then(function () {
-      laterHand(HAND_FIRST);
-    });
-  }
 
   /* ══ easter egg 1 — the portrait grows a scientist ═══════════════ */
   var portrait = document.getElementById("portrait");
