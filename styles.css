@@ -690,13 +690,14 @@ a {
   overflow: hidden;
 }
 .panel--anchored {
+  --panel-width: 35rem;
   padding-top: var(--panel-top, 0px);
 }
 .panel--anchored .card--panel {
-  width: min(29.194rem, 100%);
+  width: min(var(--panel-width), 100%);
 }
 .panel--anchored:not(.is-morphing) .card--panel {
-  margin-left: clamp(0px, var(--panel-left, 0px), max(0px, calc(100% - 29.194rem)));
+  margin-left: clamp(0px, var(--panel-left, 0px), max(0px, calc(100% - var(--panel-width))));
 }
 .card--panel h2 {
   font: inherit;

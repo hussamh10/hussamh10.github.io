@@ -375,7 +375,6 @@
 
   function shoveAside(trigger) {
     var srcGroup = trigger.closest(".group");
-    var srcCol = trigger.closest(".col");
     var tr = trigger.getBoundingClientRect();
     var u = root();
     var items = [];
@@ -398,7 +397,9 @@
     shoves = items.map(function (el) {
       var r = el.getBoundingClientRect();
       var to;
-      if (el.closest(".col") !== srcCol) to = "translateX(" + 8 * u + "px)"; /* sideways */
+      /* Move away from the opening card using the actual responsive layout. */
+      if (r.right <= tr.left + 1) to = "translateX(" + -8 * u + "px)"; /* left */
+      else if (r.left >= tr.right - 1) to = "translateX(" + 8 * u + "px)"; /* right */
       else if (r.top >= tr.bottom - 1) to = "translateY(" + 6 * u + "px)"; /* downwards */
       else to = "translateY(" + -5 * u + "px)"; /* upwards */
 

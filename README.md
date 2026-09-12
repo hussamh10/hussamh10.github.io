@@ -190,7 +190,9 @@ The icon is `res/mouse-left-click.svg`, used as a **mask** tinted by
 
 The Pakistan card uses `data-expand="anchored"`: it grows from its original row
 and right edge, expanding into the available work area while the other cards
-move away. It keeps its green background.
+move away. It keeps its green background and expands to 35rem, capped by the
+available width. Cards to its left move left; cards above or below it move
+vertically away, following their positions in the responsive layout.
 
 All cards use the same expansion and push-away animation. `open()` in `app.js`
 does the whole thing:
