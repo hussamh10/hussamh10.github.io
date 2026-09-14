@@ -1,4 +1,4 @@
-# Measuring Pakistan's information system and how power moves through it.
+# Measuring Pakistan's information systems and their outcomes.
 
 Semicolon is a Pakistani research collective studying our society through its news, political debates, and cultural records.
 

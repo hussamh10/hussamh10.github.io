@@ -121,7 +121,7 @@
   /* ═══════════════ the cards are written in content/*.md ═══════════════
      One file per card. The `# heading` is the title; anything after it is the
      body. A card with a body opens; a card with only a title stays inert.
-     A "## Papers" list takes lines of:  file.webp | Title | url
+     A "## Papers" or "## Posts" list takes lines of:  file.webp | Title | url
      ══════════════════════════════════════════════════════════════════════ */
 
   function esc(t) {
@@ -204,22 +204,34 @@
     return out.join("\n");
   }
 
+  /* `## Papers` and `## Posts` both hold rows of:  image | title | url
+     Returns the rows, and the text with that section taken out of it. */
+  function pullRows(src, name) {
+    var parts = src.split(new RegExp("^##\\s+" + name + "\\s*$", "m"));
+    /* the section ends at the next heading; whatever follows stays in the text,
+       so one section never eats the other, in whichever order they are written */
+    var after = (parts[1] || "").split(/(?=^##\s+)/m);
+    var rows = [];
+    after[0].split("\n").forEach(function (line) {
+      var m = line.match(/^\s*-\s*(.+)$/);
+      if (!m) return;
+      var bits = m[1].split("|").map(function (x) {
+        return x.trim();
+      });
+      if (bits.length >= 3) rows.push({ img: bits[0], title: bits[1], href: bits[2] });
+    });
+    return { rows: rows, rest: parts[0] + after.slice(1).join("") };
+  }
+
   function parseCard(src) {
-    var out = { title: "", body: "", papers: [] };
+    var out = { title: "", body: "", papers: [], posts: [] };
     src = src.replace(/<!--[\s\S]*?-->/g, "").replace(/\r/g, "");
 
-    var papers = src.split(/^##\s+Papers\s*$/m);
-    src = papers[0];
-    if (papers[1]) {
-      papers[1].split("\n").forEach(function (line) {
-        var m = line.match(/^\s*-\s*(.+)$/);
-        if (!m) return;
-        var bits = m[1].split("|").map(function (x) {
-          return x.trim();
-        });
-        if (bits.length >= 3) out.papers.push({ img: bits[0], title: bits[1], href: bits[2] });
-      });
-    }
+    var papers = pullRows(src, "Papers");
+    var posts = pullRows(papers.rest, "Posts");
+    out.papers = papers.rows;
+    out.posts = posts.rows;
+    src = posts.rest;
 
     var head = src.match(/^#\s+(.+)$/m);
     if (head) {
@@ -253,12 +265,13 @@
 
     var art = document.createElement("article");
     art.className = "card card--panel";
+    /* the heading always stands; the body under it may be nothing but posts */
     art.innerHTML = "<h2>" + esc(card.title) + '</h2><div class="card__body">' + card.body + "</div>";
     panel.appendChild(art);
 
     if (card.papers.length) {
       var wrap = document.createElement("div");
-      wrap.className = "papers";
+      wrap.className = "tray papers";
       card.papers.forEach(function (p) {
         var b = document.createElement("button");
         b.className = "paper";
@@ -269,6 +282,27 @@
         wrap.appendChild(b);
       });
       panel.appendChild(wrap);
+    }
+
+    /* the blog's own square cards: links rather than full pages, and they sit
+       inside the card rather than in the tray beneath it */
+    if (card.posts.length) {
+      panel.classList.add("panel--posts"); /* the card draws in around the squares */
+      var strip = document.createElement("div");
+      strip.className = "posts";
+      card.posts.forEach(function (p) {
+        var a = document.createElement("a");
+        a.className = "post";
+        a.href = p.href;
+        a.innerHTML =
+          '<img loading="lazy" decoding="async" src="' +
+          (/\//.test(p.img) ? encodeURI(p.img) : "blog/res/squares/" + encodeURI(p.img)) +
+          '" alt="' +
+          esc(p.title) +
+          '" />';
+        strip.appendChild(a);
+      });
+      $(".card__body", art).appendChild(strip);
     }
     return panel;
   }
@@ -319,7 +353,7 @@
         .then(function (text) {
           var card = parseCard(text);
           if (card.title) el.textContent = card.title;
-          if (!card.body) return; /* title only — the card stays put */
+          if (!card.body && !card.posts.length) return; /* title only — the card stays put */
 
           el.classList.add("card--open");
           el.dataset.open = key;
@@ -453,7 +487,7 @@
     if (busy || current === key || !panels[key]) return;
     var panel = panels[key];
     var card = $(".card--panel", panel);
-    var papers = $(".papers", panel);
+    var tray = $(".tray", panel);
     var trigger = $('[data-open="' + key + '"]');
     busy = true;
 
@@ -481,9 +515,9 @@
       panel.style.setProperty("--panel-left", px(to.left));
       panel.style.setProperty("--panel-top", px(to.top));
     }
-    /* on a phone the papers sit under the card, so they need to know how tall
-       it will end up before the box has finished growing */
-    panel.style.setProperty("--papers-top", px(to.height + 0.8 * root()));
+    /* the tray sits under the card, so it needs to know how tall the card
+       will end up before the box has finished growing */
+    panel.style.setProperty("--tray-top", px(to.height + 0.8 * root()));
     panel.classList.add("is-morphing");
 
     place(card, from);
@@ -502,8 +536,8 @@
     setTimeout(function () {
       $(".card__body", card).style.opacity = 1;
     }, GROW * 0.28);
-    if (papers) {
-      papers.__anim = papers.animate([{ opacity: 0 }, { opacity: 1 }], {
+    if (tray) {
+      tray.__anim = tray.animate([{ opacity: 0 }, { opacity: 1 }], {
         duration: Math.max(1, GROW * 0.28),
         delay: GROW * 0.72, /* they land exactly as the box stops growing */
         easing: "ease",
@@ -516,12 +550,12 @@
       grid.hidden = true;
       panel.classList.remove("is-morphing");
       panel.style.position = panel.style.left = panel.style.top = panel.style.width = "";
-      panel.style.removeProperty("--papers-top");
+      panel.style.removeProperty("--tray-top");
       card.style.cssText = "";
-      if (papers) {
-        if (papers.__anim) papers.__anim.cancel();
-        papers.__anim = null;
-        papers.style.opacity = "";
+      if (tray) {
+        if (tray.__anim) tray.__anim.cancel();
+        tray.__anim = null;
+        tray.style.opacity = "";
       }
       work.style.height = "";
       current = key;
@@ -548,7 +582,7 @@
     var key = current;
     var panel = panels[key];
     var card = $(".card--panel", panel);
-    var papers = $(".papers", panel);
+    var tray = $(".tray", panel);
     var trigger = $('[data-open="' + key + '"]');
     busy = true;
     current = null;
@@ -578,9 +612,9 @@
     to.top -= panelBox.top;
 
     $(".card__body", card).style.opacity = 0;
-    if (papers) {
-      if (papers.__anim) papers.__anim.cancel();
-      papers.__anim = papers.animate([{ opacity: 1 }, { opacity: 0 }], {
+    if (tray) {
+      if (tray.__anim) tray.__anim.cancel();
+      tray.__anim = tray.animate([{ opacity: 1 }, { opacity: 0 }], {
         duration: Math.max(1, GROW * 0.3),
         easing: "ease",
         fill: "both",
@@ -601,10 +635,10 @@
       panel.style.position = panel.style.left = panel.style.top = panel.style.width = "";
       card.style.cssText = "";
       $(".card__body", card).style.opacity = "";
-      if (papers) {
-        if (papers.__anim) papers.__anim.cancel();
-        papers.__anim = null;
-        papers.style.opacity = "";
+      if (tray) {
+        if (tray.__anim) tray.__anim.cancel();
+        tray.__anim = null;
+        tray.style.opacity = "";
       }
       work.style.height = "";
       busy = false;

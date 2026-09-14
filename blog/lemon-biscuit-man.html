@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="format-detection" content="telephone=no" />
+<title>Lemon Biscuit Man</title>
+<meta name="description" content="A boy in Lahore watches a man eat a lemon biscuit, and judges him for it." />
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<!--
+  Font substitutes for the paid faces used on practicaltypography.com:
+    Equity   (body serif)     -> Charis SIL, a Charter derivative. Charter is
+                                the free text serif Butterick himself hands out.
+    Advocate (display, caps)  -> Canela, from res/westwinds/Canela.otf.
+    Urdu                      -> Noto Nastaliq Urdu.
+
+  NOTE: that Canela file is a TRIAL font (Canela Cond Thin Trial). A trial
+  licence covers mockups, not a live site. Marcellus is the free flared serif
+  standing behind it: delete the @font-face below and the page still looks
+  right.
+-->
+<link href="https://fonts.googleapis.com/css2?family=Charis+SIL:ital,wght@0,400;0,700;1,400;1,700&family=Marcellus&family=Noto+Nastaliq+Urdu:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+@font-face {
+  font-family: "Canela Trial";
+  src: url("res/westwinds/Canela.otf") format("opentype");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* ------------------------------------------------------------------
+   Scale. The reference sets the root at 24px on a wide screen and 18px
+   on a phone. It interpolates with 2.4vw in between, which collapses to
+   ~12px just above its 520px breakpoint; clamp() keeps the two endpoints
+   and removes that hole.
+
+   ------------------------------------------------------------------ */
+html {
+  font-size: clamp(18px, 2.4vw, 24px);
+  height: 100%;
+  -webkit-text-size-adjust: 100%;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+  max-width: 1000px;
+  min-height: 100%;
+  background: #fff;
+  color: #000;
+  font-family: "Charis SIL", Charter, "Bitstream Charter", Georgia, serif;
+  font-size: 0.92rem;
+  line-height: 1.45;
+  font-variant-numeric: oldstyle-nums;
+  -webkit-font-smoothing: subpixel-antialiased;
+}
+
+/* Two columns: a 12rem gutter for the margin notes, then the text.
+   This used to be an absolutely positioned gutter, which is how the
+   reference does it. Safari then paints a text selection clear across the
+   containing block, so highlighting two paragraphs floods the whole
+   gutter yellow. A grid keeps the selection on the words. */
+#content {
+  display: grid;
+  grid-template-columns: 12rem minmax(0, 1fr);
+  padding: 3rem 0 4rem 0;
+  margin-right: 2.5rem;
+}
+
+main { grid-column: 2; }
+
+/* ---------------------------- title ---------------------------- */
+
+topic {
+  display: block;
+  font-family: "Canela Trial", Marcellus, "Playfair Display", Georgia, serif;
+  font-weight: 400;
+  font-size: 2.9rem;
+  line-height: 1.1;
+  letter-spacing: 0.005em;
+  hyphens: none;
+  border-top: 1px solid #333;
+  padding-top: 0.35rem;
+  margin-bottom: 1.8rem;
+}
+
+/* ------------------------- margin column ------------------------ */
+
+title-block, aside {
+  display: block;
+  text-align: right;
+  font-variant-numeric: normal;
+}
+
+/* One hairline runs across the page; the gutter breaks it, nothing more. */
+title-block {
+  grid-column: 1;
+  margin: 0 2rem 0 2.5rem;
+  border-top: 1px solid #333;
+  padding-top: 0.35rem;
+  font-size: 0.8rem;
+  line-height: 1.3;
+}
+
+/* Side notes. Put one inside <main>, just before the paragraph it belongs
+   to; it floats out into the gutter:  <aside><p>note text</p></aside>  */
+aside {
+  float: left;
+  clear: left;
+  width: 10rem;
+  margin-left: -12rem;
+  margin-bottom: 1rem;
+}
+
+aside p {
+  font-size: 0.78rem;
+  line-height: 1.4;
+  color: #667;
+  letter-spacing: 0.015em;
+  hyphens: none;
+}
+
+/* ----------------------------- text ----------------------------- */
+
+p {
+  margin-bottom: 1em;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+  text-wrap: pretty;
+}
+
+p:last-child { margin-bottom: 0; }
+
+em { font-style: italic; }
+
+/* --------------------------- the couplet ------------------------ */
+
+.couplet {
+  margin-top: 3rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid #ccc;
+}
+
+.couplet p {
+  font-family: "Noto Nastaliq Urdu", serif;
+  font-size: 1.15rem;
+  line-height: 2.5;
+  text-align: center;
+  hyphens: none;
+  margin-bottom: 0;
+}
+
+.couplet .attribution {
+  text-align: center;
+  margin-top: 0.6rem;
+  font-family: "Noto Nastaliq Urdu", serif;
+  font-size: 0.8rem;
+  line-height: 1.7;
+  color: #667;
+}
+
+/* Dragging across the text used to sweep up the link sitting in the margin,
+   because it precedes the essay in the markup. Navigation is not prose. */
+title-block, .nav {
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+::selection { background: #ffe15d; color: #000; }
+::-moz-selection { background: #ffe15d; color: #000; }
+
+/* ---------------------------- links ----------------------------- */
+
+a {
+  color: inherit;
+  text-decoration: none;
+  transition: background 0.2s;
+}
+
+a:hover {
+  background: #fbf3f3;
+  border-radius: 8px;
+}
+
+a:active { color: #777; }
+
+/* Butterick marks a link with a small raised degree sign instead of an
+   underline. Only body links get it; navigation does not. */
+main p a:after {
+  content: "\FEFF°";
+  position: relative;
+  top: -0.10em;
+  margin-left: 0.10em;
+  font-size: 90%;
+  color: #933;
+  font-variant-numeric: normal;
+}
+
+/* ----------------------------- foot ----------------------------- */
+
+.nav {
+  margin-top: 2.25rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid #ccc;
+  font-size: 0.8rem;
+  font-variant-caps: small-caps;
+  letter-spacing: 0.03em;
+  color: #667;
+}
+
+/* --------------------------- narrow ----------------------------- */
+
+@media all and (max-width: 760px) {
+  #content {
+    margin: 1.5rem;
+    padding: 0 0 2.5rem 0;
+  }
+
+  topic { font-size: 2.2rem; }
+
+  #content {
+    display: block;
+  }
+
+  title-block, aside {
+    float: none;
+    width: 100%;
+    margin-left: 0;
+    text-align: left;
+  }
+
+  title-block {
+    border-top: 0;
+    margin: 0 0 1.6rem 0;
+    padding-top: 0;
+  }
+
+  /* A hemistich has to hold one line. Below about 360px it no longer does
+     at full size, so the couplet shrinks to fit the screen instead. */
+  .couplet p {
+    font-size: min(1.15rem, calc((100vw - 3.6rem) / 15));
+  }
+
+  aside {
+    margin: 1.5rem 0;
+    padding: 0.3rem 0.5rem;
+    background: #fefefe;
+    border: 1px solid #ccc;
+    border-left: 3px solid #ccc;
+  }
+}
+
+/* ----------------------------- print ---------------------------- */
+
+@media print {
+  #content { margin: 0; padding: 0; }
+  title-block, .nav { display: none; }
+  a:after { content: none; }
+}
+</style>
+</head>
+
+<body>
+<div id="content">
+
+  <title-block>
+    <p><a href="index.html">back</a></p>
+  </title-block>
+
+  <main>
+    <topic>Lemon biscuit man</topic>
+
+    <p>I must have been sixteen, it must have been five in the afternoon. I was walking back home from school. The summer sun hung alone in the cloudless sky, beating down on the pale streets of Lahore. The rushing feet and tires kicked clouds of dust up to my nose. You could smell the heat.</p>
+
+    <p>But I, dragging my feet, could not be bothered by it. My mind was still back at school. I was tasting the tang of the ice lolly at the back of my tongue, seeing a friend&rsquo;s hair blowing under the fan; hearing the echoes in the empty school halls.</p>
+
+    <p>Absent, I turned the corner towards my home, cutting through the chowk. In Pakistan, you can cross traffic with just your ears. You hear the coughs of a three-kick rickshaw engine well before its green body arrives. Eyes wandering, ears attentive, I crossed the chowk. Across, my eyes glided down the branches of a tree and rested on a man. He was framed perfectly by the entrance of a corner mart.</p>
+
+    <p>The man wore a striped white button-down shirt&mdash;still tucked in this late in the afternoon. He must have been in his thirties. He was still wearing his helmet as he exited the store and rushed towards his bike that was parked half on the street in the shade of a tree. His urgency, possibly residual from the morning, dissolved as he reached the bike. Hunched over it, he stopped, took off his helmet, and rested it on the seat.</p>
+
+    <p>I could pull out an entire life from his clothes; his thoughts and responsibilities lay bare on him. His black shoes, crease-less but with a fresh sheen of dust, were of someone new to office. The sleeves of his shirt were damp from the day&rsquo;s sweat, but they had only a very few wrinkles; I could see his mother ironing the shirt that morning. His helmet was heavy and dark. Repulsive. The collar of the shirt was drenched in sweat trapped by the styrofoam lining in the helmet.</p>
+
+    <p>Helmets were very uncommon in Pakistan at that time; &ldquo;they are too expensive and too hot&rdquo;, my friend would tell me and the prying eyes of the police officers rarely bother. Yet this man was wearing one.</p>
+
+    <p>I imagined him wearing it as an amulet. Adorned by his family to save a household from a crash, or perhaps as a prayer to relieve from the fear of it. For now the helmet was resting on the bike.</p>
+
+    <p>Shining from him, I saw a yellow packet. Lemon biscuits. His hands, now slow and deliberate, opened the package. My eyes tracked a yellow biscuit from the packet, pinched between his thumb and finger, to his mouth; it vanished. Back to his eyes, I saw only relief; as if the biscuit was not enjoyed. Instead it was purely functional: fuel.</p>
+
+    <p>I was still standing across the street from him, partly under the shade. Watching all this happen in front of me. I felt contempt. A barrage of judgements sprung within me: &ldquo;How can a man live such an ordinary life&rdquo;. Desires and pursuits are supposed to be extraordinary, I thought, how far has this man fallen, how I could not end up like this man, someone whose only respite is a biscuit. I had eaten lemon biscuit before, it was too sweet and tastes of artificial lemon. Not worth stopping in this hell to buy and eat it under the passing shade of a tree. A remarkably average life, a failure, I concluded.</p>
+
+    <p>I am thirty now. I often think of the lemon biscuit man and the sixteen-year-old boy. There is not a dress code at my office, but my work gets exhausting sometimes. Some days, when it is hot out, I have an ice cream on my walk back from work. It is easy to get lost in catching the creamy drips before they cover my fingers. I do not know what I would say to the boy looking at me. Perhaps I can sit down with him and talk about the decadence of the lemon biscuit. But I am afraid his passions and presumptions might be too strong for him to understand. Worse, I might look in his eyes and catch myself lying. Sometimes, on these short walks, I instead remember the lemon biscuit man a bit differently. I imagine him smiling.</p>
+
+    <div class="couplet" lang="ur" dir="rtl">
+      <p>کل دیکھا ایک آدمی اَٹا سفر کی دھُول میں،<br />گُم تھا اَپنے آپ میں جیسے خوشبو پھول میں۔</p>
+      <p class="attribution">منیر نیازی</p>
+    </div>
+
+    <div class="nav"><a href="index.html">&#8249;&nbsp;blog</a></div>
+  </main>
+
+</div>
+</body>
+</html>

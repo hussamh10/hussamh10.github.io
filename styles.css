@@ -693,6 +693,11 @@ a {
   --panel-width: 35rem;
   padding-top: var(--panel-top, 0px);
 }
+/* a card of squares wants no more width than the squares — prose is what the
+   35rem measure is for, and this card has none */
+.panel--anchored.panel--posts {
+  --panel-width: 28rem;
+}
 .panel--anchored .card--panel {
   width: min(var(--panel-width), 100%);
 }
@@ -714,13 +719,21 @@ a {
 
 /* while the box is growing, both children float free so nothing reflows */
 .panel.is-morphing .card--panel,
-.panel.is-morphing .papers {
+.panel.is-morphing .tray {
   position: absolute;
   top: 0;
 }
-.panel.is-morphing .papers {
-  left: 0;
-  top: var(--papers-top, 100%);
+.panel.is-morphing .tray {
+  left: var(--panel-left, 0px);
+  top: var(--tray-top, 100%);
+}
+/* an anchored panel keeps its tray under its card rather than at the far left */
+.panel--anchored.is-morphing .tray {
+  width: min(var(--panel-width), 100%);
+}
+.panel--anchored:not(.is-morphing) .tray {
+  width: min(var(--panel-width), 100%);
+  margin-left: clamp(0px, var(--panel-left, 0px), max(0px, calc(100% - var(--panel-width))));
 }
 .card--panel h2,
 .card--panel .card__body {
@@ -730,18 +743,18 @@ a {
   white-space: normal;
 }
 
-/* ── papers: bare sheets, like the CV ── */
-/* As many sheets per row as can be ~20rem or wider, capped at 23rem so two
-   papers do not become taller than the screen. Three across on a desktop,
-   two on a tablet, one on a phone — the row count follows from the width a
-   sheet needs to stay readable, rather than being fixed and then squeezed.
-   min(20rem, 100%) so a narrow phone clamps instead of overflowing. */
-.papers {
+/* ── the tray: the row beneath the card, papers or posts ── */
+.tray {
   display: flex;
   flex-wrap: wrap;
   gap: 1rem;
   width: 100%;
 }
+/* ── papers: bare sheets, like the CV ── */
+/* As many sheets per row as can be ~20rem or wider, capped at 23rem so two
+   papers do not become taller than the screen. Three across on a desktop,
+   two on a tablet, one on a phone — the row count follows from the width a
+   sheet needs to stay readable, rather than being fixed and then squeezed. */
 .paper {
   display: block;
   /* wants 18rem, will take up to 23rem, shrinks rather than overflowing —
@@ -764,6 +777,54 @@ a {
   width: 100%;
   height: 100%;
   object-fit: contain;
+}
+
+/* ── posts: the blog's own square cards, which carry their own titles ──
+   They sit inside the card rather than in the tray beneath it, two columns at
+   every width — the grid the blog itself uses on a phone. A grid rather than a
+   flex row, so an odd one out keeps the width of the square above it instead
+   of stretching across the line. */
+.posts {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+  /* narrower than the card's measure: squares that read without shouting, and
+     a hair narrower again than that, so the tilt below has somewhere to go —
+     the card clips whatever leaves it. */
+  width: calc(100% - 1.8rem);
+  max-width: 24rem;
+  margin: var(--line) auto 0;
+}
+
+/* ── the same covers-on-a-desk tilt as the blog page, at a quarter of the
+   throw: inside a card there is only so much room to fall. Column neighbours
+   are pushed apart, never together. ── */
+.posts .post:nth-child(1) {
+  transform: rotate(-1.6deg) translate(-0.3rem, 0.2rem);
+}
+.posts .post:nth-child(2) {
+  transform: rotate(1.2deg) translate(0.35rem, -0.45rem);
+}
+.posts .post:nth-child(3) {
+  transform: rotate(0.9deg) translate(0.15rem, 0.5rem);
+}
+.posts .post:nth-child(4) {
+  transform: rotate(-1.3deg) translate(0.45rem, -0.2rem);
+}
+.post {
+  display: block;
+  min-width: 0;
+  aspect-ratio: 1;
+  overflow: hidden;
+  box-shadow:
+    0 0.07rem 0.22rem rgba(0, 0, 0, 0.22),
+    0 0.22rem 0.55rem rgba(0, 0, 0, 0.12);
+}
+.post img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 /* ── the full page ── */
@@ -1017,7 +1078,8 @@ a {
   .card--panel {
     width: 100%; /* on a phone the card is the column */
   }
-  .papers {
+  .tray,
+  .posts {
     gap: 0.7rem;
   }
 }

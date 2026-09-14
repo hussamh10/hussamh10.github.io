@@ -3,6 +3,7 @@
 Static. No build step, no dependencies. Light and dark, following the system.
 
     content/      ← the words. One markdown file per card. Edit these.
+    blog/         the blog: a page per post, and an index of square covers
     index.html    the layout skeleton
     styles.css    all geometry lives here
     app.js        markdown loader, the card morph, the full-page view, the eggs
@@ -20,20 +21,37 @@ Everything you'd want to reword lives in `content/*.md` — one file per card,
 named for its `data-card` / `data-md` key in `index.html`.
 
     hello.md  bio.md  research.md  updates.md      the four masthead cards
-    algorithms.md  users.md  moderation.md  pakistan.md  the four that open
-    brainrot.md  production.md  dysfunction.md           the five that are titles only
+    algorithms.md  users.md  moderation.md            the five that open
+    pakistan.md  blog.md
+    brainrot.md  production.md  dysfunction.md        the five that are titles only
     mechanisms.md  better.md
 
 For a work card, the `# heading` is the title and everything after it is the
-body. **A card with a body opens; a card with only a title stays inert.** So the
-five title-only cards become clickable the moment you write something under the
-heading — nothing else to change.
+body. **A card with a body — or a list of posts — opens; a card with only a title
+stays inert.** So the five title-only cards become clickable the moment you write
+something under the heading — nothing else to change.
 
 Papers go under a `## Papers` heading, one per line:
 
     ## Papers
 
     - aceap.webp | Characterizing Platform Behaviors: … | https://arxiv.org/pdf/2407.07227
+
+Blog posts go under `## Posts`, written the same way. The image is one of the
+blog's own square cards, so a bare filename is looked for in `blog/res/squares`;
+a name with a slash in it is used as written. Each square is a link, not a
+full-page view — clicking one leaves for the post.
+
+    ## Posts
+
+    - ragbrai.webp | RAGBRAI — a journey through Iowa | blog/ragbrai.html
+
+The two lists sit in different places. **Papers go in the tray beneath the card;
+posts go inside it**, two columns wide, the way the blog page itself shows them.
+The heading always stands, so the blog card is its title and then the squares —
+`blog.md` is a `# heading` and a list, with nothing in between. A panel holding
+posts also draws itself in to 28rem (`.panel--posts`): the 35rem measure is for
+prose, and this card has none.
 
 The markdown understood is deliberately small: paragraphs, `# heading`,
 `- bullets`, `**bold**`, `*italic*`, links either way round — `[text](url)` or
@@ -151,9 +169,9 @@ edge to edge, the cards keep their rules and shadows. Three things move:
   `position: static` so it anchors to `.board` instead).
 - **The portrait centres** and the four social marks stretch the full width of a
   card, picking up the same rhythm as the crests below them.
-- **Papers sit under the expanded card**, not beside it. The morph needs to know
-  the card's finished height before it gets there, so `open()` hands it over as
-  `--papers-top`.
+- **The tray sits under the expanded card**, not beside it — papers or posts
+  alike. The morph needs to know the card's finished height before it gets there,
+  so `open()` hands it over as `--tray-top`.
 
 The scientist needs a **double** tap — a single one does nothing — since a
 one-tap easter egg on a phone is just something you trip over. One handler covers
@@ -180,7 +198,7 @@ offsets, so they cost the grid no width.
 
 ## Saying a card opens
 
-The four openable cards each carry a small mouse click icon in the bottom-right
+The five openable cards each carry a small mouse click icon in the bottom-right
 corner at 35% opacity. It stays visible while the card is collapsed.
 
 The icon is `res/mouse-left-click.svg`, used as a **mask** tinted by
@@ -188,10 +206,12 @@ The icon is `res/mouse-left-click.svg`, used as a **mask** tinted by
 
 ## Opening a card
 
-The Pakistan card uses `data-expand="anchored"`: it grows from its original row
-and right edge, expanding into the available work area while the other cards
-move away. It keeps its green background and expands to 35rem, capped by the
-available width. Cards to its left move left; cards above or below it move
+The two cards under *Other ventures* — Pakistan and the blog — use
+`data-expand="anchored"`: each grows from its own row and right edge, expanding
+into the available work area while the other cards move away. Pakistan keeps its
+green background; both expand to 35rem, capped by the available width, and an
+anchored panel carries its tray across to sit under the card rather than at the
+far left. Cards to its left move left; cards above or below it move
 vertically away, following their positions in the responsive layout.
 
 All cards use the same expansion and push-away animation. `open()` in `app.js`
@@ -252,8 +272,9 @@ are the knobs.
 
 | you click                   | what happens                                |
 | --------------------------- | ------------------------------------------- |
-| one of the four work cards | it grows into its full self                 |
+| one of the five work cards | it grows into its full self                 |
 | a paper, while one is open  | it opens to the full page over a pale scrim |
+| a post, while the blog is open | it leaves for that post                  |
 | anywhere else, while open   | it collapses back                           |
 | Escape                      | same, innermost thing first                 |
 
@@ -261,13 +282,14 @@ Each panel also has a deep link (`/#algorithms`), and back/forward work.
 
 Nothing on the board reacts to hover — not the openable cards, not the CV /
 research-statement sheets, not the papers. They carry `cursor: pointer` and
-nothing else. The four openable cards carry the mouse click icon described above.
+nothing else. The five openable cards carry the mouse click icon described above.
 
 ## Adding a card
 
 To add a card to the board: drop a `<div class="card" data-card="KEY">Title</div>`
 into whichever `.group` in `index.html` it belongs to, and write `content/KEY.md`.
-That's it — the panel, its papers and its deep link are all built from the file.
+That's it — the panel, its tray of papers or posts, and its deep link are all
+built from the file.
 
 Paper scans live in `res/papers` at 1100px wide, which is what the full-page view
 needs. Anything narrower looks soft when opened.
