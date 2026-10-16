@@ -12,4 +12,4 @@ We have two goals. The first is to give more people the curiosity, confidence, a
 
 The second is to develop a clearer understanding of our institutions and society, so we can discuss what they should become. We want people to help define what good journalism, responsible institutions, and a better-informed public life should look like, grounded in the realities of Pakistan.
 
-[semicolon.pk](https://semicolon.pk)
+[Visit Semicolon](go/semicolon/)
