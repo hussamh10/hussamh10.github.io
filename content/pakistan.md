@@ -1,6 +1,6 @@
 # Measuring Pakistan's information systems and their outcomes.
 
-Semicolon is a Pakistani research collective studying our society through its news, political debates, and cultural records.
+We are a Pakistani research collective studying our society through its news, political debates, and cultural records.
 
 Arguments about Pakistan’s problems and its future have overflowed our books, podcasts, tv-shows and dinner-table conversations. But these remain only *conversations*. Corruption, feudalism, military power, and economic instability are familiar explanations. But understanding how these forces operate, and what we can change, requires sustained investigation.
 
@@ -11,5 +11,3 @@ These questions matter because what we hear and read helps shape what we accept,
 We have two goals. The first is to give more people the curiosity, confidence, and tools to investigate Pakistan for themselves. We are building archives and making research easier to explore, question, and build on.
 
 The second is to develop a clearer understanding of our institutions and society, so we can discuss what they should become. We want people to help define what good journalism, responsible institutions, and a better-informed public life should look like, grounded in the realities of Pakistan.
-
-[Visit Semicolon](go/semicolon/)
