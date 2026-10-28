@@ -344,7 +344,6 @@ out-glow the text.
 
 ## Loose ends
 
-- The bio says "CS² @ UniGraz" — no link, I didn't have the URL.
 - Content moderation ends on "read this piece by us" — no link yet either.
 - CV and research statement in `res/docs/` are the ones from the old site, and
   the labels say so.
